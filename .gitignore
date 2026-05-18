@@ -1,0 +1,11 @@
+# IMPROGYP - Git Exclusions
+.env
+.DS_Store
+*.log
+cache_*.json
+img_temp_carga/
+temp/
+copia_seguridad_IMPROGYP.sql
+node_modules/
+.vscode/
+.idea/

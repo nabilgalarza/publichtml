@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.html [L]
+</IfModule>
+
+# Bloqueo de archivos de depuración y logs (Fase 1)
+<FilesMatch "\.(txt|log)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

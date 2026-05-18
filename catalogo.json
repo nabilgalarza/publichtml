@@ -1,0 +1,1332 @@
+[
+    {
+        "nombre": "Tornillos en tirillas",
+        "codigo": "20TORTLL",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1779111419_tornillos_en_ti.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "29.2"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con los Tornillos en tirillas, un accesorio original de MAXXT.\r\n\r\nEspecificaciones técnicas: Cantidad: 1000 screws | Material: Steel | Diámetro: 3.5mm | Longitudes: 30/35/40/50mm. Consumible imprescindible para alimentación automática en atornilladores, acelerando el recubrimiento de Drywall.\r\n\r\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Ángulo para amoladora (cubierta contra el polvo)",
+        "codigo": "20MAGDS125",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/20MAGDS125.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "38.75"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con el Ángulo para amoladora (cubierta contra el polvo), un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Ajuste: 5\" \\/ 4-1\\/2\" (110mm-125mm) para amoladora angular. Un complemento de seguridad que protege al usuario y conecta a extractores para un trabajo limpio.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Cepillo de carburo de silicio para estirado",
+        "codigo": "20MSCDW120",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/20MSCDW120.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "41.57"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con el Cepillo de carburo de silicio para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100 | Abertura: 19mm | Material: Silicona carbide brush. Las cerdas impregnadas de abrasivo logran acabados decorativos y limpieza profunda.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Disco de acero para estirado",
+        "codigo": "20MSWDW120",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/20MSWDW120.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "36.93"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con el Disco de acero para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100 | Abertura: 19mm | Material: 0.3mm\\/0.5mm Copper-plated Steel. Alambres agresivos para remover costras gruesas de óxido, pintura vieja y escoria.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Disco abrasivo de óxido de aluminio",
+        "codigo": "20MAODW120",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/20MAODW120.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "22.43"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con el Disco abrasivo de óxido de aluminio, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100mm | Abertura: 19mm | Sémola: #60, #80, #100, #120. Excelente para debastar, difuminar soldaduras y dar textura homogénea.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Cepillo de nylon para estirado de alambre",
+        "codigo": "20MNBWDW120",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/20MNBWDW120.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "27.54"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con el Cepillo de nylon para estirado de alambre, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100mm | Abertura: 19mm | Sémola: #60 a #400. Cerdas resistentes para lograr el efecto satinado o envejecido en madera y metal.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Disco de nylon para estirado",
+        "codigo": "20MNWDW120",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/20MNWDW120.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "13.33"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con el Disco de nylon para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100mm | Abertura: 19mm | Sémola: #60 a #400. Elimina óxido y prepara superficies metálicas sin comprometer el material base.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Disco de fieltro para estirado",
+        "codigo": "20MWFWDW120",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/20MWFWDW120.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "43.76"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con el Disco de fieltro para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100 | Abertura: 19mm | Material principal: Wool felt. Indispensable para trabajos de pulido final que requieren el máximo brillo como espejos.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Lija redonda 9\" 6 huecos #100",
+        "codigo": "webp_1774464903_lija_redonda_9_",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1774464903_lija_redonda_9_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "25.27"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 6 huecos #100, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #100 | Tamaño: 9\" | Huecos: 6. Máxima abrasión para arrancar residuos y nivelar paredes rápidamente.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Lija redonda 9\" 6 huecos #120",
+        "codigo": "webp_1774464914_lija_redonda_9_",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1774464914_lija_redonda_9_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "11.38"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 6 huecos #120, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #120 | Tamaño: 9\" | Huecos: 6. El consumible perfecto para tareas intermedias y preparación de paredes de yeso.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Lija redonda 9\" 6 huecos #150",
+        "codigo": "webp_1774464926_lija_redonda_9_",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1774464926_lija_redonda_9_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "35.07"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 6 huecos #150, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #150 | Tamaño: 9\" | Huecos: 6. Diseñada para un anclaje firme y una absorción eficaz del polvo durante el lijado fino.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Lija redonda 9\" 8 huecos #100",
+        "codigo": "webp_1774464963_lija_redonda_9_",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1774464963_lija_redonda_9_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "30.01"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 8 huecos #100, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #100 | Tamaño: 9\" | Huecos: 8. Ideal para el primer contacto con superficies porosas y desbaste intensivo.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Lija redonda 9\" 8 huecos #120",
+        "codigo": "webp_1774464977_lija_redonda_9_",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1774464977_lija_redonda_9_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "36.43"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 8 huecos #120, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #120 | Tamaño: 9\" | Huecos: 8. Excelente balance entre remoción de capas y suavidad en superficies amplias.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Lija redonda 9\" 8 huecos #150",
+        "codigo": "webp_1774464988_lija_redonda_9_",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1774464988_lija_redonda_9_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "31.26"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 8 huecos #150, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #150 | Tamaño: 9\" | Huecos: 8. Formato amplio para lijadoras de pared, asegurando pulidos lisos y sin rayones.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Lija redonda 7\" 8 huecos #100",
+        "codigo": "webp_1774464780_lija_redonda_7_",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1774464780_lija_redonda_7_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "27.21"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 7\" 8 huecos #100, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #100 | Tamaño: 7\" | Huecos: 8. Especial para remover material grueso e imperfecciones con gran velocidad.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Lija redonda 7\" 8 huecos #120",
+        "codigo": "webp_1774464798_lija_redonda_7_",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1774464798_lija_redonda_7_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "19.55"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 7\" 8 huecos #120, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #120 | Tamaño: 7\" | Huecos: 8. Granos de alta durabilidad ideales para preparaciones medias antes del acabado final.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Lija redonda 7\" 8 huecos #150",
+        "codigo": "webp_1774464828_lija_redonda_7_",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1774464828_lija_redonda_7_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "36.67"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 7\" 8 huecos #150, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #150 | Tamaño: 7\" | Huecos: 8. Material abrasivo de primera categoría que garantiza acabados uniformes y excelente extracción de polvo.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Batería 4.0Ah",
+        "codigo": "20M-B2040",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/20M-B2040.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "153.0"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con la Batería 4.0Ah, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Celda de Batería: 21700 | Paquete: 4.0Ah (120min) o 8.0Ah (240min). Alta capacidad para las tareas más demandantes, asegurando largas jornadas ininterrumpidas.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Batería 2.0Ah",
+        "codigo": "20M-B2020",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1775834208_bater__a_2_0ah.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "225.47"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con la Batería 2.0Ah, un accesorio original de MAXXT.\r\n\r\nEspecificaciones técnicas: Celda de Batería: 18650 | Paquete: 2.0Ah (60min) o 4.0Ah (120min). Batería de iones de litio sin efecto memoria que mantiene tus equipos funcionando al máximo rendimiento.\r\n\r\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Cargador 2A",
+        "codigo": "20MC20",
+        "marca": "MAXXT",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/20MC20.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "8.17"
+            }
+        ],
+        "desc_larga": "Optimiza el uso de tus herramientas con el Cargador 2A, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Corriente de Carga: 2A | Voltaje de Entrada: 100-240V AC | Voltaje de Salida: 20V DC. Diseñado con tecnología inteligente para proteger y alargar la vida útil de tus celdas de energía.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+    },
+    {
+        "nombre": "Pistola engrasadora manual a batería",
+        "codigo": "20MDGG20VII",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Varias",
+        "imagen": "img_catalogo/20MDGG20VII.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "207.02"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Pistola engrasadora manual a batería de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Voltaje: 20V | Longitud de Manguera: 1 Metro | Batería: 4Ah | Incluye Manguera flexible. Lubrica maquinaria pesada de forma rápida y constante sin esfuerzo de bombeo manual.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Herramienta de cinta pasacable",
+        "codigo": "20MDFTT20V520",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Varias",
+        "imagen": "img_catalogo/20MDFTT20V520.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "416.54"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Herramienta de cinta pasacable de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad en ralentí: 0-28 m\\/min | Longitud cable guía: 20m | Peso: 5.4kgs. Acelera el tendido eléctrico con un sistema motorizado que previene atascos en la tubería.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Pistola de llave de impacto automotriz",
+        "codigo": "20MDIW20V",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Varias",
+        "imagen": "img_catalogo/20MDIW20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "306.32"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Pistola de llave de impacto automotriz de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Motor: 20V Brushless | Torque Max: 1000 N.m | Encastre: 1\\/2\" | Velocidad: 0-2400 rpm. Afloja tuercas y pernos oxidados con un torque monstruoso, indispensable en talleres mecánicos y montajes pesados.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Remachadora inalámbrica con batería",
+        "codigo": "20MDRG20V",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Varias",
+        "imagen": "img_catalogo/20MDRG20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "325.96"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Remachadora inalámbrica con batería de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Remaches: 3\\/32\" - 3\\/16\" (2.4-6.0mm) | Fuerza ajuste: 2040kg \\/ 20000N. Fija piezas metálicas en milisegundos sin el cansancio de las herramientas manuales tradicionales.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Ventosa para baldosas y vidrio",
+        "codigo": "20MTVM20V",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Varias",
+        "imagen": "img_catalogo/20MTVM20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "151.92"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Ventosa para baldosas y vidrio de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Vibración: 6000-10000 rpm | Capacidad max carga: 150 kg | Batería: 2Ah. Su vibración inteligente expulsa el aire bajo la baldosa, asegurando una adherencia perfecta del mortero.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Soplador alta velocidad a batería 130m\\/s",
+        "codigo": "20MDPB20V",
+        "marca": "MAXXT",
+        "categoria": "Sopladoras",
+        "imagen": "img_catalogo/20MDPB20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "164.52"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Soplador alta velocidad a batería 130m\\/s de MAXXT, la solución ideal para el área de Sopladoras.\n\nOfrece un rendimiento superior con las siguientes características: Voltaje: 20V | Velocidad Aire: 130 m\\/s | Volumen: 10.4 m3\\/min | Fuerza: 11N. Su chorro concentrado de aire de alta velocidad expulsa los residuos más pesados sin esfuerzo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Soplador de alta velocidad a batería",
+        "codigo": "20MDPB20VII",
+        "marca": "MAXXT",
+        "categoria": "Sopladoras",
+        "imagen": "img_catalogo/20MDPB20VII.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "320.52"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Soplador de alta velocidad a batería de MAXXT, la solución ideal para el área de Sopladoras.\n\nOfrece un rendimiento superior con las siguientes características: Voltaje: 20V | Velocidad Aire: 50 m/s | Volumen: 10.4 m3/min | Fuerza: 11N. Limpia rápidamente áreas de trabajo, removiendo polvo y aserrín con un potente flujo de aire.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Pistola para silicona inalámbrica",
+        "codigo": "20MDCG20V1",
+        "marca": "MAXXT",
+        "categoria": "Pistolas de Silicona",
+        "imagen": "img_catalogo/webp_1775834150_pistola_para_si.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "85.81"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Pistola para silicona inalámbrica de MAXXT, la solución ideal para el área de Pistolas de Silicona.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0.8-8 mm/s | Presión Max: 2500N | Capacidad: 10oz (300ml). Su diseño ligero reduce la fatiga en la mano, ideal para sellado de ventanas y carpintería.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Pistola de calafateo inalámbrica",
+        "codigo": "20MDCG20V2",
+        "marca": "MAXXT",
+        "categoria": "Pistolas de Silicona",
+        "imagen": "img_catalogo/20MDCG20V2.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "39.8"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Pistola de calafateo inalámbrica de MAXXT, la solución ideal para el área de Pistolas de Silicona.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0.8-8 mm\\/s | Presión Max: 2500N | Capacidad: 20oz (600ml). Dispensa selladores con flujo constante, previniendo el goteo y ahorrando material valioso.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Pistola de calor inalámbrica",
+        "codigo": "20MDHG20V",
+        "marca": "MAXXT",
+        "categoria": "Pistolas de Aire Caliente",
+        "imagen": "img_catalogo/20MDHG20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "30.36"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Pistola de calor inalámbrica de MAXXT, la solución ideal para el área de Pistolas de Aire Caliente.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Temperaturas: 280°C \\/ 530°C | Volumen viento: 109 \\/ 190 L\\/min. Calentamiento rápido y autonomía total para trabajos de detalle o reparaciones automotrices en el sitio.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Pistola de calor con cable",
+        "codigo": "20MHG1800",
+        "marca": "MAXXT",
+        "categoria": "Pistolas de Aire Caliente",
+        "imagen": "img_catalogo/20MHG1800.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "24.5"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Pistola de calor con cable de MAXXT, la solución ideal para el área de Pistolas de Aire Caliente.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1800W | Temperaturas: 450°C \\/ 580°C | Volumen viento: 300 \\/ 500 L\\/min. Una herramienta indispensable de dos velocidades, fiable y resistente para uso continuo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Pistola de calor con pantalla LCD",
+        "codigo": "20MHG2000",
+        "marca": "MAXXT",
+        "categoria": "Pistolas de Aire Caliente",
+        "imagen": "img_catalogo/20MHG2000.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "82.48"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Pistola de calor con pantalla LCD de MAXXT, la solución ideal para el área de Pistolas de Aire Caliente.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 2000W | Temperatura: 50°C - 600°C (122F-1112F) | Volumen viento: 300-550 L\\/min. Su pantalla digital permite un control térmico milimétrico para moldear plásticos, decapar pintura o contraer cables.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Pulverizador de pintura sin aire en soporte",
+        "codigo": "20MPS1300",
+        "marca": "MAXXT",
+        "categoria": "Pulverizadores de Pintura",
+        "imagen": "img_catalogo/20MPS1300.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "42.87"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Pulverizador de pintura sin aire en soporte de MAXXT, la solución ideal para el área de Pulverizadores de Pintura.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1300W | Presión Max: 227 Bar (3300 PSI) | Caudal Max: 0.5 Gal\\/min (2.3 L\\/min). Incrementa el flujo de trabajo y la presión para aplicaciones de pinturas densas sin diluir.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Pulverizador de pintura sin aire en soporte",
+        "codigo": "20MPS1200",
+        "marca": "MAXXT",
+        "categoria": "Pulverizadores de Pintura",
+        "imagen": "img_catalogo/20MPS1200.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "27.19"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Pulverizador de pintura sin aire en soporte de MAXXT, la solución ideal para el área de Pulverizadores de Pintura.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1200W | Presión Max: 226 Bar (3300 PSI) | Caudal Max: 0.42 Gal\\/min (1.6 L\\/min). Tecnología Airless para cubrir grandes superficies comerciales o residenciales en tiempo récord.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Pulverizador de pintura de mano con batería",
+        "codigo": "20MDPS20V",
+        "marca": "MAXXT",
+        "categoria": "Pulverizadores de Pintura",
+        "imagen": "img_catalogo/20MDPS20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "183.98"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Pulverizador de pintura de mano con batería de MAXXT, la solución ideal para el área de Pulverizadores de Pintura.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Presión Max: 25Kpa | Caudal Max: 0.26 Gal\\/min (1.0 L\\/min) | Botella: 1000ml. Logra un acabado uniforme y sin marcas de brocha en muebles y paredes con total libertad de cable.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Tronzadora / Sierra de corte con disco de piedra 14\"",
+        "codigo": "20MCS2300",
+        "marca": "MAXXT",
+        "categoria": "Cortadoras",
+        "imagen": "img_catalogo/20MCS2300.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "8.91"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Tronzadora/Sierra de corte con disco de piedra 14\" de MAXXT, la solución ideal para el área de Cortadoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 2300W | Velocidad: 4000 r/min | Disco: 14\" (355mm) | Corte redondo max: 130mm. Especialmente fabricada para resistir el polvo abrasivo y ofrecer durabilidad en el corte de mampostería.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Tronzadora / Sierra de corte con disco de metal 14\"",
+        "codigo": "20MCS355",
+        "marca": "MAXXT",
+        "categoria": "Cortadoras",
+        "imagen": "img_catalogo/20MCS355.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "6.46"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Tronzadora/Sierra de corte con disco de metal 14\" de MAXXT, la solución ideal para el área de Cortadoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 2000W | Velocidad: 1300r/min | Cuchilla: 14\"/15\" (355/380mm) | Bisel máximo: 45°. Máxima tenacidad para seccionar vigas, tubos y barras de acero en segundos.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Cortador con sierra de cinta con base",
+        "codigo": "20MBS1100",
+        "marca": "MAXXT",
+        "categoria": "Cortadoras",
+        "imagen": "img_catalogo/20MBS1100.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "79.59"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Cortador con sierra de cinta con base de MAXXT, la solución ideal para el área de Cortadoras.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1100W | Velocidad: 0-472 SFPM | Capacidad max corte: 5\" x 5\" (127x127mm) | Con Base. Estabilidad estacionaria garantizada para cortes seriados de alta precisión en tu taller.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Sierra de cinta inalámbrica",
+        "codigo": "20MDBS20V65",
+        "marca": "MAXXT",
+        "categoria": "Cortadoras",
+        "imagen": "img_catalogo/20MDBS20V65.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "70.3"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Sierra de cinta inalámbrica de MAXXT, la solución ideal para el área de Cortadoras.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0-630 SFPM | Capacidad max corte: 2.5\" x 2.5\" (65x65mm) | Peso: 8.3lbs. Ligera y compacta para cortar tuberías y conduit directamente en la posición de instalación.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Sierra de cinta inalámbrica",
+        "codigo": "20MDBS20V127",
+        "marca": "MAXXT",
+        "categoria": "Cortadoras",
+        "imagen": "img_catalogo/20MDBS20V127.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "62.67"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Sierra de cinta inalámbrica de MAXXT, la solución ideal para el área de Cortadoras.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0-420 SFPM | Capacidad max corte: 5\" x 5\" (127x127mm) | Peso: 13.88lbs. Su capacidad de corte libre de chispas la hace segura y rápida para perfiles metálicos.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Cortadora de cerámica",
+        "codigo": "20MTC1400",
+        "marca": "MAXXT",
+        "categoria": "Línea de Concreto",
+        "imagen": "img_catalogo/20MTC1400.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "64.55"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Cortadora de cerámica de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1400W | Velocidad: 11300rpm | Hoja: 5\" (125mm) | Capacidad corte: 1.2\" (30mm) | Riel 1.5m. Cortes rectos y sin astilladuras en porcelanatos y cerámicas de gran formato.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Sierra de hormigón",
+        "codigo": "20MCS2600",
+        "marca": "MAXXT",
+        "categoria": "Línea de Concreto",
+        "imagen": "img_catalogo/20MCS2600.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "99.92"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Sierra de hormigón de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 2600W | Velocidad: 4300r\\/min | Diámetro espada: 14\" (355mm) | Profundidad: 5\" (125mm). Diseñada para cortes profundos y precisos en bloque, piedra y pavimentos.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Ranuradora de pared",
+        "codigo": "20MWC1700",
+        "marca": "MAXXT",
+        "categoria": "Línea de Concreto",
+        "imagen": "img_catalogo/20MWC1700.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "67.84"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Ranuradora de pared de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1700W | Velocidad: 7000r\\/min | Disco: 6\" (150mm) | Profundidad de corte: 10-50mm. Realiza canales limpios para tuberías y cableado en un solo paso, optimizando el tiempo de instalación.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Vibrador de concreto inalámbrico",
+        "codigo": "20MDCV20V",
+        "marca": "MAXXT",
+        "categoria": "Línea de Concreto",
+        "imagen": "img_catalogo/20MDCV20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "332.49"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Vibrador de concreto inalámbrico de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Vibración por minuto: 0-12500 | Diámetro cabeza: 1 inch (25.4mm) | Eje: 4ft. Elimina burbujas de aire y asegura la compactación estructural perfecta sin molestos cables en obra.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Herramienta multifunción",
+        "codigo": "20MOT300",
+        "marca": "MAXXT",
+        "categoria": "Línea de Concreto",
+        "imagen": "img_catalogo/20MOT300.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "15.0"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Herramienta multifunción de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 300W | Velocidad: 15000-220000pm | Grados oscilantes: 3° | Cambio sin herramientas. Corta, lija y raspa en espacios ajustados donde otras herramientas no pueden llegar.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Pulidor de tambores",
+        "codigo": "20MBP1300",
+        "marca": "MAXXT",
+        "categoria": "Línea de Concreto",
+        "imagen": "img_catalogo/20MBP1300.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "94.22"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Pulidor de tambores de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1300W | Velocidad: 900-3700rpm | Diámetro abrasivo: 4-3\\/4\" (120mm) | Peso: 9.52lbs. Su diseño cilíndrico brinda un acabado satinado perfecto en metales y superficies extensas.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Amoladora de concreto 5\"",
+        "codigo": "20MG1500",
+        "marca": "MAXXT",
+        "categoria": "Línea de Concreto",
+        "imagen": "img_catalogo/20MG1500.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "63.21"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Amoladora de concreto 5\" de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1500W | Velocidad: 1000-8500rpm | Diámetro abrasivo: 5\" (125mm) | Peso: 6.7lbs. Especialmente calibrada para alisar, nivelar y retirar imperfecciones en superficies de hormigón.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Amoladora / Pulidora angular 9\"",
+        "codigo": "20MAG2500",
+        "marca": "MAXXT",
+        "categoria": "Amoladoras",
+        "imagen": "img_catalogo/20MAG2500.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "98.93"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular 9\" de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 2500W | Cable: 4m | Cambio de Disco: Bloqueo de eje | Mango trasero rotativo. Su mango adaptable brinda un control excepcional en cortes profundos y desbaste masivo.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Amoladora / Pulidora angular 7\"",
+        "codigo": "20MAG2000",
+        "marca": "MAXXT",
+        "categoria": "Amoladoras",
+        "imagen": "img_catalogo/20MAG2000.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "43.88"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular 7\" de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 2000W | Cable: 4m | Cambio de Disco: Bloqueo de eje | Guarda de ajuste rápido. Un equipo industrial preparado para las tareas de herrería y construcción más arduas.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Amoladora / Pulidora angular inalámbrica",
+        "codigo": "20MDAG20V",
+        "marca": "MAXXT",
+        "categoria": "Amoladoras",
+        "imagen": "img_catalogo/20MDAG20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "98.75"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular inalámbrica de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidades: 3000 / 6000 / 8500 rpm | Diámetro máximo: 5\" (125mm) | Peso: 4.9lbs. La portabilidad definitiva sin sacrificar el poder de corte que tus proyectos demandan.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Amoladora / Pulidora angular",
+        "codigo": "20MAG1700",
+        "marca": "MAXXT",
+        "categoria": "Amoladoras",
+        "imagen": "img_catalogo/20MAG1700.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "43.81"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1700W | Velocidad: 3200-9200rpm | Diámetro máximo: 5\" (125mm) | Peso: 5.29lbs. Su potente motor corta y desbasta metal o piedra con extrema facilidad y seguridad.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Taladro percutor 850W",
+        "codigo": "20MID850",
+        "marca": "MAXXT",
+        "categoria": "Taladros Percutores",
+        "imagen": "img_catalogo/20MID850.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "36.46"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 850W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm. Desempeño robusto y duradero para los contratistas más exigentes.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Taladro percutor 750W",
+        "codigo": "20MID750",
+        "marca": "MAXXT",
+        "categoria": "Taladros Percutores",
+        "imagen": "img_catalogo/20MID750.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "40.17"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 750W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm. Su mecanismo de impacto de alta frecuencia acelera el trabajo en construcción y albañilería.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Taladro percutor 550W",
+        "codigo": "20MID550",
+        "marca": "MAXXT",
+        "categoria": "Taladros Percutores",
+        "imagen": "img_catalogo/20MID550.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "32.67"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 550W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm. Ligero, versátil y confiable, es la herramienta perfecta para instalaciones cotidianas.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Taladro percutor 1050W",
+        "codigo": "20MID1050",
+        "marca": "MAXXT",
+        "categoria": "Taladros Percutores",
+        "imagen": "img_catalogo/20MID1050.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "86.95"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 1050W | Velocidades: 0-1100 / 0-3000 rpm | Impactos: 0-17600 / 0-48000 bpm | Mandril: 1.5-13mm. Fuerza bruta para perforar concreto y materiales de alta dureza sin esfuerzo.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Taladro a batería",
+        "codigo": "20MDID20V",
+        "marca": "MAXXT",
+        "categoria": "Taladros Percutores",
+        "imagen": "img_catalogo/20MDID20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "222.25"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Taladro a batería de MAXXT, la solución ideal para el área de Taladros Percutores.\n\nOfrece un rendimiento superior con las siguientes características: Motor: 20V Brushless | Torque Max: 60 Nm | Velocidades: 0-450 \\/ 0-2000 rpm | Mandril: 13mm (1\\/2\"). Potencia, autonomía y tecnología sin escobillas para perforaciones impecables en madera, metal y mampostería.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Amasadora sin escobillas sin cable",
+        "codigo": "20MDPM20V",
+        "marca": "MAXXT",
+        "categoria": "Mezclador de Paletas",
+        "imagen": "img_catalogo/20MDPM20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "85.51"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Amasadora sin escobillas sin cable de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidades: 0-450rpm \\/ 0-720rpm | Volumen máximo: 32Gal (120L) | Paleta: 5-1\\/3\". Movilidad absoluta en obra sin depender de tomas de corriente, manteniendo un nivel de fuerza profesional.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Taladro / Mezclador de baja velocidad",
+        "codigo": "20MDM1050",
+        "marca": "MAXXT",
+        "categoria": "Mezclador de Paletas",
+        "imagen": "img_catalogo/20MDM1050.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "64.14"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Taladro / Mezclador de baja velocidad de MAXXT, la solución ideal para el área de Mezclador de Paletas.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1050W | Velocidad: 0-550rpm | Volumen máximo: 21Gal (80L) | Paleta: 4-3/4\". Su alto torque en bajas revoluciones es perfecto para mezclas pesadas y espesas.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Mezcladora - batidora doble",
+        "codigo": "20MPM1600-2",
+        "marca": "MAXXT",
+        "categoria": "Mezclador de Paletas",
+        "imagen": "img_catalogo/20MPM1600-2.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "74.87"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Mezcladora - batidora doble de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1600W | Velocidades: 200-480rpm \\/ 250-680rpm | Volumen máximo: 36Gal (140L) | Paleta: 4-3\\/4\". Su sistema de doble paleta evita la rotación del recipiente, ofreciendo una mezcla intensiva y sin esfuerzo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Mezcladora - batidora",
+        "codigo": "20MPM1600",
+        "marca": "MAXXT",
+        "categoria": "Mezclador de Paletas",
+        "imagen": "img_catalogo/20MPM1600.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "73.0"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Mezcladora - batidora de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1600W | Velocidades: 180-460rpm \\/ 300-750rpm | Volumen máximo: 32Gal (120L) | Paleta: 5-1\\/3\". Su caja de velocidades permite adaptar la fuerza según la densidad del material a mezclar.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Mezcladora de barro eléctrico",
+        "codigo": "20MPM1200",
+        "marca": "MAXXT",
+        "categoria": "Mezclador de Paletas",
+        "imagen": "img_catalogo/20MPM1200.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "67.25"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Mezcladora de barro eléctrico de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1200W | Velocidad: 0-800rpm | Volumen máximo: 21Gal (80L) | Paleta: 4-3\\/4\" (120mm). Homogeneiza mortero, pintura o resinas rápidamente, ahorrando esfuerzo físico.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Soplador / Aspiradora",
+        "codigo": "20MB700",
+        "marca": "MAXXT",
+        "categoria": "Limpieza al Vacío",
+        "imagen": "img_catalogo/20MB700.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "89.46"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Soplador / Aspiradora de MAXXT, la solución ideal para el área de Limpieza al Vacío.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 700W | Soplado: 110CFM | Succión: 115CFM | Peso: 5.62lbs. Un equipo 2 en 1 ligero y práctico, indispensable para la limpieza rápida de talleres y obras.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Aspiradora",
+        "codigo": "20MVC3600V1",
+        "marca": "MAXXT",
+        "categoria": "Limpieza al Vacío",
+        "imagen": "img_catalogo/20MVC3600V1.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "64.52"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Aspiradora de MAXXT, la solución ideal para el área de Limpieza al Vacío.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1600W | Capacidad contenedor: 8gal (30L) | Succión máxima: 70.5CFM. Su motor de alto rendimiento aspira polvo fino y residuos gruesos para dejar tu área impecable.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Extractor de polvo / Aspiradora",
+        "codigo": "20MVC3800",
+        "marca": "MAXXT",
+        "categoria": "Limpieza al Vacío",
+        "imagen": "img_catalogo/webp_1774909361_extractor_de_po.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "29.2"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Extractor de polvo / Aspiradora de MAXXT, la solución ideal para el área de Limpieza al Vacío.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1400W (Max 3800W) | Capacidad contenedor: 10.56gal (40L) | Succión máxima: 160CFM. Mantiene tu espacio de trabajo libre de partículas nocivas gracias a su potente capacidad de succión industrial.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital aleatoria",
+        "codigo": "20MOS600R",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS600R.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "150.66"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital aleatoria de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 600W | Velocidad: 4000-7000rpm | Trazo: 3\\/16\" (5mm) | Dimensiones: 400x70mm | Peso: 7lbs. Su amplia base garantiza planitud perfecta en piezas largas o de gran formato.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital aleatoria",
+        "codigo": "20MDMS800",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MDMS800.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "164.22"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital aleatoria de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 800W | Velocidad: 3300-7250rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 6.6lbs. Con máxima potencia, es la máquina indicada para desbaste pesado y remoción de recubrimientos duros.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital aleatoria",
+        "codigo": "20MDMS500",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MDMS500.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "132.97"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital aleatoria de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 500W | Velocidad: 2500-6250rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 6.6lbs. Su patrón aleatorio previene marcas profundas, logrando un pulido ultrasuave en maderas y metales.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital inalámbrica",
+        "codigo": "20MOS20VDII",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS20VDII.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "119.69"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital inalámbrica de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 1\\/16\" (1.5mm) | Dimensiones: 100x152x152mm | Peso: 2.2lbs. Diseñada para llevar el acabado profesional a cualquier lugar, dentro o fuera del taller.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital inalámbrica",
+        "codigo": "20MOS20VSII",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS20VSII.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "143.97"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital inalámbrica de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 1\\/16\" (1.5mm) | Dimensiones: 81x133mm | Peso: 2.2lbs. Su perfil compacto te brinda control total sin restricciones de movilidad.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital inalámbrica",
+        "codigo": "20MOS20VCII",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS20VCII.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "194.41"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital inalámbrica de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 3\\/32\" (2.5mm) | Diámetro: 5\" (125mm) | Peso: 2.2lbs. La comodidad de no tener cables unida a un desempeño excepcional en cada pasada.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS350S",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS350S.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "104.42"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 81x133mm | Peso: 2.5lbs. Eficiencia y maniobrabilidad en un formato ligero para acabados impecables en espacios reducidos.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS350D",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS350D.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "106.35"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 100x152x152mm | Peso: 2.5lbs. Una herramienta versátil que se adapta a las exigencias de talleres y proyectos de restauración.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS350R",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS350R.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "179.27"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 198x70mm | Peso: 2.5lbs. Su formato alargado es ideal para lijar superficies estrechas y listones con alta precisión.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS350C-2.5",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS350C-2.5.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "151.0"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 3\\/32\" (2.5mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Proporciona acabados excepcionales sin fatiga gracias a su bajo peso y motor inteligente.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS350C-5.0",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS350C-5.0.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "195.86"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Equilibrio perfecto entre potencia y ligereza para remoción de material rápida y efectiva.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS400S",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS400S.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "128.29"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 81x133mm | Peso: 2.5lbs. Su diseño rectangular compacto es perfecto para trabajos en esquinas y perfilería.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS400D",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS400D.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "131.69"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 100x152x152mm | Peso: 2.5lbs. Su formato permite llegar a bordes y áreas planas con total estabilidad.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS400R",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS400R.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "109.99"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 3\\/32\" (2.5mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Su órbita ajustada permite un trabajo meticuloso y suave sobre cualquier superficie.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS400C-2.5",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS400C-2.5.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "85.84"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Diseñada para un pulido extra fino y control absoluto en trabajos detallados de carpintería y pintura.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS350S.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "194.22"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Su motor brushless garantiza menor desgaste, mayor eficiencia y un acabado libre de marcas circulares.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso inalámbrica",
+        "codigo": "20MDLS20V",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MDLS20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "96.66"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso inalámbrica de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 600-1200rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 7.3lbs (3.3kgs). Libérate de los cables mientras mantienes la potencia necesaria para un lijado profesional y eficiente.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso",
+        "codigo": "20MS810",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MS810.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "111.44"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 810W | Velocidad: 1500-2800rpm | Diámetro almohadilla: 7\" (180mm) | Peso: 6.4lbs (2.9kgs). Una máquina robusta y compacta, diseñada para eliminar imperfecciones con gran agilidad.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso",
+        "codigo": "20MLS710SGP",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MLS710SGP.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "165.58"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 710W | Velocidad: 600-1500rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 8.4lbs (3.8kgs). Proporciona un lijado constante y sin marcas, elevando el estándar de tus acabados.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso",
+        "codigo": "20MLS710EP",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MLS710EP.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "196.24"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 710W | Velocidad: 600-1500rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 8.4lbs (3.8kgs). Ideal para preparar superficies antes de pintar, asegurando un trabajo rápido y limpio.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso con extensión",
+        "codigo": "20MLS820RTP",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MLS820RTP.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "95.41"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso con extensión de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Incluye: 18 lijas redondas, 18 lijas triangulares, almohadillas, tubo de extensión, manguera 4m y adaptadores. Su versatilidad permite trabajar tanto en áreas amplias como en esquinas complejas.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso con extensión",
+        "codigo": "20MLS820",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MLS820.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "121.55"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso con extensión de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 820W | Velocidad: 600-1900rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 7.7lbs (3.5kg). Combina potencia bruta con control preciso para acabados profesionales en grandes superficies.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso con extensión",
+        "codigo": "20MLS820P",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MLS820P.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "94.25"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso con extensión de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Incluye: 18 lijas, tubo de extensión, manguera 2m y adaptador. Equipada para brindar una cobertura de lijado excepcional con una extracción de polvo eficiente.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso con extensión",
+        "codigo": "20MLS820B",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MLS820B.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "99.73"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso con extensión de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Incluye: 18 lijas, tubo de extensión, manguera 2m, bolsa recolectora y adaptadores. Su tubo telescópico facilita el acceso a techos y zonas altas, mejorando la comodidad del operador.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso",
+        "codigo": "20MBLS550",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MBLS550.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "157.79"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 550W | Velocidad: 600-1200rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 6.6lbs (3kg). Su motor de alta resistencia permite jornadas continuas de trabajo con mínima vibración.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso",
+        "codigo": "20MBLS400",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MBLS400.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "148.14"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-8500rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 7lbs (3.2kg). Su diseño equilibrado asegura un lijado uniforme en paredes y techos, optimizando el acabado superficial.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Clavadora inalámbrica",
+        "codigo": "20MDNG20V",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/20MDNG20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "340.79"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Clavadora inalámbrica de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Tamaño uña: Ø2.6-03.0mm (L: 15-40mm) | Capacidad: 33 clavos | Tiempo de funcionamiento: ~800 clavos. Elimina la necesidad de mangueras y compresores, brindando total libertad de movimiento.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Herramienta de corte sin cable",
+        "codigo": "20MDCOT20V",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/20MDCOT20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "327.26"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Herramienta de corte sin cable de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad en ralentí: 28000rpm | Espesor máximo de corte: 1\" (25.4mm) | Colección: 1\\/8\" y 1\\/4\". Su diseño ergonómico reduce la fatiga y mejora la precisión para cortes limpios en paneles de yeso.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Varilla de extensión para atornillador 24\"",
+        "codigo": "20MER600",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/20MER600.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "297.38"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Varilla de extensión para atornillador 24\" de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un alcance superior con las siguientes características: Longitud de extensión: 24\" (600mm). Su diseño robusto te permite acceder a zonas altas o de difícil alcance sin perder estabilidad ni precisión en el atornillado.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Accesorio de cargador para atornillador",
+        "codigo": "20MCM57",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/20MCM57.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "263.05"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Accesorio de cargador para atornillador de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Tamaño del tornillo: 25-57mm | Peso: 2lbs (1kgs). Su diseño profesional reduce la fatiga y acelera la alimentación de tornillos, optimizando el tiempo de trabajo continuo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Atornillador Gypsum Inalámbrico",
+        "codigo": "20MDSG20V",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/20MDSG20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "385.11"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Atornillador Gypsum Inalámbrico de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad en ralentí: 0-4200rpm | Tamaño del mandril: 1\\/4\" (6.35mm) | Peso: 3.5lbs (1.5kgs). Su diseño ergonómico reduce la fatiga y mejora la precisión en el trabajo diario, asegurando instalaciones rápidas y seguras.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    }
+]
