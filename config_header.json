@@ -1,0 +1,11 @@
+{
+    "megamenu": [],
+    "nivel3_menu": [
+        {"text": "Inicio", "link": "index.php"},
+        {"text": "Nosotros", "link": "index.php#nosotros"},
+        {"text": "Blog", "link": "blog.php"},
+        {"text": "Contacto", "link": "index.php#contacto"}
+    ],
+    "mostrar_titulo": true,
+    "mostrar_categorias": true
+}

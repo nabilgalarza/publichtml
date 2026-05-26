@@ -11,7 +11,12 @@
         "whatsapp": "593991754887",
         "whatsapp_msj": "Hola, deseo información de la Sucursal Guayaquil",
         "maps": "https://www.google.com/maps/search/?api=1&query=-2.1287,-79.9171",
-        "horario": ""
+        "horario": "",
+        "cobertura": [
+            "Guayaquil",
+            "Durán",
+            "Samborondón"
+        ]
     },
     {
         "id": "uio-sucursal",
@@ -24,7 +29,12 @@
         "lng": -78.4721,
         "whatsapp": "593991754887",
         "whatsapp_msj": "Hola, deseo información de la Sucursal Quito",
-        "maps": "https://www.google.com/maps/search/?api=1&query=-0.1245,-78.4721"
+        "maps": "https://www.google.com/maps/search/?api=1&query=-0.1245,-78.4721",
+        "cobertura": [
+            "Quito",
+            "Cumbayá",
+            "Tumbaco"
+        ]
     },
     {
         "id": "dur-matriz",
@@ -37,7 +47,10 @@
         "lng": -79.8412,
         "whatsapp": "593991754887",
         "whatsapp_msj": "Hola, deseo información de la Sucursal Durán",
-        "maps": "https://www.google.com/maps/search/?api=1&query=-2.1585,-79.8412"
+        "maps": "https://www.google.com/maps/search/?api=1&query=-2.1585,-79.8412",
+        "cobertura": [
+            "Durán"
+        ]
     },
     {
         "id": "manta-principal",
@@ -50,7 +63,12 @@
         "lng": -80.7223,
         "whatsapp": "593991754887",
         "whatsapp_msj": "Hola, deseo información de la Sucursal Manta",
-        "maps": "https://www.google.com/maps/search/?api=1&query=-0.9654,-80.7223"
+        "maps": "https://www.google.com/maps/search/?api=1&query=-0.9654,-80.7223",
+        "cobertura": [
+            "Manta",
+            "Portoviejo",
+            "Jipijapa"
+        ]
     },
     {
         "id": "amb-principal",
@@ -63,7 +81,12 @@
         "lng": -78.6251,
         "whatsapp": "593991754887",
         "whatsapp_msj": "Hola, deseo información de la Sucursal Ambato",
-        "maps": "https://www.google.com/maps/search/?api=1&query=-1.2335,-78.6251"
+        "maps": "https://www.google.com/maps/search/?api=1&query=-1.2335,-78.6251",
+        "cobertura": [
+            "Ambato",
+            "Riobamba",
+            "Latacunga"
+        ]
     },
     {
         "id": "loc_483fcda3",
@@ -77,6 +100,10 @@
         "whatsapp": "593991754887",
         "whatsapp_msj": "Hola, deseo información de la sucursal Loja",
         "maps": "https://maps.app.goo.gl/mJE6Ht98d7mva3H5A",
-        "horario": "Lunes a Viernes: 08H00 - 18H00 / Sábado: 08H00 - 14H00"
+        "horario": "Lunes a Viernes: 08H00 - 18H00 / Sábado: 08H00 - 14H00",
+        "cobertura": [
+            "Loja",
+            "Catamayo"
+        ]
     }
 ]

@@ -21,7 +21,7 @@
     ],
     "banners": [
         {
-            "tipo": "texto",
+            "estilo": "respiracion",
             "etiqueta": "Cobertura Nacional",
             "titulo": "Envíos a todo el pais",
             "desc": "¡Aprovecha hoy! Por compras mayores a $50, el envío corre por nuestra cuenta. No pierdas la oportunidad de ahorrar mientras renuevas tu stock.",
@@ -29,32 +29,31 @@
             "img_url": "",
             "link": "https://wa.me/593991754887",
             "activo": true,
-            "pos": 10
+            "cada_n_filas": 4
         },
         {
-            "tipo": "texto",
+            "estilo": "marquee",
             "etiqueta": "PROMO",
             "titulo": "Compra con total seguridad y rapidez",
-            "desc": "Optimizamos tus costos con materiales certificados y logística eficiente. Solicita una cotización personalizada para tu empresa directamente aquí.",
+            "desc": "Optimizamos tus costos con materiales certificados y logística eficiente.",
             "extra": "",
             "img_url": "",
             "link": "https://wa.me/593991754887",
             "activo": true,
-            "pos": 16
+            "cada_n_filas": 8
         },
         {
-            "tipo": "texto",
+            "estilo": "glass",
             "etiqueta": "CALIDAD PREMIUM",
             "titulo": "Herramientas hechas para durar",
-            "desc": "No te conformes con menos. Nuestros productos cuentan con certificación internacional y respaldo técnico de fábrica. Calidad garantizada en cada pieza para que tu trabajo hable por ti.",
+            "desc": "Certificación internacional y respaldo técnico de fábrica en cada pieza.",
             "extra": "",
             "img_url": "",
             "link": "https://wa.me/593991754887",
             "activo": true,
-            "pos": 20
+            "cada_n_filas": 6
         }
     ],
-    "frecuencia": 12,
     "b2b_activo": true,
     "b2b_pos": 25,
     "b2b_etiqueta": "MAYORISTAS",

@@ -4,11 +4,11 @@
         "codigo": "20TORTLL",
         "marca": "MAXXT",
         "categoria": "Accesorios",
-        "imagen": "img_catalogo/webp_1779111419_tornillos_en_ti.webp",
+        "imagen": "img_catalogo/webp_1776873125_tornillos_en_ti.webp",
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": "29.2"
+                "precio": "7.56"
             }
         ],
         "desc_larga": "Optimiza el uso de tus herramientas con los Tornillos en tirillas, un accesorio original de MAXXT.\r\n\r\nEspecificaciones técnicas: Cantidad: 1000 screws | Material: Steel | Diámetro: 3.5mm | Longitudes: 30/35/40/50mm. Consumible imprescindible para alimentación automática en atornilladores, acelerando el recubrimiento de Drywall.\r\n\r\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
@@ -1174,20 +1174,6 @@
             }
         ],
         "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 710W | Velocidad: 600-1500rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 8.4lbs (3.8kgs). Ideal para preparar superficies antes de pintar, asegurando un trabajo rápido y limpio.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora de paneles de yeso con extensión",
-        "codigo": "20MLS820RTP",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras de Paneles de Yeso",
-        "imagen": "img_catalogo/20MLS820RTP.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "95.41"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso con extensión de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Incluye: 18 lijas redondas, 18 lijas triangulares, almohadillas, tubo de extensión, manguera 4m y adaptadores. Su versatilidad permite trabajar tanto en áreas amplias como en esquinas complejas.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
     },
     {
         "nombre": "Lijadora de paneles de yeso con extensión",

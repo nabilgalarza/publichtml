@@ -134,6 +134,10 @@ try {
         INDEX idx_producto (nombre_producto)
     )");
 
+    require_once __DIR__ . '/lib/blog_helpers.php';
+    blog_ensure_table($pdo);
+    blog_seed_if_empty($pdo);
+
     // Nueva tabla para gestión centralizada de categorías
     $pdo->exec("CREATE TABLE IF NOT EXISTS categorias_admin (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -374,7 +378,8 @@ if (!isset($_SESSION['admin_logueado']) || $_SESSION['admin_logueado'] !== true)
 </html>
 <?php exit; }
 
-$vista = $_GET['view'] ?? 'catalogo'; 
+$vista = $_GET['view'] ?? 'catalogo';
+$sub_vista = $_GET['sub'] ?? ''; 
 
 $db_host = $env['DB_HOST'] ?? 'localhost'; 
 $db_name = $env['DB_NAME'] ?? ''; 
@@ -600,61 +605,22 @@ function regenerarJSON($pdo) {
     file_put_contents(__DIR__ . '/catalogo.json', json_encode($catalogoOficial, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 }
 
+require_once __DIR__ . '/lib/copy_ia_helpers.php';
+
 if (isset($_GET['ajax']) && $_GET['ajax'] === 'generar_copy') {
-    header('Content-Type: application/json');
-    $data = json_decode(file_get_contents('php://input'), true); 
-    $categoria = $data['categoria'] ?? '';
-    if(!$categoria) { echo json_encode(['error' => 'Categoría vacía']); exit; }
-    
-    $apiKey = $env['GEMINI_API_KEY'] ?? ''; 
-    $modelName = $env['GEMINI_MODEL'] ?? 'gemini-2.5-flash';
-    $urlGemini = "https://generativelanguage.googleapis.com/v1beta/models/{$modelName}:generateContent?key=" . $apiKey;
-    
-    $prompt = "Rol: Copywriter Senior E-commerce. Genera un copy persuasivo para la categoría de herramientas: '$categoria'.\n"
-            . "Aplica fórmula PAS (Problema-Agitación-Solución) sutilmente para incentivar la compra.\n"
-            . "REGLAS ESTRUCTURALES:\n"
-            . "1. 'tit_normal': Frase introductoria que enganche (max 5 palabras).\n"
-            . "2. 'tit_resaltado': El beneficio principal o palabra de poder (max 2 palabras).\n"
-            . "3. 'sub': Subtítulo que llame a la acción y elimine fricciones (max 12 palabras).\n"
-            . "FORMATO OBLIGATORIO: Devuelve SOLO un objeto JSON válido, sin markdown ni comillas invertidas:\n"
-            . "{\"tit_normal\": \"...\", \"tit_resaltado\": \"...\", \"sub\": \"...\"}";
-            
-    $payload = ["contents" => [["parts" => [["text" => $prompt]]]], "generationConfig" => ["temperature" => 0.8, "responseMimeType" => "application/json"]];
-    
-    $chG = curl_init($urlGemini); 
-    curl_setopt($chG, CURLOPT_RETURNTRANSFER, true); 
-    curl_setopt($chG, CURLOPT_POST, true); 
-    curl_setopt($chG, CURLOPT_POSTFIELDS, json_encode($payload)); 
-    curl_setopt($chG, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-    
-    // Configuración robusta de SSL para MAMP
-    if (file_exists(__DIR__ . '/cacert.pem')) {
-        curl_setopt($chG, CURLOPT_CAINFO, __DIR__ . '/cacert.pem');
-        curl_setopt($chG, CURLOPT_SSL_VERIFYPEER, true);
-    } else {
-        // Fallback preventivo si el archivo desaparece
-        curl_setopt($chG, CURLOPT_SSL_VERIFYPEER, false);
-    }
-    
-    $response = curl_exec($chG);
-    if ($response === false) {
-        $error = curl_error($chG);
-        echo json_encode(['error' => 'Error de conexión IA: ' . $error]);
-        curl_close($chG);
+    header('Content-Type: application/json; charset=utf-8');
+    $data = json_decode(file_get_contents('php://input'), true) ?: [];
+    $categoria = trim($data['categoria'] ?? '');
+    $seccion = trim($data['seccion'] ?? '');
+
+    if ($categoria === '' && $seccion === '') {
+        echo json_encode(['error' => 'Parámetros vacíos'], JSON_UNESCAPED_UNICODE);
         exit;
     }
-    curl_close($chG);
-    
-    $json_res = json_decode($response, true); 
-    $respuesta_gemini = $json_res['candidates'][0]['content']['parts'][0]['text'] ?? '';
-    
-    // Limpieza de posibles bloques de código markdown
-    if (strpos($respuesta_gemini, '```') !== false) {
-        $respuesta_gemini = preg_replace('/```json\s*|\s*```/', '', $respuesta_gemini);
-        $respuesta_gemini = trim($respuesta_gemini);
-    }
-    
-    echo $respuesta_gemini ?: json_encode(['error' => 'Fallo la IA: Respuesta vacía']); 
+
+    $prompt = improgyp_construir_prompt_copy($data);
+    $resultado = improgyp_gemini_generar_copy($prompt, $env, true);
+    echo json_encode($resultado, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
@@ -735,8 +701,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     // GUARDADO DINÁMICO DE ADS (MULTI-AD SUPPORT)
     if ($_POST['action'] === 'guardar_ad') {
-        $ad_data = ['videos' => [], 'banners' => []]; 
-        $ad_data['frecuencia'] = (int)($_POST['frecuencia_ads'] ?? 12);
+        $ad_data = ['videos' => [], 'banners' => []];
         
         // 1. PROCESAR VIDEOS (Discovery Ads)
         if (isset($_POST['video_link'])) {
@@ -798,16 +763,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                         }
                     }
 
+                    $estiloRaw = $_POST['banner_estilo'][$i] ?? 'respiracion';
+                    $estilosOk = ['respiracion', 'split', 'marquee', 'glass'];
+                    $cadaNFilas = (int)($_POST['banner_cada_n_filas'][$i] ?? 4);
+                    $cadaNFilas = max(1, min(20, $cadaNFilas));
+
                     $ad_data['banners'][] = [
-                        'tipo'     => $_POST['banner_tipo'][$i] ?? 'texto',
-                        'etiqueta' => trim($_POST['banner_etiqueta'][$i] ?? ''),
-                        'titulo'   => trim($titulo),
-                        'desc'     => trim($_POST['banner_desc'][$i] ?? ''),
-                        'extra'    => trim($_POST['banner_extra'][$i] ?? ''),
-                        'img_url'  => $img_url,
-                        'link'     => trim($_POST['banner_link'][$i] ?? ''),
-                        'activo'   => isset($_POST['banner_activo'][$i]),
-                        'pos'      => (int)($_POST['banner_pos'][$i] ?? 0)
+                        'estilo'       => in_array($estiloRaw, $estilosOk, true) ? $estiloRaw : 'respiracion',
+                        'etiqueta'     => trim($_POST['banner_etiqueta'][$i] ?? ''),
+                        'titulo'       => trim($titulo),
+                        'desc'         => trim($_POST['banner_desc'][$i] ?? ''),
+                        'extra'        => trim($_POST['banner_extra'][$i] ?? ''),
+                        'img_url'      => $img_url,
+                        'link'         => trim($_POST['banner_link'][$i] ?? ''),
+                        'activo'       => isset($_POST['banner_activo'][$i]),
+                        'cada_n_filas' => $cadaNFilas
                     ];
                 }
             }
@@ -873,21 +843,261 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         header("Location: dashboard.php?view=seo&msg=seo_guardado"); exit;
     }
 
+    if ($_POST['action'] === 'guardar_megamenu') {
+        require_once __DIR__ . '/components/megamenu_config.php';
+        $existing = file_exists(__DIR__ . '/config_header.json') ? json_decode(file_get_contents(__DIR__ . '/config_header.json'), true) : [];
+        if (!is_array($existing)) $existing = [];
+        $raw = json_decode($_POST['megamenu_json'] ?? '[]', true);
+        $existing['megamenu'] = improgyp_normalize_megamenu($raw);
+        file_put_contents(__DIR__ . '/config_header.json', json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        header("Location: dashboard.php?view=apariencia&sub=megamenu&msg=guardado"); exit;
+    }
+
+    if ($_POST['action'] === 'guardar_landing') {
+        require_once __DIR__ . '/lib/landing_helpers.php';
+        $secciones = [];
+        if (isset($_POST['sec_slider_activo'])) {
+            $slides = [];
+            for ($si = 1; $si <= 3; $si++) {
+                $tit = trim($_POST["slider_{$si}_titulo"] ?? '');
+                if ($tit === '') {
+                    continue;
+                }
+                $slides[] = [
+                    'etiqueta' => trim($_POST["slider_{$si}_etiqueta"] ?? ''),
+                    'titulo' => $tit,
+                    'subtitulo' => trim($_POST["slider_{$si}_subtitulo"] ?? ''),
+                    'imagen' => trim($_POST["slider_{$si}_imagen"] ?? ''),
+                    'cta_texto' => trim($_POST["slider_{$si}_cta_texto"] ?? 'Ver más'),
+                    'cta_url' => trim($_POST["slider_{$si}_cta_url"] ?? 'productos.php'),
+                ];
+            }
+            if ($slides) {
+                $secciones[] = [
+                    'tipo' => 'slider',
+                    'activo' => true,
+                    'slides' => $slides,
+                    'autoplay' => isset($_POST['slider_autoplay']),
+                    'intervalo_ms' => max(3000, (int) ($_POST['slider_intervalo_ms'] ?? 6000)),
+                ];
+            }
+        }
+        $secciones[] = [
+            'tipo' => 'categorias',
+            'titulo' => trim($_POST['sec_categorias_titulo'] ?? 'Explorar por categoría'),
+            'subtitulo' => trim($_POST['sec_categorias_subtitulo'] ?? 'Acceso directo al catálogo filtrado.'),
+            'limite' => max(4, min(12, (int) ($_POST['sec_categorias_limite'] ?? 8))),
+            'activo' => isset($_POST['sec_categorias_activo']),
+        ];
+        $secciones[] = [
+            'tipo' => 'tendencias',
+            'titulo' => trim($_POST['sec_tendencias_titulo'] ?? 'Tendencias'),
+            'subtitulo' => trim($_POST['sec_tendencias_subtitulo'] ?? ''),
+            'limite' => max(4, min(12, (int) ($_POST['sec_tendencias_limite'] ?? 8))),
+            'activo' => isset($_POST['sec_tendencias_activo']),
+        ];
+        $secciones[] = [
+            'tipo' => 'mas_vendidos',
+            'titulo' => trim($_POST['sec_mas_vendidos_titulo'] ?? 'Más vendidos'),
+            'subtitulo' => trim($_POST['sec_mas_vendidos_subtitulo'] ?? ''),
+            'limite' => max(4, min(12, (int) ($_POST['sec_mas_vendidos_limite'] ?? 8))),
+            'activo' => isset($_POST['sec_mas_vendidos_activo']),
+        ];
+        if (isset($_POST['sec_cta_activo'])) {
+            $secciones[] = [
+                'tipo' => 'cta',
+                'activo' => true,
+                'etiqueta' => trim($_POST['sec_cta_etiqueta'] ?? 'Asesoría'),
+                'titulo' => trim($_POST['sec_cta_titulo'] ?? ''),
+                'subtitulo' => trim($_POST['sec_cta_subtitulo'] ?? ''),
+                'cta_texto' => trim($_POST['sec_cta_texto'] ?? 'Ir a la tienda'),
+                'cta_url' => trim($_POST['sec_cta_url'] ?? 'productos.php'),
+            ];
+        }
+        if (isset($_POST['sec_blog_activo'])) {
+            $secciones[] = [
+                'tipo' => 'blog',
+                'activo' => true,
+                'titulo' => trim($_POST['sec_blog_titulo'] ?? 'Desde el Blog'),
+                'subtitulo' => trim($_POST['sec_blog_subtitulo'] ?? ''),
+            ];
+        }
+        $secciones[] = [
+            'tipo' => 'logos',
+            'titulo' => trim($_POST['sec_logos_titulo'] ?? 'Marcas aliadas'),
+            'subtitulo' => trim($_POST['sec_logos_subtitulo'] ?? ''),
+            'limite' => max(4, min(20, (int) ($_POST['sec_logos_limite'] ?? 10))),
+            'activo' => isset($_POST['sec_logos_activo']),
+        ];
+        $secciones[] = [
+            'tipo' => 'locales',
+            'titulo' => trim($_POST['sec_locales_titulo'] ?? 'Red de sucursales'),
+            'subtitulo' => trim($_POST['sec_locales_subtitulo'] ?? ''),
+            'activo' => isset($_POST['sec_locales_activo']),
+        ];
+        $payload = [
+            'hero' => [
+                'activo' => isset($_POST['hero_activo']),
+                'badge' => trim($_POST['hero_badge'] ?? ''),
+                'titulo_normal' => trim($_POST['hero_titulo_normal'] ?? ''),
+                'titulo_resaltado' => trim($_POST['hero_titulo_resaltado'] ?? ''),
+                'subtitulo' => trim($_POST['hero_subtitulo'] ?? ''),
+                'cta_tienda' => trim($_POST['hero_cta_tienda'] ?? 'Explorar tienda'),
+                'cta_tienda_url' => 'productos.php',
+                'cta_b2b' => trim($_POST['hero_cta_b2b'] ?? 'Portal mayoristas'),
+                'cta_b2b_url' => 'b2b/',
+                'imagen' => trim($_POST['hero_imagen'] ?? ''),
+            ],
+            'secciones' => $secciones,
+        ];
+        file_put_contents(__DIR__ . '/config_landing.json', json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        header("Location: dashboard.php?view=apariencia&sub=portada&msg=portada_guardada"); exit;
+    }
+
+    if ($_POST['action'] === 'guardar_secciones_landing') {
+        require_once __DIR__ . '/lib/landing_helpers.php';
+        $path = __DIR__ . '/config_landing.json';
+        $landing = improgyp_landing_config();
+        $mapTipos = [
+            'categorias' => 'categorias',
+            'tendencias' => 'tendencias',
+            'mas_vendidos' => 'mas_vendidos',
+            'logos' => 'logos',
+        ];
+        $titulosN = $_POST['titulo_normal'] ?? [];
+        $titulosR = $_POST['titulo_resaltado'] ?? [];
+        $subs = $_POST['subtitulo'] ?? [];
+        foreach ($landing['secciones'] as &$sec) {
+            $tipo = $sec['tipo'] ?? '';
+            if ($tipo === 'destacados') {
+                $tipo = 'mas_vendidos';
+            }
+            if (!isset($mapTipos[$tipo]) && !isset($titulosN[$tipo])) {
+                continue;
+            }
+            $key = $tipo;
+            if (isset($titulosN[$key])) {
+                $sec['titulo_normal'] = trim($titulosN[$key]);
+                $sec['titulo'] = $sec['titulo_normal'];
+            }
+            if (isset($titulosR[$key])) {
+                $sec['titulo_resaltado'] = trim($titulosR[$key]);
+            }
+            if (isset($subs[$key])) {
+                $sec['subtitulo'] = trim($subs[$key]);
+            }
+        }
+        unset($sec);
+        if (isset($titulosN['blog'])) {
+            foreach ($landing['secciones'] as &$sec) {
+                if (($sec['tipo'] ?? '') === 'blog') {
+                    $sec['titulo_normal'] = trim($titulosN['blog'] ?? $sec['titulo_normal'] ?? '');
+                    $sec['titulo_resaltado'] = trim($titulosR['blog'] ?? '');
+                    $sec['subtitulo'] = trim($subs['blog'] ?? '');
+                    $sec['titulo'] = $sec['titulo_normal'];
+                }
+            }
+            unset($sec);
+        }
+        file_put_contents($path, json_encode($landing, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        header('Location: dashboard.php?view=apariencia&sub=secciones&msg=secciones_guardadas');
+        exit;
+    }
+
+    if ($_POST['action'] === 'guardar_apariencia_blog') {
+        require_once __DIR__ . '/lib/blog_layout_slots.php';
+        $accent = trim($_POST['accent'] ?? '#3a86ff');
+        $hex = ltrim($accent, '#');
+        if (strlen($hex) === 3) {
+            $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
+        }
+        $r = hexdec(substr($hex, 0, 2));
+        $g = hexdec(substr($hex, 2, 2));
+        $b = hexdec(substr($hex, 4, 2));
+        $cfg = [
+            'layout' => blog_layout_normalize($_POST['layout'] ?? 'editorial'),
+            'accent' => $accent,
+            'accentRgb' => "$r, $g, $b",
+            'font' => in_array($_POST['font'] ?? 'sans', ['sans', 'serif', 'mono'], true) ? $_POST['font'] : 'sans',
+            'showDate' => isset($_POST['showDate']),
+            'showReadTime' => isset($_POST['showReadTime']),
+            'showViews' => isset($_POST['showViews']),
+        ];
+        file_put_contents(__DIR__ . '/config_blog.json', json_encode($cfg, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        header('Location: dashboard.php?view=apariencia&sub=blog&msg=blog_guardado'); exit;
+    }
+
+    if ($_POST['action'] === 'blog_guardar') {
+        require_once __DIR__ . '/lib/blog_helpers.php';
+        blog_ensure_table($pdo);
+        $id = (int) ($_POST['blog_id'] ?? 0);
+        $titulo = trim($_POST['titulo'] ?? '');
+        if ($titulo === '') {
+            header('Location: dashboard.php?view=blog&msg=error_titulo'); exit;
+        }
+        $slug = blog_unique_slug($pdo, $titulo, $id);
+        $portada = trim($_POST['portada_actual'] ?? 'favicon-app.png?v=5');
+        if (!empty($_FILES['portada']['tmp_name']) && is_uploaded_file($_FILES['portada']['tmp_name'])) {
+            $dir = __DIR__ . '/uploads/blog';
+            if (!is_dir($dir)) mkdir($dir, 0755, true);
+            $ext = strtolower(pathinfo($_FILES['portada']['name'], PATHINFO_EXTENSION));
+            if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'], true)) $ext = 'webp';
+            $fname = 'blog_' . time() . '_' . bin2hex(random_bytes(3)) . '.' . $ext;
+            if (move_uploaded_file($_FILES['portada']['tmp_name'], $dir . '/' . $fname)) {
+                $portada = 'uploads/blog/' . $fname;
+            }
+        }
+        $data = [
+            trim($_POST['categoria'] ?? 'General'),
+            trim($_POST['tiempo_lectura'] ?? '5 min'),
+            trim($_POST['resumen'] ?? ''),
+            $_POST['contenido'] ?? '',
+            $portada,
+            isset($_POST['borrador']) ? 1 : 0,
+        ];
+        if ($id > 0) {
+            $pdo->prepare(
+                'UPDATE improgyp_blog SET titulo=?, slug=?, categoria=?, tiempo_lectura=?, resumen=?, contenido=?, portada=?, borrador=? WHERE id=?'
+            )->execute(array_merge([$titulo, $slug], $data, [$id]));
+        } else {
+            $pdo->prepare(
+                'INSERT INTO improgyp_blog (titulo, slug, categoria, tiempo_lectura, resumen, contenido, portada, borrador) VALUES (?,?,?,?,?,?,?,?)'
+            )->execute(array_merge([$titulo, $slug], $data));
+        }
+        header('Location: dashboard.php?view=blog&msg=guardado'); exit;
+    }
+
+    if ($_POST['action'] === 'blog_eliminar') {
+        $id = (int) ($_POST['blog_id'] ?? 0);
+        if ($id > 0) {
+            $pdo->prepare('DELETE FROM improgyp_blog WHERE id = ?')->execute([$id]);
+        }
+        header('Location: dashboard.php?view=blog&msg=eliminado'); exit;
+    }
+
     if ($_POST['action'] === 'guardar_local') {
+        require_once __DIR__ . '/includes/locales_cobertura.php';
+        require_once __DIR__ . '/includes/whatsapp_normalize.php';
         $locales_path = __DIR__ . '/locales.json';
         $locales = file_exists($locales_path) ? json_decode(file_get_contents($locales_path), true) : [];
         
         $id = $_POST['id'] ?? '';
+        $ciudad = trim($_POST['ciudad']);
+        $cobertura = improgyp_merge_cobertura_ciudad(
+            improgyp_parse_cobertura_post($_POST['cobertura'] ?? ''),
+            $ciudad
+        );
         $nuevo_local = [
             "id" => $id ?: "loc_" . bin2hex(random_bytes(4)),
             "nombre" => trim($_POST['nombre']),
             "direccion" => trim($_POST['direccion']),
-            "ciudad" => trim($_POST['ciudad']),
+            "ciudad" => $ciudad,
+            "cobertura" => $cobertura,
             "telefono" => trim($_POST['telefono']),
             "email" => trim($_POST['email']),
             "lat" => (float)$_POST['lat'],
             "lng" => (float)$_POST['lng'],
-            "whatsapp" => trim($_POST['whatsapp'] ?: '593991754887'),
+            "whatsapp" => improgyp_normalize_whatsapp(trim($_POST['whatsapp'] ?: '593991754887')),
             "whatsapp_msj" => trim($_POST['whatsapp_msj'] ?? ''),
             "maps" => trim($_POST['maps']),
             "horario" => trim($_POST['horario'])
@@ -1121,6 +1331,16 @@ $marcas_admin = $stmtMarcas->fetchAll(PDO::FETCH_COLUMN) ?: [];
 $categorias_maestras = $pdo->query("SELECT * FROM categorias_admin ORDER BY nombre ASC")->fetchAll(PDO::FETCH_ASSOC);
 $nombres_categorias = array_column($categorias_maestras, 'nombre');
 
+if ($vista === 'blog' && isset($_GET['ajax']) && $_GET['ajax'] === 'articulo') {
+    header('Content-Type: application/json; charset=utf-8');
+    $id = (int) ($_GET['id'] ?? 0);
+    $stmt = $pdo->prepare('SELECT * FROM improgyp_blog WHERE id = ?');
+    $stmt->execute([$id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    echo json_encode(['ok' => (bool) $row, 'data' => $row], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 if ($vista === 'distribuidores') { 
     $usuarios_b2b = $pdo->query("SELECT * FROM usuarios_b2b ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC); 
 }
@@ -1348,6 +1568,25 @@ function extraerTextos($html) {
             <a href="?view=seo" class="<?= menuActivo($vista, 'seo') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
                 <i class="fa-solid fa-magnifying-glass-chart w-4"></i> SEO Dinámico
             </a>
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-4 mt-6 mb-1">Apariencia web</p>
+            <a href="?view=apariencia" class="<?= menuActivo($vista, 'apariencia') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
+                <i class="fa-solid fa-palette w-4 text-violet-500"></i> Apariencia
+            </a>
+            <a href="?view=apariencia&sub=portada" class="<?= ($vista === 'apariencia' && $sub_vista === 'portada') ? 'bg-violet-50 text-violet-700 border-violet-400' : 'border-transparent hover:bg-slate-50 text-slate-500' ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors ml-4">
+                <i class="fa-solid fa-house w-4 text-violet-500"></i> Portada Home
+            </a>
+            <a href="?view=apariencia&sub=secciones" class="<?= ($vista === 'apariencia' && $sub_vista === 'secciones') ? 'bg-violet-50 text-violet-700 border-violet-400' : 'border-transparent hover:bg-slate-50 text-slate-500' ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors ml-4">
+                <i class="fa-solid fa-layer-group w-4 text-violet-500"></i> Secciones Home
+            </a>
+            <a href="?view=apariencia&sub=megamenu" class="<?= ($vista === 'apariencia' && $sub_vista === 'megamenu') ? 'bg-violet-50 text-violet-700 border-violet-400' : 'border-transparent hover:bg-slate-50 text-slate-500' ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors ml-4">
+                <i class="fa-solid fa-palette w-4 text-violet-500"></i> Megamenú B2C
+            </a>
+            <a href="?view=apariencia&sub=blog" class="<?= ($vista === 'apariencia' && $sub_vista === 'blog') ? 'bg-violet-50 text-violet-700 border-violet-400' : 'border-transparent hover:bg-slate-50 text-slate-500' ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors ml-4">
+                <i class="fa-solid fa-square-rss w-4 text-orange-400"></i> Apariencia Blog
+            </a>
+            <a href="?view=blog" class="<?= menuActivo($vista, 'blog') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
+                <i class="fa-solid fa-pen-nib w-4 text-orange-500"></i> Gestor de Blog
+            </a>
             <a href="?view=social" class="<?= menuActivo($vista, 'social') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
                 <i class="fa-solid fa-share-nodes w-4 text-pink-400"></i> Marketing Social AI <span class="text-[9px] bg-pink-500/20 text-pink-400 px-1.5 py-0.5 rounded ml-auto">BETA</span>
             </a>
@@ -1536,18 +1775,30 @@ function extraerTextos($html) {
                             <h2 class="text-lg font-black text-slate-900 flex items-center gap-3 uppercase tracking-tighter">
                                 <i class="fa-solid fa-rectangle-ad text-blue-500 text-2xl"></i> Banners Rompetráfico (Máx 6)
                             </h2>
-                            <p class="text-[11px] text-slate-400 uppercase font-black tracking-widest mt-1">Conversión Directa & Marketing</p>
+                            <p class="text-[11px] text-slate-400 uppercase font-black tracking-widest mt-1">Solo catálogo · cada N filas · máx. 1 al cierre</p>
                         </div>
                         <button type="button" onclick="agregarFilaBanner()" class="bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-2">
                             <i class="fa-solid fa-plus"></i> Añadir Banner
                         </button>
                     </div>
 
+                    <div class="mb-6 p-4 rounded-2xl bg-blue-50/80 border border-blue-100 text-[11px] text-slate-600 leading-relaxed">
+                        <strong class="text-slate-800">Rompetráfico v2:</strong> elige un estilo por banner. Se inserta cada <strong>N filas de productos</strong> (en desktop ~3 cards por fila). Si varios coinciden, solo uno por fila (prioridad = orden aquí). Al final del listado: como máximo <strong>1</strong> pendiente. Imagen solo en Split y Glass.
+                    </div>
                     <div id="contenedor-banners" class="space-y-6">
                         <?php 
                         $banners = $ad_guardado['banners'] ?? [];
                         if (empty($banners)) $banners = [[]];
-                        foreach($banners as $index => $b): 
+                        foreach($banners as $index => $b):
+                            $estiloB = $b['estilo'] ?? 'respiracion';
+                            if (!in_array($estiloB, ['respiracion', 'split', 'marquee', 'glass'], true)) $estiloB = 'respiracion';
+                            $cadaNF = (int)($b['cada_n_filas'] ?? 0);
+                            if ($cadaNF < 1) {
+                                $legacyPos = (int)($b['pos'] ?? 0);
+                                $cadaNF = $legacyPos > 0 ? max(1, (int)ceil($legacyPos / 3)) : 4;
+                            }
+                            $cadaNF = max(1, min(20, $cadaNF));
+                            $necesitaImg = in_array($estiloB, ['split', 'glass'], true);
                         ?>
                             <div class="bg-slate-50 border border-slate-100 rounded-[2.5rem] p-8 relative group hover:border-blue-400/30 transition-all banner-row">
                                 <div class="absolute top-6 right-8 flex gap-3">
@@ -1557,18 +1808,26 @@ function extraerTextos($html) {
                                     </label>
                                     <button type="button" onclick="this.closest('.banner-row').remove()" class="text-slate-300 hover:text-rose-500 transition-colors"><i class="fa-solid fa-trash-can shadow-sm"></i></button>
                                 </div>
+                                <input type="hidden" name="banner_img_actual[<?= $index ?>]" value="<?= htmlspecialchars($b['img_url'] ?? '') ?>">
 
                                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                    <div class="lg:col-span-1 hidden">
-                                        <select name="banner_tipo[<?= $index ?>]"><option value="texto" selected>texto</option></select>
+                                    <div class="lg:col-span-1">
+                                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Estilo visual</label>
+                                        <select name="banner_estilo[<?= $index ?>]" class="w-full premium-input rounded-xl px-3 py-2 text-xs font-black banner-estilo-select" onchange="toggleBannerFields(this)">
+                                            <option value="respiracion" <?= $estiloB === 'respiracion' ? 'selected' : '' ?>>A · Respiración</option>
+                                            <option value="split" <?= $estiloB === 'split' ? 'selected' : '' ?>>B · Split 50/50</option>
+                                            <option value="marquee" <?= $estiloB === 'marquee' ? 'selected' : '' ?>>C · Marquee</option>
+                                            <option value="glass" <?= $estiloB === 'glass' ? 'selected' : '' ?>>D · Glass</option>
+                                        </select>
                                     </div>
                                     <div class="lg:col-span-1">
-                                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 italic">Posición (Card #)</label>
-                                        <input type="number" name="banner_pos[<?= $index ?>]" value="<?= htmlspecialchars($b['pos'] ?? '') ?>" placeholder="Ej: 8" class="w-full premium-input rounded-xl px-4 py-2 text-xs font-black">
+                                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Cada N filas</label>
+                                        <input type="number" name="banner_cada_n_filas[<?= $index ?>]" min="1" max="20" value="<?= $cadaNF ?>" class="w-full premium-input rounded-xl px-4 py-2 text-xs font-black">
+                                        <p class="text-[9px] text-slate-400 mt-1">Ej. 4 ≈ cada 12 cards en desktop</p>
                                     </div>
                                     <div class="lg:col-span-2">
-                                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 italic">Etiqueta Sup. (Pill)</label>
-                                        <input type="text" name="banner_etiqueta[<?= $index ?>]" value="<?= htmlspecialchars($b['etiqueta'] ?? 'Cobertura Nacional') ?>" class="w-full premium-input rounded-xl px-4 py-2 text-xs font-black text-blue-600">
+                                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 italic">Etiqueta (Pill)</label>
+                                        <input type="text" name="banner_etiqueta[<?= $index ?>]" value="<?= htmlspecialchars($b['etiqueta'] ?? 'PROMO') ?>" class="w-full premium-input rounded-xl px-4 py-2 text-xs font-black text-blue-600">
                                     </div>
 
                                     <div class="lg:col-span-4 banner-field-group">
@@ -1577,7 +1836,13 @@ function extraerTextos($html) {
                                                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Título Principal</label>
                                                 <input type="text" name="banner_titulo[<?= $index ?>]" value="<?= htmlspecialchars($b['titulo'] ?? '') ?>" class="w-full premium-input rounded-xl px-4 py-2 text-sm font-black text-slate-900">
                                             </div>
-                                            
+                                            <div class="lg:col-span-2 banner-opt banner-opt-split banner-opt-glass <?= $necesitaImg ? '' : 'hidden' ?>">
+                                                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Imagen (Split / Glass)</label>
+                                                <input type="file" name="banner_img[<?= $index ?>]" accept="image/*" class="w-full premium-input rounded-xl px-3 py-2 text-[10px]">
+                                                <?php if (!empty($b['img_url'])): ?>
+                                                    <p class="text-[9px] text-emerald-600 font-black mt-1"><i class="fa-solid fa-check"></i> Imagen cargada</p>
+                                                <?php endif; ?>
+                                            </div>
                                             <div class="lg:col-span-4">
                                                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Link o WhatsApp</label>
                                                 <input type="text" name="banner_link[<?= $index ?>]" value="<?= htmlspecialchars($b['link'] ?? 'https://wa.me/593991754887') ?>" class="w-full premium-input rounded-xl px-4 py-2 text-xs">
@@ -1864,8 +2129,13 @@ function extraerTextos($html) {
                                 <input type="text" name="nombre" id="local-nombre" required placeholder="Ej: Sucursal Quito Norte" class="premium-input w-full px-5 py-3 rounded-2xl text-sm font-bold border border-slate-100">
                             </div>
                             <div class="col-span-2 sm:col-span-1">
-                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Ciudad</label>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Ciudad sede</label>
                                 <input type="text" name="ciudad" id="local-ciudad" required placeholder="Ej: Quito" class="premium-input w-full px-5 py-3 rounded-2xl text-sm font-bold border border-slate-100">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-2"><i class="fa-solid fa-truck-fast mr-1"></i> Cobertura domicilio (ciudades, separadas por coma)</label>
+                                <textarea name="cobertura" id="local-cobertura" rows="2" placeholder="Ej: Manta, Portoviejo, Jipijapa" class="premium-input w-full px-5 py-3 rounded-2xl text-sm font-bold border border-emerald-100 bg-emerald-50/20"></textarea>
+                                <p class="text-[9px] text-slate-400 mt-1">Checkout domicilio enruta el WhatsApp a la sucursal que cubra la ciudad escrita.</p>
                             </div>
                             <div class="col-span-2">
                                 <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Dirección Completa</label>
@@ -2206,6 +2476,33 @@ function extraerTextos($html) {
                     }
                 </script>
             </div>
+
+        <?php elseif($vista === 'apariencia'): ?>
+            <?php if(isset($_GET['msg']) && $_GET['msg'] === 'guardado'): ?>
+                <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 p-4 rounded-lg mb-6 text-sm font-bold"><i class="fa-solid fa-circle-check"></i> Megamenú guardado.</div>
+            <?php endif; ?>
+            <?php if ($sub_vista === 'portada'): ?>
+                <?php include __DIR__ . '/components/apariencia_portada.php'; ?>
+            <?php elseif ($sub_vista === 'secciones'): ?>
+                <?php include __DIR__ . '/components/apariencia_secciones.php'; ?>
+            <?php elseif ($sub_vista === 'megamenu'): ?>
+                <?php include __DIR__ . '/components/apariencia_megamenu.php'; ?>
+            <?php elseif ($sub_vista === 'blog'): ?>
+                <?php include __DIR__ . '/components/apariencia_blog.php'; ?>
+            <?php else: ?>
+                <div class="max-w-lg mx-auto p-10 text-center">
+                    <p class="text-slate-500 mb-6">Elige qué parte de la apariencia quieres editar.</p>
+                    <div class="flex flex-col gap-3">
+                        <a href="?view=apariencia&sub=portada" class="bg-white border border-slate-200 rounded-xl py-4 font-black text-[#1B263B] hover:border-[#3A86FF]">Portada Home</a>
+                        <a href="?view=apariencia&sub=secciones" class="bg-white border border-slate-200 rounded-xl py-4 font-black text-[#1B263B] hover:border-[#3A86FF]">Secciones Home (IA)</a>
+                        <a href="?view=apariencia&sub=megamenu" class="bg-white border border-slate-200 rounded-xl py-4 font-black text-[#1B263B] hover:border-[#3A86FF]">Megamenú B2C</a>
+                        <a href="?view=apariencia&sub=blog" class="bg-white border border-slate-200 rounded-xl py-4 font-black text-[#1B263B] hover:border-[#3A86FF]">Apariencia Blog (Home)</a>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+        <?php elseif($vista === 'blog'): ?>
+            <?php include __DIR__ . '/components/dashboard_blog.php'; ?>
 
         <?php elseif($vista === 'seo'): ?>
             <?php if(isset($_GET['msg']) && $_GET['msg'] == 'seo_guardado'): ?>
@@ -4628,6 +4925,8 @@ function extraerTextos($html) {
             document.getElementById('local-id').value = data.id || '';
             document.getElementById('local-nombre').value = data.nombre || '';
             document.getElementById('local-ciudad').value = data.ciudad || '';
+            const covEl = document.getElementById('local-cobertura');
+            if (covEl) covEl.value = Array.isArray(data.cobertura) ? data.cobertura.join(', ') : (data.cobertura || '');
             document.getElementById('local-direccion').value = data.direccion || '';
             document.getElementById('local-whatsapp').value = data.whatsapp || '';
             document.getElementById('local-telefono').value = data.telefono || '';
@@ -4701,10 +5000,11 @@ function extraerTextos($html) {
 
         function toggleBannerFields(select) {
             const row = select.closest('.banner-row');
-            row.querySelectorAll('.banner-opt').forEach(opt => opt.classList.add('hidden'));
-            const showClass = `.banner-opt-${select.value}`;
-            const target = row.querySelector(showClass);
-            if(target) target.classList.remove('hidden');
+            if (!row) return;
+            const imgBlock = row.querySelector('.banner-opt-split');
+            if (!imgBlock) return;
+            if (select.value === 'split' || select.value === 'glass') imgBlock.classList.remove('hidden');
+            else imgBlock.classList.add('hidden');
         }
 
         function agregarFilaBanner() {
@@ -4716,21 +5016,28 @@ function extraerTextos($html) {
                 <div class="bg-slate-50 border border-slate-100 rounded-[2.5rem] p-8 relative group hover:border-blue-400/30 transition-all banner-row animate-fade-in shadow-sm hover:shadow-md">
                     <div class="absolute top-6 right-8 flex gap-3">
                         <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="banner_activo[${bannerCounter}]" class="sr-only peer" checked>
+                            <input type="checkbox" name="banner_activo[${bannerCounter}]" class="sr-only peer">
                             <div class="w-9 h-5 bg-slate-200 rounded-full peer peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full"></div>
                         </label>
                         <button type="button" onclick="this.closest('.banner-row').remove()" class="text-slate-300 hover:text-rose-500 transition-colors"><i class="fa-solid fa-trash-can shadow-sm"></i></button>
                     </div>
+                    <input type="hidden" name="banner_img_actual[${bannerCounter}]" value="">
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div class="lg:col-span-1 hidden">
-                            <select name="banner_tipo[${bannerCounter}]"><option value="texto" selected>texto</option></select>
+                        <div class="lg:col-span-1">
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Estilo visual</label>
+                            <select name="banner_estilo[${bannerCounter}]" class="w-full premium-input rounded-xl px-3 py-2 text-xs font-black banner-estilo-select" onchange="toggleBannerFields(this)">
+                                <option value="respiracion">A · Respiración</option>
+                                <option value="split">B · Split 50/50</option>
+                                <option value="marquee">C · Marquee</option>
+                                <option value="glass">D · Glass</option>
+                            </select>
                         </div>
                         <div class="lg:col-span-1">
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 italic">Posición (Card #)</label>
-                            <input type="number" name="banner_pos[${bannerCounter}]" placeholder="Ej: 8" class="w-full premium-input rounded-xl px-4 py-2 text-xs font-black">
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Cada N filas</label>
+                            <input type="number" name="banner_cada_n_filas[${bannerCounter}]" min="1" max="20" value="4" class="w-full premium-input rounded-xl px-4 py-2 text-xs font-black">
                         </div>
                         <div class="lg:col-span-2">
-                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 italic">Etiqueta Sup. (Pill)</label>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 italic">Etiqueta (Pill)</label>
                             <input type="text" name="banner_etiqueta[${bannerCounter}]" value="PROMO" class="w-full premium-input rounded-xl px-4 py-2 text-xs font-black text-blue-600">
                         </div>
                         <div class="lg:col-span-4 banner-field-group">
@@ -4739,12 +5046,16 @@ function extraerTextos($html) {
                                     <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Título Principal</label>
                                     <input type="text" name="banner_titulo[${bannerCounter}]" class="w-full premium-input rounded-xl px-4 py-2 text-sm font-black text-slate-900">
                                 </div>
+                                <div class="lg:col-span-2 banner-opt banner-opt-split hidden">
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Imagen (Split / Glass)</label>
+                                    <input type="file" name="banner_img[${bannerCounter}]" accept="image/*" class="w-full premium-input rounded-xl px-3 py-2 text-[10px]">
+                                </div>
                                 <div class="lg:col-span-4">
                                     <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Link o WhatsApp</label>
                                     <input type="text" name="banner_link[${bannerCounter}]" value="https://wa.me/593991754887" class="w-full premium-input rounded-xl px-4 py-2 text-xs">
                                 </div>
                                 <div class="lg:col-span-4">
-                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Descripción / Texto Secundario</label>
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Descripción</label>
                                     <textarea name="banner_desc[${bannerCounter}]" rows="2" class="w-full premium-input rounded-2xl px-4 py-3 text-xs leading-relaxed"></textarea>
                                 </div>
                             </div>
@@ -4755,6 +5066,8 @@ function extraerTextos($html) {
             contenedor.insertAdjacentHTML('beforeend', html);
             bannerCounter++;
         }
+
+        document.querySelectorAll('.banner-estilo-select').forEach(sel => toggleBannerFields(sel));
 
         function confirmarEliminarImpulso(nombre) {
             if (confirm('¿Seguro que deseas quitar el impulso a "' + nombre + '"? Esto hará que deje de aparecer como sugerencia TOP.')) {
