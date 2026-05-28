@@ -15,11 +15,7 @@ $secciones = $landing_cfg['secciones'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title><?= htmlspecialchars($seo_titulo) ?></title>
     <meta name="description" content="<?= htmlspecialchars($seo_desc) ?>">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="<?= htmlspecialchars($url_actual ?? '') ?>">
-    <meta property="og:title" content="<?= htmlspecialchars($seo_titulo) ?>">
-    <meta property="og:description" content="<?= htmlspecialchars($seo_desc) ?>">
-    <meta property="og:image" content="<?= htmlspecialchars($seo_img) ?>">
+    <?php include __DIR__ . '/components/seo_meta_og.php'; ?>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1B263B">
     <link rel="icon" type="image/png" href="favicon-app.png?v=5">
@@ -50,7 +46,9 @@ $secciones = $landing_cfg['secciones'];
 <script src="js/header_actions.js?v=<?= time() ?>"></script>
 <script src="js/omnibar.js?v=<?= time() ?>"></script>
 <script src="js/landing_header.js?v=<?= time() ?>"></script>
+<script src="js/locales_showroom.js?v=<?= time() ?>"></script>
 <script src="js/landing_home.js?v=<?= time() ?>"></script>
 <script src="js/landing_products.js?v=<?= time() ?>"></script>
+<script src="js/landing_carousel.js?v=<?= time() ?>"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@ $h = improgyp_landing_section_heading($sec);
     <div class="max-w-[1200px] mx-auto px-6">
         <div class="locales-premium-shell">
             <div class="locales-premium-grid">
-                <div class="locales-premium-locations">
+                <div class="locales-premium-locations locales-showroom">
                     <?php if ($h['normal'] !== '' || $h['resalt'] !== ''): ?>
                     <div class="locales-premium-heading mb-8">
                         <p class="locales-premium-eyebrow">Cerca de ti</p>
@@ -32,12 +32,16 @@ $h = improgyp_landing_section_heading($sec);
                     </div>
                     <?php endif; ?>
 
-                    <div id="home-nearest-location-widget" class="locales-premium-widget mb-5 min-h-[120px]">
+                    <div id="home-nearest-location-widget" class="locales-premium-widget locales-showroom-widget min-h-[120px]">
                         <p class="text-sm text-slate-400 font-medium">Cargando sucursal más cercana…</p>
                     </div>
 
-                    <button type="button" onclick="typeof abrirModalLocales==='function'&&abrirModalLocales()" class="locales-premium-ghost-btn w-full">
+                    <button type="button" onclick="typeof abrirModalLocales==='function'&&abrirModalLocales()" class="locales-premium-ghost-btn w-full locales-home-cta locales-home-cta--mobile">
                         <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+                        <span>Ver todas las sucursales</span>
+                    </button>
+                    <button type="button" onclick="typeof abrirModalLocales==='function'&&abrirModalLocales()" class="locales-showroom-cta locales-home-cta locales-home-cta--desktop">
+                        <i class="fa-solid fa-images" aria-hidden="true"></i>
                         <span>Ver todas las sucursales</span>
                     </button>
                 </div>

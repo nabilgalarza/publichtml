@@ -58,7 +58,7 @@ $funnel_base = max(1, (int) ($funnel['visita'] ?? 0));
     </div>
     <div class="glass-card p-5 border-l-4 border-l-rose-400 col-span-2 md:col-span-1">
         <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest">Pedidos WA</p>
-        <p class="text-2xl font-black text-slate-900 mt-1"><?= number_format((int) $pedidos_publicos) ?></p>
+        <p class="text-2xl font-black text-slate-900 mt-1"><?= number_format((int) ($pedidos_publicos_count ?? 0)) ?></p>
         <p class="text-[10px] text-slate-500 mt-1">en el periodo</p>
     </div>
 </div>

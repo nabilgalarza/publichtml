@@ -781,6 +781,27 @@ function marcarCamposEntregaInvalidos() {
     marcarCamposCheckoutInvalidos(['delivery-address', 'delivery-city']);
 }
 
+function trackCheckoutIniciado(items, totalEstimado) {
+    const total = Number(totalEstimado) || 0;
+    const catPrincipal = (items && items.length > 0 && items[0].categoria)
+        ? items[0].categoria
+        : 'General';
+    const valor = '$' + total.toFixed(2);
+    if (typeof window.improgypTrackEvent === 'function') {
+        window.improgypTrackEvent('Checkout Iniciado', valor, catPrincipal);
+        return;
+    }
+    if (navigator.sendBeacon) {
+        try {
+            navigator.sendBeacon('api_metricas.php', JSON.stringify({
+                e: 'Checkout Iniciado',
+                v: valor,
+                c: catPrincipal
+            }));
+        } catch (e) { /* ignore */ }
+    }
+}
+
 function registrarPedidoPublicoSilent(items, totalEstimado) {
     try {
         const payload = {
@@ -795,16 +816,21 @@ function registrarPedidoPublicoSilent(items, totalEstimado) {
                 : 'checkout_modal'
         };
         const body = JSON.stringify(payload);
+        const url = 'api_pedido_publico.php';
+        const opts = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body,
+            keepalive: true
+        };
         if (navigator.sendBeacon) {
             const blob = new Blob([body], { type: 'application/json' });
-            navigator.sendBeacon('api_pedido_publico.php', blob);
+            const sent = navigator.sendBeacon(url, blob);
+            if (!sent) {
+                fetch(url, opts).catch(() => {});
+            }
         } else {
-            fetch('api_pedido_publico.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body,
-                keepalive: true
-            }).catch(() => {});
+            fetch(url, opts).catch(() => {});
         }
     } catch (e) { /* no bloquear WhatsApp */ }
 }
@@ -1079,6 +1105,7 @@ async function submitCheckout() {
         showToastNotification('Te abriremos WhatsApp para coordinar el pago con tarjeta.', 'info');
     }
 
+    trackCheckoutIniciado(cartItems, totals.total);
     registrarPedidoPublicoSilent(cartItems, totals.total);
 
     const url = 'https://wa.me/' + waResolve.wa + '?text=' + encodeURIComponent(texto);

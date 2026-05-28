@@ -940,6 +940,24 @@
         .checkout-modal-panel.checkout-mob-sheet-open .checkout-totals-block {
             flex-shrink: 0;
             margin-top: auto;
+            padding: 8px 12px;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-totals-block .checkout-total-row {
+            padding: 2px 0;
+            font-size: 10px;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-totals-block .checkout-total-row-grand {
+            margin-top: 4px;
+            padding-top: 6px;
+            font-size: 11px;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-totals-block .checkout-grand-amount {
+            font-size: 17px !important;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-totals-disclaimer {
+            margin: 4px 0 0;
+            font-size: 8px;
+            line-height: 1.3;
         }
         .checkout-summary-inner .checkout-wa-cta { display: none; }
         .checkout-mob-sheet-backdrop {

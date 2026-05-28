@@ -22,7 +22,7 @@ Alternativa paso 1: ejecutar `database/00_crear_base.sql` en SQL (nivel servidor
 ## Después del import
 
 1. Copiar configuración: `cp .env.example .env` (o usar el `.env` ya generado).
-2. Ajustar `GEMINI_API_KEY` si usas IA en tienda/dashboard.
+2. Ajustar `GEMINI_API_KEY` y `GEMINI_MODEL=gemini-2.5-flash-lite` en `.env` si usas IA en tienda/dashboard.
 3. Sincronizar catálogo JSON (opcional):  
    `php scripts/sync_catalogo_from_db.php`
 4. Probar: `http://localhost:8888/publichtml/dashboard.php`  

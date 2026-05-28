@@ -4,6 +4,7 @@
  */
 session_start();
 require_once __DIR__ . '/security_headers.php';
+require_once __DIR__ . '/lib/copy_ia_helpers.php';
 header('Content-Type: application/json; charset=utf-8');
 
 if (empty($_SESSION['admin_logueado'])) {
@@ -28,7 +29,7 @@ foreach (file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line)
     $env[trim($k)] = trim($v, " \t\"'");
 }
 
-$apiKey = $env['GEMINI_API_KEY_PAID'] ?? $env['GEMINI_API_KEY'] ?? '';
+$apiKey = improgyp_gemini_api_key($env);
 if ($apiKey === '') {
     http_response_code(503);
     echo json_encode(['ok' => false, 'error' => 'GEMINI_API_KEY no configurada en .env']);
@@ -88,7 +89,7 @@ function blog_ai_gemini_request(string $apiKey, string $model, string $prompt): 
     return ['ok' => true, 'data' => $parsed];
 }
 
-$model = $env['GEMINI_MODEL'] ?? 'gemini-2.5-flash';
+$model = improgyp_gemini_model($env);
 
 if ($action === 'generar') {
     $tema = trim($input['tema'] ?? '');

@@ -8,7 +8,7 @@ $ctaImg = trim($sec['imagen'] ?? '');
 $ctaImgUrl = $ctaImg !== '' ? improgyp_landing_img_url($ctaImg, $base_url ?? '') : '';
 ?>
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
-    <a href="<?= htmlspecialchars($ctaUrl) ?>" class="rompetrafico no-underline text-white <?= $ctaImgUrl ? 'rompetrafico-has-image' : 'rompetrafico-text-only' ?>">
+    <a href="<?= htmlspecialchars($ctaUrl) ?>" class="rompetrafico rompetrafico--home-cta no-underline text-white <?= $ctaImgUrl ? 'rompetrafico-has-image' : 'rompetrafico-text-only' ?>">
         <div class="rt-copy-panel">
             <div class="rt-content">
                 <span class="rt-glass-pill"><i class="fa-solid fa-bolt"></i> <?= htmlspecialchars($etiqueta) ?></span>

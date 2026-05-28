@@ -45,7 +45,7 @@ function improgyp_radar_load(PDO $pdo, string $periodo): array
         'visitantes_unicos' => 0,
         'paginas_vistas' => 0,
         'checkouts' => 0,
-        'pedidos_publicos' => 0,
+        'pedidos_publicos_count' => 0,
         'top_carrito' => [],
         'top_wishlist' => [],
         'top_ia' => [],
@@ -83,11 +83,11 @@ function improgyp_radar_load(PDO $pdo, string $periodo): array
 
         try {
             $dfPed = str_replace('fecha', 'fecha', improgyp_radar_sql_fecha($periodo));
-            $out['pedidos_publicos'] = (int) $pdo->query(
+            $out['pedidos_publicos_count'] = (int) $pdo->query(
                 "SELECT COUNT(*) FROM pedidos_publicos WHERE 1=1{$dfPed}"
             )->fetchColumn();
         } catch (Throwable $e) {
-            $out['pedidos_publicos'] = 0;
+            $out['pedidos_publicos_count'] = 0;
         }
 
         $out['top_carrito'] = $pdo->query(

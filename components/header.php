@@ -21,7 +21,7 @@ $header_current_page = basename($_SERVER['PHP_SELF'] ?? '');
 $page = $improgyp_page ?? '';
 $is_shop = ($page === 'tienda');
 $is_catalog = ($is_shop || basename($_SERVER['PHP_SELF'] ?? '') === 'productos.php');
-$logo_href = $is_shop ? 'productos.php' : 'index.php';
+$logo_href = 'index.php';
 ?>
 <style>
     #main-nav {

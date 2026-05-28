@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMO — Mejoras Megamenú IMPROGYP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --brand: #3A86FF; --ink: #1B263B; --nav-h: 56px; }
+        body { font-family: Inter, system-ui, sans-serif; background: #f1f5f9; }
+        .demo-tab.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+        .phase-tag { font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; background: #e0e7ff; color: #3730a3; }
+
+        /* Viewport: menú CONTENIDO en el marco (no fixed al viewport) */
+        .proto-viewport {
+            position: relative;
+            background: #fff;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        .proto-viewport--desktop { min-height: 520px; }
+        .proto-viewport--mobile { width: 100%; max-width: 390px; margin: 0 auto; min-height: 720px; height: 720px; }
+        .proto-viewport.menu-lock { overflow: hidden; }
+
+        .proto-nav {
+            position: absolute; top: 0; left: 0; right: 0; z-index: 30;
+            height: var(--nav-h); display: flex; align-items: center; gap: 10px;
+            padding: 0 12px; background: rgba(255,255,255,.95); border-bottom: 1px solid #e2e8f0;
+        }
+        .proto-viewport--desktop .proto-nav { --nav-h: 64px; }
+
+        .proto-shell {
+            position: absolute; left: 0; right: 0; top: var(--nav-h); bottom: 0;
+            z-index: 40; pointer-events: none;
+        }
+        .proto-shell.is-open { pointer-events: auto; }
+
+        .proto-backdrop {
+            position: absolute; inset: 0; z-index: 1;
+            background: rgba(15,23,42,.45); opacity: 0; pointer-events: none;
+            transition: opacity .25s;
+        }
+        .proto-shell.is-open .proto-backdrop { opacity: 1; pointer-events: auto; }
+        .proto-viewport--desktop .proto-backdrop { display: none; }
+
+        .proto-panel {
+            position: absolute; z-index: 2; left: 8px; right: 8px;
+            display: none; flex-direction: column;
+            background: #fff; border: 1px solid #e2e8f0;
+            box-shadow: 0 20px 40px rgba(15,23,42,.15);
+            border-radius: 20px;
+            overflow: hidden;
+            min-height: 0;
+        }
+        .proto-panel.is-open {
+            display: flex; pointer-events: auto;
+        }
+        .proto-viewport--desktop .proto-panel {
+            top: 8px;
+            max-height: calc(100% - 16px);
+            height: min(420px, calc(100% - 16px));
+        }
+
+        .proto-viewport--mobile .proto-panel {
+            left: 0; right: 0; bottom: 0; top: auto;
+            width: 100%;
+            max-height: none;
+            height: 0;
+            border-radius: 20px 20px 0 0;
+            transform: translateY(100%);
+            transition: transform .35s cubic-bezier(.16,1,.3,1), height .35s cubic-bezier(.16,1,.3,1);
+        }
+        .proto-viewport--mobile .proto-panel.is-open {
+            transform: translateY(0);
+            height: min(580px, calc(100% - 12px));
+            max-height: calc(100% - 12px);
+        }
+
+        .proto-panel-head { flex-shrink: 0; }
+
+        .proto-trigger.is-open {
+            border-color: var(--brand) !important;
+            box-shadow: 0 0 0 3px rgba(58,134,255,.3);
+        }
+        .proto-trigger .chev { transition: transform .25s; }
+        .proto-trigger.is-open .chev { transform: rotate(180deg); }
+
+        .proto-scroll {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            touch-action: pan-y;
+        }
+        .proto-scroll.is-scrolling { /* hint visual opcional */ }
+
+        .proto-body { display: flex; flex-direction: column; }
+        .proto-viewport--desktop .proto-body {
+            display: grid; grid-template-columns: minmax(0,1fr) minmax(0,2fr) minmax(0,1fr);
+            min-height: 320px;
+        }
+
+        .proto-sidebar { display: none; }
+        .proto-viewport--desktop .proto-sidebar {
+            display: flex; flex-direction: column; gap: 4px;
+            padding: 12px; background: #f8fafc; border-right: 1px solid #e2e8f0;
+        }
+        .proto-viewport--desktop .proto-accordion-wrap { display: none; }
+        .proto-viewport--mobile .proto-sidebar,
+        .proto-viewport--mobile .proto-center-col,
+        .proto-viewport--mobile .proto-aside-desktop { display: none !important; }
+        .proto-viewport--mobile .proto-accordion-wrap { display: block; padding: 8px 12px; }
+
+        .proto-tab.active { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+        .proto-acc-item .proto-acc-panel {
+            max-height: 0; overflow: hidden; opacity: 0;
+            transition: max-height .35s ease, opacity .2s;
+        }
+        .proto-acc-item.is-open .proto-acc-panel { opacity: 1; }
+        /* Móvil: el scroll lo hace el contenedor padre, no cada acordeón */
+        .proto-viewport--mobile .proto-acc-item.is-open .proto-acc-panel {
+            max-height: 1200px;
+            overflow: visible;
+        }
+        .proto-acc-item.is-open .proto-acc-chev { transform: rotate(90deg); color: var(--brand); }
+        .proto-acc-chev { transition: transform .25s; font-size: 10px; color: #94a3b8; }
+
+        .proto-aside-mobile { display: none; }
+        .proto-viewport--mobile .proto-aside-mobile {
+            display: block; padding: 12px; border-top: 1px solid #e2e8f0; background: #f8fafc;
+        }
+        .proto-viewport--desktop .proto-aside-mobile { display: none; }
+        .proto-viewport--desktop .proto-aside-desktop {
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 12px; background: #f8fafc; border-left: 1px solid #e2e8f0; font-size: 10px;
+        }
+
+        .proto-footer {
+            flex-shrink: 0; border-top: 1px solid #e2e8f0; padding: 10px 12px;
+            background: #f8fafc;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .proto-scroll-hint {
+            display: none;
+            text-align: center;
+            font-size: 9px;
+            font-weight: 800;
+            color: #94a3b8;
+            padding: 4px 0 0;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+        .proto-viewport--mobile .proto-scroll-hint { display: block; }
+        .proto-viewport--mobile .proto-footer-nav {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%;
+        }
+        .proto-viewport--desktop .proto-footer-nav { display: flex; flex-wrap: wrap; gap: 12px; }
+
+        .proto-page-dim {
+            position: absolute; inset: var(--nav-h) 0 0; background: #f1f5f9;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; color: #94a3b8; font-weight: 700;
+        }
+        .toast-demo {
+            position: fixed; bottom: 24px; right: 24px; z-index: 20000;
+            transform: translateY(120%); transition: transform .35s;
+        }
+        .toast-demo.show { transform: translateY(0); }
+    </style>
+</head>
+<body class="text-slate-800 antialiased pb-20">
+    <div class="bg-amber-500 text-amber-950 px-4 py-2.5 text-center text-xs font-bold sticky top-0 z-[20000]">
+        <i class="fa-solid fa-flask"></i> PROTOTIPO — Mejoras planificadas ·
+        <a href="../dashboard.php?view=apariencia&sub=megamenu" class="underline">Megamenú producción</a> ·
+        <a href="../productos.php" class="underline">Tienda</a>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <header class="mb-6">
+            <h1 class="text-2xl md:text-3xl font-black text-slate-900">Demo Megamenú — revisión completa</h1>
+            <p class="text-sm text-slate-500 mt-1">Admin + público desktop/móvil + comparación con producción.</p>
+        </header>
+
+        <nav class="flex flex-wrap gap-2 mb-6" role="tablist">
+            <button type="button" class="demo-tab active text-xs font-black uppercase px-4 py-2 rounded-xl border bg-white" data-view="admin">1 · Admin</button>
+            <button type="button" class="demo-tab text-xs font-black uppercase px-4 py-2 rounded-xl border bg-white" data-view="compare">2 · Comparar</button>
+            <button type="button" class="demo-tab text-xs font-black uppercase px-4 py-2 rounded-xl border bg-white" data-view="public-desktop">3 · Público desktop</button>
+            <button type="button" class="demo-tab text-xs font-black uppercase px-4 py-2 rounded-xl border bg-white" data-view="public-mobile">4 · Público móvil</button>
+            <button type="button" class="demo-tab text-xs font-black uppercase px-4 py-2 rounded-xl border bg-white" data-view="checklist">5 · Checklist</button>
+        </nav>
+
+        <!-- Leyenda fases -->
+        <div class="mb-6 flex flex-wrap gap-2 text-[10px] font-bold text-slate-600">
+            <span class="phase-tag">F1</span> Escape, aviso vacío, Ver tienda
+            <span class="phase-tag">F2</span> nivel3, validación
+            <span class="phase-tag">F3</span> Preview móvil, trigger activo
+            <span class="phase-tag">F4</span> Select categorías
+        </div>
+
+        <!-- ADMIN -->
+        <section id="view-admin" class="view-panel">
+            <div id="banner-empty" class="mb-4 rounded-xl border border-amber-300 bg-amber-50 p-4 flex gap-3">
+                <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-1"></i>
+                <div class="flex-1 text-sm">
+                    <p class="font-black text-amber-900"><span class="phase-tag">F1.1</span> Menú no guardado</p>
+                    <p class="text-xs text-amber-800 mt-1"><code>config_header.json</code> tiene <code>megamenu: []</code> → el sitio usa defaults PHP hasta guardar.</p>
+                </div>
+                <label class="text-xs font-bold shrink-0"><input type="checkbox" id="toggle-empty-banner" checked> Mostrar aviso</label>
+            </div>
+
+            <div class="grid xl:grid-cols-12 gap-6">
+                <div class="xl:col-span-7 space-y-4">
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 border-b flex flex-wrap justify-between gap-3 bg-slate-50">
+                            <h2 class="font-black">Editor megamenú (demo funcional)</h2>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" id="btn-admin-preview" class="text-xs font-bold border rounded-lg px-3 py-2 bg-white">
+                                    <i class="fa-solid fa-eye"></i> <span id="admin-preview-label">Preview: Desktop</span>
+                                </button>
+                                <button type="button" id="btn-demo-save" class="text-xs font-bold bg-emerald-500 text-white rounded-lg px-4 py-2">
+                                    <i class="fa-solid fa-floppy-disk"></i> Guardar (demo)
+                                </button>
+                            </div>
+                        </div>
+                        <p class="px-4 py-2 text-xs border-b bg-blue-50 text-slate-600 border-l-4 border-[#3A86FF]">
+                            <span class="phase-tag">F1.4</span> La categoría en enlaces debe coincidir <strong>exactamente</strong> con <code>catalogo.json</code>.
+                        </p>
+
+                        <details class="border-b" open>
+                            <summary class="px-4 py-3 font-black text-sm cursor-pointer bg-violet-50 text-violet-900">
+                                <span class="phase-tag">F2.1</span> Enlaces pie del menú (nivel3_menu)
+                            </summary>
+                            <div class="p-4 space-y-2" id="nivel3-editor"></div>
+                            <button type="button" id="nivel3-add" class="mx-4 mb-4 text-xs font-bold text-violet-700"><i class="fa-solid fa-plus"></i> Añadir</button>
+                        </details>
+
+                        <div class="p-4 space-y-3" id="divisions-editor"></div>
+                        <button type="button" id="btn-add-division" class="m-4 w-[calc(100%-2rem)] py-3 border-2 border-dashed border-emerald-300 text-emerald-700 rounded-xl text-xs font-black">
+                            <i class="fa-solid fa-plus"></i> Añadir división (demo)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="xl:col-span-5">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-4 sticky top-16 shadow-sm">
+                        <p class="text-[10px] font-black text-slate-400 uppercase mb-2"><span class="phase-tag">F3.1</span> Vista previa en vivo</p>
+                        <div id="admin-live-preview" class="border-2 border-dashed border-slate-200 rounded-xl overflow-hidden"></div>
+                        <p class="text-[10px] text-slate-400 mt-2">Cambia pestañas en el editor → se actualiza aquí.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPARE -->
+        <section id="view-compare" class="view-panel hidden">
+            <p class="text-sm text-slate-500 mb-4">Misma estructura: izquierda producción (iframe), derecha prototipo con mejoras.</p>
+            <div class="grid lg:grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs font-black text-slate-500 uppercase mb-2">Producción actual</p>
+                    <iframe src="../productos.php" class="w-full h-[560px] rounded-xl border border-slate-300 bg-white" title="Tienda actual"></iframe>
+                </div>
+                <div>
+                    <p class="text-xs font-black text-slate-500 uppercase mb-2">Prototipo (mejoras)</p>
+                    <div id="compare-proto-host" class="border-2 border-[#3A86FF] rounded-xl overflow-hidden h-[560px]"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PUBLIC DESKTOP -->
+        <section id="view-public-desktop" class="view-panel hidden">
+            <div class="bg-white rounded-xl border p-4 mb-4 text-sm text-slate-600">
+                <strong>Instrucciones:</strong> Clic en «Explorar Divisiones» · Pasa el mouse en pestañas · <kbd class="px-1 border rounded text-xs">Esc</kbd> cierra · Clic en el área gris fuera del panel cierra.
+                <span class="phase-tag ml-1">F1.2</span> <span class="phase-tag">F3.5</span>
+            </div>
+            <div class="border-2 border-dashed border-slate-300 rounded-2xl p-2 bg-slate-200">
+                <div id="host-desktop"></div>
+            </div>
+        </section>
+
+        <!-- PUBLIC MOBILE -->
+        <section id="view-public-mobile" class="view-panel hidden">
+            <div class="bg-white rounded-xl border p-4 mb-4 text-sm text-slate-600 max-w-lg mx-auto">
+                <strong>Móvil:</strong> Sheet desde abajo, backdrop, acordeón. <strong>Desliza dentro del menú</strong> para ver asistencia (WhatsApp, B2B) y enlaces del pie.
+                <span class="phase-tag">F3.2</span> Recuerda última división abierta.
+            </div>
+            <div class="border-2 border-dashed border-slate-300 rounded-2xl p-3 bg-slate-300 max-w-[420px] mx-auto">
+                <div id="host-mobile"></div>
+            </div>
+        </section>
+
+        <!-- CHECKLIST -->
+        <section id="view-checklist" class="view-panel hidden">
+            <div class="bg-white rounded-2xl border p-6 max-w-lg">
+                <h2 class="font-black text-lg mb-4">Aprobación por fase</h2>
+                <div id="checklist-by-phase" class="space-y-4 text-sm"></div>
+                <textarea id="approval-notes" class="w-full mt-6 border rounded-xl p-3 text-sm" rows="4" placeholder="Notas…"></textarea>
+                <div class="flex gap-2 mt-3">
+                    <button type="button" id="copy-notes" class="text-xs font-bold text-[#3A86FF]">Copiar resumen</button>
+                    <button type="button" id="approve-all" class="text-xs font-bold text-emerald-700">Marcar todo</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="toast-demo" class="toast-demo bg-[#1B263B] text-white rounded-xl px-5 py-4 shadow-2xl text-sm font-bold max-w-xs">
+        <p class="text-emerald-300 text-xs uppercase mb-1"><span class="phase-tag">F1.3</span> Guardado (demo)</p>
+        <p id="toast-msg">Megamenú guardado en memoria.</p>
+        <a href="../productos.php" class="inline-block mt-2 text-[#3A86FF] text-xs font-black underline">Ver en tienda →</a>
+    </div>
+
+    <script>
+    const CATALOG_CATS = [
+        'Herramientas Drywall', 'Taladros Percutores', 'Amoladoras', 'Accesorios',
+        'Lijadoras de Paneles de Yeso', 'Pulverizadores de Pintura', 'Línea de Concreto'
+    ];
+
+    let state = {
+        divisions: [
+            { id: 'drywall', title: 'Drywall & Yeso', icon: 'fa-trowel-bricks', iconColor: 'text-[#3A86FF]',
+              titleLeft: 'SISTEMAS CONSTRUCTIVOS', titleRight: 'HERRAMIENTAS MASTER',
+              linksLeft: [{ name: 'Herramientas Drywall', linkType: 'category', linkValue: 'Herramientas Drywall' }],
+              linksRight: [{ name: 'Lijadoras de paneles', linkType: 'category', linkValue: 'Lijadoras de Paneles de Yeso' }] },
+            { id: 'potencia', title: 'Línea de Potencia', icon: 'fa-bolt', iconColor: 'text-amber-500',
+              titleLeft: 'HERRAMIENTAS ELÉCTRICAS', titleRight: 'CONCRETO Y OBRA',
+              linksLeft: [{ name: 'Taladros', linkType: 'category', linkValue: 'Taladros Percutores' }],
+              linksRight: [{ name: 'Buscar MAXXT', linkType: 'search', linkValue: 'maxxt' }] },
+            { id: 'aplicacion', title: 'Aplicación & Limpieza', icon: 'fa-spray-can-sparkles', iconColor: 'text-[#3A86FF]',
+              titleLeft: 'APLICACIÓN', titleRight: 'LIMPIEZA',
+              linksLeft: [{ name: 'Pulverizadores', linkType: 'category', linkValue: 'Pulverizadores de Pintura' }],
+              linksRight: [{ name: 'Accesorios (roto)', linkType: 'category', linkValue: 'Accesorios' }] },
+        ],
+        nivel3: [
+            { text: 'Inicio', link: 'index.php' },
+            { text: 'Nosotros', link: 'index.php#nosotros' },
+            { text: 'Blog', link: 'blog.php' },
+            { text: 'Contacto', link: 'index.php#contacto' },
+        ],
+        previewMode: 'desktop',
+        activeDivisionId: 'drywall',
+        savedOnce: false,
+    };
+
+    window.state = state;
+
+    const CHECKLIST = {
+        'Fase 1': [
+            'Aviso megamenu vacío / no guardado',
+            'Cerrar con Escape',
+            'Botón Ver en tienda tras guardar',
+            'Texto ayuda categoría exacta',
+        ],
+        'Fase 2': [
+            'Editor nivel3_menu en dashboard',
+            'Validación categoría (badge rojo/verde)',
+            'Prellenar al abrir si JSON vacío',
+        ],
+        'Fase 3': [
+            'Toggle preview Desktop/Móvil en admin',
+            'Trigger Explorar con estado activo',
+            'Focus visible (Tab en controles)',
+            'Móvil: recordar última división',
+            'Móvil: sheet + backdrop + scroll lock',
+        ],
+        'Fase 4': [
+            'Select categorías (no texto libre)',
+            'Métricas clics (futuro)',
+        ],
+    };
+
+    function esc(s) {
+        return String(s ?? '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+    }
+
+    function catBadge(link) {
+        if (link.linkType !== 'category') return '<span class="text-[9px] font-black text-sky-700 bg-sky-50 px-1.5 rounded">Búsqueda</span>';
+        const ok = CATALOG_CATS.includes(link.linkValue);
+        if (!ok) return '<span class="text-[9px] font-black text-rose-600 bg-rose-50 px-1.5 rounded">F2.2 · No existe</span>';
+        return '<span class="text-[9px] font-black text-emerald-700 bg-emerald-50 px-1.5 rounded">OK</span>';
+    }
+
+    function catOptions(selected) {
+        return CATALOG_CATS.map(c => `<option value="${esc(c)}" ${c===selected?'selected':''}>${esc(c)}</option>`).join('');
+    }
+
+    // —— Tabs ——
+    document.querySelectorAll('.demo-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.demo-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const v = btn.dataset.view;
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById('view-' + v).classList.remove('hidden');
+            if (v === 'public-desktop') ensureViewport('host-desktop', 'desktop');
+            if (v === 'public-mobile') ensureViewport('host-mobile', 'mobile');
+            if (v === 'compare') ensureViewport('compare-proto-host', 'desktop');
+            if (v === 'admin') renderAdminPreview();
+        });
+    });
+
+    document.getElementById('toggle-empty-banner').addEventListener('change', e => {
+        document.getElementById('banner-empty').classList.toggle('hidden', !e.target.checked);
+    });
+
+    document.getElementById('btn-admin-preview').addEventListener('click', () => {
+        state.previewMode = state.previewMode === 'desktop' ? 'mobile' : 'desktop';
+        document.getElementById('admin-preview-label').textContent = 'Preview: ' + (state.previewMode === 'desktop' ? 'Desktop' : 'Móvil');
+        renderAdminPreview();
+    });
+
+    document.getElementById('btn-demo-save').addEventListener('click', () => {
+        state.savedOnce = true;
+        document.getElementById('banner-empty').classList.add('hidden');
+        document.getElementById('toggle-empty-banner').checked = false;
+        const t = document.getElementById('toast-demo');
+        document.getElementById('toast-msg').textContent = state.divisions.length + ' divisiones · ' + state.nivel3.length + ' enlaces pie';
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 5000);
+    });
+
+    document.getElementById('btn-add-division').addEventListener('click', () => {
+        const n = state.divisions.length + 1;
+        state.divisions.push({
+            id: 'div_' + Date.now(), title: 'Nueva división ' + n, icon: 'fa-tag', iconColor: 'text-slate-400',
+            titleLeft: 'GRUPO I', titleRight: 'GRUPO II',
+            linksLeft: [{ name: 'Enlace', linkType: 'category', linkValue: CATALOG_CATS[0] }],
+            linksRight: [],
+        });
+        renderDivisionsEditor();
+        renderAdminPreview();
+    });
+
+    // —— nivel3 ——
+    function renderNivel3() {
+        const el = document.getElementById('nivel3-editor');
+        if (!el) return;
+        el.innerHTML = state.nivel3.map((item, i) => `
+            <div class="flex gap-2 items-center">
+                <input class="flex-1 border rounded-lg px-2 py-1.5 text-xs font-bold" value="${esc(item.text)}"
+                    onchange="state.nivel3[${i}].text=this.value; renderAdminPreview()">
+                <input class="flex-[2] border rounded-lg px-2 py-1.5 text-xs" value="${esc(item.link)}"
+                    onchange="state.nivel3[${i}].link=this.value; renderAdminPreview()">
+                <button type="button" class="text-slate-400 hover:text-rose-500 p-2" onclick="state.nivel3.splice(${i},1); renderNivel3(); renderAdminPreview();"><i class="fa-solid fa-trash-can"></i></button>
+            </div>`).join('');
+        syncAllViewports();
+    }
+    document.getElementById('nivel3-add').addEventListener('click', () => {
+        state.nivel3.push({ text: 'Nuevo', link: '#' });
+        renderNivel3();
+        renderAdminPreview();
+    });
+
+    // —— divisions editor ——
+    function renderDivisionsEditor() {
+        const c = document.getElementById('divisions-editor');
+        c.innerHTML = state.divisions.map((div, di) => {
+            const linkBlock = (key, label) => {
+                const links = div[key] || [];
+                return `<div class="bg-slate-50 rounded-xl p-3 space-y-2">
+                    <label class="text-[9px] font-black text-slate-400 uppercase">${label}</label>
+                    <input class="w-full text-xs font-black border rounded-lg px-2 py-1.5 mb-2" value="${esc(div[key==='linksLeft'?'titleLeft':'titleRight'])}"
+                        onchange="state.divisions[${di}]['${key==='linksLeft'?'titleLeft':'titleRight'}']=this.value; renderAdminPreview()">
+                    ${links.map((link, li) => `
+                    <div class="bg-white border rounded-lg p-2 space-y-2">
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <input class="flex-1 text-xs font-bold border-b outline-none min-w-[80px]" value="${esc(link.name)}"
+                                onchange="state.divisions[${di}]['${key}'][${li}].name=this.value; renderAdminPreview()">
+                            ${catBadge(link)}
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <select class="text-[10px] border rounded-lg px-2 py-1" onchange="state.divisions[${di}]['${key}'][${li}].linkType=this.value; renderDivisionsEditor(); renderAdminPreview();">
+                                <option value="category" ${link.linkType==='category'?'selected':''}>Categoría</option>
+                                <option value="search" ${link.linkType==='search'?'selected':''}>Búsqueda</option>
+                            </select>
+                            ${link.linkType==='category'
+                                ? `<select class="text-xs border rounded-lg px-2 py-1 flex-1 min-w-[140px]" onchange="state.divisions[${di}]['${key}'][${li}].linkValue=this.value; renderDivisionsEditor(); renderAdminPreview();"><option value="">—</option>${catOptions(link.linkValue)}</select>`
+                                : `<input class="text-xs border rounded-lg px-2 py-1 flex-1" value="${esc(link.linkValue)}" onchange="state.divisions[${di}]['${key}'][${li}].linkValue=this.value">`}
+                            <button type="button" class="text-rose-400 p-1" onclick="state.divisions[${di}]['${key}'].splice(${li},1); renderDivisionsEditor(); renderAdminPreview();"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>`).join('')}
+                    <button type="button" class="text-[10px] font-bold text-emerald-600" onclick="state.divisions[${di}]['${key}'].push({name:'Nuevo',linkType:'category',linkValue:CATALOG_CATS[0]}); renderDivisionsEditor();"><i class="fa-solid fa-plus"></i> Enlace</button>
+                </div>`;
+            };
+            return `<article class="border border-slate-200 rounded-xl overflow-hidden mx-4">
+                <div class="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b">
+                    <i class="fa-solid ${div.icon} ${div.iconColor}"></i>
+                    <input class="flex-1 font-black text-sm bg-transparent outline-none" value="${esc(div.title)}"
+                        onchange="state.divisions[${di}].title=this.value; renderAdminPreview()">
+                    <button type="button" class="text-slate-400 hover:text-rose-500" onclick="state.divisions.splice(${di},1); if(state.activeDivisionId==='${div.id}')state.activeDivisionId=state.divisions[0]?.id; renderDivisionsEditor(); renderAdminPreview();"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+                <div class="p-3 grid md:grid-cols-2 gap-3">${linkBlock('linksLeft','Columna izquierda')}${linkBlock('linksRight','Columna derecha')}</div>
+            </article>`;
+        }).join('');
+        syncAllViewports();
+    }
+
+    function syncAllViewports() {
+        Object.keys(viewportInstances).forEach(hostId => {
+            viewportInstances[hostId].setData(state.divisions, state.nivel3);
+            if (state.activeDivisionId) viewportInstances[hostId].setActive(state.activeDivisionId);
+        });
+    }
+
+    function renderAdminPreview() {
+        const host = document.getElementById('admin-live-preview');
+        if (!host || host.closest('.view-panel')?.classList.contains('hidden')) return;
+        host.innerHTML = '';
+        const wrap = document.createElement('div');
+        host.appendChild(wrap);
+        const mode = state.previewMode;
+        const api = createMegaViewport(wrap, mode);
+        api.setData(state.divisions, state.nivel3);
+        api.setActive(state.activeDivisionId || state.divisions[0]?.id);
+        api._onTabChange = (id) => { state.activeDivisionId = id; };
+    }
+
+    // —— Public viewport factory ——
+    const viewportInstances = {};
+
+    function createMegaViewport(container, mode) {
+        const uid = 'pv_' + Math.random().toString(36).slice(2, 9);
+        const isMobile = mode === 'mobile';
+        const storageKey = 'demo_mega_div_' + mode;
+
+        container.innerHTML = `
+        <div class="proto-viewport proto-viewport--${mode}" id="${uid}_vp">
+            <nav class="proto-nav">
+                <span class="font-black text-[10px] text-slate-400">IMPROGYP</span>
+                <button type="button" class="proto-trigger flex items-center gap-1.5 px-2.5 py-1.5 border border-slate-200 rounded-lg text-[9px] font-black uppercase">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#3A86FF]"></span>
+                    ${isMobile ? 'Explorar' : 'Explorar Divisiones'}
+                    <i class="fa-solid fa-chevron-down chev text-[7px] text-slate-400"></i>
+                </button>
+                ${isMobile ? '' : '<div class="flex-1 h-7 bg-slate-100 rounded-full max-w-[180px]"></div>'}
+                <div class="ml-auto flex gap-1"><span class="w-7 h-7 rounded-full border"></span><span class="w-7 h-7 rounded-full bg-[#1B263B]"></span></div>
+            </nav>
+            <div class="proto-page-dim" data-dismiss>Contenido de la página (clic para cerrar menú)</div>
+            <div class="proto-shell">
+                <div class="proto-backdrop" data-dismiss></div>
+                <div class="proto-panel" role="dialog" aria-modal="true">
+                    ${isMobile ? `<div class="proto-panel-head flex justify-between items-center px-3 py-2 border-b">
+                        <span class="text-[9px] font-black uppercase">Explorar Divisiones</span>
+                        <button type="button" class="proto-close w-8 h-8 rounded-full bg-slate-100" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+                    </div>` : `<div class="proto-panel-head flex justify-end px-3 pt-2 border-b border-slate-100">
+                        <button type="button" class="proto-close text-[10px] font-bold text-slate-500 px-2 py-1 hover:text-[#1B263B]" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i> Cerrar</button>
+                    </div>`}
+                    <div class="proto-scroll" tabindex="0" aria-label="Contenido del menú, desplázate para ver más">
+                        <div class="proto-body">
+                            <div class="proto-accordion-wrap"></div>
+                            <div class="proto-sidebar"></div>
+                            <div class="proto-center-col p-4 grid grid-cols-2 gap-4"></div>
+                            <div class="proto-aside-desktop">
+                                <div class="p-2 bg-blue-50 border border-blue-100 rounded-lg text-[#3A86FF] font-bold">Asesoría técnica</div>
+                                <div class="space-y-1 mt-2"><div class="p-1.5 border rounded bg-white">WhatsApp</div><div class="p-1.5 border rounded bg-white">Sucursales</div></div>
+                                <div class="p-2 bg-slate-200 rounded text-center font-black mt-auto">Portal B2B</div>
+                            </div>
+                        </div>
+                        <div class="proto-aside-mobile">
+                            <p class="text-[8px] font-black text-slate-400 uppercase mb-2">Asistencia</p>
+                            <div class="grid grid-cols-2 gap-2 text-center text-[8px] font-black">
+                                <div class="p-2 border rounded-lg bg-white"><i class="fa-brands fa-whatsapp text-emerald-500"></i><br>WhatsApp</div>
+                                <div class="p-2 border rounded-lg bg-white"><i class="fa-solid fa-map text-[#3A86FF]"></i><br>Sucursales</div>
+                            </div>
+                            <div class="mt-2 p-2 bg-[#1B263B] text-white rounded-lg text-center text-[8px] font-black">Portal B2B</div>
+                        </div>
+                        <p class="proto-scroll-hint"><i class="fa-solid fa-arrows-up-down mr-1"></i> Desliza para ver asistencia y enlaces</p>
+                    </div>
+                    <footer class="proto-footer">
+                        <a href="../productos.php" class="text-[9px] font-black text-[#1B263B] uppercase">Ver catálogo →</a>
+                        <nav class="proto-footer-nav"></nav>
+                    </footer>
+                </div>
+            </div>
+        </div>`;
+
+        const vp = container.querySelector('.proto-viewport');
+        const shell = vp.querySelector('.proto-shell');
+        const panel = vp.querySelector('.proto-panel');
+        const trigger = vp.querySelector('.proto-trigger');
+        const backdrop = vp.querySelector('.proto-backdrop');
+        const accWrap = vp.querySelector('.proto-accordion-wrap');
+        const sidebar = vp.querySelector('.proto-sidebar');
+        const center = vp.querySelector('.proto-center-col');
+        const footerNav = vp.querySelector('.proto-footer-nav');
+        const scrollEl = vp.querySelector('.proto-scroll');
+
+        let divisions = [];
+
+        function refreshScroll() {
+            if (!scrollEl) return;
+            scrollEl.scrollTop = 0;
+            requestAnimationFrame(() => {
+                const canScroll = scrollEl.scrollHeight > scrollEl.clientHeight + 2;
+                scrollEl.classList.toggle('is-scrolling', canScroll);
+            });
+        }
+        let nivel3 = [];
+        let activeId = '';
+        let onTabChange = null;
+
+        function renderCenter(id) {
+            const d = divisions.find(x => x.id === id) || divisions[0];
+            if (!d) { center.innerHTML = ''; return; }
+            activeId = d.id;
+            const col = (title, links) => `<div><h5 class="text-[9px] font-black uppercase border-b pb-1 mb-2 text-[#1B263B]">${esc(title)}</h5><ul class="space-y-1">${(links||[]).map(l=>`<li><button type="button" class="proto-link text-[10px] font-bold text-slate-500 hover:text-[#3A86FF] text-left" data-cat="${esc(l.linkValue)}">${esc(l.name)}</button></li>`).join('')||'<li class="text-slate-300 text-[10px]">—</li>'}</ul></div>`;
+            center.innerHTML = col(d.titleLeft, d.linksLeft) + col(d.titleRight, d.linksRight);
+            vp.querySelectorAll('.proto-tab').forEach(t => t.classList.toggle('active', t.dataset.id === d.id));
+            if (onTabChange) onTabChange(d.id);
+        }
+
+        function renderAll() {
+            sidebar.innerHTML = '<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Divisiones</p>' +
+                divisions.map((d, i) => `<button type="button" class="proto-tab w-full text-left px-2 py-2 rounded-lg text-[10px] font-black text-slate-500 ${i===0?'active':''}" data-id="${esc(d.id)}"><i class="fa-solid ${d.icon} ${d.iconColor} mr-1"></i>${esc(d.title)}</button>`).join('');
+
+            accWrap.innerHTML = '<p class="text-[8px] font-black text-slate-400 uppercase mb-2 ml-1">Divisiones</p>' +
+                divisions.map(d => `<div class="proto-acc-item border-b border-slate-100" data-id="${esc(d.id)}">
+                    <button type="button" class="proto-acc-btn w-full flex justify-between py-2.5 text-[10px] font-black uppercase text-slate-600">
+                        <span><i class="fa-solid ${d.icon} ${d.iconColor} mr-1"></i>${esc(d.title)}</span>
+                        <i class="fa-solid fa-chevron-right proto-acc-chev"></i>
+                    </button>
+                    <div class="proto-acc-panel"><div class="pb-3 pl-4 space-y-1">${[...(d.linksLeft||[]),...(d.linksRight||[])].map(l=>`<button type="button" class="proto-link block text-[10px] text-slate-600 py-0.5 hover:text-[#3A86FF]" data-cat="${esc(l.linkValue)}">${esc(l.name)}</button>`).join('')}</div></div>
+                </div>`).join('');
+
+            footerNav.innerHTML = nivel3.map(n => `<a href="${esc(n.link)}" class="text-[9px] font-black uppercase text-slate-500 hover:text-[#3A86FF]">${esc(n.text)}</a>`).join('');
+
+            vp.querySelectorAll('.proto-tab').forEach(t => {
+                t.onclick = () => renderCenter(t.dataset.id);
+                t.onmouseenter = () => { if (!isMobile) renderCenter(t.dataset.id); };
+            });
+            vp.querySelectorAll('.proto-acc-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const item = btn.closest('.proto-acc-item');
+                    const id = item.dataset.id;
+                    const was = item.classList.contains('is-open');
+                    vp.querySelectorAll('.proto-acc-item').forEach(i => {
+                        i.classList.remove('is-open');
+                        const p = i.querySelector('.proto-acc-panel');
+                        if (p) p.style.maxHeight = isMobile ? '' : '0';
+                    });
+                    if (!was) {
+                        item.classList.add('is-open');
+                        const p = item.querySelector('.proto-acc-panel');
+                        if (!isMobile) {
+                            p.style.maxHeight = p.scrollHeight + 'px';
+                        } else {
+                            p.style.maxHeight = '';
+                        }
+                        sessionStorage.setItem(storageKey, id);
+                        requestAnimationFrame(refreshScroll);
+                    }
+                };
+            });
+            renderCenter(activeId || divisions[0]?.id);
+            refreshScroll();
+        }
+
+        function openMenu() {
+            shell.classList.add('is-open');
+            panel.classList.add('is-open');
+            trigger.classList.add('is-open');
+            vp.querySelector('.proto-page-dim').style.pointerEvents = 'auto';
+            if (isMobile) {
+                vp.classList.add('menu-lock');
+                const last = sessionStorage.getItem(storageKey);
+                const id = last && divisions.some(d => d.id === last) ? last : divisions[0]?.id;
+                const item = vp.querySelector(`.proto-acc-item[data-id="${id}"]`);
+                if (item) item.querySelector('.proto-acc-btn').click();
+                requestAnimationFrame(refreshScroll);
+            } else {
+                renderCenter(activeId || divisions[0]?.id);
+            }
+            refreshScroll();
+        }
+
+        function closeMenu() {
+            shell.classList.remove('is-open');
+            panel.classList.remove('is-open');
+            trigger.classList.remove('is-open');
+            vp.querySelector('.proto-page-dim').style.pointerEvents = '';
+            vp.classList.remove('menu-lock');
+        }
+
+        trigger.onclick = () => panel.classList.contains('is-open') ? closeMenu() : openMenu();
+        vp.querySelectorAll('.proto-close').forEach(b => b.onclick = closeMenu);
+        vp.querySelectorAll('[data-dismiss]').forEach(el => el.addEventListener('click', (e) => {
+            if (panel.classList.contains('is-open') && (e.target === el || e.target.closest('[data-dismiss]'))) closeMenu();
+        }));
+        panel.addEventListener('click', e => e.stopPropagation());
+
+        const escHandler = (e) => {
+            if (e.key === 'Escape' && panel.classList.contains('is-open') && document.body.contains(vp)) closeMenu();
+        };
+        document.addEventListener('keydown', escHandler);
+
+        vp.querySelectorAll('.proto-link').forEach(() => {}); // bound after renderAll
+
+        const api = {
+            setData(divs, n3) { divisions = divs; nivel3 = n3; renderAll(); },
+            setActive(id) { activeId = id; renderCenter(id); },
+            open: openMenu,
+            close: closeMenu,
+            destroy() { document.removeEventListener('keydown', escHandler); },
+            get _onTabChange() { return onTabChange; },
+            set _onTabChange(fn) { onTabChange = fn; },
+        };
+
+        return api;
+    }
+
+    function ensureViewport(hostId, mode) {
+        if (viewportInstances[hostId]) {
+            viewportInstances[hostId].setData(state.divisions, state.nivel3);
+            return viewportInstances[hostId];
+        }
+        const host = document.getElementById(hostId);
+        if (!host) return null;
+        host.innerHTML = '';
+        const api = createMegaViewport(host, mode);
+        api.setData(state.divisions, state.nivel3);
+        viewportInstances[hostId] = api;
+        return api;
+    }
+
+    // —— Checklist ——
+    const clHost = document.getElementById('checklist-by-phase');
+    Object.entries(CHECKLIST).forEach(([phase, items]) => {
+        const block = document.createElement('div');
+        block.innerHTML = `<p class="font-black text-slate-800 mb-2">${phase}</p>` +
+            items.map((t) => `<label class="flex gap-2 py-1 cursor-pointer"><input type="checkbox" class="rounded approval-cb" data-label="${esc(t)}"> ${esc(t)}</label>`).join('');
+        clHost.appendChild(block);
+    });
+    document.getElementById('approve-all').onclick = () => document.querySelectorAll('.approval-cb').forEach(c => { c.checked = true; });
+    document.getElementById('copy-notes').onclick = () => {
+        const all = [...document.querySelectorAll('.approval-cb:checked')].map(c => c.dataset.label);
+        const notes = document.getElementById('approval-notes').value;
+        const txt = 'MEGAMENU DEMO\n\nAprobado:\n' + (all.length ? all.map(x => '• ' + x).join('\n') : '(nada)') + '\n\nNotas:\n' + (notes || '');
+        navigator.clipboard.writeText(txt).then(() => alert('Copiado al portapapeles'));
+    };
+
+    // Globales para handlers inline del editor
+    window.renderDivisionsEditor = renderDivisionsEditor;
+    window.renderAdminPreview = renderAdminPreview;
+    window.renderNivel3 = renderNivel3;
+    window.CATALOG_CATS = CATALOG_CATS;
+
+    // Init
+    renderNivel3();
+    renderDivisionsEditor();
+    renderAdminPreview();
+    </script>
+</body>
+</html>

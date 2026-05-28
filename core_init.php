@@ -45,8 +45,9 @@ $seo_desc = "La mejor selección de herramientas técnicas y profesionales. Comp
 $seo_img = "favicon-app.png"; 
 
 $ruta_seo = __DIR__ . '/seo.json';
+$seo_data = [];
 if (file_exists($ruta_seo)) {
-    $seo_data = json_decode(file_get_contents($ruta_seo), true);
+    $seo_data = json_decode(file_get_contents($ruta_seo), true) ?: [];
     if (!empty($seo_data['titulo'])) $seo_titulo = $seo_data['titulo'];
     if (!empty($seo_data['descripcion'])) $seo_desc = $seo_data['descripcion'];
     if (!empty($seo_data['imagen_url'])) $seo_img = $seo_data['imagen_url'];
@@ -89,4 +90,12 @@ $base_url = $protocolo . "://" . $host . $base_path;
 
 if (!empty($seo_img) && !preg_match("~^(?:f|ht)tps?://~i", $seo_img)) {
     $seo_img = $base_url . ltrim($seo_img, '/');
+}
+
+$seo_og_v = file_exists($ruta_seo) ? (int) filemtime($ruta_seo) : time();
+if (!empty($seo_data['imagen_url'])) {
+    $ruta_img_seo = __DIR__ . '/' . ltrim($seo_data['imagen_url'], '/');
+    if (is_file($ruta_img_seo)) {
+        $seo_og_v = (int) filemtime($ruta_img_seo);
+    }
 }

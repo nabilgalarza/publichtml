@@ -99,8 +99,14 @@ if (!$env) {
     exit;
 }
 
-$apiKey = $env['GEMINI_API_KEY_PAID'] ?? $env['GEMINI_API_KEY'] ?? '';
-$modelName = $env['GEMINI_MODEL'] ?? 'gemini-1.5-flash';
+require_once dirname(__DIR__) . '/lib/copy_ia_helpers.php';
+$apiKey = improgyp_gemini_api_key($env);
+$modelName = improgyp_gemini_model($env);
+if ($apiKey === '') {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['reply' => 'Asistente no disponible: GEMINI_API_KEY no configurada en .env.']);
+    exit;
+}
 
 $db_host = $env['DB_HOST'] ?? '127.0.0.1';
 $db_port = $env['DB_PORT'] ?? '3306';

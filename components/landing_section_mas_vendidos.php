@@ -12,6 +12,9 @@ if (empty($productos)) {
         <div class="flex justify-end -mt-4 mb-6">
             <a href="productos.php" class="text-sm font-black text-[#3A86FF] hover:underline">Ver catálogo →</a>
         </div>
-        <?php include __DIR__ . '/landing_product_row.php'; ?>
+        <?php
+        $carousel_id = 'mas-vendidos';
+        include __DIR__ . '/landing_product_carousel.php';
+        ?>
     </div>
 </section>

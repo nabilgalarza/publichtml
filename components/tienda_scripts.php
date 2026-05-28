@@ -393,7 +393,6 @@
             const masCercano = localesProcesados[0];
             const widget = document.getElementById('nearest-location-widget');
             const container = document.getElementById('sidebar-location-container');
-            const modalNearest = document.getElementById('modal-nearest-location');
 
             if (masCercano) {
                 const distText = masCercano.distancia ? `<span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full ml-auto">A ${masCercano.distancia.toFixed(1)} km</span>` : '';
@@ -413,53 +412,12 @@
                 if (widget) widget.innerHTML = cardHTML;
                 if (container) container.classList.remove('hidden');
 
-                if (modalNearest && masCercano.distancia) {
-                    modalNearest.innerHTML = `
-                         <div class="bg-emerald-50/50 border border-emerald-100 rounded-3xl p-5 mb-2">
-                            <div class="flex items-center gap-2 mb-4">
-                                <span class="bg-emerald-500 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest shadow-sm shadow-emerald-500/20">Cercano</span>
-                                <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Tu mejor opción ahora mismo</p>
-                            </div>
-                            ${cardHTML}
-                         </div>
-                    `;
-                    modalNearest.classList.remove('hidden');
-                }
             }
 
-            // Renderizar Grid del Modal
             const grid = document.getElementById('locations-grid');
-            if (grid) {
-                grid.innerHTML = localesProcesados.map(l => {
-                    const waLink = `https://wa.me/${l.whatsapp}${l.whatsapp_msj ? '?text=' + encodeURIComponent(l.whatsapp_msj) : ''}`;
-                    return `
-                    <div class="location-card group">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="location-dot"></span>
-                            <h4 class="text-[15px] font-black text-slate-900">${l.nombre}</h4>
-                        </div>
-                        <p class="text-[12px] text-slate-500 mb-4 h-10 overflow-hidden leading-relaxed">${l.direccion}</p>
-                        
-                        <div class="space-y-2 mb-5">
-                            <div class="flex items-center gap-2 text-[11px] text-slate-600 font-medium">
-                                <i class="fa-solid fa-phone text-[#1B263B]/40 w-4"></i> ${l.telefono}
-                            </div>
-                            <div class="flex items-center gap-2 text-[11px] text-slate-600 font-medium">
-                                <i class="fa-solid fa-envelope text-[#1B263B]/40 w-4"></i> ${l.email}
-                            </div>
-                            <div class="flex items-center gap-2 text-[11px] text-slate-600 font-medium">
-                                <i class="fa-solid fa-clock text-[#1B263B]/40 w-4"></i> ${l.horario || '08:30 - 18:00'}
-                            </div>
-                        </div>
-
-                        <div class="flex gap-2">
-                            <a href="${l.maps}" target="_blank" class="btn-location-action flex-grow hover:bg-[#1B263B] hover:text-white transition-all"><i class="fa-solid fa-location-dot"></i> Cómo llegar</a>
-                            <a href="${waLink}" target="_blank" class="bg-emerald-500 text-white px-5 rounded-xl flex items-center justify-center gap-2 hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-500/20 text-[11px] font-bold">
-                                <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
-                            </a>
-                        </div>
-                    </div>
-                `;}).join('');
+            const Showroom = window.ImprogypLocalesShowroom;
+            if (grid && Showroom) {
+                grid.innerHTML = Showroom.modalGridHtml(localesProcesados);
             }
         }
 
@@ -1127,7 +1085,14 @@
                 const onclickAttr = link ? `onclick="window.open('${escapeJsString(link)}', '_blank')"` : '';
                 const estilo = data.estilo || 'respiracion';
                 const imgUrl = data.img_url ? getAbsoluteImgUrl(data.img_url) : '';
-                const ctaHtml = link ? `<span class="rt-cta">Ver más <i class="fa-solid fa-arrow-right text-[10px]"></i></span>` : '';
+                const ctaLabel = escapeHtml((data.extra && String(data.extra).trim()) ? String(data.extra).trim() : 'Ver más');
+                const ctaHtml = link ? `<span class="rt-cta">${ctaLabel} <i class="fa-solid fa-arrow-right text-[10px]"></i></span>` : '';
+                const pillIconForRespiracion = () => {
+                    const hay = `${data.etiqueta || ''} ${data.titulo || ''} ${data.desc || ''}`.toLowerCase();
+                    if (/env[ií]o|entrega|cobertura|nacional|log[ií]stica/.test(hay)) return 'fa-truck-fast';
+                    if (/calidad|premium|certif/.test(hay)) return 'fa-award';
+                    return 'fa-bolt';
+                };
 
                 const marqueePhrase = (parts) => {
                     const items = parts.filter(Boolean);
@@ -1168,7 +1133,7 @@
                     </div>`;
                 } else {
                     inner = `<div class="rt-wrap rt-respiracion cursor-pointer" ${onclickAttr}>
-                        <span class="rt-pill"><i class="fa-solid fa-truck-fast"></i> ${etiqueta}</span>
+                        <span class="rt-pill"><i class="fa-solid ${pillIconForRespiracion()}"></i> ${etiqueta}</span>
                         <h3 class="rt-title">${titulo}</h3>
                         ${desc ? `<p class="rt-desc">${desc}</p>` : ''}
                         ${ctaHtml}

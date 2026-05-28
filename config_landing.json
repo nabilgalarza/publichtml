@@ -41,21 +41,27 @@
             "titulo": "Explorar por categoría",
             "subtitulo": "Acceso directo al catálogo con filtros por marca y asesor IA.",
             "limite": 8,
-            "activo": true
+            "activo": true,
+            "titulo_normal": "Explorar por categoría",
+            "titulo_resaltado": ""
         },
         {
             "tipo": "tendencias",
             "titulo": "Tendencias",
             "subtitulo": "Lo más visto en las últimas 48 horas.",
             "limite": 8,
-            "activo": true
+            "activo": true,
+            "titulo_normal": "Tendencias",
+            "titulo_resaltado": ""
         },
         {
             "tipo": "mas_vendidos",
             "titulo": "Más vendidos",
             "subtitulo": "Selección impulsada por nuestro equipo comercial.",
             "limite": 8,
-            "activo": true
+            "activo": true,
+            "titulo_normal": "Más vendidos",
+            "titulo_resaltado": ""
         },
         {
             "tipo": "cta",
@@ -71,7 +77,9 @@
             "tipo": "blog",
             "activo": true,
             "titulo": "Desde el Blog",
-            "subtitulo": "Guías y novedades para profesionales del drywall."
+            "subtitulo": "Guías y novedades para profesionales del drywall.",
+            "titulo_normal": "Desde el Blog",
+            "titulo_resaltado": ""
         },
         {
             "tipo": "logos",
@@ -79,13 +87,16 @@
             "subtitulo": "Distribuidores oficiales que respaldan tu obra.",
             "limite": 10,
             "marquee_seg": 50,
-            "activo": true
+            "activo": true,
+            "titulo_normal": "Marcas aliadas",
+            "titulo_resaltado": ""
         },
         {
             "tipo": "locales",
             "titulo": "Red de sucursales",
             "subtitulo": "Atención técnica en todo Ecuador.",
-            "activo": true
+            "activo": true,
+            "titulo_normal": "Red de sucursales"
         }
     ]
 }

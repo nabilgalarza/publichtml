@@ -137,6 +137,7 @@ if ($articulo && $pdo) {
 <script src="js/header_actions.js?v=<?= time() ?>"></script>
 <script src="js/omnibar.js?v=<?= time() ?>"></script>
 <script src="js/landing_header.js?v=<?= time() ?>"></script>
+<script src="js/locales_showroom.js?v=<?= time() ?>"></script>
 <script src="js/landing_home.js?v=<?= time() ?>"></script>
 </body>
 </html>

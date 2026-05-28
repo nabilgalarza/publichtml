@@ -8,25 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
     <meta name="description" content="<?= htmlspecialchars($seo_desc) ?>">
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="<?= htmlspecialchars($url_actual) ?>">
-    <meta property="og:title" content="<?= htmlspecialchars($seo_titulo) ?>">
-    <meta property="og:description" content="<?= htmlspecialchars($seo_desc) ?>">
-    <meta property="og:image" content="<?= htmlspecialchars($seo_img) ?>?v=<?= time() ?>">
-    <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="<?= htmlspecialchars($seo_titulo) ?>">
-    <meta property="og:site_name" content="IMPROGYP">
-    <meta property="og:locale" content="es_EC">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="<?= htmlspecialchars($url_actual) ?>">
-    <meta property="twitter:title" content="<?= htmlspecialchars($seo_titulo) ?>">
-    <meta property="twitter:description" content="<?= htmlspecialchars($seo_desc) ?>">
-    <meta property="twitter:image" content="<?= htmlspecialchars($seo_img) ?>?v=<?= time() ?>">
+    <?php include __DIR__ . '/seo_meta_og.php'; ?>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1B263B">
@@ -63,10 +45,10 @@
         .rt-wrap:hover { transform: translateY(-4px); box-shadow: 0 24px 60px -20px rgba(15,23,42,0.25); }
         .rt-pill { display: inline-flex; align-items: center; gap: 6px; width: max-content; font-size: 9px; font-weight: 900; padding: 6px 14px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 1rem; }
         .rt-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 1.25rem; background: #0f172a; color: #fff; font-size: 11px; font-weight: 800; padding: 12px 22px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.08em; }
-        .rt-respiracion { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border: 1px solid #e2e8f0; padding: 2.5rem 2rem; text-align: center; }
+        .rt-respiracion { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; background: #f8fafc; background-image: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%); border: 1px solid #e2e8f0; padding: 2.75rem 2rem 3rem; text-align: center; box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset; }
         .rt-respiracion .rt-pill { background: rgba(27,38,59,0.08); color: #1B263B; border: 1px solid rgba(27,38,59,0.12); }
-        .rt-respiracion .rt-title { font-size: clamp(1.5rem, 4vw, 2.25rem); font-weight: 900; color: #0f172a; line-height: 1.15; margin-bottom: 0.75rem; }
-        .rt-respiracion .rt-desc { color: #64748b; font-size: 0.95rem; max-width: 520px; margin: 0 auto; line-height: 1.6; }
+        .rt-respiracion .rt-title { width: 100%; max-width: 32rem; margin-left: auto; margin-right: auto; margin-bottom: 0.75rem; font-size: clamp(1.5rem, 4vw, 2.25rem); font-weight: 900; color: #0f172a; line-height: 1.15; text-align: center; letter-spacing: -0.02em; text-wrap: balance; }
+        .rt-respiracion .rt-desc { width: 100%; max-width: 520px; margin: 0 auto; color: #475569; font-size: 0.95rem; line-height: 1.6; text-align: center; }
         .rt-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 220px; background: #fff; border: 1px solid #e2e8f0; }
         .rt-split-text { padding: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
         .rt-split-text .rt-pill { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
@@ -97,8 +79,8 @@
         .rt-home-glow { position: absolute; width: 180px; height: 180px; border-radius: 50%; left: -65px; bottom: -65px; background: radial-gradient(circle, rgba(255,84,112,.22) 0%, rgba(255,84,112,0) 72%); z-index: 2; pointer-events: none; }
         .rt-content { position: relative; z-index: 3; width: min(760px, 92%); margin: 0 auto; padding: 46px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; }
         .rt-glass-pill { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: #fff; font-size: 9px; font-weight: 900; padding: 7px 14px; border-radius: 999px; text-transform: uppercase; letter-spacing: .2em; margin-bottom: 1.2rem; display: inline-flex; align-items: center; gap: 8px; width: max-content; }
-        .rt-title { font-size: clamp(2rem, 3.2vw, 3rem); font-weight: 900; line-height: 1.08; letter-spacing: -0.04em; margin-bottom: .85rem; color: #fff; max-width: 18ch; text-wrap: balance; }
-        .rt-desc { color: rgba(255,255,255,.78); font-size: clamp(.95rem, 1.5vw, 1.05rem); line-height: 1.62; max-width: 56ch; margin: 0 auto; }
+        .rompetrafico .rt-title { font-size: clamp(2rem, 3.2vw, 3rem); font-weight: 900; line-height: 1.08; letter-spacing: -0.04em; margin-bottom: .85rem; color: #fff; max-width: 18ch; text-wrap: balance; }
+        .rompetrafico .rt-desc { color: rgba(255,255,255,.78); font-size: clamp(.95rem, 1.5vw, 1.05rem); line-height: 1.62; max-width: 56ch; margin: 0 auto; }
         .rt-home-cta-btn { display: inline-flex; align-items: center; gap: 10px; margin-top: 1.45rem; background: linear-gradient(180deg, #ff5f79 0%, #f43f5e 100%); color: #fff; font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: none; padding: 13px 24px; border-radius: 999px; border: 1px solid rgba(255,255,255,.2); box-shadow: 0 16px 30px -18px rgba(244,63,94,.75); }
         .rt-home-cta-btn i { font-size: 12px; }
         .rt-chevron { display: none; }
@@ -106,8 +88,8 @@
             .rompetrafico { min-height: auto; border-radius: 22px; }
             .rt-home-glow { width: 145px; height: 145px; left: -58px; bottom: -58px; }
             .rt-content { padding: 40px 22px; }
-            .rt-title { font-size: 2rem; max-width: 13ch; }
-            .rt-desc { font-size: 1rem; max-width: 26ch; }
+            .rompetrafico .rt-title { font-size: 2rem; max-width: 13ch; }
+            .rompetrafico .rt-desc { font-size: 1rem; max-width: 26ch; }
             .rt-home-cta-btn { margin-top: 1.3rem; padding: 13px 22px; }
         }
 
@@ -215,4 +197,5 @@
         .modal-location-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; width: 100%; padding: 15px 4px 30px 4px; }
         @media (max-width: 640px) { .modal-location-grid { grid-template-columns: 1fr; } }
     </style>
+    <link rel="stylesheet" href="css/locales_showroom.css?v=1">
 </head>

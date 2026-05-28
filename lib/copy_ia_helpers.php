@@ -3,6 +3,31 @@
  * Generación de copy con Gemini (catálogo + encabezados home).
  */
 
+function improgyp_gemini_model_default(): string
+{
+    return 'gemini-2.5-flash-lite';
+}
+
+function improgyp_gemini_api_key(array $env): string
+{
+    $paid = trim((string) ($env['GEMINI_API_KEY_PAID'] ?? ''));
+    if ($paid !== '') {
+        return $paid;
+    }
+    return trim((string) ($env['GEMINI_API_KEY'] ?? ''));
+}
+
+function improgyp_gemini_esta_configurado(array $env): bool
+{
+    return improgyp_gemini_api_key($env) !== '';
+}
+
+function improgyp_gemini_model(array $env): string
+{
+    $m = trim((string) ($env['GEMINI_MODEL'] ?? ''));
+    return $m !== '' ? $m : improgyp_gemini_model_default();
+}
+
 function improgyp_frases_copy_evitar(): string
 {
     $fijas = ['Potencia Total', 'Acabado profesional', 'Precisión Angular', 'Rendimiento Superior', 'para tu máximo nivel'];
@@ -50,6 +75,7 @@ function improgyp_construir_prompt_copy(array $data): string
             'tendencias'   => 'Productos en Tendencia (demanda actual en obra)',
             'mas_vendidos' => 'Los Más Vendidos (prueba social comercial)',
             'logos'        => 'Marcas Aliadas / fabricantes oficiales',
+            'blog'         => 'Bloque Blog en el home (guías y novedades)',
         ];
         $descr = $seccion_nombres[$seccion] ?? $seccion;
         return "Rol: Copywriter Senior E-commerce para IMPROGYP (Ecuador).\n"
@@ -75,12 +101,12 @@ function improgyp_construir_prompt_copy(array $data): string
 
 function improgyp_gemini_generar_copy(string $prompt, array $env, bool $reintentar = true): array
 {
-    $apiKey = $env['GEMINI_API_KEY_PAID'] ?? $env['GEMINI_API_KEY'] ?? '';
+    $apiKey = improgyp_gemini_api_key($env);
     if ($apiKey === '') {
         return ['error' => 'GEMINI_API_KEY no configurada en .env'];
     }
 
-    $modelName = $env['GEMINI_MODEL'] ?? 'gemini-2.5-flash';
+    $modelName = improgyp_gemini_model($env);
     $urlGemini = "https://generativelanguage.googleapis.com/v1beta/models/{$modelName}:generateContent?key=" . $apiKey;
     $payload = [
         'contents' => [['parts' => [['text' => $prompt]]]],

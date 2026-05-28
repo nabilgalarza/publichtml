@@ -279,7 +279,7 @@
     }
     .btn-location-action:hover { background: #f1f5f9; color: var(--theme-green); }
 
-    /* Sucursales + asesoría — Concierge premium */
+    /* Sucursales + asesoría — layout shell (Showroom: css/locales_showroom.css) */
     .locales-premium-section {
         padding: 3.5rem 0 4.5rem;
         background: linear-gradient(180deg, #f8fafc 0%, #ffffff 45%, #f1f5f9 100%);
@@ -550,6 +550,10 @@
         border-color: rgba(255,255,255,0.16);
         box-shadow: 0 34px 70px -32px rgba(9,10,18,0.95);
     }
+    .rompetrafico.rompetrafico--home-cta,
+    .rompetrafico.rompetrafico--home-cta:hover {
+        box-shadow: none;
+    }
     .rompetrafico-has-image {
         display: grid;
         grid-template-columns: minmax(280px, 40%) minmax(0, 1fr);
@@ -684,6 +688,77 @@
         .rt-home-cta-btn { margin-top: 1.3rem; padding: 13px 22px; }
     }
 
+    /* Carrusel productos home (Tendencias / Más vendidos) */
+    .improgyp-product-carousel {
+        position: relative;
+    }
+    .improgyp-carousel-viewport {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: 2px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 4px 2px 10px;
+    }
+    .improgyp-carousel-viewport::-webkit-scrollbar {
+        display: none;
+    }
+    .improgyp-carousel-slide {
+        flex: 0 0 calc((100% - 1rem) / 2.12);
+        min-width: 0;
+        scroll-snap-align: start;
+    }
+    @media (min-width: 768px) {
+        .improgyp-product-carousel {
+            padding: 0 2.75rem;
+        }
+        .improgyp-carousel-slide {
+            flex: 0 0 calc((100% - 2rem) / 3);
+        }
+    }
+    @media (min-width: 1024px) {
+        .improgyp-carousel-slide {
+            flex: 0 0 calc((100% - 3rem) / 4);
+        }
+    }
+    .improgyp-carousel-btn {
+        display: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 5;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 999px;
+        border: 1px solid #e2e8f0;
+        background: #fff;
+        color: #1B263B;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s, opacity 0.2s;
+    }
+    @media (min-width: 768px) {
+        .improgyp-carousel-btn {
+            display: inline-flex;
+        }
+    }
+    .improgyp-carousel-btn:hover:not(:disabled) {
+        background: #1B263B;
+        color: #fff;
+        border-color: #1B263B;
+    }
+    .improgyp-carousel-btn:disabled {
+        opacity: 0.35;
+        cursor: default;
+    }
+    .improgyp-carousel-prev { left: 0; }
+    .improgyp-carousel-next { right: 0; }
+
     /* Marcas aliadas — marquee de logos (sin caja; logos sobre fondo de página) */
     .marcas-marquee-section .marcas-marquee-wrap {
         position: relative;
@@ -763,3 +838,4 @@
         background: linear-gradient(270deg, #f8fafc 0%, transparent 100%);
     }
 </style>
+<link rel="stylesheet" href="css/locales_showroom.css?v=1">

@@ -138,6 +138,48 @@ function improgyp_landing_section_heading(array $sec): array
     ];
 }
 
+/** Tipos con encabezados láser en el Editor del Home (Apariencia). */
+function improgyp_landing_tipos_encabezado_secciones(): array
+{
+    return ['categorias', 'tendencias', 'mas_vendidos', 'logos', 'blog'];
+}
+
+function improgyp_landing_find_section(array $secciones, string $tipo): ?array
+{
+    foreach ($secciones as $s) {
+        $t = $s['tipo'] ?? '';
+        if ($t === $tipo || ($tipo === 'mas_vendidos' && $t === 'destacados')) {
+            return $s;
+        }
+    }
+    return null;
+}
+
+/**
+ * Portada: actualiza activo/límite/etc. sin pisar titulo_normal, titulo_resaltado ni subtitulo.
+ */
+function improgyp_landing_merge_portada_section(?array $prev, array $updates): array
+{
+    $tipo = $updates['tipo'] ?? '';
+    $base = is_array($prev) ? $prev : ['tipo' => $tipo];
+    $base['tipo'] = $tipo;
+
+    if (in_array($tipo, improgyp_landing_tipos_encabezado_secciones(), true)) {
+        if (array_key_exists('activo', $updates)) {
+            $base['activo'] = (bool) $updates['activo'];
+        }
+        if (isset($updates['limite'])) {
+            $base['limite'] = $updates['limite'];
+        }
+        if (isset($updates['marquee_seg'])) {
+            $base['marquee_seg'] = $updates['marquee_seg'];
+        }
+        return $base;
+    }
+
+    return array_merge($base, $updates);
+}
+
 function improgyp_landing_catalogo_fallback($limite = 8, $badge = '')
 {
     $items = improgyp_landing_dedup_catalogo(improgyp_landing_load_catalogo());

@@ -21,8 +21,17 @@ foreach(explode("\n", $envData) as $line) {
         $env[trim($k)] = trim(trim($v), "\"'");
     }
 }
-$gemini_api_key = $env['GEMINI_API_KEY_PAID'] ?? $env['GEMINI_API_KEY'] ?? '';
-$gemini_model = $env['GEMINI_MODEL'] ?? 'gemini-1.5-flash'; 
+require_once __DIR__ . '/lib/copy_ia_helpers.php';
+$gemini_api_key = improgyp_gemini_api_key($env);
+$gemini_model = improgyp_gemini_model($env);
+
+if ($gemini_api_key === '') {
+    echo json_encode([
+        'mensaje_voz' => 'El asesor IA no está disponible: configura GEMINI_API_KEY en el archivo .env del servidor.',
+        'skus_recomendados' => [],
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
 // 1.5 CONEXIÓN A BD PARA REGLAS DINÁMICAS
 try {

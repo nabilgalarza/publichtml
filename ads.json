@@ -23,11 +23,11 @@
         {
             "estilo": "respiracion",
             "etiqueta": "Cobertura Nacional",
-            "titulo": "Envíos a todo el pais",
-            "desc": "¡Aprovecha hoy! Por compras mayores a $50, el envío corre por nuestra cuenta. No pierdas la oportunidad de ahorrar mientras renuevas tu stock.",
-            "extra": "",
+            "titulo": "Envíos a todo el país",
+            "desc": "Compras desde $50: el envío va por nuestra cuenta (según zona). Renueva tu stock con entrega a nivel nacional.",
+            "extra": "Consultar envíos",
             "img_url": "",
-            "link": "https://wa.me/593991754887",
+            "link": "https://wa.me/593991754887?text=Hola%2C%20consulto%20por%20env%C3%ADos%20y%20compras%20desde%20%2450.",
             "activo": true,
             "cada_n_filas": 4
         },
