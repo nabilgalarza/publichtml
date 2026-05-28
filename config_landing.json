@@ -15,8 +15,6 @@
         {
             "tipo": "slider",
             "activo": true,
-            "autoplay": true,
-            "intervalo_ms": 6000,
             "slides": [
                 {
                     "etiqueta": "Novedades",
@@ -34,7 +32,9 @@
                     "cta_texto": "Acceder B2B",
                     "cta_url": "b2b/"
                 }
-            ]
+            ],
+            "autoplay": true,
+            "intervalo_ms": 6000
         },
         {
             "tipo": "categorias",
@@ -64,13 +64,14 @@
             "titulo": "¿Listo para tu próximo proyecto?",
             "subtitulo": "Explora el catálogo con asesoría técnica y cotiza por WhatsApp en minutos.",
             "cta_texto": "Ir a la tienda",
-            "cta_url": "productos.php"
+            "cta_url": "productos.php",
+            "imagen": "ads_media/cta_1779978340.webp"
         },
         {
             "tipo": "blog",
+            "activo": true,
             "titulo": "Desde el Blog",
-            "subtitulo": "Guías y novedades para profesionales del drywall.",
-            "activo": true
+            "subtitulo": "Guías y novedades para profesionales del drywall."
         },
         {
             "tipo": "logos",

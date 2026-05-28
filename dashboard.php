@@ -904,6 +904,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             'activo' => isset($_POST['sec_mas_vendidos_activo']),
         ];
         if (isset($_POST['sec_cta_activo'])) {
+            $ctaImgUrl = trim($_POST['sec_cta_img_url_actual'] ?? '');
+            if (isset($_FILES['sec_cta_imagen']) && ($_FILES['sec_cta_imagen']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK) {
+                $tmpName = $_FILES['sec_cta_imagen']['tmp_name'];
+                $imgGd = @imagecreatefromstring(file_get_contents($tmpName));
+                if ($imgGd !== false) {
+                    if (!is_dir(__DIR__ . '/ads_media')) {
+                        mkdir(__DIR__ . '/ads_media', 0755, true);
+                    }
+                    $nombreArchivo = 'cta_' . time() . '.webp';
+                    if (imagewebp($imgGd, __DIR__ . '/ads_media/' . $nombreArchivo, 85)) {
+                        if (!empty($ctaImgUrl) && function_exists('borrarFotoFisica')) {
+                            borrarFotoFisica($ctaImgUrl);
+                        }
+                        $ctaImgUrl = 'ads_media/' . $nombreArchivo;
+                    }
+                    imagedestroy($imgGd);
+                }
+            }
             $secciones[] = [
                 'tipo' => 'cta',
                 'activo' => true,
@@ -912,6 +930,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 'subtitulo' => trim($_POST['sec_cta_subtitulo'] ?? ''),
                 'cta_texto' => trim($_POST['sec_cta_texto'] ?? 'Ir a la tienda'),
                 'cta_url' => trim($_POST['sec_cta_url'] ?? 'productos.php'),
+                'imagen' => $ctaImgUrl,
             ];
         }
         if (isset($_POST['sec_blog_activo'])) {

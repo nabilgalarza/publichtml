@@ -43,7 +43,7 @@ while (count($slidesCfg) < 3) {
         <p class="text-sm text-slate-500 mt-1">Orden: slider → categorías → tendencias → más vendidos → CTA → blog → marcas → sucursales. Encabezados con láser en <a href="?view=apariencia&sub=secciones" class="text-[#3A86FF] font-bold underline">Secciones Home</a>.</p>
     </div>
 
-    <form method="POST" action="dashboard.php?view=apariencia&sub=portada" class="space-y-8">
+    <form method="POST" action="dashboard.php?view=apariencia&sub=portada" enctype="multipart/form-data" class="space-y-8">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
         <input type="hidden" name="action" value="guardar_landing">
 
@@ -141,11 +141,19 @@ while (count($slidesCfg) < 3) {
                 <span class="font-bold text-sm text-slate-700">5. CTA rompetráfico</span>
             </label>
             <div class="pl-6 grid sm:grid-cols-2 gap-4">
+                <input type="hidden" name="sec_cta_img_url_actual" value="<?= htmlspecialchars($secCta['imagen'] ?? '') ?>">
                 <input type="text" name="sec_cta_etiqueta" value="<?= htmlspecialchars($secCta['etiqueta'] ?? 'Asesoría') ?>" placeholder="Etiqueta" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
                 <input type="text" name="sec_cta_titulo" value="<?= htmlspecialchars($secCta['titulo'] ?? '') ?>" placeholder="Título" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
                 <input type="text" name="sec_cta_subtitulo" value="<?= htmlspecialchars($secCta['subtitulo'] ?? '') ?>" placeholder="Subtítulo" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100 sm:col-span-2">
                 <input type="text" name="sec_cta_texto" value="<?= htmlspecialchars($secCta['cta_texto'] ?? 'Ir a la tienda') ?>" placeholder="Botón" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
                 <input type="text" name="sec_cta_url" value="<?= htmlspecialchars($secCta['cta_url'] ?? 'productos.php') ?>" placeholder="URL" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
+                <div class="sm:col-span-2">
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Imagen CTA (opcional)</label>
+                    <input type="file" name="sec_cta_imagen" accept="image/*" class="w-full premium-input rounded-xl px-3 py-2 text-xs border border-slate-100">
+                    <?php if (!empty($secCta['imagen'])): ?>
+                        <p class="text-[10px] text-emerald-600 mt-1 font-bold"><i class="fa-solid fa-check"></i> Imagen actual cargada</p>
+                    <?php endif; ?>
+                </div>
             </div>
 
             <label class="flex items-center gap-3 cursor-pointer">

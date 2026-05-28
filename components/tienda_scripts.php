@@ -1174,7 +1174,7 @@
                 const tendenciaData = (datosRanking.tendencias || []).find(t => t.nombre === prod.nombre);
 
                 if (impulsado) {
-                    fomoBadgeHTML = `<div class="absolute top-[10px] left-[10px] bg-[#1B263B]/90 backdrop-blur-md text-white text-[10px] font-black px-2 py-1 rounded-md shadow-lg z-10 flex items-center gap-1 border border-[#1B263B] animate-pulse"><i class="fa-solid fa-bolt-lightning text-white"></i> TOP</div>`;
+                    fomoBadgeHTML = `<div class="absolute top-[10px] left-[10px] bg-[#1B263B]/90 backdrop-blur-md text-white text-[10px] font-black px-2 py-1 rounded-md shadow-lg z-10 flex items-center gap-1 border border-[#1B263B]"><i class="fa-solid fa-bolt-lightning text-white"></i> TOP</div>`;
                 } else if (tendenciaData && tendenciaData.clics > 1) {
                     fomoBadgeHTML = `<div class="absolute top-[10px] left-[10px] bg-rose-500/90 backdrop-blur-md text-white text-[10px] font-black px-2 py-1 rounded-md shadow-lg z-10 flex items-center gap-1 border border-rose-400"><i class="fa-solid fa-fire text-yellow-300"></i> TENDENCIA</div>`;
                 }

@@ -25,7 +25,7 @@ function improgyp_landing_card_badge_html($badge) {
         return '<div class="absolute top-[10px] left-[10px] bg-[#1B263B]/90 backdrop-blur-md text-white text-[10px] font-black px-2 py-1 rounded-md shadow-lg z-10 flex items-center gap-1 border border-[#1B263B]"><i class="fa-solid fa-bolt-lightning text-white"></i> TOP</div>';
     }
     if ($badge === 'tendencia') {
-        return '<div class="absolute top-[10px] left-[10px] bg-[#3A86FF] text-white text-[10px] font-black px-2.5 py-1 rounded-full shadow-lg z-10 uppercase tracking-wider">Tendencia</div>';
+        return '<div class="absolute top-[10px] left-[10px] bg-rose-500/90 backdrop-blur-md text-white text-[10px] font-black px-2 py-1 rounded-md shadow-lg z-10 flex items-center gap-1 border border-rose-400"><i class="fa-solid fa-fire text-yellow-300"></i> TENDENCIA</div>';
     }
     return '';
 }
@@ -266,7 +266,7 @@ function improgyp_landing_defaults() {
             ['tipo' => 'categorias', 'titulo' => 'Explorar por categoría', 'subtitulo' => 'Acceso directo al catálogo filtrado.', 'limite' => 8, 'activo' => true],
             ['tipo' => 'tendencias', 'titulo' => 'Tendencias', 'subtitulo' => 'Lo más visto en las últimas 48 horas.', 'limite' => 8, 'activo' => true],
             ['tipo' => 'mas_vendidos', 'titulo' => 'Más vendidos', 'subtitulo' => 'Selección impulsada por nuestro equipo comercial.', 'limite' => 8, 'activo' => true],
-            ['tipo' => 'cta', 'activo' => true, 'etiqueta' => 'Asesoría', 'titulo' => '¿Listo para tu próximo proyecto?', 'subtitulo' => 'Explora el catálogo con asesoría técnica y cotiza por WhatsApp en minutos.', 'cta_texto' => 'Ir a la tienda', 'cta_url' => 'productos.php'],
+            ['tipo' => 'cta', 'activo' => true, 'etiqueta' => 'Asesoría', 'titulo' => '¿Listo para tu próximo proyecto?', 'subtitulo' => 'Explora el catálogo con asesoría técnica y cotiza por WhatsApp en minutos.', 'cta_texto' => 'Ir a la tienda', 'cta_url' => 'productos.php', 'imagen' => ''],
             ['tipo' => 'blog', 'titulo' => 'Desde el Blog', 'subtitulo' => 'Guías y novedades para profesionales.', 'activo' => true],
             ['tipo' => 'logos', 'titulo' => 'Marcas aliadas', 'subtitulo' => 'Distribuidores oficiales que respaldan tu obra.', 'limite' => 10, 'activo' => true],
             ['tipo' => 'locales', 'titulo' => 'Red de sucursales', 'subtitulo' => 'Atención técnica en todo Ecuador.', 'activo' => true],
