@@ -123,14 +123,20 @@ function renderCheckoutTotals(totals) {
     const baseEl = document.getElementById('checkout-base');
     const ivaEl = document.getElementById('checkout-iva');
     const totalEl = document.getElementById('checkout-total');
-    if (meta) {
+    const metaText = (() => {
         const p = totals.lines === 1 ? 'producto' : 'productos';
         const u = totals.units === 1 ? 'unidad' : 'unidades';
-        meta.textContent = `${totals.lines} ${p} · ${totals.units} ${u}`;
-    }
+        return `${totals.lines} ${p} · ${totals.units} ${u}`;
+    })();
+    if (meta) meta.textContent = metaText;
+    const barMeta = document.getElementById('checkout-mob-bar-meta');
+    if (barMeta) barMeta.textContent = metaText;
+    const totalStr = formatMoney(totals.total);
     if (baseEl) baseEl.textContent = formatMoney(totals.base);
     if (ivaEl) ivaEl.textContent = formatMoney(totals.iva);
-    if (totalEl) totalEl.textContent = formatMoney(totals.total);
+    if (totalEl) totalEl.textContent = totalStr;
+    const barTotal = document.getElementById('checkout-mob-bar-total');
+    if (barTotal) barTotal.textContent = totalStr;
 }
 
 function normalizeCityKey(str) {
@@ -816,6 +822,90 @@ function clearCartAfterCheckout() {
     if (drawer?.classList.contains('show')) toggleCartDrawer();
 }
 
+function isCheckoutMobileLayout() {
+    return window.matchMedia('(max-width: 767px)').matches;
+}
+
+function getCheckoutModalPanel() {
+    return document.querySelector('#modal-checkout-header .checkout-modal-panel');
+}
+
+function syncCheckoutMobSheetUi() {
+    const panel = getCheckoutModalPanel();
+    const backdrop = document.getElementById('checkout-mob-sheet-backdrop');
+    const barOpen = document.getElementById('checkout-mob-bar-open');
+    if (!panel || !isCheckoutMobileLayout()) {
+        if (backdrop) {
+            backdrop.hidden = true;
+            backdrop.setAttribute('aria-hidden', 'true');
+        }
+        return;
+    }
+    const open = panel.classList.contains('checkout-mob-sheet-open');
+    if (barOpen) barOpen.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (backdrop) {
+        backdrop.hidden = !open;
+        backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+    const sheet = document.getElementById('checkout-summary-sheet');
+    if (sheet) sheet.setAttribute('aria-hidden', open ? 'false' : 'true');
+}
+
+function openCheckoutMobSheet() {
+    if (!isCheckoutMobileLayout()) return;
+    const panel = getCheckoutModalPanel();
+    if (!panel) return;
+    closeCheckoutStoreDropdown();
+    panel.classList.add('checkout-mob-sheet-open');
+    syncCheckoutMobSheetUi();
+    const formCol = panel.querySelector('.checkout-form-col');
+    if (formCol) formCol.scrollTop = 0;
+}
+
+function closeCheckoutMobSheet() {
+    const panel = getCheckoutModalPanel();
+    if (!panel) return;
+    panel.classList.remove('checkout-mob-sheet-open');
+    syncCheckoutMobSheetUi();
+}
+
+function toggleCheckoutMobSheet() {
+    if (!isCheckoutMobileLayout()) return;
+    const panel = getCheckoutModalPanel();
+    if (!panel) return;
+    if (panel.classList.contains('checkout-mob-sheet-open')) closeCheckoutMobSheet();
+    else openCheckoutMobSheet();
+}
+
+function initCheckoutMobSheet() {
+    const barOpen = document.getElementById('checkout-mob-bar-open');
+    const backdrop = document.getElementById('checkout-mob-sheet-backdrop');
+    const handle = document.getElementById('checkout-mob-sheet-handle');
+
+    barOpen?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleCheckoutMobSheet();
+    });
+    handle?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleCheckoutMobSheet();
+    });
+    backdrop?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeCheckoutMobSheet();
+    });
+
+    if (!window._checkoutMobSheetMqBound) {
+        window._checkoutMobSheetMqBound = true;
+        const mq = window.matchMedia('(max-width: 767px)');
+        const onMq = () => {
+            if (!mq.matches) closeCheckoutMobSheet();
+        };
+        if (typeof mq.addEventListener === 'function') mq.addEventListener('change', onMq);
+        else if (typeof mq.addListener === 'function') mq.addListener(onMq);
+    }
+}
+
 function openCheckoutModal() {
     const modal = document.getElementById('modal-checkout-header');
     if (!modal) {
@@ -831,6 +921,7 @@ function openCheckoutModal() {
     modal.classList.add('flex');
     document.body.style.overflow = 'hidden';
     closeCheckoutStoreDropdown();
+    closeCheckoutMobSheet();
 
     loadCartItems();
     renderCheckoutList();
@@ -907,6 +998,8 @@ window.selectCardBrand = selectCardBrand;
 function closeCheckoutModal() {
     const modal = document.getElementById('modal-checkout-header');
     if (!modal) return;
+    closeCheckoutMobSheet();
+    closeCheckoutStoreDropdown();
     modal.classList.add('hidden');
     modal.classList.remove('flex');
     document.body.style.overflow = '';
@@ -951,6 +1044,7 @@ async function submitCheckout() {
 
     const validation = validateCheckoutForm();
     if (!validation.ok) {
+        if (isCheckoutMobileLayout()) closeCheckoutMobSheet();
         if (validation.focus) scrollCheckoutSectionTo(validation.focus);
         showToastNotification(validation.message || 'Completa los campos obligatorios.', 'error');
         return;
@@ -1001,6 +1095,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.remove('flex');
     }
     initCheckoutStoreDropdown();
+    initCheckoutMobSheet();
     initCheckoutPaymentUI();
     loadCheckoutLocales().then(() => {
         ensureValidCurrentStore();
@@ -1013,7 +1108,11 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     const modal = document.getElementById('modal-checkout-header');
-    if (modal && !modal.classList.contains('hidden')) {
-        closeCheckoutModal();
+    if (!modal || modal.classList.contains('hidden')) return;
+    const panel = getCheckoutModalPanel();
+    if (isCheckoutMobileLayout() && panel?.classList.contains('checkout-mob-sheet-open')) {
+        closeCheckoutMobSheet();
+        return;
     }
+    closeCheckoutModal();
 });

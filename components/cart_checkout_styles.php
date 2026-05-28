@@ -842,15 +842,181 @@
         text-overflow: ellipsis;
     }
     .tabular-nums { font-variant-numeric: tabular-nums; }
+    @media (min-width: 768px) {
+        .checkout-mob-bottom-bar,
+        .checkout-mob-sheet-backdrop,
+        .checkout-mob-sheet-handle { display: none !important; }
+    }
     @media (max-width: 767px) {
-        .checkout-modal-panel { max-height: 96vh; border-radius: 16px; }
+        .checkout-modal-panel {
+            --checkout-mob-bar-h: 62px;
+            max-height: 96vh;
+            border-radius: 16px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .checkout-modal-body {
+            flex: 1;
+            min-height: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
         .checkout-form-col,
-        .checkout-col-scroll { max-height: none; }
-        .checkout-summary-col { max-height: none; }
-        .checkout-items-scroll {
+        .checkout-col-scroll {
+            flex: 1;
+            min-height: 0;
+            max-height: none;
+            overflow-y: auto;
+        }
+        /* Sheet dentro de .checkout-modal-body; la barra inferior está fuera del body → bottom: 0 */
+        .checkout-summary-col {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: auto;
+            bottom: 0;
+            height: 75%;
+            max-height: 75%;
+            z-index: 28;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -16px 48px rgba(15, 23, 42, 0.22);
+            transform: translateY(100%);
+            transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1);
+            overflow: hidden;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-summary-col {
+            top: 25%;
+            bottom: 0;
+            height: auto;
+            max-height: none;
+            min-height: 0;
+            transform: translateY(0);
+            visibility: visible;
+            pointer-events: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .checkout-mob-sheet-handle {
+            flex-shrink: 0;
+            width: 100%;
+            padding: 8px 0 4px;
+            border: none;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .checkout-mob-sheet-handle span {
+            width: 40px;
+            height: 4px;
+            border-radius: 999px;
+            background: #cbd5e1;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-summary-inner {
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 0 12px 12px;
+            gap: 8px;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-summary-head {
+            flex-shrink: 0;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open #check-list.checkout-items-scroll {
             flex: 1 1 0;
-            min-height: 120px;
-            max-height: min(36vh, 280px);
+            min-height: 0;
+            max-height: none !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-totals-block {
+            flex-shrink: 0;
+            margin-top: auto;
+        }
+        .checkout-summary-inner .checkout-wa-cta { display: none; }
+        .checkout-mob-sheet-backdrop {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            background: rgba(15, 23, 42, 0.45);
+            border: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-mob-sheet-backdrop:not([hidden]) {
+            display: block;
+        }
+        .checkout-mob-sheet-backdrop[hidden] { display: none !important; }
+        .checkout-mob-bottom-bar {
+            flex-shrink: 0;
+            display: flex;
+            align-items: stretch;
+            gap: 8px;
+            padding: 8px 10px calc(10px + env(safe-area-inset-bottom, 0px));
+            background: #fff;
+            border-top: 1px solid #e2e8f0;
+            box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
+            position: relative;
+            z-index: 30;
+        }
+        .checkout-mob-bar-open {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            cursor: pointer;
+            text-align: left;
+            font: inherit;
+            color: inherit;
+        }
+        .checkout-mob-bar-meta {
+            display: block;
+            font-size: 9px;
+            font-weight: 700;
+            color: #64748b;
+        }
+        .checkout-mob-bar-total {
+            font-size: 15px;
+            font-weight: 900;
+            color: #1B263B;
+        }
+        .checkout-mob-bar-open i {
+            margin-left: auto;
+            font-size: 11px;
+            color: #64748b;
+            transition: transform 0.25s;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-mob-bar-open i {
+            transform: rotate(180deg);
+        }
+        .checkout-mob-bar-cta {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 0 18px;
+            min-width: 110px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 900;
+            cursor: pointer;
         }
         .checkout-payment-tabs { grid-template-columns: repeat(2, 1fr); }
     }

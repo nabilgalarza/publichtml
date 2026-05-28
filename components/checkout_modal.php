@@ -125,7 +125,10 @@ $checkout_advisor_text = rawurlencode('Hola IMPROGYP, necesito asesoría con mi 
                 </section>
             </div>
 
-            <aside class="checkout-summary-col">
+            <aside class="checkout-summary-col" id="checkout-summary-sheet">
+                <button type="button" class="checkout-mob-sheet-handle" id="checkout-mob-sheet-handle" aria-label="Mostrar u ocultar resumen">
+                    <span></span>
+                </button>
                 <div class="checkout-summary-inner">
                     <div class="checkout-summary-head">
                         <div>
@@ -158,6 +161,20 @@ $checkout_advisor_text = rawurlencode('Hola IMPROGYP, necesito asesoría con mi 
                     </button>
                 </div>
             </aside>
+        </div>
+
+        <div class="checkout-mob-sheet-backdrop" id="checkout-mob-sheet-backdrop" hidden aria-hidden="true"></div>
+
+        <div class="checkout-mob-bottom-bar" aria-label="Resumen y envío">
+            <button type="button" class="checkout-mob-bar-open" id="checkout-mob-bar-open" aria-expanded="false" aria-controls="checkout-summary-sheet">
+                <span class="checkout-mob-bar-meta" id="checkout-mob-bar-meta">0 productos</span>
+                <strong class="checkout-mob-bar-total tabular-nums" id="checkout-mob-bar-total">$0.00</strong>
+                <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="checkout-mob-bar-cta" id="checkout-mob-bar-cta" onclick="submitCheckout()">
+                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                <span>Enviar</span>
+            </button>
         </div>
     </div>
 </div>
