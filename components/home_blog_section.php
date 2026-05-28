@@ -1,6 +1,6 @@
 <?php
 /**
- * Sección blog en Home — delega al layout compartido.
+ * Sección blog en Home — vitrina grid (6) + modal con carga lazy.
  */
 require_once __DIR__ . '/../lib/blog_layout_view.php';
 require_once __DIR__ . '/../lib/landing_helpers.php';
@@ -11,7 +11,7 @@ if ($_bl_pdo) {
     try {
         blog_ensure_table($_bl_pdo);
         blog_seed_if_empty($_bl_pdo);
-        $_bl_articulos = blog_fetch_public((int) blog_home_fetch_limit());
+        $_bl_articulos = blog_fetch_public((int) blog_home_fetch_limit(), false);
     } catch (Exception $e) {
         // silencioso
     }
@@ -25,6 +25,9 @@ $headingHtml = $blogNorm . ' <span>' . $blogRes . '</span>';
 $bl_prep = blog_layout_prepare($_bl_articulos, $base_url ?? '', [
     'heading_html' => $headingHtml,
     'show_view_all' => true,
+    'open_in_modal' => true,
+    'home_preview' => true,
+    'force_layout' => 'grid3',
     'section_id' => 'bl-home-section',
     'section_class_extra' => 'bl-section--home',
 ]);
@@ -41,6 +44,7 @@ $bl_show_view_all = $bl_prep['show_view_all'];
 $bl_section_id = $bl_prep['section_id'];
 $bl_section_class_extra = $bl_prep['section_class_extra'];
 $bl_js_cfg = $bl_prep['js_cfg'];
+$bl_open_in_modal = $bl_prep['open_in_modal'];
 $bl_stage_id = 'bl-stage';
 $bl_pagination_id = 'bl-pagination';
 

@@ -94,6 +94,78 @@
             return productIdent(prod);
         }
 
+        function normalizeIdent(str) {
+            return String(str || '').trim();
+        }
+
+        /** Busca producto por código; por nombre solo si hay un único match en catálogo. */
+        function findProductByIdent(identificador) {
+            const id = normalizeIdent(identificador);
+            if (!id) return null;
+            const byCodigo = catalogoCompleto.find((p) => p.codigo && normalizeIdent(p.codigo) === id);
+            if (byCodigo) return byCodigo;
+            const byNombre = catalogoCompleto.filter((p) => p.nombre === id);
+            if (byNombre.length === 1) return byNombre[0];
+            return null;
+        }
+
+        function cartMatchesIdent(cartItem, identificador) {
+            const id = normalizeIdent(identificador);
+            if (!id || !cartItem) return false;
+            if (cartItem.codigo && normalizeIdent(cartItem.codigo) === id) return true;
+            if (!cartItem.codigo && cartItem.nombre === id) return true;
+            return false;
+        }
+
+        function cartMatchesProduct(cartItem, prod) {
+            return cartMatchesIdent(cartItem, productIdent(prod));
+        }
+
+        function wishlistMatchesProduct(wishItem, prod) {
+            if (!wishItem || !prod) return false;
+            const pc = prod.codigo && normalizeIdent(prod.codigo);
+            const wc = wishItem.codigo && normalizeIdent(wishItem.codigo);
+            if (pc && wc) return pc === wc;
+            if (!pc && !wc && wishItem.nombre === prod.nombre) return true;
+            return false;
+        }
+
+        function wishlistMatchesIdent(wishItem, identificador) {
+            const prod = findProductByIdent(identificador);
+            if (prod) return wishlistMatchesProduct(wishItem, prod);
+            const id = normalizeIdent(identificador);
+            if (!id || !wishItem) return false;
+            if (wishItem.codigo && normalizeIdent(wishItem.codigo) === id) return true;
+            if (!wishItem.codigo && wishItem.nombre === id) return true;
+            return false;
+        }
+
+        function migrateCartAndWishlistIds() {
+            if (!catalogoCompleto.length) return;
+            let cartChanged = false;
+            let wishChanged = false;
+            carrito = carrito.map((item) => {
+                if (item.codigo) return item;
+                const matches = catalogoCompleto.filter((p) => p.nombre === item.nombre);
+                if (matches.length === 1) {
+                    cartChanged = true;
+                    return { ...item, codigo: matches[0].codigo || '' };
+                }
+                return item;
+            });
+            wishlist = wishlist.map((item) => {
+                if (item.codigo) return item;
+                const matches = catalogoCompleto.filter((p) => p.nombre === item.nombre);
+                if (matches.length === 1) {
+                    wishChanged = true;
+                    return { ...item, codigo: matches[0].codigo || '' };
+                }
+                return item;
+            });
+            if (cartChanged) localStorage.setItem('improgyp_carrito', JSON.stringify(carrito));
+            if (wishChanged) localStorage.setItem('improgyp_wishlist', JSON.stringify(wishlist));
+        }
+
         function escapeJsString(str) {
             return String(str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
         }
@@ -113,7 +185,7 @@
             const grid = document.getElementById('grid-productos');
             if (!grid) return;
             const cards = grid.querySelectorAll('article[data-product-ident]');
-            const prod = catalogoCompleto.find(p => p.nombre === identificador || p.codigo === identificador);
+            const prod = findProductByIdent(identificador);
             const keys = new Set([identificador]);
             if (prod) keys.add(productIdent(prod));
             for (const card of cards) {
@@ -130,7 +202,8 @@
                 // 1. CARGA PRIORITARIA: Catálogo primero para mostrar productos de inmediato
                 const catRes = await fetch('catalogo.json?v=' + Date.now()).then(r => r.ok ? r.json() : []).catch(() => []);
                 catalogoCompleto = catRes;
-                
+                migrateCartAndWishlistIds();
+
                 if (Array.isArray(catalogoCompleto) && catalogoCompleto.length > 0) {
                     const catMemoria = localStorage.getItem('improgyp_ai_cat') || localStorage.getItem('improgyp_memoria_cat') || 'Todos';
                     filtrarCategoria(catMemoria); // RENDERIZADO INICIAL RÁPIDO
@@ -187,10 +260,10 @@
                     setTimeout(() => {
                         filtrarCategoria(catDec);
                         setTimeout(() => {
-                            const existe = catalogoCompleto.find(p => p.nombre === prodDec || p.codigo === prodDec);
+                            const existe = findProductByIdent(prodDec);
                             if (existe) {
-                                scrollToProductInGrid(prodDec);
-                                abrirModalProducto(prodDec);
+                                scrollToProductInGrid(productIdent(existe));
+                                abrirModalProducto(productIdent(existe));
                             }
                         }, 500);
                     }, 300);
@@ -209,11 +282,12 @@
                 } else if (prodName) {
                     const prodDec = decodeURIComponent(prodName);
                     setTimeout(() => {
-                        const existe = catalogoCompleto.find(p => p.nombre === prodDec || p.codigo === prodDec);
+                        const existe = findProductByIdent(prodDec);
                         if (!existe) return;
+                        const prodIdentDeep = productIdent(existe);
                         const abrirYScroll = () => {
-                            scrollToProductInGrid(prodDec);
-                            abrirModalProducto(prodDec);
+                            scrollToProductInGrid(prodIdentDeep);
+                            abrirModalProducto(prodIdentDeep);
                         };
                         if (existe.categoria && existe.categoria !== 'Todos') {
                             filtrarCategoria(existe.categoria);
@@ -432,7 +506,7 @@
             targetList.forEach(prod => {
                 const actionContainer = document.getElementById(getSafeId(productIdent(prod))); if(!actionContainer) return; 
                 const pid = productIdent(prod);
-                const itemEnCarrito = carrito.find(c => (c.codigo && c.codigo === pid) || c.nombre === pid || c.nombre === prod.nombre); 
+                const itemEnCarrito = carrito.find((c) => cartMatchesProduct(c, prod)); 
                 const safeIdentificador = escapeJsString(pid);
                 if(itemEnCarrito) {
                     actionContainer.innerHTML = `<div class="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-1 h-10 md:h-9 mt-auto shadow-inner" onclick="event.stopPropagation()"><button onclick="modificarCantidad('${safeIdentificador}', -1)" class="w-9 md:w-8 h-full rounded-lg bg-white text-slate-500 shadow-sm hover:text-rose-500 font-black text-base active:scale-95">-</button><span class="font-black text-[13px] text-slate-800 w-6 text-center select-none">${itemEnCarrito.cantidad}</span><button onclick="modificarCantidad('${safeIdentificador}', 1)" class="w-9 md:w-8 h-full rounded-lg bg-white text-slate-500 shadow-sm hover:text-[#1B263B] font-black text-base active:scale-95">+</button></div>`;
@@ -440,7 +514,7 @@
             });
             if (improgypModalIdent) {
                 const identificadorModal = improgypModalIdent;
-                const itemModal = carrito.find(c => (c.codigo && c.codigo === identificadorModal) || c.nombre === identificadorModal);
+                const itemModal = carrito.find((c) => cartMatchesIdent(c, identificadorModal));
                 const btnModalWrapper = document.getElementById('modal-btn-add-wrapper'); 
                 const safeIdentificadorModal = identificadorModal.replace(/'/g, "\\'");
                 if(btnModalWrapper) {
@@ -451,10 +525,10 @@
         }
 
         function agregarAlCarrito(identificador) {
-            const prodIndex = carrito.findIndex(c => (c.codigo && c.codigo === identificador) || c.nombre === identificador);
+            const prodIndex = carrito.findIndex((c) => cartMatchesIdent(c, identificador));
             if (prodIndex > -1) { carrito[prodIndex].cantidad += 1; } 
             else {
-                const prodReal = catalogoCompleto.find(p => p.codigo === identificador || p.nombre === identificador);
+                const prodReal = findProductByIdent(identificador);
                 if (prodReal) { 
                     let precioBase = "0.00"; 
                     if(prodReal.presentaciones && prodReal.presentaciones.length > 0) { 
@@ -477,7 +551,7 @@
         }
 
         function modificarCantidad(identificador, delta) { 
-            const prodIndex = carrito.findIndex(c => (c.codigo && c.codigo === identificador) || c.nombre === identificador); 
+            const prodIndex = carrito.findIndex((c) => cartMatchesIdent(c, identificador)); 
             if (prodIndex > -1) { 
                 carrito[prodIndex].cantidad += delta; 
                 if(carrito[prodIndex].cantidad <= 0) carrito.splice(prodIndex, 1); 
@@ -486,7 +560,7 @@
             } 
         }
         function eliminarDelCarrito(identificador) { 
-            const prodIndex = carrito.findIndex(c => (c.codigo && c.codigo === identificador) || c.nombre === identificador); 
+            const prodIndex = carrito.findIndex((c) => cartMatchesIdent(c, identificador)); 
             if (prodIndex > -1) { 
                 carrito.splice(prodIndex, 1); 
                 localStorage.setItem('improgyp_carrito', JSON.stringify(carrito)); 
@@ -526,6 +600,7 @@
             }
             if (typeof window.syncCheckoutCartItems === 'function') window.syncCheckoutCartItems(carrito);
             if (typeof window.improgypOnCartUpdated === 'function') window.improgypOnCartUpdated();
+            else if (typeof renderCheckoutList === 'function') renderCheckoutList();
             actualizarBotonesGrid();
         }
 
@@ -677,7 +752,7 @@
         }
 
         function abrirModalProducto(identificador) {
-            const prod = catalogoCompleto.find(p => p.nombre === identificador || p.codigo === identificador); if(!prod) return;
+            const prod = findProductByIdent(identificador); if(!prod) return;
             const ident = productIdent(prod);
             improgypModalIdent = ident;
             radarNinja('Ver Producto', prod.nombre, prod.categoria); 
@@ -712,7 +787,7 @@
             document.getElementById('modal-price').innerText = (precioInicial !== "Consultar" && !precioInicial.toString().includes('$')) ? `$${precioInicial}` : precioInicial;
             const safeIdent = escapeJsString(ident);
             const btnWishlist = document.getElementById('modal-btn-wishlist');
-            const enWishlist = wishlist.some(w => (w.codigo && w.codigo === prod.codigo) || w.nombre === prod.nombre);
+            const enWishlist = wishlist.some((w) => wishlistMatchesProduct(w, prod));
             if(enWishlist) { btnWishlist.className = 'w-10 h-10 rounded-lg flex items-center justify-center text-lg transition-colors border border-slate-200 shadow-sm text-rose-500 bg-rose-50'; btnWishlist.innerHTML = '<i class="fa-solid fa-heart"></i>'; } 
             else { btnWishlist.className = 'w-10 h-10 rounded-lg flex items-center justify-center text-lg transition-colors border border-slate-200 shadow-sm text-slate-400 bg-white hover:text-rose-400 hover:border-rose-200'; btnWishlist.innerHTML = '<i class="fa-regular fa-heart"></i>'; }
             btnWishlist.setAttribute('onclick', `toggleWishlist('${safeIdent}', null, true)`); 
@@ -799,10 +874,10 @@
         }
 
         function toggleWishlist(identificador, btnElement, desdeModal = false) {
-            const index = wishlist.findIndex(w => (w.codigo && w.codigo === identificador) || w.nombre === identificador); 
+            const index = wishlist.findIndex((w) => wishlistMatchesIdent(w, identificador)); 
             if (index > -1) { wishlist.splice(index, 1); } 
             else { 
-                const prod = catalogoCompleto.find(p => p.codigo === identificador || p.nombre === identificador); 
+                const prod = findProductByIdent(identificador); 
                 if (prod) { wishlist.push(prod); radarNinja('Añadir a Wishlist', prod.nombre, prod.categoria); } 
             }
             localStorage.setItem('improgyp_wishlist', JSON.stringify(wishlist)); actualizarUIWishlist(); if(desdeModal) { abrirModalProducto(identificador); }
@@ -1169,8 +1244,8 @@
                 }
                 const imgUrl = getAbsoluteImgUrl(prod.imagen); 
                 let descCorta = "Herramienta nutricional."; if(prod.desc_larga) { descCorta = prod.desc_larga.substring(0, 65) + "..."; }
-                const safeIdentificador = (prod.codigo || prod.nombre).replace(/'/g, "\\'").replace(/"/g, "&quot;"); 
-                const enWishlist = wishlist.some(w => (w.codigo && w.codigo === prod.codigo) || w.nombre === prod.nombre);
+                const safeIdentificador = escapeJsString(productIdent(prod));
+                const enWishlist = wishlist.some((w) => wishlistMatchesProduct(w, prod));
                 const btnClass = enWishlist ? 'active' : ''; const iconClass = enWishlist ? 'fa-solid' : 'fa-regular';
                 const idGridBtn = getSafeId(productIdent(prod)); 
                 let fomoBadgeHTML = ''; 
@@ -1183,7 +1258,7 @@
                     fomoBadgeHTML = `<div class="absolute top-[10px] left-[10px] bg-rose-500/90 backdrop-blur-md text-white text-[10px] font-black px-2 py-1 rounded-md shadow-lg z-10 flex items-center gap-1 border border-rose-400"><i class="fa-solid fa-fire text-yellow-300"></i> TENDENCIA</div>`;
                 }
 
-                const attrIdent = String(prod.codigo || prod.nombre).replace(/"/g, '&quot;');
+                const attrIdent = escapeHtml(productIdent(prod));
                 htmlBuffer += `
                     <article class="glass-card" data-product-ident="${attrIdent}">
                         <div class="product-img-wrapper" onclick="abrirModalProducto('${safeIdentificador}')">

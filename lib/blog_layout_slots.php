@@ -55,7 +55,13 @@ function blog_layout_slots(string $layout): int
 
 function blog_home_fetch_limit(): int
 {
-    return 30;
+    return 6;
+}
+
+/** Artículos por página en blog.php (archivo grid). */
+function blog_archive_per_page(): int
+{
+    return 12;
 }
 
 function blog_layout_has_art(array $articles, int $index): bool

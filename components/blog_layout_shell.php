@@ -5,6 +5,7 @@
  */
 $bl_stage_id = $bl_stage_id ?? 'bl-stage';
 $bl_pagination_id = $bl_pagination_id ?? 'bl-pagination';
+$bl_open_in_modal = !empty($bl_open_in_modal);
 ?>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -110,6 +111,54 @@ $bl_pagination_id = $bl_pagination_id ?? 'bl-pagination';
     .bl-section.bl-section--home .bl-nav-prev { left: -22px; }
     .bl-section.bl-section--home .bl-nav-next { right: -22px; }
 }
+.bl-section.bl-section--home .bl-grid-3,
+.bl-section.bl-section--archive .bl-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+@media (min-width: 768px) {
+    .bl-section.bl-section--home .bl-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    .bl-section.bl-section--archive .bl-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+    }
+}
+@media (min-width: 1024px) {
+    .bl-section.bl-section--archive .bl-grid-3 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+.bl-card[data-bl-open-slug], .bl-hero[data-bl-open-slug], .bl-cyber-card[data-bl-open-slug] { cursor: pointer; }
+.bl-article-modal { position: fixed; inset: 0; z-index: 2500; display: none; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+.bl-article-modal.is-open { display: flex; opacity: 1; pointer-events: auto; }
+.bl-article-modal-backdrop { position: absolute; inset: 0; background: rgba(15, 23, 42, .6); }
+.bl-article-modal-panel { position: relative; z-index: 1; width: 100%; max-width: 800px; max-height: 92vh; background: #fff; border-radius: 1.25rem; box-shadow: 0 24px 64px rgba(0,0,0,.25); display: flex; flex-direction: column; overflow: hidden; transform: scale(.98) translateY(8px); transition: transform .2s ease; }
+.bl-article-modal.is-open .bl-article-modal-panel { transform: scale(1) translateY(0); }
+.bl-article-modal-close { position: absolute; top: 12px; right: 12px; z-index: 5; width: 36px; height: 36px; border: none; border-radius: 999px; background: rgba(255,255,255,.95); color: #64748b; font-size: 1.35rem; line-height: 1; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.bl-article-modal-close:hover { color: #e11d48; }
+.bl-article-modal-scroll { overflow-y: auto; flex: 1; min-height: 0; }
+.bl-article-modal-cover { width: 100%; max-height: 240px; object-fit: cover; background: #e2e8f0; display: block; }
+.bl-article-modal-body { padding: 24px 24px 8px; }
+.bl-article-modal-title { font-family: <?= $bl_font_css ?>; font-size: 1.5rem; font-weight: 900; color: #0f172a; margin: 10px 0 8px; line-height: 1.25; }
+.bl-article-modal-resumen { font-size: .95rem; color: #475569; font-weight: 500; margin-bottom: 16px; border-left: 3px solid <?= $bl_accent ?>; padding-left: 12px; }
+.bl-article-modal-prose { font-size: .9rem; color: #334155; line-height: 1.7; }
+.bl-article-modal-prose p { margin-bottom: .75rem; }
+.bl-article-modal-prose img { max-width: 100%; height: auto; border-radius: 8px; }
+.bl-article-modal-footer { padding: 12px 16px 16px; border-top: 1px solid #f1f5f9; flex-shrink: 0; display: flex; flex-wrap: wrap; gap: 10px; justify-content: stretch; }
+.bl-article-modal-btn { flex: 1; min-width: 140px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: .78rem; font-weight: 800; border-radius: 12px; padding: 10px 14px; border: none; cursor: pointer; text-decoration: none; transition: background .2s, color .2s; }
+.bl-article-modal-btn--ghost { background: #f1f5f9; color: #475569; }
+.bl-article-modal-btn--ghost:hover { background: #e2e8f0; color: #0f172a; }
+.bl-article-modal-btn--primary { background: <?= $bl_accent ?>; color: #fff; }
+.bl-article-modal-btn--primary:hover { filter: brightness(1.08); color: #fff; }
+.bl-article-loading { text-align: center; color: #94a3b8; font-size: .9rem; padding: 2rem 1rem; }
+.bl-article-modal-progress { position: sticky; top: 0; left: 0; height: 3px; width: 0; background: <?= $bl_accent ?>; z-index: 4; transition: width .1s linear; }
+@media (max-width: 640px) {
+    .bl-article-modal { align-items: flex-end; padding: 0; }
+    .bl-article-modal-panel { max-width: 100%; max-height: 94vh; border-radius: 1.25rem 1.25rem 0 0; }
+}
 </style>
 
 <section class="bl-section <?= $bl_is_cyber ? 'bl-cyber-section' : '' ?> <?= htmlspecialchars($bl_section_class_extra) ?>" id="<?= htmlspecialchars($bl_section_id) ?>">
@@ -126,6 +175,9 @@ $bl_pagination_id = $bl_pagination_id ?? 'bl-pagination';
         <div class="bl-pagination" id="<?= htmlspecialchars($bl_pagination_id) ?>" hidden></div>
     </div>
 </section>
+<?php if (!empty($bl_open_in_modal)): ?>
+    <?php include __DIR__ . '/blog_article_modal.php'; ?>
+<?php endif; ?>
 <script>
 (function () {
     const CFG = <?= json_encode($bl_js_cfg, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS) ?>;
@@ -158,11 +210,17 @@ $bl_pagination_id = $bl_pagination_id ?? 'bl-pagination';
         return parts.length ? '<div class="bl-meta">' + parts.join('') + '</div>' : '';
     }
 
+    function articleLinkOpen(art, className, inner) {
+        if (CFG.openInModal) {
+            return `<div class="${className}" data-bl-open-slug="${esc(art.slug)}" role="button" tabindex="0">${inner}</div>`;
+        }
+        return `<a href="blog.php?slug=${encodeURIComponent(art.slug)}" class="${className}">${inner}</a>`;
+    }
+
     function cardHtml(art, imgH) {
         const h = imgH || 180;
         const excerpt = (art.resumen || '').substring(0, 90);
-        return `<a href="blog.php?slug=${encodeURIComponent(art.slug)}" class="bl-card">
-            <img src="${imgSrc(art)}" alt="${esc(art.titulo)}" class="bl-card-img" style="height:${h}px" loading="lazy"
+        const inner = `<img src="${imgSrc(art)}" alt="${esc(art.titulo)}" class="bl-card-img" style="height:${h}px" loading="lazy"
                  onerror="this.onerror=null;this.src='${CFG.imgFallback}'">
             <div class="bl-card-body">
                 <span class="bl-tag">${esc(art.categoria)}</span>
@@ -170,14 +228,13 @@ $bl_pagination_id = $bl_pagination_id ?? 'bl-pagination';
                 ${metaHtml(art)}
                 <p class="bl-card-excerpt">${esc(excerpt)}${excerpt.length >= 90 ? '…' : ''}</p>
                 <span class="bl-card-cta">Leer más →</span>
-            </div>
-        </a>`;
+            </div>`;
+        return articleLinkOpen(art, 'bl-card', inner);
     }
 
     function heroHtml(art) {
         const excerpt = (art.resumen || '').substring(0, 140);
-        return `<a href="blog.php?slug=${encodeURIComponent(art.slug)}" class="bl-hero">
-            <img src="${imgSrc(art)}" alt="${esc(art.titulo)}" class="bl-hero-img" loading="lazy"
+        const inner = `<img src="${imgSrc(art)}" alt="${esc(art.titulo)}" class="bl-hero-img" loading="lazy"
                  onerror="this.onerror=null;this.src='${CFG.imgFallback}'">
             <div class="bl-hero-body">
                 <span class="bl-tag">${esc(art.categoria)}</span>
@@ -185,8 +242,8 @@ $bl_pagination_id = $bl_pagination_id ?? 'bl-pagination';
                 ${metaHtml(art)}
                 <p class="bl-hero-excerpt">${esc(excerpt)}${excerpt.length >= 140 ? '…' : ''}</p>
                 <span class="bl-card-cta" style="margin-top:14px;display:inline-flex">Leer artículo completo →</span>
-            </div>
-        </a>`;
+            </div>`;
+        return articleLinkOpen(art, 'bl-hero', inner);
     }
 
     function cyberCardHtml(art) {
@@ -194,16 +251,181 @@ $bl_pagination_id = $bl_pagination_id ?? 'bl-pagination';
         try {
             fecha = new Date(art.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
         } catch (e) {}
-        return `<a href="blog.php?slug=${encodeURIComponent(art.slug)}" class="bl-cyber-card">
-            <img src="${imgSrc(art)}" alt="${esc(art.titulo)}" class="bl-cyber-img" loading="lazy"
+        const inner = `<img src="${imgSrc(art)}" alt="${esc(art.titulo)}" class="bl-cyber-img" loading="lazy"
                  onerror="this.onerror=null;this.src='${CFG.imgFallback}'">
             <div class="bl-cyber-body">
                 <div class="bl-cyber-cat">${esc(art.categoria)}</div>
                 <h3 class="bl-cyber-title">${esc(art.titulo)}</h3>
                 <div class="bl-cyber-meta">${esc(fecha)} · ${esc(art.tiempo_lectura)}</div>
                 <div class="bl-cyber-cta">Leer más <span style="font-size:.7rem">→</span></div>
-            </div>
-        </a>`;
+            </div>`;
+        return articleLinkOpen(art, 'bl-cyber-card', inner);
+    }
+
+    const articlesBySlug = {};
+    CFG.articles.forEach((a) => { if (a.slug) articlesBySlug[a.slug] = a; });
+
+    function bindBlogArticleOpens(root) {
+        if (!CFG.openInModal || !root) return;
+        root.querySelectorAll('[data-bl-open-slug]').forEach((el) => {
+            if (el.dataset.blBound) return;
+            el.dataset.blBound = '1';
+            const open = () => openBlogArticleModal(el.getAttribute('data-bl-open-slug'));
+            el.addEventListener('click', (e) => { e.preventDefault(); open(); });
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+            });
+        });
+    }
+
+    let currentModalSlug = null;
+
+    function closeBlogArticleModal() {
+        const modal = document.getElementById('bl-article-modal');
+        if (!modal) return;
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        currentModalSlug = null;
+        setTimeout(() => modal.classList.add('hidden'), 200);
+    }
+
+    function showBlogArticleModalUi() {
+        const modal = document.getElementById('bl-article-modal');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        requestAnimationFrame(() => {
+            modal.classList.add('is-open');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    function fillBlogModalMeta(art) {
+        const imgEl = document.getElementById('bl-article-modal-img');
+        const titleEl = document.getElementById('bl-article-modal-title');
+        const catEl = document.getElementById('bl-article-modal-cat');
+        const metaEl = document.getElementById('bl-article-modal-meta');
+        const resumenEl = document.getElementById('bl-article-modal-resumen');
+        const fullEl = document.getElementById('bl-article-modal-full');
+        if (imgEl) {
+            imgEl.src = art.portada || CFG.imgFallback;
+            imgEl.alt = art.titulo || '';
+            imgEl.onerror = function () { this.onerror = null; this.src = CFG.imgFallback; };
+        }
+        if (titleEl) titleEl.textContent = art.titulo || '';
+        if (catEl) catEl.textContent = art.categoria || '';
+        if (metaEl) metaEl.innerHTML = metaHtml(art);
+        if (resumenEl) {
+            resumenEl.textContent = art.resumen || '';
+            resumenEl.style.display = art.resumen ? '' : 'none';
+        }
+        if (fullEl) fullEl.href = 'blog.php?slug=' + encodeURIComponent(art.slug || '');
+    }
+
+    function bindModalReadingProgress() {
+        const scrollEl = document.getElementById('bl-article-modal-scroll');
+        const bar = document.getElementById('bl-article-modal-progress');
+        if (!scrollEl || !bar) return;
+        const onScroll = () => {
+            const max = scrollEl.scrollHeight - scrollEl.clientHeight;
+            const pct = max > 0 ? Math.min(100, (scrollEl.scrollTop / max) * 100) : 0;
+            bar.style.width = pct + '%';
+        };
+        scrollEl.removeEventListener('scroll', scrollEl._blProgressFn || (() => {}));
+        scrollEl._blProgressFn = onScroll;
+        scrollEl.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    }
+
+    async function openBlogArticleModal(slug) {
+        if (!slug) return;
+        const artMeta = articlesBySlug[slug];
+        const modal = document.getElementById('bl-article-modal');
+        const contentEl = document.getElementById('bl-article-modal-content');
+        if (!modal || !contentEl) {
+            window.location.href = 'blog.php?slug=' + encodeURIComponent(slug);
+            return;
+        }
+        if (!artMeta) {
+            window.location.href = 'blog.php?slug=' + encodeURIComponent(slug);
+            return;
+        }
+
+        currentModalSlug = slug;
+        fillBlogModalMeta(artMeta);
+        contentEl.innerHTML = '<p class="bl-article-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Cargando artículo…</p>';
+        showBlogArticleModalUi();
+        bindModalReadingProgress();
+
+        const cacheKey = 'improgyp_bl_' + slug;
+        let full = null;
+        try {
+            const cached = sessionStorage.getItem(cacheKey);
+            if (cached) full = JSON.parse(cached);
+        } catch (e) { /* ignore */ }
+
+        if (!full || !full.contenido) {
+            try {
+                const apiUrl = 'api_blog_articulo.php?slug=' + encodeURIComponent(slug);
+                const res = await fetch(apiUrl);
+                const data = await res.json();
+                if (data.success && data.article) {
+                    full = data.article;
+                    try { sessionStorage.setItem(cacheKey, JSON.stringify(full)); } catch (e) { /* ignore */ }
+                }
+            } catch (e) {
+                contentEl.innerHTML = '<p class="bl-article-loading">No se pudo cargar. <a href="blog.php?slug=' + encodeURIComponent(slug) + '">Abrir en el blog</a></p>';
+                return;
+            }
+        }
+
+        if (!full) {
+            contentEl.innerHTML = '<p class="bl-article-loading">Artículo no encontrado.</p>';
+            return;
+        }
+
+        fillBlogModalMeta(full);
+        contentEl.innerHTML = full.contenido || '<p>Sin contenido.</p>';
+        bindModalReadingProgress();
+    }
+
+    if (CFG.openInModal) {
+        const blogModal = document.getElementById('bl-article-modal');
+        if (blogModal) {
+            blogModal.querySelectorAll('[data-bl-close-modal]').forEach((btn) => {
+                btn.addEventListener('click', closeBlogArticleModal);
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && blogModal.classList.contains('is-open')) closeBlogArticleModal();
+            });
+            const shareBtn = document.getElementById('bl-article-modal-share');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', () => {
+                    if (!currentModalSlug) return;
+                    const url = new URL('blog.php', window.location.href);
+                    url.searchParams.set('slug', currentModalSlug);
+                    const art = articlesBySlug[currentModalSlug];
+                    const shareData = {
+                        title: (art && art.titulo) || 'IMPROGYP Blog',
+                        text: (art && art.resumen) || '',
+                        url: url.toString(),
+                    };
+                    if (navigator.share) {
+                        navigator.share(shareData).catch(() => {});
+                    } else if (navigator.clipboard) {
+                        navigator.clipboard.writeText(url.toString()).then(() => {
+                            shareBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copiado';
+                            setTimeout(() => {
+                                shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i> Compartir';
+                            }, 2000);
+                        });
+                    }
+                });
+            }
+        }
+        window.openBlogArticleModal = openBlogArticleModal;
+        window.closeBlogArticleModal = closeBlogArticleModal;
     }
 
     function pageSlice(page) {
@@ -287,6 +509,7 @@ $bl_pagination_id = $bl_pagination_id ?? 'bl-pagination';
             stage.innerHTML = renderPaginatedPage(currentPage);
             stage.classList.remove('is-fading');
             buildPagination(currentPage, total, goToPage);
+            bindBlogArticleOpens(stage);
         });
     }
 
@@ -301,6 +524,7 @@ $bl_pagination_id = $bl_pagination_id ?? 'bl-pagination';
             '</div></div>';
 
         const track = document.getElementById(trackId);
+        bindBlogArticleOpens(stage);
         if (!track) return;
 
         let activeWindow = 0;
@@ -334,6 +558,16 @@ $bl_pagination_id = $bl_pagination_id ?? 'bl-pagination';
 
         track.addEventListener('scroll', onScroll, { passive: true });
         buildPagination(0, pages, scrollToWindow);
+    }
+
+    if (CFG.homePreview) {
+        stage.innerHTML = renderGrid3(CFG.articles);
+        bindBlogArticleOpens(stage);
+        if (paginationEl) {
+            paginationEl.hidden = true;
+            paginationEl.innerHTML = '';
+        }
+        return;
     }
 
     if (CFG.layout === 'carousel') {

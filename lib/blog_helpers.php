@@ -68,14 +68,17 @@ function blog_unique_slug(PDO $pdo, $titulo, $excludeId = 0) {
     }
 }
 
-function blog_fetch_public($limit = 30) {
+function blog_fetch_public($limit = 30, $withContent = false) {
     $pdo = blog_get_pdo();
     if (!$pdo) return [];
     blog_ensure_table($pdo);
     $limit = max(1, min(50, (int) $limit));
+    $cols = 'id, titulo, slug, categoria, tiempo_lectura, resumen, portada, fecha, visitas';
+    if ($withContent) {
+        $cols .= ', contenido';
+    }
     $stmt = $pdo->query(
-        "SELECT id, titulo, slug, categoria, tiempo_lectura, resumen, portada, fecha, visitas
-         FROM improgyp_blog WHERE borrador = 0 ORDER BY id DESC LIMIT $limit"
+        "SELECT $cols FROM improgyp_blog WHERE borrador = 0 ORDER BY id DESC LIMIT $limit"
     );
     return $stmt->fetchAll();
 }

@@ -16,7 +16,7 @@ if ($pdo) {
     blog_seed_if_empty($pdo);
 }
 
-$articulos_lista = $articulo ? [] : blog_fetch_public(50);
+$articulos_lista = $articulo ? [] : blog_fetch_public(60, false);
 $relacionados = [];
 if ($articulo && $pdo) {
     $stmt = $pdo->prepare(
@@ -36,6 +36,7 @@ if ($articulo && $pdo) {
     <meta name="description" content="<?= htmlspecialchars($articulo ? ($articulo['resumen'] ?? '') : 'Noticias y guías técnicas IMPROGYP') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>var IMPROGYP_BASE_URL = <?= json_encode($base_url ?? '', JSON_UNESCAPED_SLASHES) ?>;</script>
     <style>body{font-family:Inter,system-ui,sans-serif;background:#f8fafc}</style>
     <?php include __DIR__ . '/components/landing_styles.php'; ?>
 </head>
@@ -69,8 +70,11 @@ if ($articulo && $pdo) {
     $bl_prep = blog_layout_prepare($relacionados, $base_url ?? '', [
         'heading_html' => 'También te <span>interesa</span>',
         'show_view_all' => true,
+        'force_layout' => 'grid3',
+        'open_in_modal' => false,
+        'home_preview' => true,
         'section_id' => 'bl-related-section',
-        'section_class_extra' => '',
+        'section_class_extra' => 'bl-section--archive',
     ]);
     if ($bl_prep) {
         $bl_accent = $bl_prep['accent'];
@@ -92,8 +96,12 @@ if ($articulo && $pdo) {
     $bl_prep = blog_layout_prepare($articulos_lista, $base_url ?? '', [
         'heading_html' => 'Blog <span>IMPROGYP</span>',
         'show_view_all' => false,
+        'archive_mode' => true,
+        'force_layout' => 'grid3',
+        'per_page' => blog_archive_per_page(),
+        'open_in_modal' => false,
         'section_id' => 'bl-page-section',
-        'section_class_extra' => 'bl-section--page',
+        'section_class_extra' => 'bl-section--page bl-section--archive',
     ]);
 ?>
 <main class="pt-20 pb-28 md:pb-8">
@@ -130,7 +138,5 @@ if ($articulo && $pdo) {
 <script src="js/omnibar.js?v=<?= time() ?>"></script>
 <script src="js/landing_header.js?v=<?= time() ?>"></script>
 <script src="js/landing_home.js?v=<?= time() ?>"></script>
-<script src="js/cart_checkout.js?v=<?= time() ?>"></script>
-<script src="js/checkout_wa.js?v=<?= time() ?>"></script>
 </body>
 </html>

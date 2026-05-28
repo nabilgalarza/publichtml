@@ -42,6 +42,31 @@ function blog_layout_prepare(array $articulos, string $base_url = '', array $opt
 
     $cfg = blog_layout_load_config();
     $layout = blog_layout_normalize($cfg['layout'] ?? 'editorial');
+
+    if (!empty($opts['force_layout'])) {
+        $layout = blog_layout_normalize((string) $opts['force_layout']);
+    }
+
+    $homePreview = !empty($opts['home_preview']);
+    $archiveMode = !empty($opts['archive_mode']);
+
+    if ($homePreview || $archiveMode) {
+        $layout = 'grid3';
+    }
+
+    $openInModal = !empty($opts['open_in_modal']);
+
+    if ($homePreview) {
+        $perPage = count($articulos);
+        $paginated = false;
+    } elseif ($archiveMode) {
+        $perPage = max(1, min(24, (int) ($opts['per_page'] ?? blog_archive_per_page())));
+        $paginated = true;
+    } else {
+        $perPage = blog_layout_per_page($layout);
+        $paginated = blog_layout_is_paginated($layout);
+    }
+
     $accent = $cfg['accent'] ?? '#3a86ff';
     $font = $cfg['font'] ?? 'sans';
     $fontMap = [
@@ -52,25 +77,32 @@ function blog_layout_prepare(array $articulos, string $base_url = '', array $opt
     $imgFb = blog_img_url('favicon-app.png?v=5', $base_url);
 
     return [
-        'layout'      => $layout,
-        'accent'      => $accent,
-        'accent_rgb'  => $cfg['accentRgb'] ?? '58, 134, 255',
-        'font_css'    => $fontMap[$font] ?? $fontMap['sans'],
-        'is_cyber'    => $layout === 'cyberneon',
-        'heading_html'=> $opts['heading_html'] ?? 'Desde el <span>Blog</span>',
-        'show_view_all' => $opts['show_view_all'] ?? true,
-        'section_id'          => $opts['section_id'] ?? 'bl-home-section',
+        'layout'            => $layout,
+        'accent'            => $accent,
+        'accent_rgb'        => $cfg['accentRgb'] ?? '58, 134, 255',
+        'font_css'          => $fontMap[$font] ?? $fontMap['sans'],
+        'is_cyber'          => $layout === 'cyberneon',
+        'open_in_modal'     => $openInModal,
+        'home_preview'      => $homePreview,
+        'archive_mode'      => $archiveMode,
+        'heading_html'      => $opts['heading_html'] ?? 'Desde el <span>Blog</span>',
+        'show_view_all'     => $opts['show_view_all'] ?? true,
+        'section_id'        => $opts['section_id'] ?? 'bl-home-section',
         'section_class_extra' => $opts['section_class_extra'] ?? '',
-        'js_cfg'      => [
-            'layout'      => $layout,
-            'perPage'     => blog_layout_per_page($layout),
-            'paginated'   => blog_layout_is_paginated($layout),
-            'accent'      => $accent,
-            'imgFallback' => $imgFb,
-            'showDate'    => !empty($cfg['showDate']),
-            'showRT'      => !empty($cfg['showReadTime']),
-            'showViews'   => !empty($cfg['showViews']),
-            'articles'    => blog_layout_map_articles($articulos, $base_url),
+        'js_cfg'            => [
+            'layout'       => $layout,
+            'perPage'      => $perPage,
+            'paginated'    => $paginated,
+            'homePreview'  => $homePreview,
+            'archiveMode'  => $archiveMode,
+            'accent'       => $accent,
+            'imgFallback'  => $imgFb,
+            'showDate'     => !empty($cfg['showDate']),
+            'showRT'       => !empty($cfg['showReadTime']),
+            'showViews'    => !empty($cfg['showViews']),
+            'openInModal'  => $openInModal,
+            'apiBase'      => $base_url,
+            'articles'     => blog_layout_map_articles($articulos, $base_url),
         ],
     ];
 }

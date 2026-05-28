@@ -131,6 +131,7 @@
         let carrito = readCart().filter((c) => itemKey(c) !== identificador);
         writeCart(carrito);
         renderDrawerFromStorage();
+        if (typeof renderCheckoutList === 'function') renderCheckoutList();
     };
 
     window.improgypOnCartUpdated = function () {
@@ -138,6 +139,7 @@
         if (typeof window.syncCheckoutCartItems === 'function') {
             window.syncCheckoutCartItems(readCart());
         }
+        if (typeof renderCheckoutList === 'function') renderCheckoutList();
     };
 
     document.addEventListener('DOMContentLoaded', function () {

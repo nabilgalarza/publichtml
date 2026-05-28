@@ -109,3 +109,4 @@ $footer_page_kind = $improgyp_page ?? '';
 </footer>
 
 <?php improgyp_include_locales_modal_once(); ?>
+<?php include __DIR__ . '/checkout_scripts.php'; ?>

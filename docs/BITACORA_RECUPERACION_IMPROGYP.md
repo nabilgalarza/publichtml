@@ -19,8 +19,12 @@
 | `components/footer.php` | Pie con enlaces |
 | `components/megamenu_config.php` | Defaults + normalización megamenú |
 | `components/apariencia_megamenu.php` | Editor dashboard |
-| `components/checkout_modal.php` | Modal “Finalizar cotización” |
-| `js/checkout_wa.js` | Enrutado WhatsApp (retiro / domicilio / cobertura) |
+| `components/checkout_modal.php` | Modal checkout compacto (formulario + resumen IVA) |
+| `components/checkout_scripts.php` | `IMPROGYP_CHECKOUT` + carga JS (vía `footer.php`) |
+| `config_checkout.json` | IVA, bancos/logos, textos transferencia |
+| `lib/checkout_helpers.php` | Lectura de config checkout PHP/JS |
+| `js/checkout_wa.js` | Carrito, totales IVA, WhatsApp, sucursales, eliminar ítem |
+| `js/cart_checkout.js` | Bolsa drawer + sync con checkout |
 | `includes/whatsapp_normalize.php` | `5939XXXXXXXX` |
 | `includes/locales_cobertura.php` | Parseo campo `cobertura` |
 | `config_header.json` | Megamenú persistido |
@@ -40,10 +44,11 @@
 
 ### Checkout WhatsApp
 1. Cliente abre carrito → **Finalizar cotización**.
-2. Retiro: elige sucursal (lista desde `locales.json`).
+2. Retiro: elige sucursal (lista desde `locales.json`); WhatsApp del asesor = campo `whatsapp` de esa sucursal.
 3. Domicilio: dirección + ciudad → match por `cobertura` (prioridad) luego `ciudad` sede.
 4. Sin match → Matriz `gye-matriz`.
-5. Mensaje incluye línea `*Atención:*` con sucursal asignada.
+5. Mensaje plantilla en `buildCheckoutWhatsAppMessage()` (contacto, recepción, pago, productos, neto + IVA).
+6. Validación unificada `validateCheckoutForm()`; sucursales se recargan al abrir modal y al volver a la pestaña.
 
 ### Dedup catálogo
 - En grid: único por **SKU** (`codigo`); si no hay código, por `nombre`.

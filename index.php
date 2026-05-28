@@ -52,7 +52,5 @@ $secciones = $landing_cfg['secciones'];
 <script src="js/landing_header.js?v=<?= time() ?>"></script>
 <script src="js/landing_home.js?v=<?= time() ?>"></script>
 <script src="js/landing_products.js?v=<?= time() ?>"></script>
-<script src="js/cart_checkout.js?v=<?= time() ?>"></script>
-<script src="js/checkout_wa.js?v=<?= time() ?>"></script>
 </body>
 </html>

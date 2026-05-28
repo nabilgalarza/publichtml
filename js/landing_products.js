@@ -38,15 +38,71 @@
         }
     }
 
-    function findProduct(identificador) {
-        if (!identificador) return null;
-        return catalogoLanding.find(
-            (p) => p.nombre === identificador || (p.codigo && p.codigo === identificador)
-        ) || null;
+    function normalizeIdent(str) {
+        return String(str || '').trim();
     }
 
     function productIdent(prod) {
         return (prod.codigo && String(prod.codigo).trim()) || prod.nombre;
+    }
+
+    function findProduct(identificador) {
+        const id = normalizeIdent(identificador);
+        if (!id) return null;
+        const byCodigo = catalogoLanding.find((p) => p.codigo && normalizeIdent(p.codigo) === id);
+        if (byCodigo) return byCodigo;
+        const byNombre = catalogoLanding.filter((p) => p.nombre === id);
+        if (byNombre.length === 1) return byNombre[0];
+        return null;
+    }
+
+    function cartMatchesIdent(cartItem, identificador) {
+        const id = normalizeIdent(identificador);
+        if (!id || !cartItem) return false;
+        if (cartItem.codigo && normalizeIdent(cartItem.codigo) === id) return true;
+        if (!cartItem.codigo && cartItem.nombre === id) return true;
+        return false;
+    }
+
+    function cartMatchesProduct(cartItem, prod) {
+        return cartMatchesIdent(cartItem, productIdent(prod));
+    }
+
+    function wishlistMatchesProduct(wishItem, prod) {
+        if (!wishItem || !prod) return false;
+        const pc = prod.codigo && normalizeIdent(prod.codigo);
+        const wc = wishItem.codigo && normalizeIdent(wishItem.codigo);
+        if (pc && wc) return pc === wc;
+        if (!pc && !wc && wishItem.nombre === prod.nombre) return true;
+        return false;
+    }
+
+    function migrateLandingCartWishlist() {
+        if (!catalogoLanding.length) return;
+        let cart = readJson(CART_KEY);
+        let wish = readJson(WISH_KEY);
+        let cartCh = false;
+        let wishCh = false;
+        cart = cart.map((item) => {
+            if (item.codigo) return item;
+            const matches = catalogoLanding.filter((p) => p.nombre === item.nombre);
+            if (matches.length === 1) {
+                cartCh = true;
+                return { ...item, codigo: matches[0].codigo || '' };
+            }
+            return item;
+        });
+        wish = wish.map((item) => {
+            if (item.codigo) return item;
+            const matches = catalogoLanding.filter((p) => p.nombre === item.nombre);
+            if (matches.length === 1) {
+                wishCh = true;
+                return { ...item, codigo: matches[0].codigo || '' };
+            }
+            return item;
+        });
+        if (cartCh) localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        if (wishCh) localStorage.setItem(WISH_KEY, JSON.stringify(wish));
     }
 
     function buildProductosShopUrl(prod) {
@@ -94,6 +150,7 @@
             catalogoLanding = [];
         }
         catalogoReady = true;
+        migrateLandingCartWishlist();
         refreshCardWishlistButtons();
         return catalogoLanding;
     }
@@ -104,7 +161,7 @@
             const id = btn.dataset.wishlistId;
             const prod = findProduct(id);
             if (!prod) return;
-            const en = wishlist.some((w) => w.nombre === prod.nombre);
+            const en = wishlist.some((w) => wishlistMatchesProduct(w, prod));
             btn.classList.toggle('active', en);
             btn.innerHTML = en
                 ? '<i class="fa-solid fa-heart"></i>'
@@ -145,7 +202,7 @@
 
     function buildRelatedHTML(prod) {
         const relacionados = catalogoLanding
-            .filter((p) => p.categoria === prod.categoria && p.nombre !== prod.nombre)
+            .filter((p) => p.categoria === prod.categoria && productIdent(p) !== productIdent(prod))
             .sort(() => 0.5 - Math.random())
             .slice(0, 3);
 
@@ -179,7 +236,7 @@
         const btn = document.getElementById('modal-btn-wishlist');
         if (!btn) return;
         const wishlist = readJson(WISH_KEY);
-        const en = wishlist.some((w) => w.nombre === prod.nombre);
+        const en = wishlist.some((w) => wishlistMatchesProduct(w, prod));
         const ident = productIdent(prod).replace(/'/g, "\\'").replace(/"/g, '&quot;');
         if (en) {
             btn.className = 'w-10 h-10 rounded-lg flex items-center justify-center text-lg transition-colors border border-slate-200 shadow-sm text-rose-500 bg-rose-50';
@@ -195,7 +252,7 @@
         const wrapper = document.getElementById('modal-btn-add-wrapper');
         if (!wrapper) return;
         const carrito = readJson(CART_KEY);
-        const item = carrito.find((c) => (c.codigo && c.codigo === identificador) || c.nombre === identificador);
+        const item = carrito.find((c) => cartMatchesIdent(c, identificador));
         const safe = identificador.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
         if (item) {
@@ -211,7 +268,7 @@
 
     window.improgypModificarCantidadLanding = function (identificador, delta) {
         let carrito = readJson(CART_KEY);
-        const idx = carrito.findIndex((c) => (c.codigo && c.codigo === identificador) || c.nombre === identificador);
+        const idx = carrito.findIndex((c) => cartMatchesIdent(c, identificador));
         if (idx === -1) return;
         carrito[idx].cantidad += delta;
         if (carrito[idx].cantidad <= 0) carrito.splice(idx, 1);
@@ -223,7 +280,7 @@
         const prod = findProduct(identificador);
         if (!prod) return;
         let wishlist = readJson(WISH_KEY);
-        const idx = wishlist.findIndex((w) => w.nombre === prod.nombre);
+        const idx = wishlist.findIndex((w) => wishlistMatchesProduct(w, prod));
         if (idx > -1) {
             wishlist.splice(idx, 1);
         } else {
@@ -252,7 +309,7 @@
         if (!prod) return;
         const id = productIdent(prod);
         let carrito = readJson(CART_KEY);
-        const idx = carrito.findIndex((c) => (c.codigo && c.codigo === id) || c.nombre === id);
+        const idx = carrito.findIndex((c) => cartMatchesIdent(c, id));
         if (idx > -1) {
             carrito[idx].cantidad += 1;
         } else {
