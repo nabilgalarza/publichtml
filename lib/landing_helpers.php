@@ -214,6 +214,43 @@ function improgyp_landing_destacados($limite = 8) {
     return improgyp_landing_mas_vendidos($limite);
 }
 
+/**
+ * Logos de fabricantes aliados (archivos en /logos_marcas).
+ * @return list<array{src: string, alt: string}>
+ */
+function improgyp_landing_marcas_logos(): array
+{
+    $dir = dirname(__DIR__) . '/logos_marcas';
+    if (!is_dir($dir)) {
+        return [];
+    }
+    $extOk = ['png', 'jpg', 'jpeg', 'webp', 'svg', 'gif'];
+    $found = [];
+    foreach (scandir($dir) ?: [] as $file) {
+        if ($file === '.' || $file === '..') {
+            continue;
+        }
+        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        if (!in_array($ext, $extOk, true)) {
+            continue;
+        }
+        if (preg_match('/^c7-.+/i', $file) && is_file($dir . '/c7.png')) {
+            continue;
+        }
+        $found[] = $file;
+    }
+    usort($found, 'strnatcasecmp');
+    $out = [];
+    foreach ($found as $file) {
+        $base = pathinfo($file, PATHINFO_FILENAME);
+        $out[] = [
+            'src' => 'logos_marcas/' . $file,
+            'alt' => preg_replace('/^c(\d+)$/i', 'Marca aliada $1', $base) ?: $base,
+        ];
+    }
+    return $out;
+}
+
 function improgyp_landing_marcas($limite = 12) {
     $counts = [];
     foreach (improgyp_landing_load_catalogo() as $p) {
@@ -268,7 +305,7 @@ function improgyp_landing_defaults() {
             ['tipo' => 'mas_vendidos', 'titulo' => 'Más vendidos', 'subtitulo' => 'Selección impulsada por nuestro equipo comercial.', 'limite' => 8, 'activo' => true],
             ['tipo' => 'cta', 'activo' => true, 'etiqueta' => 'Asesoría', 'titulo' => '¿Listo para tu próximo proyecto?', 'subtitulo' => 'Explora el catálogo con asesoría técnica y cotiza por WhatsApp en minutos.', 'cta_texto' => 'Ir a la tienda', 'cta_url' => 'productos.php', 'imagen' => ''],
             ['tipo' => 'blog', 'titulo' => 'Desde el Blog', 'subtitulo' => 'Guías y novedades para profesionales.', 'activo' => true],
-            ['tipo' => 'logos', 'titulo' => 'Marcas aliadas', 'subtitulo' => 'Distribuidores oficiales que respaldan tu obra.', 'limite' => 10, 'activo' => true],
+            ['tipo' => 'logos', 'titulo' => 'Marcas aliadas', 'subtitulo' => 'Distribuidores oficiales que respaldan tu obra.', 'limite' => 10, 'marquee_seg' => 50, 'activo' => true],
             ['tipo' => 'locales', 'titulo' => 'Red de sucursales', 'subtitulo' => 'Atención técnica en todo Ecuador.', 'activo' => true],
         ],
     ];

@@ -278,6 +278,241 @@
         transition: all 0.2s;
     }
     .btn-location-action:hover { background: #f1f5f9; color: var(--theme-green); }
+
+    /* Sucursales + asesoría — Concierge premium */
+    .locales-premium-section {
+        padding: 3.5rem 0 4.5rem;
+        background: linear-gradient(180deg, #f8fafc 0%, #ffffff 45%, #f1f5f9 100%);
+        border-top: 1px solid rgba(226, 232, 240, 0.8);
+        border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+    }
+    @media (min-width: 768px) {
+        .locales-premium-section { padding: 5rem 0 6rem; }
+    }
+    .locales-premium-shell {
+        border-radius: 28px;
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 24px 80px -24px rgba(15, 23, 42, 0.12);
+        overflow: hidden;
+    }
+    .locales-premium-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    @media (min-width: 1024px) {
+        .locales-premium-grid { grid-template-columns: 1fr 1fr; min-height: 520px; }
+    }
+    .locales-premium-locations {
+        padding: 2rem 1.75rem 2.25rem;
+    }
+    @media (min-width: 768px) {
+        .locales-premium-locations { padding: 2.5rem 2.5rem 2.75rem; }
+    }
+    @media (min-width: 1024px) {
+        .locales-premium-locations {
+            padding: 2.75rem 2.75rem 2.75rem 3rem;
+            border-right: 1px solid rgba(226, 232, 240, 0.9);
+        }
+    }
+    .locales-premium-eyebrow {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #3A86FF;
+        margin-bottom: 0.625rem;
+    }
+    .locales-premium-widget .location-card--featured {
+        background: rgba(248, 250, 252, 0.95);
+        border: 1px solid #e2e8f0;
+        border-left: 4px solid #3A86FF;
+        border-radius: 16px;
+        padding: 1.25rem 1.35rem;
+        box-shadow: none;
+    }
+    .locales-premium-widget .location-card--featured.location-card--clickable:hover {
+        border-color: #e2e8f0;
+        border-left-color: #3A86FF;
+        box-shadow: 0 12px 32px -12px rgba(27, 38, 59, 0.12);
+        transform: translateY(-1px);
+    }
+    .locales-premium-widget .location-card--featured .btn-location-action {
+        background: #fff;
+        border-color: #e2e8f0;
+        color: #475569;
+    }
+    .locales-premium-widget .location-card--featured .btn-location-action:hover {
+        background: #1B263B;
+        border-color: #1B263B;
+        color: #fff;
+    }
+    .locales-premium-ghost-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.875rem 1.25rem;
+        font-size: 12px;
+        font-weight: 800;
+        color: #334155;
+        background: transparent;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .locales-premium-ghost-btn:hover {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        color: #1B263B;
+    }
+    .asesoria-premium-panel {
+        position: relative;
+        background: #1B263B;
+        padding: 2rem 1.75rem 2.25rem;
+    }
+    @media (min-width: 768px) {
+        .asesoria-premium-panel { padding: 2.5rem 2.5rem 2.75rem; }
+    }
+    @media (min-width: 1024px) {
+        .asesoria-premium-panel { padding: 2.75rem 3rem; }
+    }
+    .asesoria-premium-panel::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+        background-size: 24px 24px;
+        pointer-events: none;
+        opacity: 0.5;
+    }
+    .asesoria-premium-panel__inner {
+        position: relative;
+        z-index: 1;
+    }
+    .asesoria-premium-panel__head {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    .asesoria-premium-badge {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: rgba(58, 134, 255, 0.2);
+        border: 1px solid rgba(58, 134, 255, 0.35);
+        color: #93c5fd;
+        font-size: 1.1rem;
+    }
+    .asesoria-premium-title {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: #fff;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        margin-bottom: 0.35rem;
+    }
+    @media (min-width: 768px) {
+        .asesoria-premium-title { font-size: 1.5rem; }
+    }
+    .asesoria-premium-lead {
+        font-size: 0.875rem;
+        color: rgba(203, 213, 225, 0.95);
+        line-height: 1.5;
+    }
+    .asesoria-premium-trust {
+        font-size: 11px;
+        color: rgba(148, 163, 184, 0.9);
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .asesoria-premium-label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(148, 163, 184, 0.95);
+        margin-bottom: 0.4rem;
+    }
+    .asesoria-premium-input {
+        width: 100%;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.08);
+        color: #f8fafc;
+        font-size: 0.875rem;
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .asesoria-premium-input::placeholder {
+        color: rgba(148, 163, 184, 0.65);
+        font-weight: 500;
+    }
+    .asesoria-premium-input:focus {
+        outline: none;
+        border-color: rgba(58, 134, 255, 0.65);
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.25);
+    }
+    .asesoria-premium-textarea {
+        resize: vertical;
+        min-height: 88px;
+    }
+    .asesoria-premium-msg {
+        font-size: 0.875rem;
+        font-weight: 700;
+    }
+    .asesoria-premium-msg.text-success { color: #6ee7b7; }
+    .asesoria-premium-msg.text-error { color: #fca5a5; }
+    .asesoria-premium-submit {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+        margin-top: 0.25rem;
+        padding: 1rem 1.25rem;
+        border: none;
+        border-radius: 14px;
+        background: #fff;
+        color: #1B263B;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+    }
+    .asesoria-premium-submit:hover:not(:disabled) {
+        background: #3A86FF;
+        color: #fff;
+    }
+    .asesoria-premium-submit:active:not(:disabled) {
+        transform: scale(0.99);
+    }
+    .asesoria-premium-submit:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+    }
+    .asesoria-premium-submit__spinner.hidden,
+    .asesoria-premium-submit.is-loading .asesoria-premium-submit__label,
+    .asesoria-premium-submit.is-loading .asesoria-premium-submit__icon {
+        display: none;
+    }
+    .asesoria-premium-submit.is-loading .asesoria-premium-submit__spinner {
+        display: inline-flex;
+    }
+
     .modal-location-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -447,5 +682,84 @@
         .rt-title { font-size: 2rem; max-width: 13ch; }
         .rt-desc { font-size: 1rem; max-width: 26ch; margin: 0 auto; }
         .rt-home-cta-btn { margin-top: 1.3rem; padding: 13px 22px; }
+    }
+
+    /* Marcas aliadas — marquee de logos (sin caja; logos sobre fondo de página) */
+    .marcas-marquee-section .marcas-marquee-wrap {
+        position: relative;
+        margin-top: 0.5rem;
+        overflow: hidden;
+    }
+    .marcas-marquee-viewport {
+        overflow: hidden;
+        padding: 0.5rem 0 0.75rem;
+    }
+    .marcas-marquee-track {
+        display: flex;
+        width: max-content;
+        animation: marcasMarqueeScroll var(--marcas-marquee-duration, 50s) linear infinite;
+    }
+    .marcas-marquee-wrap:hover .marcas-marquee-track {
+        animation-play-state: paused;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .marcas-marquee-track { animation: none; }
+        .marcas-marquee-viewport { overflow-x: auto; }
+    }
+    @keyframes marcasMarqueeScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .marcas-marquee-group {
+        display: flex;
+        align-items: center;
+        gap: 2.5rem;
+        padding: 0 1.25rem;
+        flex-shrink: 0;
+    }
+    @media (min-width: 768px) {
+        .marcas-marquee-group { gap: 3.5rem; padding: 0 1.75rem; }
+    }
+    .marcas-marquee-item {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 262px;
+        height: 113px;
+    }
+    @media (min-width: 768px) {
+        .marcas-marquee-item { width: 305px; height: 122px; }
+    }
+    .marcas-marquee-logo {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        filter: grayscale(100%);
+        opacity: 0.65;
+        transition: filter 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+    }
+    .marcas-marquee-item:hover .marcas-marquee-logo {
+        filter: grayscale(0%);
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    .marcas-marquee-fade {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 48px;
+        z-index: 2;
+        pointer-events: none;
+    }
+    .marcas-marquee-fade--left {
+        left: 0;
+        background: linear-gradient(90deg, #f8fafc 0%, transparent 100%);
+    }
+    .marcas-marquee-fade--right {
+        right: 0;
+        background: linear-gradient(270deg, #f8fafc 0%, transparent 100%);
     }
 </style>

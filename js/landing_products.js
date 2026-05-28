@@ -302,6 +302,9 @@
 
         const shopUrl = buildProductosShopUrl(prod);
         currentIdent = productIdent(prod);
+        if (typeof window.improgypTrackEvent === 'function') {
+            window.improgypTrackEvent('Ver Producto', prod.nombre, prod.categoria || 'General');
+        }
         const modal = document.getElementById('product-modal');
         if (!modal) return;
 

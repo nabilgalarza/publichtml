@@ -78,6 +78,7 @@
             "titulo": "Marcas aliadas",
             "subtitulo": "Distribuidores oficiales que respaldan tu obra.",
             "limite": 10,
+            "marquee_seg": 50,
             "activo": true
         },
         {

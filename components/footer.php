@@ -9,6 +9,7 @@ $footer_wa = $footer_contact['whatsapp'] ?: '593991754887';
 $footer_wa_url = 'https://wa.me/' . $footer_wa . '?text=' . rawurlencode('Hola IMPROGYP, necesito asesoría.');
 $footer_year = date('Y');
 $footer_page = basename($_SERVER['PHP_SELF'] ?? '');
+$footer_page_kind = $improgyp_page ?? '';
 ?>
 <footer class="site-footer mt-16 border-t border-slate-200/90 bg-[#0F172A] text-slate-300">
     <div class="max-w-[1200px] mx-auto px-6 py-12 md:py-16">
@@ -50,10 +51,10 @@ $footer_page = basename($_SERVER['PHP_SELF'] ?? '');
                         $link = $item['link'] ?? '#';
                         $text = $item['text'] ?? '';
                         $icon = improgyp_header_site_nav_icon($text);
-                        $active = ($footer_page === basename(parse_url($link, PHP_URL_PATH) ?: ''));
+                        $active = improgyp_footer_nav_item_active($link, $text, $footer_page, $footer_page_kind);
                     ?>
                     <li>
-                        <a href="<?= htmlspecialchars($link) ?>" class="inline-flex items-center gap-2 hover:text-white transition-colors <?= $active ? 'text-[#3A86FF]' : '' ?>">
+                        <a href="<?= htmlspecialchars($link) ?>" class="inline-flex items-center gap-2 <?= improgyp_footer_link_class($active) ?>">
                             <i class="fa-solid <?= $icon ?> text-[10px] opacity-70"></i>
                             <?= htmlspecialchars($text) ?>
                         </a>
@@ -97,11 +98,11 @@ $footer_page = basename($_SERVER['PHP_SELF'] ?? '');
             <p class="text-[11px] text-slate-500 font-medium">
                 © <?= $footer_year ?> IMPROGYP · Herramientas profesionales · Ecuador
             </p>
-            <div class="flex flex-wrap justify-center gap-4 text-[11px] font-bold text-slate-500">
-                <a href="productos.php" class="hover:text-white transition-colors">Tienda</a>
-                <a href="blog.php" class="hover:text-white transition-colors">Blog</a>
-                <a href="b2b/" class="hover:text-white transition-colors">B2B</a>
-                <a href="index.php#contacto" class="hover:text-white transition-colors">Contacto</a>
+            <div class="flex flex-wrap justify-center gap-4 text-[11px] font-bold">
+                <a href="productos.php" class="<?= improgyp_footer_link_class(improgyp_footer_bottom_link_active('tienda', $footer_page, $footer_page_kind), 'text-slate-500 hover:text-white transition-colors') ?>">Tienda</a>
+                <a href="blog.php" class="<?= improgyp_footer_link_class(improgyp_footer_bottom_link_active('blog', $footer_page, $footer_page_kind), 'text-slate-500 hover:text-white transition-colors') ?>">Blog</a>
+                <a href="b2b/" class="<?= improgyp_footer_link_class(improgyp_footer_bottom_link_active('b2b', $footer_page, $footer_page_kind), 'text-slate-500 hover:text-white transition-colors') ?>">B2B</a>
+                <a href="index.php#contacto" class="<?= improgyp_footer_link_class(improgyp_footer_bottom_link_active('contacto', $footer_page, $footer_page_kind), 'text-slate-500 hover:text-white transition-colors') ?>">Contacto</a>
             </div>
         </div>
     </div>

@@ -74,8 +74,12 @@
         })();
 
         function radarNinja(evento, valor, categoria = 'General') {
+            if (typeof window.improgypTrackEvent === 'function') {
+                window.improgypTrackEvent(evento, valor, categoria);
+                return;
+            }
             if (navigator.sendBeacon) {
-                navigator.sendBeacon('api_metricas.php', JSON.stringify({e: evento, v: valor, c: categoria}));
+                navigator.sendBeacon('api_metricas.php', JSON.stringify({ e: evento, v: valor, c: categoria }));
             }
         }
 

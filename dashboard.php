@@ -131,8 +131,18 @@ try {
         id INT AUTO_INCREMENT PRIMARY KEY,
         nombre_producto VARCHAR(255) NOT NULL,
         fecha_limite DATETIME NOT NULL,
-        INDEX idx_producto (nombre_producto)
+        UNIQUE KEY idx_nombre_unique (nombre_producto)
     )");
+    try {
+        if (!$pdo->query("SHOW INDEX FROM productos_impulsados WHERE Key_name = 'idx_nombre_unique'")->fetch()) {
+            $pdo->exec("ALTER TABLE productos_impulsados ADD UNIQUE KEY idx_nombre_unique (nombre_producto)");
+        }
+    } catch (Exception $e) {}
+    try {
+        if (!$pdo->query("SHOW COLUMNS FROM metricas_b2c LIKE 'visitor_id'")->fetch()) {
+            $pdo->exec("ALTER TABLE metricas_b2c ADD COLUMN visitor_id VARCHAR(36) DEFAULT NULL AFTER region, ADD INDEX idx_visitor_id (visitor_id)");
+        }
+    } catch (Exception $e) {}
 
     require_once __DIR__ . '/lib/blog_helpers.php';
     blog_ensure_table($pdo);
@@ -637,14 +647,26 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'cargar_chat_b2b') {
 if (isset($_GET['ajax']) && $_GET['ajax'] === 'impulsar_producto') {
     header('Content-Type: application/json');
     $data = json_decode(file_get_contents('php://input'), true);
-    $nombre = $data['nombre'] ?? '';
-    if (!$nombre) { echo json_encode(['error' => 'Nombre de producto vacío']); exit; }
-    
-    // Impulsar por 24 horas
+    $nombre = trim((string) ($data['nombre'] ?? ''));
+    if ($nombre === '') {
+        echo json_encode(['error' => 'Nombre de producto vacío']);
+        exit;
+    }
+
+    $activos = (int) $pdo->query("SELECT COUNT(*) FROM productos_impulsados WHERE fecha_limite > NOW()")->fetchColumn();
+    $chk = $pdo->prepare("SELECT id FROM productos_impulsados WHERE nombre_producto = ? LIMIT 1");
+    $chk->execute([$nombre]);
+    $ya_existe = (bool) $chk->fetchColumn();
+
+    if ($activos >= 8 && !$ya_existe) {
+        echo json_encode(['error' => 'Máximo 8 productos impulsados activos. Espera a que expire alguno.']);
+        exit;
+    }
+
     $fecha_limite = date('Y-m-d H:i:s', strtotime('+24 hours'));
     $stmt = $pdo->prepare("INSERT INTO productos_impulsados (nombre_producto, fecha_limite) VALUES (?, ?) ON DUPLICATE KEY UPDATE fecha_limite = ?");
     $stmt->execute([$nombre, $fecha_limite, $fecha_limite]);
-    
+
     echo json_encode(['status' => 'success', 'fecha_limite' => $fecha_limite]);
     exit;
 }
@@ -1377,49 +1399,9 @@ elseif ($vista === 'ads') {
     $productos_impulsados = $pdo->query("SELECT * FROM productos_impulsados WHERE fecha_limite > NOW() ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 }
 elseif ($vista === 'radar') {
-    $top_carrito = []; $top_wishlist = []; $top_ia = []; $total_eventos = 0;
-    $dinero_mesa = []; $productos_fantasma = []; $heatmap_raw = [];
-    $heatmap = array_fill(0, 24, 0); $max_heat = 1;
-    $radar_error = null;
-
-    try {
-        $top_carrito = $pdo->query("SELECT valor, COUNT(*) as total FROM metricas_b2c WHERE evento = 'Añadir a Carrito' GROUP BY valor ORDER BY total DESC LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
-        $top_wishlist = $pdo->query("SELECT valor, COUNT(*) as total FROM metricas_b2c WHERE evento = 'Añadir a Wishlist' GROUP BY valor ORDER BY total DESC LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
-        
-        // Unificamos búsquedas IA y Directas para una mente del cliente más completa
-        $top_ia = $pdo->query("SELECT valor, COUNT(*) as total FROM metricas_b2c WHERE evento IN ('Búsqueda IA', 'Búsqueda Live') GROUP BY valor ORDER BY total DESC LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
-        
-        $total_eventos = $pdo->query("SELECT COUNT(*) as total FROM metricas_b2c")->fetchColumn();
-        
-        // Productos que NUNCA han sido vistos o tocados (Fantasma)
-        $productos_fantasma = $pdo->query("SELECT c.nombre, c.categoria, c.imagen_url FROM improgyp_catalogo c LEFT JOIN metricas_b2c m ON c.nombre = m.valor WHERE c.publicado = 1 AND m.id IS NULL ORDER BY c.id DESC LIMIT 10")->fetchAll(PDO::FETCH_ASSOC);
-        
-        $impulsados_raw = $pdo->query("SELECT nombre_producto FROM productos_impulsados WHERE fecha_limite > NOW()")->fetchAll(PDO::FETCH_COLUMN);
-        $impulsados_set = array_flip($impulsados_raw);
-        foreach ($productos_fantasma as &$f) { $f['impulsado'] = isset($impulsados_set[$f['nombre']]); }
-
-        $heatmap_raw = $pdo->query("SELECT HOUR(fecha) as hora, COUNT(*) as total FROM metricas_b2c GROUP BY hora ORDER BY hora ASC")->fetchAll(PDO::FETCH_ASSOC);
-        foreach($heatmap_raw as $row) {
-            $heatmap[(int)$row['hora']] = (int)$row['total'];
-            if((int)$row['total'] > $max_heat) $max_heat = (int)$row['total'];
-        }
-        
-        $top_categorias = $pdo->query("SELECT categoria, COUNT(*) as total FROM metricas_b2c GROUP BY categoria ORDER BY total DESC LIMIT 6")->fetchAll(PDO::FETCH_ASSOC);
-        
-        // Corrección de agrupamiento para compatibilidad total
-        $top_regiones = $pdo->query("SELECT COALESCE(region, 'Desconocida') as region_nombre, MAX(ip) as ip_sample, COUNT(*) as total 
-                                    FROM metricas_b2c 
-                                    GROUP BY region_nombre 
-                                    ORDER BY total DESC LIMIT 6")->fetchAll(PDO::FETCH_ASSOC);
-        // Normalizar nombres para el template
-        foreach($top_regiones as &$tr) {
-            $tr['region'] = $tr['region_nombre'];
-            $tr['ip'] = $tr['ip_sample'];
-        }
-
-    } catch (Exception $e) { 
-        $radar_error = "Advertencia: Algunos datos del Radar no pudieron procesarse. Detalle: " . substr($e->getMessage(), 0, 100); 
-    }
+    require_once __DIR__ . '/lib/radar_helpers.php';
+    $periodo = improgyp_radar_periodo_valido($_GET['periodo'] ?? '7d');
+    extract(improgyp_radar_load($pdo, $periodo), EXTR_OVERWRITE);
 }
 
 // LÓGICA COMPARTIDA B2B (Mesa de Dinero y KPIs VIP)
@@ -2216,285 +2198,7 @@ function extraerTextos($html) {
 
 
         <?php elseif($vista === 'radar'): ?>
-            <div class="mb-8 relative z-10">
-                <div class="inline-flex items-center gap-2 bg-[#1B263B]/10 border border-[#1B263B]/30 px-4 py-2 rounded-full text-[#1B263B] text-xs font-bold mb-4">
-                    <span class="w-2 h-2 rounded-full bg-[#1B263B] animate-pulse"></span> 
-                    Sensores activos en la tienda pública (<?= $total_eventos ?> eventos registrados)
-                </div>
-                <?php if($radar_error): ?>
-                    <p class="text-xs text-rose-400 mt-2"><?= htmlspecialchars($radar_error) ?></p>
-                <?php endif; ?>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-                <div class="glass-card p-8 flex flex-col hover:border-[#1B263B]/40 transition-all duration-300">
-                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                        <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-bag-shopping"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-base font-black text-slate-900 leading-tight">Intención de Compra</h2>
-                            <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">TOP 5 añadidos a la bolsa</p>
-                        </div>
-                    </div>
-                    <div class="flex-1 flex flex-col gap-3">
-                        <?php if(empty($top_carrito)): ?>
-                            <p class="text-sm text-slate-500 text-center py-8">Esperando datos...</p>
-                        <?php else: ?>
-                            <?php foreach($top_carrito as $idx => $item): 
-                                $w = max(20, ($item['total'] / $top_carrito[0]['total']) * 100); 
-                            ?>
-                                <div>
-                                    <div class="flex justify-between text-xs mb-1 text-slate-600">
-                                        <span class="font-bold truncate pr-2"><?= $idx+1 ?>. <?= htmlspecialchars($item['valor']) ?></span>
-                                        <span class="font-black text-emerald-600"><?= $item['total'] ?></span>
-                                    </div>
-                                    <div class="w-full bg-slate-100 rounded-full h-2">
-                                        <div class="bg-indigo-500 h-2 rounded-full" style="width: <?= $w ?>%"></div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-
-                <div class="glass-card p-6 flex flex-col hover:border-rose-400/40 transition-colors">
-                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                        <div class="w-10 h-10 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-heart"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-base font-black text-slate-900 leading-tight">Interés a Futuro</h2>
-                            <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">TOP 5 herramientas en Deseados</p>
-                        </div>
-                    </div>
-                    <div class="flex-1 flex flex-col gap-3">
-                        <?php if(empty($top_wishlist)): ?>
-                            <p class="text-sm text-slate-500 text-center py-8">Esperando datos...</p>
-                        <?php else: ?>
-                            <?php foreach($top_wishlist as $idx => $item): 
-                                $w = max(20, ($item['total'] / $top_wishlist[0]['total']) * 100); 
-                            ?>
-                                <div>
-                                    <div class="flex justify-between text-xs mb-1 text-slate-600">
-                                        <span class="font-bold truncate pr-2"><?= $idx+1 ?>. <?= htmlspecialchars($item['valor']) ?></span>
-                                        <span class="font-black text-rose-600"><?= $item['total'] ?></span>
-                                    </div>
-                                    <div class="w-full bg-slate-100 rounded-full h-2">
-                                        <div class="bg-rose-500 h-2 rounded-full" style="width: <?= $w ?>%"></div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-
-                <div class="glass-card p-8 flex flex-col hover:border-[#1B263B]/40 transition-all duration-300">
-                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                        <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-brain"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-base font-black text-slate-900 leading-tight">Mente del Cliente</h2>
-                            <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">TOP 5 búsquedas en IA</p>
-                        </div>
-                    </div>
-                    <div class="flex-1 flex flex-col gap-3">
-                        <?php if(empty($top_ia)): ?>
-                            <p class="text-sm text-slate-500 text-center py-8">Esperando datos...</p>
-                        <?php else: ?>
-                            <?php foreach($top_ia as $idx => $item): 
-                                $w = max(20, ($item['total'] / $top_ia[0]['total']) * 100); 
-                            ?>
-                                <div class="mb-3">
-                                    <div class="flex justify-between text-xs mb-1 text-slate-600">
-                                        <span class="font-bold italic truncate pr-2">"<?= htmlspecialchars($item['valor']) ?>"</span>
-                                        <span class="font-black text-indigo-600"><?= $item['total'] ?></span>
-                                    </div>
-                                    <div class="w-full bg-slate-100 rounded-full h-2">
-                                        <div class="bg-indigo-500 h-2 rounded-full" style="width: <?= $w ?>%"></div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 gap-8 relative z-10 mt-8">
-                <div class="glass-card p-8 flex flex-col hover:border-orange-400/40 transition-all duration-300">
-                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-50">
-                        <div class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl border border-orange-100">
-                            <i class="fa-solid fa-fire text-orange-500"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-lg font-black text-slate-900 leading-tight uppercase tracking-tighter">Reloj Térmico B2C</h2>
-                            <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest">Actividad en tiempo real</p>
-                        </div>
-                    </div>
-                    <div class="flex items-end gap-1 flex-1 min-h-[150px] pt-4">
-                        <?php foreach($heatmap as $hora => $valor): 
-                            $height = $max_heat > 0 ? ($valor / $max_heat) * 100 : 0;
-                            $is_peak = $valor === $max_heat && $valor > 0;
-                            $bg = $is_peak ? 'bg-orange-500' : ($valor > 0 ? 'bg-[#1B263B]' : 'bg-slate-100');
-                        ?>
-                            <div class="flex-1 flex flex-col items-center group relative h-full justify-end cursor-crosshair">
-                                <div class="w-full rounded-t-sm transition-all duration-500 <?= $bg ?>" style="height: <?= max(2, $height) ?>%;"></div>
-                                <span class="text-[8px] text-slate-500 mt-2 font-mono hidden sm:block"><?= str_pad($hora, 2, '0', STR_PAD_LEFT) ?></span>
-                                <div class="absolute bottom-full mb-2 hidden group-hover:block bg-white text-slate-900 text-[10px] font-bold py-1 px-2 rounded z-20 whitespace-nowrap">
-                                    <?= str_pad($hora, 2, '0', STR_PAD_LEFT) ?>:00 - <?= $valor ?> acciones
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECCIÓN: MAPA DE CALOR DE CONVERSIÓN (NUEVA) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10 mt-8">
-                <div class="glass-card p-8 flex flex-col hover:border-[#1B263B]/40 transition-all duration-300">
-                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                        <div class="w-12 h-12 rounded-2xl bg-[#1B263B]/10 text-[#1B263B] flex items-center justify-center text-xl border border-[#1B263B]/20">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-lg font-black text-slate-900 leading-tight uppercase tracking-tighter">Interés por Categoría</h2>
-                            <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Heatmap de rendimiento</p>
-                        </div>
-                    </div>
-                    <div class="flex-1 flex flex-col gap-4">
-                        <?php if(empty($top_categorias)): ?>
-                            <p class="text-sm text-slate-500 text-center py-8 italic font-medium">Recopilando datos de categorías...</p>
-                        <?php else: ?>
-                            <?php foreach($top_categorias as $idx => $cat): 
-                                $w = max(5, ($cat['total'] / $top_categorias[0]['total']) * 100);
-                            ?>
-                                <div class="relative group">
-                                    <div class="flex justify-between items-center mb-1.5 relative z-10 px-1">
-                                        <span class="text-[13px] font-black text-slate-800 uppercase tracking-tight"><?= htmlspecialchars($cat['categoria']) ?></span>
-                                        <span class="text-xs font-black text-[#1B263B] bg-[#1B263B]/10 px-2 py-0.5 rounded-full border border-[#1B263B]/20"><?= $cat['total'] ?> v <i class="fa-solid fa-arrow-trend-up text-[10px]"></i></span>
-                                    </div>
-                                    <div class="w-full bg-slate-50 border border-slate-100 rounded-xl h-4 overflow-hidden p-[2px]">
-                                        <div class="h-full rounded-lg bg-gradient-to-r from-[#1B263B] to-[#3A86FF] group-hover:from-emerald-400 group-hover:to-emerald-500 transition-all duration-500 relative overflow-hidden" style="width: <?= $w ?>%">
-                                            <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-
-                <div class="glass-card p-8 flex flex-col hover:border-blue-400/40 transition-all duration-300">
-                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl border border-blue-100">
-                            <i class="fa-solid fa-location-dot"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-lg font-black text-slate-900 leading-tight uppercase tracking-tighter">Hotspots Geográficos</h2>
-                            <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">IPs con mayor actividad</p>
-                        </div>
-                    </div>
-                    <div class="flex-1 flex flex-col gap-3">
-                        <?php if(empty($top_regiones)): ?>
-                            <p class="text-sm text-slate-500 text-center py-8 italic font-medium">Esperando conexiones...</p>
-                        <?php else: ?>
-                            <div class="space-y-3 overflow-y-auto custom-scrollbar max-h-[250px] pr-2">
-                                <?php foreach($top_regiones as $idx => $reg): ?>
-                                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-blue-300/30 transition-all">
-                                        <div class="flex items-center gap-3">
-                                            <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-xs text-blue-500 border border-slate-100 font-bold"><?= $idx + 1 ?></div>
-                                             <div>
-                                                <p class="text-[13px] font-black text-slate-900 leading-tight"><?= htmlspecialchars((string)($reg['region'] ?? 'Desconocida')) ?></p>
-                                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"><i class="fa-solid fa-satellite-dish text-[8px] mr-1"></i> IP: <?= htmlspecialchars((string)($reg['ip'] ?? '0.0.0.0')) ?></p>
-                                            </div>
-                                        </div>
-                                        <div class="text-right">
-                                            <span class="text-blue-600 font-black text-sm"><?= $reg['total'] ?></span>
-                                            <p class="text-[9px] text-slate-400 uppercase font-black">Clicks</p>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                            <div class="mt-4 p-3 bg-blue-50/50 rounded-xl border border-blue-100 text-[10px] text-blue-600 font-medium italic flex items-center gap-2">
-                                <i class="fa-solid fa-info-circle"></i> Estos datos permiten identificar provincias con mayor interés publicitario.
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-card p-8 mt-8 relative z-10 hover:border-rose-400/40 transition-all duration-300">
-                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-50">
-                    <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl border border-rose-100">
-                        <i class="fa-solid fa-ghost"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-black text-slate-900 leading-tight uppercase tracking-tighter">Limpieza de Inventario</h2>
-                        <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest">Nula visibilidad en la tienda</p>
-                    </div>
-                </div>
-                
-                <?php if(empty($productos_fantasma)): ?>
-                    <p class="text-sm text-slate-500 text-center py-4">Excelente. Todos tus productos han sido vistos o agregados al carrito.</p>
-                <?php else: ?>
-                    <div class="flex gap-4 overflow-x-auto pb-4 custom-scrollbar">
-                        <?php foreach($productos_fantasma as $pf): ?>
-                            <div class="w-[160px] bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center flex-shrink-0 flex flex-col items-center hover:border-rose-500/30 transition-all">
-                                <div class="w-20 h-20 bg-white rounded-xl p-2 mb-4 flex items-center justify-center border border-slate-100">
-                                     <img src="<?= getCleanImgUrl($pf['imagen_url']) ?>" class="max-w-full max-h-full object-contain" onerror="this.src='favicon-app.png'">
-                                </div>
-                                <h4 class="text-[12px] font-black text-slate-900 line-clamp-2 mb-3 w-full leading-tight" title="<?= htmlspecialchars($pf['nombre']) ?>"><?= $pf['nombre'] ?></h4>
-                                
-                                <div class="mt-auto w-full flex flex-col gap-2">
-                                    <?php if($pf['impulsado']): ?>
-                                        <div class="bg-[#1B263B]/10 text-[#1B263B] text-[9px] font-black px-2 py-1 rounded-lg uppercase border border-[#1B263B]/20 flex items-center justify-center gap-1 animate-pulse">
-                                            <i class="fa-solid fa-bolt-lightning"></i> Impulsado
-                                        </div>
-                                    <?php else: ?>
-                                        <button onclick="impulsarProductoIA('<?= htmlspecialchars($pf['nombre']) ?>', this)" class="bg-white hover:bg-[#1B263B] text-slate-500 hover:text-white text-[9px] font-black px-2 py-1.5 rounded-lg uppercase border border-slate-100 transition-all flex items-center justify-center gap-1 group">
-                                            <i class="fa-solid fa-wand-magic-sparkles"></i> Impulsar <span class="hidden group-hover:inline">IA</span>
-                                        </button>
-                                        <span class="bg-rose-500/10 text-rose-400 text-[8px] font-black px-2 py-0.5 rounded uppercase border border-rose-500/20 opacity-50">Fantasma</span>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-                
-                <script>
-                    async function impulsarProductoIA(nombre, btn) {
-                        const originalHtml = btn.innerHTML;
-                        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> ...';
-                        btn.disabled = true;
-                        
-                        try {
-                            const response = await fetch('dashboard.php?ajax=impulsar_producto', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ nombre: nombre })
-                            });
-                            const data = await response.json();
-                            
-                            if (data.status === 'success') {
-                                btn.innerHTML = '<i class="fa-solid fa-check"></i> Impulsado';
-                                btn.classList.replace('bg-slate-800', 'bg-[#1B263B]');
-                                btn.classList.replace('text-slate-400', 'text-slate-900');
-                                setTimeout(() => location.reload(), 1500);
-                            } else {
-                                alert("Error: " + (data.error || "Desconocido"));
-                                btn.innerHTML = originalHtml;
-                                btn.disabled = false;
-                            }
-                        } catch (e) {
-                            alert("Error de conexión");
-                            btn.innerHTML = originalHtml;
-                            btn.disabled = false;
-                        }
-                    }
-                </script>
-            </div>
+            <?php include __DIR__ . '/components/dashboard_radar.php'; ?>
 
         <?php elseif($vista === 'apariencia'): ?>
             <?php if(isset($_GET['msg']) && $_GET['msg'] === 'guardado'): ?>
