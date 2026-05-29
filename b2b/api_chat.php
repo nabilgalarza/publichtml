@@ -1,5 +1,6 @@
 <?php
 date_default_timezone_set('America/Guayaquil');
+require_once dirname(__DIR__) . '/lib/b2b_config.php';
 session_start();
 ini_set('display_errors', 0); // Seguridad Fase 1
 
@@ -20,6 +21,10 @@ if (!isset($_SESSION['b2b_user'])) {
 $ruc_cliente = $_SESSION['b2b_user']['ruc'];
 $nombre_cliente = $_SESSION['b2b_user']['nombre'];
 $descuento_cliente = floatval($_SESSION['b2b_user']['descuento']);
+
+if (!improgyp_b2b_ruc_permitido($ruc_cliente)) {
+    improgyp_b2b_api_denegado_respuesta();
+}
 
 // --- 2. PROTECCIÓN ANTI-SPAM (IP + SESIÓN) ---
 $current_time = time();
@@ -299,7 +304,6 @@ if ($pdo) {
             // Ya no borramos, ahora acumulamos "Snpashots" para el historial (El dashboard agrupará por fecha)
             // Aseguramos que la sesión exista para que el LEFT JOIN en el Dashboard no falle si el cliente aún no hace clic en WA
             $pdo->prepare("INSERT IGNORE INTO sesiones_b2b (session_id, ruc_cliente, clic_whatsapp) VALUES (?, ?, 0)")->execute([$session_id, $ruc_cliente]);
-            $pdo->prepare("UPDATE sesiones_b2b SET clic_whatsapp = 0 WHERE session_id = ?")->execute([$session_id]);
             
             $stmtQuote = $pdo->prepare("INSERT INTO metricas_cotizaciones (session_id, ruc_cliente, producto_nombre, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?, ?)");
             $lineas = explode("\n", $reply);

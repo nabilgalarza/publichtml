@@ -102,6 +102,11 @@
     </style>
 </head>
 <body>
+    <script>
+        fetch('api_status.php', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
+            if (!d.portal_habilitado) { window.location.replace('index.php'); }
+        }).catch(function () {});
+    </script>
 
     <div class="glow-bg"></div>
 

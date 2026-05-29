@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/security_headers.php';
+require_once __DIR__ . '/lib/b2b_config.php';
 // 1. BOTÓN DE PÁNICO (Modo Mantenimiento)
 $ruta_estado = __DIR__ . '/estado_tienda.json';
 $modo_mantenimiento = false;

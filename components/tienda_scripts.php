@@ -1193,7 +1193,7 @@
                         adInyectadoEnEsteSlot = true;
                         activeVideos = activeVideos.filter(v => v !== vAd);
                     }
-                    if (adData && adData.b2b_activo && !b2bInyectado && posB2b === cardActual) {
+                    if (adData && adData.b2b_activo && window.IMPROGYP_B2B_PUBLICO !== false && !b2bInyectado && posB2b === cardActual) {
                         htmlBuffer += renderB2BCard();
                         totalItemsEnGrid++;
                         b2bInyectado = true;
@@ -1261,7 +1261,7 @@
 
 
             // 4. Fallback B2B / videos / rompetráfico pendiente
-            if (adData && adData.b2b_activo && !b2bInyectado) {
+            if (adData && adData.b2b_activo && window.IMPROGYP_B2B_PUBLICO !== false && !b2bInyectado) {
                 htmlBuffer += renderB2BCard();
                 totalItemsEnGrid++;
             }

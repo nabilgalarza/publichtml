@@ -4,6 +4,7 @@ session_start();
 ini_set('memory_limit', '512M'); // Aumento Global de Memoria para Procesamiento de Imágenes
 date_default_timezone_set('America/Guayaquil');
 require_once __DIR__ . '/security_headers.php';
+require_once __DIR__ . '/lib/b2b_config.php';
 
 // Función auxiliar para limpiar rutas de imagen (Cero Impacto - Misma lógica que index.php)
 function getCleanImgUrl($ruta) {
@@ -142,8 +143,6 @@ try {
     // Soporte para instalaciones existentes: Asegurar columnas nuevas en métricas de cotización
     try { if (!$pdo->query("SHOW COLUMNS FROM metricas_cotizaciones LIKE 'ruc_cliente'")->fetch()) { $pdo->exec("ALTER TABLE metricas_cotizaciones ADD COLUMN ruc_cliente VARCHAR(50) AFTER session_id, ADD INDEX idx_ruc (ruc_cliente)"); } } catch(Exception $e) {}
     
-    $pdo->exec("CREATE TABLE IF NOT EXISTS social_config (id INT AUTO_INCREMENT PRIMARY KEY, platform VARCHAR(50) NOT NULL, account_name VARCHAR(255), access_token TEXT NOT NULL, expires_at DATETIME, account_id VARCHAR(100), is_active TINYINT(1) DEFAULT 1, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE KEY idx_platform (platform))");
-    
     $pdo->exec("CREATE TABLE IF NOT EXISTS productos_impulsados (
         id INT AUTO_INCREMENT PRIMARY KEY,
         nombre_producto VARCHAR(255) NOT NULL,
@@ -170,17 +169,6 @@ try {
         id INT AUTO_INCREMENT PRIMARY KEY,
         nombre VARCHAR(100) UNIQUE NOT NULL,
         fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )");
-
-    // NUEVA ARQUITECTURA DIGITAL: Tabla única de consumo analítico pasivo B2B
-    $pdo->exec("CREATE TABLE IF NOT EXISTS social_metrics (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        platform ENUM('facebook', 'instagram') NOT NULL,
-        account_insights JSON,
-        raw_metrics JSON,
-        ai_assessment JSON,
-        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        INDEX idx_platform (platform)
     )");
 
     // Nueva tabla para gestión centralizada de marcas
@@ -406,16 +394,29 @@ if (!isset($_SESSION['admin_logueado']) || $_SESSION['admin_logueado'] !== true)
 <?php exit; }
 
 $vista = $_GET['view'] ?? 'catalogo';
-$sub_vista = $_GET['sub'] ?? '';
-
-if (
-    $vista === 'apariencia'
-    && in_array($sub_vista, ['portada', 'secciones'], true)
-    && ($_SERVER['REQUEST_METHOD'] ?? '') === 'GET'
-) {
-    $hash = $sub_vista === 'secciones' ? '#bloque-categorias' : '';
-    header('Location: dashboard.php?view=apariencia&sub=home' . $hash);
+if ($vista === 'social') {
+    header('Location: dashboard.php?view=catalogo');
     exit;
+}
+
+$sub_vista = $_GET['sub'] ?? '';
+$menu_apariencia_abierto = ($vista === 'apariencia' || $vista === 'blog');
+
+if (in_array($vista, ['distribuidores', 'pedidos'], true) && !improgyp_b2b_admin_ver_modulo()) {
+    header('Location: dashboard.php?view=catalogo&msg=b2b_oculto');
+    exit;
+}
+
+if ($vista === 'apariencia' && ($_SERVER['REQUEST_METHOD'] ?? '') === 'GET') {
+    if ($sub_vista === '') {
+        header('Location: dashboard.php?view=apariencia&sub=home');
+        exit;
+    }
+    if (in_array($sub_vista, ['portada', 'secciones'], true)) {
+        $hash = $sub_vista === 'secciones' ? '#bloque-categorias' : '';
+        header('Location: dashboard.php?view=apariencia&sub=home' . $hash);
+        exit;
+    }
 }
 
 $db_host = $env['DB_HOST'] ?? 'localhost'; 
@@ -738,8 +739,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     if ($_POST['action'] === 'guardar_mantenimiento') {
         $estado = (int)$_POST['estado'];
-        file_put_contents(__DIR__ . '/estado_tienda.json', json_encode(['mantenimiento' => $estado === 1]));
+        $est = improgyp_b2b_estado_load();
+        $est['mantenimiento'] = ($estado === 1);
+        file_put_contents(improgyp_b2b_estado_path(), json_encode($est, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         header("Location: dashboard.php?view=sistema&msg=estado_actualizado"); exit;
+    }
+
+    if ($_POST['action'] === 'guardar_b2b_estado') {
+        $est = improgyp_b2b_estado_load();
+        $est['b2b_publico_activo'] = isset($_POST['b2b_publico_activo']);
+        $est['b2b_pilot_rucs'] = trim((string)($_POST['b2b_pilot_rucs'] ?? ''));
+        file_put_contents(improgyp_b2b_estado_path(), json_encode($est, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        header("Location: dashboard.php?view=sistema&msg=b2b_estado"); exit;
     }
 
     if ($_POST['action'] === 'eliminar_impulso_ad') {
@@ -1060,13 +1071,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
 
     if ($_POST['action'] === 'crear_usuario_b2b') {
-        $ruc = trim($_POST['ruc']); $nombre = trim($_POST['nombre']); $pin = trim($_POST['pin']); 
-        $descuento = (float)$_POST['descuento']; $telefono = preg_replace('/[^0-9]/', '', $_POST['telefono']);
-        $pdo->prepare("INSERT INTO usuarios_b2b (ruc, nombre, pin, descuento, telefono) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE nombre=?, pin=?, descuento=?, telefono=?")->execute([$ruc, $nombre, $pin, $descuento, $telefono, $nombre, $pin, $descuento, $telefono]);
+        if (!improgyp_b2b_admin_puede_gestionar()) {
+            header("Location: dashboard.php?view=distribuidores&err=b2b_solo_lectura"); exit;
+        }
+        $ruc = trim($_POST['ruc']);
+        $nombre = trim($_POST['nombre']);
+        $pin = trim($_POST['pin'] ?? '');
+        $descuento = (float)$_POST['descuento'];
+        $telefono = preg_replace('/[^0-9]/', '', $_POST['telefono']);
+        $stmtEx = $pdo->prepare("SELECT id, pin FROM usuarios_b2b WHERE ruc = ? LIMIT 1");
+        $stmtEx->execute([$ruc]);
+        $existente = $stmtEx->fetch(PDO::FETCH_ASSOC);
+        if ($existente) {
+            if ($pin === '') {
+                $pdo->prepare("UPDATE usuarios_b2b SET nombre=?, descuento=?, telefono=? WHERE ruc=?")->execute([$nombre, $descuento, $telefono, $ruc]);
+            } else {
+                $pinHash = improgyp_b2b_hash_pin($pin);
+                $pdo->prepare("UPDATE usuarios_b2b SET nombre=?, pin=?, descuento=?, telefono=? WHERE ruc=?")->execute([$nombre, $pinHash, $descuento, $telefono, $ruc]);
+            }
+        } else {
+            if ($pin === '') {
+                header("Location: dashboard.php?view=distribuidores&err=pin_requerido"); exit;
+            }
+            $pinHash = improgyp_b2b_hash_pin($pin);
+            $pdo->prepare("INSERT INTO usuarios_b2b (ruc, nombre, pin, descuento, telefono, activo) VALUES (?, ?, ?, ?, ?, 1)")->execute([$ruc, $nombre, $pinHash, $descuento, $telefono]);
+            $_SESSION['flash_b2b_pin'] = ['ruc' => $ruc, 'nombre' => $nombre, 'pin' => $pin];
+        }
         header("Location: dashboard.php?view=distribuidores&msg=b2b_creado"); exit;
     }
+
+    if ($_POST['action'] === 'toggle_usuario_b2b') {
+        if (!improgyp_b2b_admin_puede_gestionar()) {
+            header("Location: dashboard.php?view=distribuidores&err=b2b_solo_lectura"); exit;
+        }
+        $pdo->prepare("UPDATE usuarios_b2b SET activo = ? WHERE id = ?")->execute([(int)$_POST['activo'], (int)$_POST['id_b2b']]);
+        header("Location: dashboard.php?view=distribuidores&msg=b2b_estado_usuario"); exit;
+    }
     
-    if ($_POST['action'] === 'eliminar_usuario_b2b') { 
+    if ($_POST['action'] === 'eliminar_usuario_b2b') {
+        if (!improgyp_b2b_admin_puede_gestionar()) {
+            header("Location: dashboard.php?view=distribuidores&err=b2b_solo_lectura"); exit;
+        }
         $pdo->prepare("DELETE FROM usuarios_b2b WHERE id = ?")->execute([(int)$_POST['id_b2b']]); 
         header("Location: dashboard.php?view=distribuidores&msg=b2b_eliminado"); exit; 
     }
@@ -1241,6 +1286,12 @@ function menuActivo($vista_actual, $menu) {
     return $vista_actual === $menu ? 'bg-[#1B263B]/10 text-[#1B263B] border-[#1B263B]' : 'text-slate-500 hover:bg-slate-50 hover:text-[#1B263B] border-transparent'; 
 }
 
+function menuSubApariencia(bool $activo): string {
+    return $activo
+        ? 'bg-violet-50 text-violet-700 border-violet-400'
+        : 'border-transparent hover:bg-slate-50 text-slate-500 hover:text-violet-700';
+}
+
 // Obtener categorías centralizadas de la DB
 $stmtCats = $pdo->query("SELECT nombre FROM categorias_admin ORDER BY nombre ASC");
 $categorias_admin = $stmtCats->fetchAll(PDO::FETCH_COLUMN) ?: [];
@@ -1262,9 +1313,6 @@ if ($vista === 'blog' && isset($_GET['ajax']) && $_GET['ajax'] === 'articulo') {
     exit;
 }
 
-if ($vista === 'distribuidores') { 
-    $usuarios_b2b = $pdo->query("SELECT * FROM usuarios_b2b ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC); 
-}
 elseif ($vista === 'catalogo') { 
     $catalogo_local = $pdo->query("SELECT * FROM improgyp_catalogo ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC); 
 }
@@ -1285,6 +1333,7 @@ elseif ($vista === 'radar') {
 }
 
 // LÓGICA COMPARTIDA B2B (Mesa de Dinero y KPIs VIP)
+$pedidos_b2b_recientes = [];
 if ($vista === 'radar' || $vista === 'distribuidores') {
     $dinero_mesa = []; $top_vips_conversion = []; $ticket_promedio_b2b = 0; $productos_estrella_b2b = [];
     try {
@@ -1299,17 +1348,23 @@ if ($vista === 'radar' || $vista === 'distribuidores') {
                                     HAVING convertido = 0 AND gestionado = 0 
                                     ORDER BY fecha_cot DESC LIMIT 6")->fetchAll(PDO::FETCH_ASSOC);
 
-        $top_vips_conversion = $pdo->query("SELECT MAX(u.nombre) as nombre, COUNT(DISTINCT c.session_id) as total_cotizaciones, SUM(CASE WHEN COALESCE(s.clic_whatsapp,0) = 1 THEN 1 ELSE 0 END) as convertidas 
+        $top_vips_conversion = $pdo->query("SELECT MAX(u.nombre) as nombre, COUNT(DISTINCT c.session_id) as total_cotizaciones,
+                                            COUNT(DISTINCT CASE WHEN COALESCE(s.clic_whatsapp,0) = 1 THEN c.session_id END) as convertidas
                                             FROM usuarios_b2b u 
                                             LEFT JOIN metricas_cotizaciones c ON u.ruc = c.ruc_cliente 
                                             LEFT JOIN sesiones_b2b s ON c.session_id = s.session_id 
                                             GROUP BY u.ruc 
+                                            HAVING total_cotizaciones > 0
                                             ORDER BY convertidas DESC, total_cotizaciones DESC LIMIT 3")->fetchAll(PDO::FETCH_ASSOC);
 
         // Ticket Promedio: Filtramos los que tengan 0 para no sesgar la media de ventas reales
         $ticket_promedio_b2b = $pdo->query("SELECT AVG(total_pedido) FROM (SELECT SUM(subtotal) as total_pedido FROM metricas_cotizaciones GROUP BY session_id HAVING total_pedido > 1) as sub")->fetchColumn() ?: 0;
         
         $productos_estrella_b2b = $pdo->query("SELECT producto_nombre, SUM(cantidad) as total FROM metricas_cotizaciones GROUP BY producto_nombre ORDER BY total DESC LIMIT 3")->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($vista === 'distribuidores') {
+            $pedidos_b2b_recientes = $pdo->query("SELECT id, ruc_cliente, nombre_cliente, total, status, fecha FROM pedidos_b2b ORDER BY fecha DESC LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
+        }
     } catch (Exception $e) { 
         // Debug temporal si falla algo (se puede comentar después)
         error_log("Dash B2B Error: " . $e->getMessage());
@@ -1318,7 +1373,7 @@ if ($vista === 'radar' || $vista === 'distribuidores') {
 
 // INICIALIZACIÓN DE VARIABLES DE VISTA (Evitar Undefined Variable)
 $pedidos = []; $pedidos_publicos = []; $usuarios_b2b = []; $catalogo_local = []; 
-$seo_guardado = []; $ad_guardado = []; $cuentas_por_plataforma = [];
+$seo_guardado = []; $ad_guardado = [];
 
 if ($vista === 'distribuidores') { 
     try { $usuarios_b2b = $pdo->query("SELECT * FROM usuarios_b2b ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC); } catch(Exception $e) {}
@@ -1343,15 +1398,6 @@ elseif ($vista === 'pedidos') {
 elseif ($vista === 'pedidos_publicos') {
     try { $pedidos_publicos = $pdo->query("SELECT * FROM pedidos_publicos ORDER BY fecha DESC")->fetchAll(PDO::FETCH_ASSOC); } catch(Exception $e) {}
 }
-elseif ($vista === 'social') {
-    try {
-        $stmt = $pdo->prepare("SELECT * FROM social_config WHERE is_active = 1");
-        $stmt->execute();
-        $cuentas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($cuentas as $c) { $cuentas_por_plataforma[$c['platform']] = $c; }
-    } catch(Exception $e) {}
-}
-
 function extraerTextos($html) {
     if (empty($html)) return ['', ''];
     preg_match('/<span[^>]*>(.*?)<\/span>/i', $html, $matches); 
@@ -1370,7 +1416,7 @@ function extraerTextos($html) {
     <link rel="icon" type="image/png" href="favicon-app.png?v=5">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="components/documentacion/assets/doc.css">
     <style>
         :root {
             --bg-body: #F1F5F9;
@@ -1421,6 +1467,42 @@ function extraerTextos($html) {
         /* Forzar texto blanco en botones verdes */
         button[class*="bg-[#1B263B]"], 
         .bg-[#1B263B] { color: white !important; }
+
+        .nav-collapse-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+        .nav-collapse-trigger:hover { background: #f8fafc; }
+        .nav-collapse.is-open .nav-collapse-chevron { transform: rotate(180deg); }
+        .nav-collapse-chevron {
+            color: #94a3b8;
+            font-size: 10px;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+        .nav-collapse-panel {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.22s ease;
+        }
+        .nav-collapse.is-open .nav-collapse-panel { grid-template-rows: 1fr; }
+        .nav-collapse-panel-inner {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .nav-collapse.is-open .nav-collapse-trigger {
+            color: #6d28d9;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-700 font-sans flex h-screen overflow-hidden selection:bg-[#1B263B] selection:text-white">
@@ -1449,43 +1531,51 @@ function extraerTextos($html) {
             <a href="?view=seo" class="<?= menuActivo($vista, 'seo') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
                 <i class="fa-solid fa-magnifying-glass-chart w-4"></i> SEO Dinámico
             </a>
-            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-4 mt-6 mb-1">Apariencia web</p>
-            <a href="?view=apariencia" class="<?= menuActivo($vista, 'apariencia') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
-                <i class="fa-solid fa-palette w-4 text-violet-500"></i> Apariencia
-            </a>
-            <a href="?view=apariencia&sub=home" class="<?= ($vista === 'apariencia' && in_array($sub_vista, ['home', 'portada', 'secciones'], true)) ? 'bg-violet-50 text-violet-700 border-violet-400' : 'border-transparent hover:bg-slate-50 text-slate-500' ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors ml-4">
-                <i class="fa-solid fa-house-chimney w-4 text-violet-500"></i> Editor del Home
-            </a>
-            <a href="?view=apariencia&sub=megamenu" class="<?= ($vista === 'apariencia' && $sub_vista === 'megamenu') ? 'bg-violet-50 text-violet-700 border-violet-400' : 'border-transparent hover:bg-slate-50 text-slate-500' ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors ml-4">
-                <i class="fa-solid fa-palette w-4 text-violet-500"></i> Megamenú B2C
-            </a>
-            <a href="?view=apariencia&sub=blog" class="<?= ($vista === 'apariencia' && $sub_vista === 'blog') ? 'bg-violet-50 text-violet-700 border-violet-400' : 'border-transparent hover:bg-slate-50 text-slate-500' ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors ml-4">
-                <i class="fa-solid fa-square-rss w-4 text-orange-400"></i> Apariencia Blog
-            </a>
-            <a href="?view=blog" class="<?= menuActivo($vista, 'blog') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
-                <i class="fa-solid fa-pen-nib w-4 text-orange-500"></i> Gestor de Blog
-            </a>
-            <a href="?view=social" class="<?= menuActivo($vista, 'social') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
-                <i class="fa-solid fa-share-nodes w-4 text-pink-400"></i> Marketing Social AI <span class="text-[9px] bg-pink-500/20 text-pink-400 px-1.5 py-0.5 rounded ml-auto">BETA</span>
-            </a>
+            <div class="nav-collapse mt-6<?= $menu_apariencia_abierto ? ' is-open' : '' ?>" data-nav-collapse="improgyp_nav_apariencia">
+                <button type="button" class="nav-collapse-trigger" aria-expanded="<?= $menu_apariencia_abierto ? 'true' : 'false' ?>" aria-controls="nav-panel-apariencia">
+                    <span class="flex items-center gap-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                        <i class="fa-solid fa-palette w-4 text-violet-500 text-sm normal-case"></i>
+                        Apariencia web
+                    </span>
+                    <i class="fa-solid fa-chevron-down nav-collapse-chevron" aria-hidden="true"></i>
+                </button>
+                <div id="nav-panel-apariencia" class="nav-collapse-panel">
+                    <div class="nav-collapse-panel-inner">
+                        <a href="?view=apariencia&sub=home" class="<?= menuSubApariencia($vista === 'apariencia' && in_array($sub_vista, ['home', 'portada', 'secciones'], true)) ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
+                            <i class="fa-solid fa-house-chimney w-4 text-violet-500"></i> Editor del Home
+                        </a>
+                        <a href="?view=apariencia&sub=megamenu" class="<?= menuSubApariencia($vista === 'apariencia' && $sub_vista === 'megamenu') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
+                            <i class="fa-solid fa-bars-staggered w-4 text-violet-500"></i> Megamenú B2C
+                        </a>
+                        <a href="?view=apariencia&sub=blog" class="<?= menuSubApariencia($vista === 'apariencia' && $sub_vista === 'blog') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
+                            <i class="fa-solid fa-square-rss w-4 text-orange-400"></i> Apariencia Blog
+                        </a>
+                        <a href="?view=blog" class="<?= menuActivo($vista, 'blog') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
+                            <i class="fa-solid fa-pen-nib w-4 text-orange-500"></i> Gestor de Blog
+                        </a>
+                    </div>
+                </div>
+            </div>
             <a href="?view=locales" class="<?= menuActivo($vista, 'locales') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
                 <i class="fa-solid fa-map-location-dot w-4 text-indigo-500"></i> Red de Sucursales
             </a>
             
-            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-4 mt-6 mb-1">Mayoristas (B2B)</p>
+            <?php if (improgyp_b2b_admin_ver_modulo()): ?>
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-4 mt-6 mb-1">Mayoristas (B2B)<?php if (!improgyp_b2b_publico_activo()): ?> <span class="text-amber-500">· OFF</span><?php endif; ?></p>
             <a href="?view=distribuidores" class="<?= menuActivo($vista, 'distribuidores') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
                 <i class="fa-solid fa-users-gear w-4"></i> Clientes VIP
             </a>
             <a href="?view=pedidos" class="<?= menuActivo($vista, 'pedidos') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
                 <i class="fa-solid fa-file-invoice-dollar w-4 text-[#1B263B]"></i> Pedidos B2B <span class="text-[9px] bg-[#1B263B]/20 text-[#1B263B] px-1.5 py-0.5 rounded ml-auto">NUEVO</span>
             </a>
+            <?php endif; ?>
             
             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 px-4 mt-6">Sala de Máquinas</p>
             <a href="?view=sistema" class="<?= menuActivo($vista, 'sistema') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 transition-colors text-sm">
                 <i class="fa-solid fa-toggle-on w-4"></i> Estado del Sistema
             </a>
-            <a href="#" onclick="abrirModalDoc(); return false;" class="px-4 py-3 rounded-lg font-medium border-l-2 border-transparent hover:bg-slate-50 flex items-center gap-3 transition-colors text-sm text-indigo-500 font-black">
-                <i class="fa-solid fa-book-open-reader w-4"></i> Documentación <span class="text-[9px] bg-indigo-50 text-indigo-400 px-1.5 py-0.5 rounded ml-auto">AYUDA</span>
+            <a href="?view=ayuda" class="<?= menuActivo($vista, 'ayuda') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 transition-colors text-sm text-indigo-600 font-black">
+                <i class="fa-solid fa-book-open-reader w-4"></i> Documentación <span class="text-[9px] bg-indigo-50 text-indigo-500 px-1.5 py-0.5 rounded ml-auto">AYUDA</span>
             </a>
             <?php if (isset($_SESSION['admin_rol']) && $_SESSION['admin_rol'] === 'master'): ?>
                 <a href="?view=usuarios" class="<?= menuActivo($vista, 'usuarios') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 transition-colors text-sm border-amber-400/30">
@@ -1503,6 +1593,7 @@ function extraerTextos($html) {
     <main class="flex-1 p-8 overflow-y-auto relative custom-scrollbar pb-32">
         <div class="absolute top-0 left-1/4 w-96 h-96 bg-[#1B263B] rounded-full mix-blend-screen filter blur-[128px] opacity-5 pointer-events-none"></div>
 
+        <?php if ($vista !== 'ayuda'): ?>
         <header class="mb-10 border-b border-slate-100 pb-8 flex justify-between items-end relative z-10">
             <div>
                 <h1 class="text-4xl font-black text-slate-900 tracking-tighter uppercase">
@@ -1513,7 +1604,6 @@ function extraerTextos($html) {
                         elseif($vista=='distribuidores') echo 'Directorio <span class="text-[#1B263B] font-light">VIP</span>'; 
                         elseif($vista=='sistema') echo 'Estado del <span class="text-[#1B263B] font-light">Sistema</span>'; 
                         elseif($vista=='ads') echo 'Gestor de <span class="text-[#1B263B] font-light">Pautas</span>'; 
-                        elseif($vista=='social') echo 'Marketing <span class="text-[#1B263B] font-light">Social AI</span>';
                         elseif($vista=='usuarios') echo 'Gestión de <span class="text-[#1B263B] font-light">Usuarios</span>';
                         elseif($vista=='pedidos') echo 'Gestión de <span class="text-[#1B263B] font-light">Pedidos B2B</span>';
                         elseif($vista=='pedidos_publicos') echo 'Gestión de <span class="text-[#1B263B] font-light">Pedidos Públicos</span>';
@@ -1533,6 +1623,7 @@ function extraerTextos($html) {
                 </a>
             </div>
         </header>
+        <?php endif; ?>
 
         <?php if($vista === 'ads'): ?>
             <?php if(isset($_GET['msg'])): ?>
@@ -1830,17 +1921,56 @@ function extraerTextos($html) {
             </form>
 
         <?php elseif($vista === 'sistema'): 
-            $mantenimiento_activo = false;
-            if (file_exists(__DIR__ . '/estado_tienda.json')) {
-                $est_data = json_decode(file_get_contents(__DIR__ . '/estado_tienda.json'), true);
-                if(isset($est_data['mantenimiento']) && $est_data['mantenimiento'] === true) $mantenimiento_activo = true;
-            }
+            $est_data = improgyp_b2b_estado_load();
+            $mantenimiento_activo = !empty($est_data['mantenimiento']);
+            $b2b_publico_activo_ui = improgyp_b2b_publico_activo();
+            $b2b_pilot_rucs_ui = is_array($est_data['b2b_pilot_rucs'] ?? null)
+                ? implode(', ', $est_data['b2b_pilot_rucs'])
+                : (string)($est_data['b2b_pilot_rucs'] ?? '');
         ?>
             <?php if(isset($_GET['msg']) && $_GET['msg'] == 'estado_actualizado'): ?>
                 <div class="bg-[#1B263B]/20 border border-[#1B263B]/50 text-[#1B263B] p-4 rounded-lg mb-6 text-sm font-bold flex items-center gap-2 relative z-10">
                     <i class="fa-solid fa-circle-check"></i> Estado de la tienda actualizado.
                 </div>
             <?php endif; ?>
+            <?php if(isset($_GET['msg']) && $_GET['msg'] == 'b2b_estado'): ?>
+                <div class="bg-indigo-50 border border-indigo-200 text-indigo-800 p-4 rounded-lg mb-6 text-sm font-bold flex items-center gap-2 relative z-10">
+                    <i class="fa-solid fa-briefcase"></i> Configuración del portal mayoristas actualizada.
+                </div>
+            <?php endif; ?>
+
+            <div class="glass-card p-10 max-w-2xl relative z-10 border-slate-200 mb-8">
+                <div class="mb-8 flex items-center gap-5">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center text-3xl <?= $b2b_publico_activo_ui ? 'bg-[#1B263B]/10 text-[#1B263B]' : 'bg-amber-50 text-amber-600' ?>">
+                        <i class="fa-solid <?= $b2b_publico_activo_ui ? 'fa-briefcase' : 'fa-eye-slash' ?>"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 leading-tight uppercase tracking-tighter">Portal mayoristas (B2B)</h2>
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">Visibilidad pública y acceso al cotizador IA</p>
+                    </div>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 mb-6">
+                    <p class="text-sm text-slate-500 leading-relaxed font-medium mb-3">
+                        Con el módulo <strong>apagado</strong>, se ocultan enlaces en la tienda y el portal muestra “en preparación”. Las métricas y el directorio VIP siguen disponibles para <strong>master</strong>. Los RUC en lista piloto pueden probar el portal aunque esté apagado para el público.
+                    </p>
+                    <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Estado actual: <?= $b2b_publico_activo_ui ? 'Público activo' : 'Solo preparación / piloto' ?></p>
+                </div>
+                <form method="POST" action="dashboard.php?view=sistema" class="space-y-5">
+                    <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+                    <input type="hidden" name="action" value="guardar_b2b_estado">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" name="b2b_publico_activo" value="1" class="w-5 h-5 rounded border-slate-300 text-[#1B263B]" <?= $b2b_publico_activo_ui ? 'checked' : '' ?>>
+                        <span class="text-sm font-bold text-slate-700">Portal B2B visible y accesible para todos los mayoristas activos</span>
+                    </label>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">RUC piloto (opcional, separados por coma)</label>
+                        <input type="text" name="b2b_pilot_rucs" value="<?= htmlspecialchars($b2b_pilot_rucs_ui) ?>" placeholder="1790012345001, 1790099999001" class="w-full premium-input rounded-xl px-4 py-3 text-sm border border-slate-100">
+                    </div>
+                    <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-4 rounded-xl transition-transform active:scale-95 flex justify-center items-center gap-2 text-sm uppercase tracking-widest">
+                        <i class="fa-solid fa-floppy-disk"></i> Guardar módulo B2B
+                    </button>
+                </form>
+            </div>
 
             <div class="glass-card p-10 max-w-2xl relative z-10 border-slate-200">
                 <div class="mb-8 flex items-center gap-5">
@@ -2092,15 +2222,6 @@ function extraerTextos($html) {
                 <?php include __DIR__ . '/components/apariencia_megamenu.php'; ?>
             <?php elseif ($sub_vista === 'blog'): ?>
                 <?php include __DIR__ . '/components/apariencia_blog.php'; ?>
-            <?php else: ?>
-                <div class="max-w-lg mx-auto p-10 text-center">
-                    <p class="text-slate-500 mb-6">Elige qué parte de la apariencia quieres editar.</p>
-                    <div class="flex flex-col gap-3">
-                        <a href="?view=apariencia&sub=home" class="bg-white border border-slate-200 rounded-xl py-4 font-black text-[#1B263B] hover:border-[#3A86FF]">Editor del Home</a>
-                        <a href="?view=apariencia&sub=megamenu" class="bg-white border border-slate-200 rounded-xl py-4 font-black text-[#1B263B] hover:border-[#3A86FF]">Megamenú B2C</a>
-                        <a href="?view=apariencia&sub=blog" class="bg-white border border-slate-200 rounded-xl py-4 font-black text-[#1B263B] hover:border-[#3A86FF]">Apariencia Blog (Home)</a>
-                    </div>
-                </div>
             <?php endif; ?>
 
         <?php elseif($vista === 'blog'): ?>
@@ -2559,7 +2680,20 @@ function extraerTextos($html) {
                 });
             </script>
         
-        <?php elseif($vista === 'distribuidores'): ?>
+        <?php elseif($vista === 'distribuidores'): 
+            $b2b_solo_lectura = !improgyp_b2b_admin_puede_gestionar();
+            ?>
+            <?php if (!improgyp_b2b_publico_activo()): ?>
+                <div class="bg-amber-50 border border-amber-200 text-amber-900 p-4 rounded-xl mb-6 text-sm font-bold flex flex-wrap items-center gap-3 relative z-10">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Portal B2B <strong>apagado</strong> para el público. Aquí sigues viendo métricas y mayoristas. Actívalo en <a href="?view=sistema" class="underline text-[#1B263B]">Estado del Sistema</a>.</span>
+                </div>
+            <?php endif; ?>
+            <?php if ($b2b_solo_lectura): ?>
+                <div class="bg-slate-100 border border-slate-200 text-slate-600 p-4 rounded-xl mb-6 text-xs font-bold relative z-10">
+                    <i class="fa-solid fa-lock"></i> Modo solo lectura: el módulo está en preparación. Solo master puede crear o editar mayoristas.
+                </div>
+            <?php endif; ?>
             
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 relative z-10">
                 <div>
@@ -2712,14 +2846,58 @@ function extraerTextos($html) {
 
             </div>
 
+            <?php if (!empty($pedidos_b2b_recientes)): ?>
+            <div class="glass-card p-6 mb-8 relative z-10 border-[#1B263B]/20">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-sm font-black text-slate-900 uppercase tracking-tight flex items-center gap-2">
+                        <i class="fa-solid fa-file-invoice-dollar text-[#1B263B]"></i> Últimos pedidos formales B2B
+                    </h3>
+                    <a href="?view=pedidos" class="text-[10px] font-black uppercase tracking-widest text-[#1B263B] hover:underline">Ver todos</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="text-[10px] font-black text-slate-400 uppercase">
+                            <tr><th class="py-2 pr-4">#</th><th class="py-2 pr-4">Cliente</th><th class="py-2 pr-4">Total</th><th class="py-2">Estado</th></tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            <?php foreach ($pedidos_b2b_recientes as $pb): ?>
+                            <tr>
+                                <td class="py-2 font-mono text-xs">#<?= (int)$pb['id'] ?></td>
+                                <td class="py-2"><span class="font-bold text-slate-800"><?= htmlspecialchars($pb['nombre_cliente']) ?></span><br><span class="text-[10px] text-slate-400"><?= htmlspecialchars($pb['ruc_cliente']) ?></span></td>
+                                <td class="py-2 font-black text-[#1B263B]">$<?= number_format((float)$pb['total'], 2) ?></td>
+                                <td class="py-2"><span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-slate-100"><?= htmlspecialchars($pb['status']) ?></span></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <?php if (!empty($_SESSION['flash_b2b_pin'])): $fb = $_SESSION['flash_b2b_pin']; unset($_SESSION['flash_b2b_pin']); ?>
+                <div class="bg-emerald-50 border border-emerald-200 text-emerald-900 p-4 rounded-xl mb-6 text-sm relative z-10">
+                    <p class="font-black mb-1"><i class="fa-solid fa-key"></i> Mayorista creado — copia el PIN ahora (no se volverá a mostrar)</p>
+                    <p class="font-mono text-xs mt-2"><strong><?= htmlspecialchars($fb['nombre']) ?></strong> · RUC <?= htmlspecialchars($fb['ruc']) ?> · PIN <span class="text-lg font-black"><?= htmlspecialchars($fb['pin']) ?></span></p>
+                </div>
+            <?php endif; ?>
             <?php if(isset($_GET['msg']) && $_GET['msg'] == 'historial_limpio'): ?>
                 <div class="bg-[#1B263B]/20 border border-[#1B263B]/50 text-[#1B263B] p-4 rounded-lg mb-6 text-sm font-bold flex items-center gap-2 relative z-10">
                     <i class="fa-solid fa-broom"></i> Historial del cliente limpiado con éxito.
                 </div>
             <?php endif; ?>
+            <?php if(isset($_GET['msg']) && $_GET['msg'] == 'b2b_estado_usuario'): ?>
+                <div class="bg-[#1B263B]/10 border border-[#1B263B]/30 text-[#1B263B] p-4 rounded-lg mb-6 text-sm font-bold relative z-10"><i class="fa-solid fa-toggle-on"></i> Estado del mayorista actualizado.</div>
+            <?php endif; ?>
+            <?php if(isset($_GET['err']) && $_GET['err'] === 'b2b_solo_lectura'): ?>
+                <div class="bg-rose-50 border border-rose-200 text-rose-700 p-4 rounded-lg mb-6 text-sm font-bold relative z-10">No tienes permiso para modificar mayoristas mientras el módulo está en preparación.</div>
+            <?php endif; ?>
+            <?php if(isset($_GET['err']) && $_GET['err'] === 'pin_requerido'): ?>
+                <div class="bg-rose-50 border border-rose-200 text-rose-700 p-4 rounded-lg mb-6 text-sm font-bold relative z-10">El PIN es obligatorio al crear un mayorista nuevo.</div>
+            <?php endif; ?>
 
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 relative z-10">
                 
+                <?php if (!$b2b_solo_lectura): ?>
                 <div class="glass-card p-6 h-fit hover:border-[#1B263B]/40 transition-colors" id="panel-form-b2b">
                     <h2 id="titulo-form-b2b" class="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-user-plus text-[#1B263B]"></i> Nuevo Mayorista
@@ -2739,7 +2917,7 @@ function extraerTextos($html) {
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="text-xs font-black text-slate-500 uppercase tracking-wider mb-1 block">PIN Clave</label>
-                                <input type="text" name="pin" id="b2b_pin" required autocomplete="new-password" class="w-full premium-input rounded-lg px-3 py-2.5 text-sm font-mono">
+                                <input type="password" name="pin" id="b2b_pin" autocomplete="new-password" placeholder="Obligatorio al crear" class="w-full premium-input rounded-lg px-3 py-2.5 text-sm font-mono">
                             </div>
                             <div>
                                 <label class="text-xs font-black text-slate-500 uppercase tracking-wider mb-1 block">Dscto (%)</label>
@@ -2758,8 +2936,14 @@ function extraerTextos($html) {
                         </div>
                     </form>
                 </div>
+                <?php else: ?>
+                <div class="glass-card p-6 h-fit border-slate-200 text-center text-slate-400">
+                    <i class="fa-solid fa-lock text-2xl mb-3"></i>
+                    <p class="text-xs font-black uppercase tracking-widest">Alta de mayoristas deshabilitada</p>
+                </div>
+                <?php endif; ?>
 
-                <div class="xl:col-span-2 glass-card overflow-hidden flex flex-col hover:border-[#1B263B]/40 transition-colors">
+                <div class="<?= $b2b_solo_lectura ? 'xl:col-span-3' : 'xl:col-span-2' ?> glass-card overflow-hidden flex flex-col hover:border-[#1B263B]/40 transition-colors">
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead class="text-slate-500 border-b border-slate-100 bg-slate-50/50 text-xs uppercase tracking-wider font-black">
@@ -2774,8 +2958,8 @@ function extraerTextos($html) {
                                 <?php foreach($usuarios_b2b as $u): 
                                     $tel_wa = preg_replace('/[^0-9]/', '', $u['telefono']); 
                                     if (strpos($tel_wa, '09') === 0) { $tel_wa = '593' . substr($tel_wa, 1); } 
-                                    $link_app = $base_url . "/b2b/index.html"; 
-                                    $mensaje_wp = rawurlencode("¡Hola *{$u['nombre']}*! Bienvenido al Club VIP de IMPROGYP.\n\n📱 Accede a tu cotizador IA aquí:\n{$link_app}\n\n*Usuario:* {$u['ruc']}\n*PIN:* {$u['pin']}\n*Beneficio:* {$u['descuento']}% OFF"); 
+                                    $link_app = $base_url . "/b2b/"; 
+                                    $mensaje_wp = rawurlencode("¡Hola *{$u['nombre']}*! Bienvenido al Club VIP de IMPROGYP.\n\n📱 Accede a tu cotizador IA:\n{$link_app}\n\n*Usuario (RUC):* {$u['ruc']}\n*Beneficio:* {$u['descuento']}% OFF\n\nTu PIN te lo compartimos por este medio de forma segura."); 
                                 ?>
                                 <tr class="hover:bg-slate-50 transition-colors">
                                     <td class="p-4 align-middle">
@@ -2784,10 +2968,13 @@ function extraerTextos($html) {
                                     </td>
                                     <td class="p-4 align-middle font-mono text-slate-600 text-xs">
                                         <span class="text-slate-400">ID:</span> <?= htmlspecialchars($u['ruc']) ?><br>
-                                        <span class="text-slate-400">PIN:</span> <?= htmlspecialchars($u['pin']) ?>
+                                        <span class="text-slate-400">PIN:</span> <span class="tracking-widest">••••••</span>
                                     </td>
                                     <td class="p-4 align-middle text-center">
                                         <span class="bg-[#1B263B]/10 text-[#1B263B] px-2.5 py-1 rounded-lg font-black text-xs border border-[#1B263B]/20"><?= floatval($u['descuento']) ?>%</span>
+                                        <?php if ((int)($u['activo'] ?? 1) === 0): ?>
+                                            <span class="block mt-1 text-[9px] font-black uppercase text-rose-500">Suspendido</span>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="p-4 align-middle text-right space-x-1 whitespace-nowrap">
                                         <button type="button" onclick="abrirChatB2B('<?= htmlspecialchars($u['ruc'], ENT_QUOTES) ?>', '<?= htmlspecialchars($u['nombre'], ENT_QUOTES) ?>')" class="w-8 h-8 bg-indigo-500/10 text-indigo-400 rounded-lg hover:bg-indigo-500 hover:text-white transition-colors" title="Ver Historial de Chat IA">
@@ -2801,10 +2988,20 @@ function extraerTextos($html) {
                                                 <i class="fa-solid fa-broom"></i>
                                             </button>
                                         </form>
-                                        <a href="https://wa.me/<?= htmlspecialchars($tel_wa) ?>?text=<?= $mensaje_wp ?>" target="_blank" class="inline-flex w-8 h-8 bg-[#25D366]/10 text-[#25D366] rounded-lg items-center justify-center hover:bg-[#25D366] hover:text-white transition-colors" title="Enviar credenciales">
+                                        <?php if (!$b2b_solo_lectura): ?>
+                                        <a href="https://wa.me/<?= htmlspecialchars($tel_wa) ?>?text=<?= $mensaje_wp ?>" target="_blank" class="inline-flex w-8 h-8 bg-[#25D366]/10 text-[#25D366] rounded-lg items-center justify-center hover:bg-[#25D366] hover:text-white transition-colors" title="Enviar credenciales (incluye PIN actual)">
                                             <i class="fa-brands fa-whatsapp"></i>
                                         </a>
-                                        <button type="button" onclick="editarB2B('<?= htmlspecialchars($u['ruc'], ENT_QUOTES) ?>', '<?= htmlspecialchars($u['nombre'], ENT_QUOTES) ?>', '<?= htmlspecialchars($u['pin'], ENT_QUOTES) ?>', <?= $u['descuento'] ?>, '<?= htmlspecialchars($u['telefono'], ENT_QUOTES) ?>')" class="w-8 h-8 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500 hover:text-white transition-colors">
+                                        <form method="POST" action="dashboard.php?view=distribuidores" class="inline-block" title="<?= (int)($u['activo'] ?? 1) ? 'Suspender acceso' : 'Reactivar' ?>">
+                                            <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+                                            <input type="hidden" name="action" value="toggle_usuario_b2b">
+                                            <input type="hidden" name="id_b2b" value="<?= $u['id'] ?>">
+                                            <input type="hidden" name="activo" value="<?= (int)($u['activo'] ?? 1) ? 0 : 1 ?>">
+                                            <button type="submit" class="w-8 h-8 <?= (int)($u['activo'] ?? 1) ? 'bg-slate-100 text-slate-500' : 'bg-emerald-500/10 text-emerald-600' ?> rounded-lg hover:bg-[#1B263B] hover:text-white transition-colors">
+                                                <i class="fa-solid <?= (int)($u['activo'] ?? 1) ? 'fa-user-slash' : 'fa-user-check' ?>"></i>
+                                            </button>
+                                        </form>
+                                        <button type="button" onclick="editarB2B('<?= htmlspecialchars($u['ruc'], ENT_QUOTES) ?>', '<?= htmlspecialchars($u['nombre'], ENT_QUOTES) ?>', <?= $u['descuento'] ?>, '<?= htmlspecialchars($u['telefono'], ENT_QUOTES) ?>')" class="w-8 h-8 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500 hover:text-white transition-colors">
                                             <i class="fa-solid fa-pen"></i>
                                         </button>
                                         <form method="POST" action="dashboard.php?view=distribuidores" onsubmit="return confirm('¿Revocar acceso?');" class="inline-block">
@@ -2815,6 +3012,7 @@ function extraerTextos($html) {
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
                                         </form>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
@@ -2852,10 +3050,11 @@ function extraerTextos($html) {
             </style>
 
             <script>
-                function editarB2B(ruc, nombre, pin, descuento, telefono) { 
+                function editarB2B(ruc, nombre, descuento, telefono) { 
                     document.getElementById('b2b_ruc').value = ruc; document.getElementById('b2b_ruc').readOnly = true; document.getElementById('b2b_ruc').classList.add('opacity-50'); 
                     document.getElementById('b2b_nombre').value = nombre; 
-                    document.getElementById('b2b_pin').value = pin; 
+                    document.getElementById('b2b_pin').value = ''; 
+                    document.getElementById('b2b_pin').placeholder = 'Dejar vacío para mantener';
                     document.getElementById('b2b_descuento').value = descuento; 
                     document.getElementById('b2b_telefono').value = telefono; 
                     document.getElementById('titulo-form-b2b').innerHTML = '<i class="fa-solid fa-pen text-blue-400"></i> Editando Cliente'; 
@@ -2965,7 +3164,7 @@ function extraerTextos($html) {
             <?php list($tit_todos_normal, $tit_todos_resaltado) = extraerTextos($textos_guardados['Todos']['tit'] ?? ""); if(empty($tit_todos_normal)) { $tit_todos_normal = "Herramientas profesionales para"; $tit_todos_resaltado = "tu obra."; } ?>
             <div class="glass-card p-8 relative z-10 hover:border-[#1B263B]/40 transition-colors">
                 <h2 class="text-xl font-black text-slate-900 mb-2 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-[#1B263B]"></i> Textos Persuasivos (IA)</h2>
-                <p class="text-sm text-slate-500 mb-2">Publica en <strong>productos.php</strong> vía <code class="text-xs bg-slate-100 px-1 rounded">textos_tienda.json</code>. Los encabezados del <strong>home</strong> (index) se editan en <a href="?view=apariencia&sub=home" class="text-[#3A86FF] font-bold underline">Apariencia → Editor del Home</a>.</p>
+                <p class="text-sm text-slate-500 mb-2">Publica en <strong>productos.php</strong> vía <code class="text-xs bg-slate-100 px-1 rounded">textos_tienda.json</code>. Los encabezados del <strong>home</strong> (index) se editan en <a href="?view=apariencia&sub=home" class="text-[#3A86FF] font-bold underline">Editor del Home</a>.</p>
                 <?php include __DIR__ . '/components/gemini_status_badge.php'; ?>
                 <p class="text-[11px] text-slate-400 mb-6">Tras usar IA, pulsa <strong>Guardar y Sincronizar Tienda</strong> para que se vea en el catálogo. Un botón IA a la vez.</p>
                 <form method="POST" action="dashboard.php?view=marketing" id="form-marketing-ia">
@@ -3098,288 +3297,6 @@ function extraerTextos($html) {
                     }
                 }
             </script>
-        <?php elseif($vista === 'social'): ?>
-            <div class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-                    <!-- INSTAGRAM -->
-                    <div class="glass-card p-6 hover:border-pink-500/40 transition-all group overflow-hidden relative">
-                        <div class="absolute -right-4 -top-4 text-pink-500/5 text-8xl rotate-12 transition-transform group-hover:scale-110 group-hover:rotate-6"><i class="fa-brands fa-instagram"></i></div>
-                        <div class="flex items-center gap-4 mb-6 relative z-10">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white text-2xl">
-                                <i class="fa-brands fa-instagram"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-black text-slate-900 text-lg">Instagram</h3>
-                                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-black">Business Account</p>
-                            </div>
-                        </div>
-                        
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 mb-6 relative z-10">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs text-slate-500 font-bold uppercase tracking-widest">Estado</span>
-                                <span class="flex items-center gap-1.5 text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full font-black border border-emerald-100 shadow-sm shadow-emerald-100">
-                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> CONECTADO (B2B)
-                                </span>
-                            </div>
-                            <p class="text-sm text-slate-900 font-black truncate">Nabilia (Token Permanente)</p>
-                        </div>
-                        <button id="btn-ver-metricas" onclick="verMetricasIG()" class="w-full bg-white hover:bg-slate-50 text-slate-900 font-bold py-3 rounded-xl transition-all border border-slate-200 active:scale-95 text-xs flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-chart-line text-[#1B263B]"></i> Actualizar Métricas
-                        </button>
-                    </div>
-
-                    <!-- FACEBOOK (NUEVO) -->
-                    <div class="glass-card p-6 hover:border-blue-500/40 transition-all group overflow-hidden relative">
-                        <div class="absolute -right-4 -top-4 text-blue-600/5 text-8xl rotate-12 transition-transform group-hover:scale-110 group-hover:rotate-6"><i class="fa-brands fa-facebook"></i></div>
-                        <div class="flex items-center gap-4 mb-6 relative z-10">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 flex items-center justify-center text-white text-2xl">
-                                <i class="fa-brands fa-facebook-f"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-black text-slate-900 text-lg">Facebook</h3>
-                                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-black">Fan Page</p>
-                            </div>
-                        </div>
-                        
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 mb-6 relative z-10">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs text-slate-500 font-bold uppercase tracking-widest">Estado</span>
-                                <span class="flex items-center gap-1.5 text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full font-black border border-emerald-100 shadow-sm shadow-emerald-100">
-                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> CONECTADO (B2B)
-                                </span>
-                            </div>
-                            <p class="text-sm text-slate-900 font-black truncate">Nabilia (Token Permanente)</p>
-                        </div>
-                        <button id="btn-ver-metricas-fb" onclick="verMetricasFB()" class="w-full bg-white hover:bg-slate-50 text-slate-900 font-bold py-3 rounded-xl transition-all border border-slate-200 active:scale-95 text-xs flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-chart-line text-blue-500"></i> Actualizar Métricas
-                        </button>
-                    </div>
-
-                    <!-- TIKTOK (Placeholder) -->
-                    <div class="glass-card p-6 opacity-60 hover:opacity-100 transition-all group overflow-hidden relative grayscale hover:grayscale-0">
-                        <div class="absolute -right-4 -top-4 text-slate-200 text-8xl rotate-12"><i class="fa-brands fa-tiktok"></i></div>
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-900 text-2xl border border-slate-200">
-                                <i class="fa-brands fa-tiktok"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-black text-slate-900 text-lg">TikTok</h3>
-                                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-black italic">Próximamente</p>
-                            </div>
-                        </div>
-                        <button disabled class="w-full bg-slate-50 text-slate-400 font-bold py-3 rounded-xl border border-slate-100 cursor-not-allowed text-xs">Aún no disponible</button>
-                    </div>
-
-                    <!-- LINKEDIN (Placeholder) -->
-                    <div class="glass-card p-6 opacity-60 hover:opacity-100 transition-all group overflow-hidden relative grayscale hover:grayscale-0">
-                        <div class="absolute -right-4 -top-4 text-blue-600/5 text-8xl rotate-12"><i class="fa-brands fa-linkedin"></i></div>
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 rounded-xl bg-[#0077b5] flex items-center justify-center text-white text-2xl">
-                                <i class="fa-brands fa-linkedin-in"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-black text-slate-900 text-lg">LinkedIn</h3>
-                                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-black italic">Próximamente</p>
-                            </div>
-                        </div>
-                        <button disabled class="w-full bg-slate-50 text-slate-400 font-bold py-3 rounded-xl border border-slate-100 cursor-not-allowed text-xs">Pidiendo permisos API</button>
-                    </div>
-                </div>
-                
-                <!-- MÉTRICAS INSTAGRAM EMBEDDED -->
-                <div id="social-metrics-v2" class="hidden animate-fade-in mt-8 relative z-10">
-                    <div class="glass-card p-8 border-[#1B263B]/20">
-                        <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
-                            <div class="flex items-center gap-4">
-                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 text-white flex items-center justify-center text-3xl "><i class="fa-brands fa-instagram"></i></div>
-                                <div>
-                                    <h3 class="font-black text-slate-900 text-xl leading-tight uppercase tracking-tight">Análisis de Rendimiento</h3>
-                                    <p class="text-[10px] text-slate-500 uppercase tracking-widest font-black">Métricas consolidadas por periodo</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Filtros de Fecha -->
-                            <div class="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 gap-1">
-                                <button onclick="changeSocialRange(1)" id="btn-range-1" class="px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all btn-social-range border border-transparent">Hoy</button>
-                                <button onclick="changeSocialRange(3)" id="btn-range-3" class="px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all btn-social-range border border-transparent">3 Días</button>
-                                <button onclick="changeSocialRange(7)" id="btn-range-7" class="px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all btn-social-range border border-transparent bg-white text-slate-900 shadow-sm shadow-slate-200">7 Días</button>
-                            </div>
-
-                            <button type="button" onclick="document.getElementById('social-metrics-v2').classList.add('hidden')" class="text-slate-400 hover:text-rose-500 transition-colors flex items-center gap-2 text-[10px] font-black uppercase tracking-widest bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 italic">
-                                <i class="fa-solid fa-eye-slash"></i> Ocultar Análisis
-                            </button>
-                        </div>
-
-                        <!-- Resumen Rápido -->
-                        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8" id="ig-metrics-summary">
-                            <!-- Se llena vía JS -->
-                        </div>
-
-                        <!-- Gráfico de Tendencia -->
-                        <div class="bg-slate-50 border border-slate-100 rounded-[2rem] p-8 mb-8">
-                            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                                <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
-                                    <i class="fa-solid fa-chart-line text-pink-500"></i> Tendencia de Alcance e Impresiones
-                                </h4>
-                                <div class="flex gap-6 text-[10px] font-black uppercase tracking-widest">
-                                    <div class="flex items-center gap-2 text-[#1B263B]"><span class="w-3 h-3 rounded-full bg-[#1B263B]"></span> Impresiones</div>
-                                    <div class="flex items-center gap-2 text-indigo-400"><span class="w-3 h-3 rounded-full bg-indigo-400"></span> Alcance</div>
-                                </div>
-                            </div>
-                            <div class="h-64 w-full">
-                                <canvas id="ig-performance-chart"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-                            <!-- Gráfico de Horas Pico -->
-                            <div class="bg-slate-50 border border-slate-100 rounded-[2rem] p-8">
-                                <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
-                                    <i class="fa-solid fa-clock text-blue-500"></i> Horas de Mayor Actividad
-                                </h4>
-                                <div class="h-48 w-full">
-                                    <canvas id="ig-peak-chart"></canvas>
-                                </div>
-                            </div>
-
-                            <!-- Variedad de Contenido -->
-                            <div class="bg-slate-50 border border-slate-100 rounded-[2rem] p-8">
-                                <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
-                                    <i class="fa-solid fa-shapes text-orange-500"></i> Mix de Contenido (Últimos 10)
-                                </h4>
-                                <div class="h-48 w-full">
-                                    <canvas id="ig-type-chart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10" id="ig-conversion-metrics">
-                            <!-- Clicks y Visitas -->
-                        </div>
-
-                        <!-- Ranking de Posts -->
-                        <div class="border-t border-slate-100 pt-10">
-                            <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
-                                <i class="fa-solid fa-trophy text-yellow-500"></i> Top 5: Mejores Publicaciones (Engagement)
-                            </h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="ig-metrics-content">
-                                <!-- Se llena vía JS -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI INSIGHTS PLACEHOLDER -->
-                <div class="bg-gradient-to-br from-white to-slate-50 p-8 rounded-3xl border border-slate-200 relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-[#1B263B] blur-[128px] opacity-10 pointer-events-none group-hover:opacity-20 transition-opacity"></div>
-                    <div class="flex flex-col md:flex-row gap-8 items-center">
-                        <div class="w-24 h-24 rounded-3xl bg-[#1B263B]/10 flex items-center justify-center text-4xl text-[#1B263B] border border-[#1B263B]/20">
-                            <i class="fa-solid fa-brain animate-pulse"></i>
-                        </div>
-                        <div class="flex-1 text-center md:text-left">
-                            <h2 class="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">Auditoría de Contenido <span class="text-[#1B263B]">IA</span></h2>
-                            <p class="text-slate-600 max-w-2xl leading-relaxed">Conecta tus redes para que <span class="text-slate-900 font-bold">Gemini 2.5 Flash</span> analice el rendimiento de tus posts, identifique qué herramientas generan más interés y cree copys optimizados para tu próxima campaña.</p>
-                        </div>
-                        <?php if(isset($cuentas_por_plataforma['instagram'])): ?>
-                            <button id="btn-analizar-ig" onclick="ejecutarAuditoriaIA()" class="bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-4 px-8 rounded-2xl transition-all hover:scale-105 active:scale-95 flex items-center gap-3">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="text-analizar">Analizar Perfil</span>
-                            </button>
-                        <?php else: ?>
-                            <div class="flex items-center gap-2 text-rose-400 font-black text-xs bg-rose-500/10 px-4 py-2 rounded-lg border border-rose-500/20 uppercase tracking-widest">
-                                <i class="fa-solid fa-lock"></i> Requiere Conexión
-                            </div>
-                        <?php endif; ?>
-                </div>
-
-                <!-- RESULTADOS AUDITORÍA IA -->
-                <div id="social-analysis-results" class="hidden animate-fade-in mt-8">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 relative z-10">
-                        <!-- ANÁLISIS BREVE -->
-                        <div class="glass-card p-8">
-                            <h3 class="text-xs font-black text-[#1B263B] uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <i class="fa-solid fa-magnifying-glass-chart"></i> Diagnóstico de Engagement
-                            </h3>
-                            <div id="ai-diagnostico" class="text-slate-700 text-sm leading-relaxed font-medium mb-6"></div>
-                            
-                            <h3 class="text-xs font-black text-blue-600 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <i class="fa-solid fa-lightbulb"></i> Idea Próximo Post
-                            </h3>
-                            <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl">
-                                <p id="ai-idea" class="text-blue-800 text-xs italic font-bold"></p>
-                            </div>
-                        </div>
-
-                        <!-- CONSEJOS ESTRATÉGICOS -->
-                        <div class="glass-card p-8">
-                            <h3 class="text-xs font-black text-amber-600 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <i class="fa-solid fa-bullseye"></i> 3 Claves de Crecimiento
-                            </h3>
-                            <ul id="ai-consejos" class="space-y-4">
-                                <!-- Se llena vía JS -->
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                    async function ejecutarAuditoriaIA() {
-                        const btn = document.getElementById('btn-analizar-ig');
-                        const text = document.getElementById('text-analizar');
-                        const icon = btn.querySelector('i');
-                        const results = document.getElementById('social-analysis-results');
-
-                        // Loading state
-                        btn.classList.add('pointer-events-none', 'opacity-80');
-                        icon.className = 'fa-solid fa-circle-notch fa-spin';
-                        text.innerText = 'Consiguiendo métricas...';
-
-                        try {
-                            const response = await fetch(`api_social.php?action=analyze_instagram&range=${currentSocialRange}`);
-                            const data = await response.json();
-
-                            if (data.status === 'success') {
-                                // ... (rest of success logic)
-                                const report = data.report;
-                                document.getElementById('ai-diagnostico').innerText = report.analisis_breve || "No se pudo generar el diagnóstico.";
-                                
-                                let ideaText = report.idea_proximo_post || "Sin idea disponible.";
-                                if (typeof ideaText === 'object') {
-                                    ideaText = (ideaText.titulo ? `**${ideaText.titulo}**: ` : '') + (ideaText.descripcion || JSON.stringify(ideaText));
-                                }
-                                document.getElementById('ai-idea').innerText = ideaText;
-                                
-                                const lista = document.getElementById('ai-consejos');
-                                lista.innerHTML = '';
-                                if (Array.isArray(report.consejos)) {
-                                    report.consejos.forEach(consejo => {
-                                        lista.innerHTML += `
-                                            <li class="flex items-start gap-3 bg-white p-3 rounded-xl border border-slate-100">
-                                                <i class="fa-solid fa-circle-check text-[#1B263B] mt-1"></i>
-                                                <span class="text-slate-800 text-[11px] font-bold leading-relaxed">${consejo}</span>
-                                            </li>
-                                        `;
-                                    });
-                                }
-
-                                results.classList.remove('hidden');
-                                results.scrollIntoView({ behavior: 'smooth' });
-                            } else {
-                                console.error("Error Social API:", data);
-                                alert("Error: " + (data.error || 'Respuesta inesperada del servidor.'));
-                            }
-                        } catch (error) {
-                            console.error("Fetch Exception:", error);
-                            alert("Error de conexión: No se pudo contactar con api_social.php o el servidor devolvió un error fatal.");
-                        } finally {
-                            btn.classList.remove('pointer-events-none', 'opacity-80');
-                            icon.className = 'fa-solid fa-wand-magic-sparkles';
-                            text.innerText = 'Analizar Perfil';
-                        }
-                    }
-
-                </script>
-            </div>
-            </div>
         <?php elseif($vista === 'usuarios'): ?>
             <?php 
                 if ($_SESSION['admin_rol'] !== 'master') { echo "<script>window.location='dashboard.php';</script>"; exit; }
@@ -3587,6 +3504,9 @@ function extraerTextos($html) {
                     </table>
                 </div>
             </div>
+        <?php elseif ($vista === 'ayuda'): ?>
+            <?php include __DIR__ . '/components/documentacion/vista.php'; ?>
+
         <?php elseif($vista === 'pedidos_publicos'): ?>
             <div class="glass-card overflow-hidden flex flex-col hover:border-[#1B263B]/40 transition-colors relative z-10">
                 <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
@@ -3658,457 +3578,6 @@ function extraerTextos($html) {
         <?php endif; ?>
     </main>
 
-
-    <script>
-        let igChart = null;
-        let igPeakChart = null;
-        let igTypeChart = null;
-        let currentSocialRange = 7;
-        let currentSocialPlatform = 'IG';
-
-        function updateRangeButtons(range) {
-            currentSocialRange = range;
-            const buttons = [1, 3, 7];
-            buttons.forEach(r => {
-                const btn = document.getElementById('btn-range-' + r);
-                if (btn) {
-                    if (r === range) {
-                        btn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'shadow-slate-200');
-                    } else {
-                        btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'shadow-slate-200');
-                    }
-                }
-            });
-        }
-
-        function changeSocialRange(range) {
-            if (currentSocialPlatform === 'FB') {
-                verMetricasFB(range);
-            } else {
-                verMetricasIG(range);
-            }
-        }
-
-        async function verMetricasFB(range = 7) {
-            currentSocialPlatform = 'FB';
-            updateRangeButtons(range);
-            const btn = document.getElementById('btn-ver-metricas-fb');
-            if (!btn) return;
-
-            const originalHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Analizando...';
-            btn.disabled = true;
-
-            try {
-                const response = await fetch(`api_social.php?action=analyze_facebook&range=${range}`);
-                const data = await response.json();
-                if (data.status === 'success') {
-                    // Mostrar panel si estaba oculto
-                    document.getElementById('social-metrics-v2').classList.remove('hidden');
-
-                    // --- ACTUALIZAR CUADROS DE RESUMEN ---
-                    const summaryContainer = document.getElementById('ig-metrics-summary');
-                    const conversionContainer = document.getElementById('ig-conversion-metrics');
-                    
-                    if (summaryContainer && data.account_insights) {
-                        summaryContainer.innerHTML = `
-                            <div class="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm shadow-slate-200/50 relative overflow-hidden group">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Alcance Total</p>
-                                <p class="text-3xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">${data.account_insights.reach.toLocaleString()}</p>
-                            </div>
-                            <div class="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm shadow-slate-200/50 relative overflow-hidden group">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Interacciones</p>
-                                <p class="text-3xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">${data.account_insights.interactions.toLocaleString()}</p>
-                            </div>
-                            <div class="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm shadow-slate-200/50 relative overflow-hidden group">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Tasa de Eng.</p>
-                                <p class="text-3xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">0%</p>
-                            </div>
-                        `;
-                    }
-
-                    if (conversionContainer) {
-                        // Para Facebook mostramos datos genéricos o vacíos si no hay conversión directa
-                        conversionContainer.innerHTML = `
-                            <div class="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm shadow-slate-200/50 group">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Seguidores</p>
-                                <p class="text-3xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">0</p>
-                            </div>
-                            <div class="p-5 bg-white rounded-3xl border border-slate-100 shadow-sm shadow-slate-200/50 group">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Impresiones</p>
-                                <p class="text-3xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">${data.account_insights.impressions.toLocaleString()}</p>
-                            </div>
-                        `;
-                    }
-                    
-                    // Actualizar cabecera del panel de métricas
-                    const headerIcon = document.querySelector('#social-metrics-v2 .w-14.h-14 i');
-                    if (headerIcon) {
-                        headerIcon.className = 'fa-brands fa-facebook-f';
-                        headerIcon.parentElement.className = 'w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-700 to-blue-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-blue-200';
-                    }
-
-                    // Renderizar Auditoría IA
-                    const auditContainer = document.querySelector('#social-metrics-v2 .col-span-1.lg\\:col-span-1 .space-y-4');
-                    if (auditContainer && data.report) {
-                        auditContainer.innerHTML = `
-                            <div class="p-5 bg-blue-50/50 rounded-2xl border border-blue-100/50 relative overflow-hidden group">
-                                <div class="absolute -right-2 -bottom-2 text-blue-500/5 text-6xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-microchip-ai"></i></div>
-                                <h4 class="text-[10px] font-black uppercase tracking-widest text-blue-600 mb-3 flex items-center gap-2">
-                                    <i class="fa-solid fa-brain"></i> Análisis de Auditor
-                                </h4>
-                                <p class="text-xs text-slate-700 leading-relaxed font-medium italic">"${data.report.analisis_breve}"</p>
-                            </div>
-
-                            <div class="space-y-3">
-                                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
-                                    <i class="fa-solid fa-lightbulb text-yellow-400"></i> Estrategias Recomendadas
-                                </h4>
-                                ${data.report.consejos.map(c => `
-                                    <div class="flex items-start gap-3 p-3 bg-white rounded-xl border border-slate-100 hover:border-blue-200 transition-all shadow-sm shadow-slate-100/50">
-                                        <div class="w-5 h-5 rounded-lg bg-blue-50 flex items-center justify-center text-blue-500 text-[10px] font-black shrink-0"><i class="fa-solid fa-check"></i></div>
-                                        <p class="text-[11px] text-slate-600 leading-normal font-medium">${c}</p>
-                                    </div>
-                                `).join('')}
-                            </div>
-
-                            <div class="p-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl border border-slate-700 relative overflow-hidden group">
-                                <div class="absolute -right-4 -top-4 text-white/5 text-7xl group-hover:rotate-12 transition-transform"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                                <h4 class="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-3 flex items-center gap-2">
-                                    <i class="fa-solid fa-rocket"></i> Próximo Post Sugerido
-                                </h4>
-                                <p class="text-xs text-slate-100 leading-relaxed font-semibold mb-0">${data.report.idea_proximo_post}</p>
-                            </div>
-                        `;
-                    }
-
-                    // Renderizar tabla de posts (simplificada para Facebook)
-                    const postsContainer = document.getElementById('ig-metrics-content');
-                    if (postsContainer && data.raw_metrics) {
-                        postsContainer.innerHTML = '';
-                        data.raw_metrics.slice(0, 5).forEach((post, index) => {
-                            const d = new Date(post.created_time || Date.now());
-                            const dateStr = d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
-                            const msg = post.message ? post.message.substring(0, 60) + '...' : 'Post de Facebook';
-                            const impressions = post.insights?.data[0]?.values[0]?.value || 0;
-                            const engagement = post.insights?.data[1]?.values[0]?.value || 0;
-
-                            postsContainer.innerHTML += `
-                                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 flex gap-4 items-center hover:bg-white transition-all group">
-                                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-blue-50 rounded-xl border border-blue-100 text-blue-600 font-black text-xs">
-                                        #${index+1}
-                                    </div>
-                                    <div class="flex-grow min-w-0">
-                                        <p class="text-xs font-black text-slate-900 truncate mb-0.5">${msg}</p>
-                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">${dateStr}</p>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-4 text-right">
-                                        <div>
-                                            <p class="text-[9px] font-black text-slate-400 uppercase leading-none mb-1">Alcance</p>
-                                            <p class="text-xs font-black text-slate-900">${impressions}</p>
-                                        </div>
-                                        <div>
-                                            <p class="text-[9px] font-black text-slate-400 uppercase leading-none mb-1">Interacción</p>
-                                            <p class="text-xs font-black text-blue-600">${engagement}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                        });
-                    }
-
-                    window.scrollTo({ top: document.getElementById('social-metrics-v2').offsetTop - 100, behavior: 'smooth' });
-                } else {
-                    alert(data.error || 'Error al analizar Facebook');
-                }
-            } catch (error) {
-                console.error(error);
-                alert('No se pudo conectar con el servidor de análisis.');
-            } finally {
-                btn.innerHTML = originalHtml;
-                btn.disabled = false;
-            }
-        }
-
-        async function verMetricasIG(range = 7) {
-            currentSocialPlatform = 'IG';
-            updateRangeButtons(range);
-
-            const btn = document.getElementById('btn-ver-metricas');
-            if (!btn) return;
-
-            // Cambiar icono y color a Instagram si venimos de Facebook
-            const headerIcon = document.querySelector('#social-metrics-v2 .w-14.h-14 i');
-            if (headerIcon) {
-                headerIcon.className = 'fa-brands fa-instagram';
-                headerIcon.parentElement.className = 'w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-pink-200';
-            }
-
-            const originalHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Analizando...';
-            btn.disabled = true;
-
-            try {
-                const response = await fetch(`api_social.php?action=analyze_instagram&range=${range}`);
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    // Mostrar panel si estaba oculto
-                    document.getElementById('social-metrics-v2').classList.remove('hidden');
-                    
-                    const summaryContainer = document.getElementById('ig-metrics-summary');
-                    const conversionContainer = document.getElementById('ig-conversion-metrics');
-                    const postsContainer = document.getElementById('ig-metrics-content');
-                    
-                    summaryContainer.innerHTML = '';
-                    conversionContainer.innerHTML = '';
-                    postsContainer.innerHTML = '';
-
-                    if (!data.raw_metrics || data.raw_metrics.length === 0) {
-                        postsContainer.innerHTML = '<div class="text-center text-slate-400 py-10"><i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i><br><span class="text-sm">No se encontraron publicaciones recientes.</span></div>';
-                    } else {
-                        let totalImp = 0, totalReach = 0, totalLikes = 0, totalSaves = 0, totalComments = 0;
-                        let labels = [], reachData = [], impData = [];
-                        let types = { IMAGE: 0, VIDEO: 0, CAROUSEL_ALBUM: 0 };
-                        // 1. Calcular totales sobre los 10 posts y preparar datos de ranking
-                        const allPostsEvaluated = data.raw_metrics.map(post => {
-                            const insights = post.insights?.data || [];
-                            const impressions = insights.find(d => d.name === 'impressions')?.values[0]?.value || 0;
-                            const reach = insights.find(d => d.name === 'reach')?.values[0]?.value || 0;
-                            const saved = insights.find(d => d.name === 'saved')?.values[0]?.value || 0;
-                            const interactions = post.like_count + (post.comments_count || 0) + saved;
-                            
-                            totalImp += impressions;
-                            totalReach += reach;
-                            totalLikes += post.like_count;
-                            totalSaves += saved;
-                            totalComments += (post.comments_count || 0);
-                            types[post.media_type] = (types[post.media_type] || 0) + 1;
-
-                            return { ...post, engagement: (interactions / (reach || 1)) * 100, interactions, reach, impressions, saved };
-                        });
-
-                        // 2. Renderizar solo el Top 5
-                        const top5 = [...allPostsEvaluated].sort((a, b) => b.engagement - a.engagement).slice(0, 5);
-
-                        top5.forEach((post, index) => {
-                            const d = new Date(post.timestamp);
-                            const dateStr = d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
-                            const medals = ['text-yellow-400', 'text-slate-300', 'text-orange-400', 'text-slate-500', 'text-slate-500'];
-                            const medalIcon = index < 3 ? `<i class="fa-solid fa-medal ${medals[index]} text-sm"></i>` : `<span class="text-[10px] font-black text-slate-600">#${index+1}</span>`;
-
-                            postsContainer.innerHTML += `
-                                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 flex gap-4 items-center hover:bg-white transition-all group">
-                                    <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-white rounded-xl border border-slate-100 relative">
-                                        ${medalIcon}
-                                    </div>
-                                    <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-100 relative">
-                                        <img src="${post.media_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='favicon-app.png'">
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center mb-0.5">
-                                            <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest">${dateStr}</p>
-                                            <div class="flex gap-2">
-                                                <span class="text-[10px] text-[#1B263B] font-black opacity-0 group-hover:opacity-100 transition-opacity">${post.engagement.toFixed(1)}% Eng.</span>
-                                                <span class="text-[10px] text-slate-900 font-black"><i class="fa-solid fa-heart text-pink-500 text-[8px]"></i> ${post.interactions}</span>
-                                            </div>
-                                        </div>
-                                        <p class="text-[11px] text-slate-600 font-medium truncate">${post.caption || 'Sin descripción'}</p>
-                                    </div>
-                                </div>
-                            `;
-                        });
-
-                        // Llenar resumen principal
-                        const avgEngagement = (((totalLikes + totalComments + totalSaves) / totalReach) * 100).toFixed(1);
-                        const stats = [
-                            { label: 'Alcance Total', val: totalReach, icon: 'fa-users', color: 'text-indigo-400' },
-                            { label: 'Interacciones', val: totalLikes + totalComments + totalSaves, icon: 'fa-heart', color: 'text-pink-400' },
-                            { label: 'Tasa de Eng.', val: avgEngagement + '%', icon: 'fa-bolt', color: 'text-orange-400' },
-                            { label: 'Guardados', val: totalSaves, icon: 'fa-bookmark', color: 'text-blue-400' },
-                            { label: 'Impresiones', val: totalImp, icon: 'fa-eye', color: 'text-[#1B263B]' }
-                        ];
-
-                        stats.forEach(s => {
-                            summaryContainer.innerHTML += `
-                                <div class="bg-white p-4 rounded-2xl border border-slate-100 text-center relative overflow-hidden">
-                                    <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1 relative z-10">${s.label}</p>
-                                    <p class="text-lg font-black ${s.color} relative z-10">${s.val.toLocaleString()}</p>
-                                </div>
-                            `;
-                        });
-
-                        // Métricas de Conversión
-                        const getMetricVal = (name) => data.account_insights?.data?.find(d => d.name === name)?.values[0]?.value || 0;
-                        const conversions = [
-                            { label: 'Visitas al Perfil (24h)', val: getMetricVal('profile_views'), icon: 'fa-user-check', color: 'text-white' },
-                            { label: 'Clics en Enlace', val: getMetricVal('website_clicks'), icon: 'fa-link', color: 'text-indigo-400' },
-                            { label: 'Crecimiento Alcance', val: getMetricVal('reach'), icon: 'fa-arrow-trend-up', color: 'text-[#1B263B]' }
-                        ];
-
-                        conversions.forEach(c => {
-                            conversionContainer.innerHTML += `
-                                <div class="bg-[#6366f1]/5 border border-[#6366f1]/10 p-4 rounded-2xl flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-xl bg-[#6366f1]/10 flex items-center justify-center text-indigo-600 font-black"><i class="fa-solid ${c.icon}"></i></div>
-                                    <div>
-                                        <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest">${c.label}</p>
-                                        <p class="text-lg font-black text-slate-900">${c.val.toLocaleString()}</p>
-                                    </div>
-                                </div>
-                            `;
-                        });
-
-                        // Gráfico de Tendencia (Cronológico)
-                        const postsSorted = [...data.raw_metrics].sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
-                        postsSorted.forEach(post => {
-                            const d = new Date(post.timestamp);
-                            labels.push(d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }));
-                            reachData.push(post.insights?.data?.find(d => d.name === 'reach')?.values[0]?.value || 0);
-                            impData.push(post.insights?.data?.find(d => d.name === 'impressions')?.values[0]?.value || 0);
-                        });
-
-                        setTimeout(() => {
-                            // 1. Chart Tendencia
-                            const ctx = document.getElementById('ig-performance-chart').getContext('2d');
-                            if (igChart) igChart.destroy();
-                            igChart = new Chart(ctx, {
-                                type: 'line',
-                                data: {
-                                    labels: labels,
-                                    datasets: [
-                                        { label: 'Impresiones', data: impData, borderColor: '#1B263B', backgroundColor: 'rgba(27, 38, 59, 0.05)', borderWidth: 3, fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#1B263B' },
-                                        { label: 'Alcance', data: reachData, borderColor: '#6366f1', borderWidth: 2, borderDash: [4, 4], tension: 0.4, pointRadius: 0 }
-                                    ]
-                                },
-                                options: { 
-                                    responsive: true, 
-                                    maintainAspectRatio: false, 
-                                    interaction: { intersect: false, mode: 'index' },
-                                    plugins: { 
-                                        legend: { display: false },
-                                        tooltip: {
-                                            enabled: true,
-                                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                                            titleFont: { size: 10, weight: 'bold' },
-                                            bodyFont: { size: 11, weight: 'bold' },
-                                            padding: 12,
-                                            cornerRadius: 8,
-                                            displayColors: true,
-                                            callbacks: {
-                                                label: function(context) {
-                                                    return ' ' + context.dataset.label + ': ' + context.parsed.y.toLocaleString();
-                                                }
-                                            }
-                                        }
-                                    }, 
-                                    scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#475569', font: { size: 9, weight: 'bold' } } } } 
-                                }
-                            });
-
-                            // 2. Chart Horas Pico
-                            const ctxPeak = document.getElementById('ig-peak-chart').getContext('2d');
-                            if (igPeakChart) igPeakChart.destroy();
-                            let peakHours = Array(24).fill(0);
-                            let peakLabels = ["12 AM","1 AM","2 AM","3 AM","4 AM","5 AM","6 AM","7 AM","8 AM","9 AM","10 AM","11 AM","12 PM","1 PM","2 PM","3 PM","4 PM","5 PM","6 PM","7 PM","8 PM","9 PM","10 PM","11 PM"];
-                            const onlineData = data.account_insights?.data?.find(d => d.name === 'online_followers')?.values[0]?.value;
-                            if (onlineData) Object.keys(onlineData).forEach(h => peakHours[parseInt(h)] = onlineData[h]);
-                            else peakHours = [40,20,10,5,15,45,120,250,380,420,400,380,450,520,580,600,650,780,950,1100,980,750,500,200];
-
-                            igPeakChart = new Chart(ctxPeak, {
-                                type: 'bar',
-                                data: { labels: peakLabels, datasets: [{ data: peakHours, backgroundColor: peakHours.map(v => v === Math.max(...peakHours) ? '#1B263B' : 'rgba(27, 38, 59, 0.2)'), borderRadius: 4 }] },
-                                options: { 
-                                    responsive: true, 
-                                    maintainAspectRatio: false, 
-                                    plugins: { 
-                                        legend: { display: false },
-                                        tooltip: {
-                                            enabled: true,
-                                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                                            callbacks: {
-                                                title: function(items) { return items[0].label; },
-                                                label: function(context) {
-                                                    return ' ' + context.parsed.y.toLocaleString() + ' seguidores online';
-                                                }
-                                            }
-                                        }
-                                    }, 
-                                    scales: { 
-                                        y: { display: false }, 
-                                        x: { 
-                                            grid: { display: false }, 
-                                            ticks: { 
-                                                color: '#64748b', 
-                                                font: { size: 8, weight: 'bold' }, 
-                                                autoSkip: false,
-                                                callback: function(val, index) {
-                                                    // Solo mostrar cada 3 horas para no amontonar
-                                                    return index % 3 === 0 ? peakLabels[index] : '';
-                                                }
-                                            } 
-                                        } 
-                                    } 
-                                }
-                            });
-
-                            // 3. Chart Mix de Contenido
-                            const ctxType = document.getElementById('ig-type-chart').getContext('2d');
-                            if (igTypeChart) igTypeChart.destroy();
-                            igTypeChart = new Chart(ctxType, {
-                                type: 'doughnut',
-                                data: {
-                                    labels: ['Imágenes', 'Videos', 'Carruseles'],
-                                    datasets: [{
-                                        data: [types.IMAGE || 0, types.VIDEO || 0, types.CAROUSEL_ALBUM || 0],
-                                        backgroundColor: ['#1B263B', '#6366f1', '#f59e0b'],
-                                        borderWidth: 0,
-                                        cutout: '70%'
-                                    }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: { 
-                                        legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 9, weight: 'bold' }, boxWidth: 10 } },
-                                        tooltip: {
-                                            enabled: true,
-                                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                                            callbacks: {
-                                                label: function(context) {
-                                                    return ' ' + context.label + ': ' + context.parsed + ' posts';
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        }, 50);
-                    }
-
-                    const container = document.getElementById('social-metrics-v2');
-                    container.classList.remove('hidden');
-                    setTimeout(() => {
-                        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 50);
-                } else {
-                    alert("Error: " + (data.error || 'Fallo al obtener métricas'));
-                }
-            } catch (error) {
-                console.error(error);
-                alert("Error crítico: " + error.message);
-            } finally {
-                btn.innerHTML = originalHtml;
-                btn.disabled = false;
-            }
-        }
-
-        // Ejecutar métricas de Facebook (Token Permanente) automáticamente al cargar
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const btnFB = document.getElementById('btn-ver-metricas-fb');
-                if(btnFB) verMetricasFB();
-            }, 600);
-        });
 
     </script>
     <!-- MODAL ACTUALIZACIÓN MASIVA -->
@@ -4184,341 +3653,8 @@ function extraerTextos($html) {
         function actualizarNombreCSV(input) { const txt = document.getElementById('txt-csv'); if (input.files.length > 0) { txt.innerText = input.files[0].name; txt.classList.replace('text-slate-400', 'text-[#1B263B]'); } }
         function abrirModalBulk() { const m = document.getElementById('modal-bulk'); m.classList.remove('hidden'); setTimeout(()=> { m.classList.remove('opacity-0'); document.getElementById('modal-bulk-content').classList.remove('scale-95'); }, 10); }
         function cerrarModalBulk() { const m = document.getElementById('modal-bulk'); m.classList.add('opacity-0'); document.getElementById('modal-bulk-content').classList.add('scale-95'); setTimeout(()=> m.classList.add('hidden'), 300); }
-        
-        // --- CEREBRO DE DOCUMENTACIÓN ---
-        function abrirModalDoc() { 
-            const m = document.getElementById('modal-doc'); 
-            m.classList.remove('hidden'); 
-            setTimeout(()=> { 
-                m.classList.remove('opacity-0'); 
-                document.getElementById('modal-doc-content').classList.remove('scale-95'); 
-            }, 10); 
-            verSeccionDoc('inicio');
-        }
-        function cerrarModalDoc() { 
-            const m = document.getElementById('modal-doc'); 
-            m.classList.add('opacity-0'); 
-            document.getElementById('modal-doc-content').classList.add('scale-95'); 
-            setTimeout(()=> m.classList.add('hidden'), 300); 
-        }
-        function verSeccionDoc(id) {
-            document.querySelectorAll('.doc-section').forEach(s => s.classList.add('hidden'));
-            document.getElementById('doc-' + id).classList.remove('hidden');
-            document.querySelectorAll('.doc-nav-btn').forEach(b => b.classList.remove('bg-indigo-50', 'text-indigo-600', 'border-indigo-400'));
-            const btn = document.querySelector(`[onclick="verSeccionDoc('${id}')"]`);
-            if(btn) btn.classList.add('bg-indigo-50', 'text-indigo-600', 'border-indigo-400');
-            document.getElementById('doc-body-scroll').scrollTop = 0;
-        }
     </script>
     
-    <!-- MODAL DOCUMENTACIÓN MAESTRA -->
-    <div id="modal-doc" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
-        <div class="bg-white border border-slate-200 rounded-[2.5rem] w-full max-w-6xl h-[85vh] mx-4 overflow-hidden transform scale-95 transition-all duration-300 shadow-2xl flex" id="modal-doc-content">
-            
-            <!-- Sidebar de Navegación -->
-            <aside class="w-72 bg-slate-50 border-r border-slate-100 flex flex-col p-6 overflow-y-auto custom-scrollbar">
-                <div class="mb-8">
-                    <h3 class="text-lg font-black text-slate-900 uppercase tracking-tighter">Centro de <span class="text-indigo-500">Ayuda</span></h3>
-                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">IMPROGYP OS v6.0</p>
-                </div>
-                
-                <nav class="space-y-1">
-                    <button onclick="verSeccionDoc('inicio')" class="doc-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-3 transition-all border-l-4 border-transparent hover:bg-white">
-                        <i class="fa-solid fa-house-chimney w-4"></i> Bienvenida
-                    </button>
-                    
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-6 mb-2 ml-4">Módulos B2C</p>
-                    <button onclick="verSeccionDoc('radar')" class="doc-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-3 transition-all border-l-4 border-transparent hover:bg-white">
-                        <i class="fa-solid fa-chart-pie w-4"></i> Radar de Ventas
-                    </button>
-                    <button onclick="verSeccionDoc('inventario')" class="doc-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-3 transition-all border-l-4 border-transparent hover:bg-white">
-                        <i class="fa-solid fa-boxes-stacked w-4"></i> Inventario Web
-                    </button>
-                    <button onclick="verSeccionDoc('marketing')" class="doc-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-3 transition-all border-l-4 border-transparent hover:bg-white">
-                        <i class="fa-solid fa-wand-magic-sparkles w-4"></i> Marketing con IA
-                    </button>
-                    <button onclick="verSeccionDoc('seo')" class="doc-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-3 transition-all border-l-4 border-transparent hover:bg-white">
-                        <i class="fa-solid fa-magnifying-glass-chart w-4"></i> SEO Dinámico
-                    </button>
-                    <button onclick="verSeccionDoc('social')" class="doc-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-3 transition-all border-l-4 border-transparent hover:bg-white">
-                        <i class="fa-solid fa-share-nodes w-4"></i> Marketing Social AI <span class="bg-pink-100 text-pink-600 text-[8px] px-1.5 py-0.5 rounded-md ml-auto">BETA</span>
-                    </button>
-                    <button onclick="verSeccionDoc('pautas')" class="doc-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-3 transition-all border-l-4 border-transparent hover:bg-white">
-                        <i class="fa-solid fa-bullhorn w-4"></i> Gestor de Pautas
-                    </button>
-                    
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-6 mb-2 ml-4">Módulos B2B</p>
-                    <button onclick="verSeccionDoc('vip')" class="doc-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-3 transition-all border-l-4 border-transparent hover:bg-white">
-                        <i class="fa-solid fa-crown w-4 text-amber-500"></i> Clientes VIP
-                    </button>
-                    
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-6 mb-2 ml-4">Infraestructura</p>
-                    <button onclick="verSeccionDoc('sistema')" class="doc-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-3 transition-all border-l-4 border-transparent hover:bg-white">
-                        <i class="fa-solid fa-server w-4"></i> Estado & Usuarios
-                    </button>
-                </nav>
-                
-                <div class="mt-auto pt-6 border-t border-slate-100">
-                    <div class="bg-indigo-500 rounded-2xl p-4 text-white">
-                        <p class="text-[10px] font-black uppercase mb-1">Fase 6 Finalizada</p>
-                        <p class="text-[9px] opacity-80 leading-tight">Proyecto entregado con éxito. El sistema está 100% operativo.</p>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- Cuerpo del Contenido -->
-            <div class="flex-1 flex flex-col min-w-0">
-                <header class="p-6 border-b border-slate-50 flex justify-between items-center">
-                    <div></div>
-                    <button onclick="cerrarModalDoc()" class="w-10 h-10 rounded-xl hover:bg-slate-100 flex items-center justify-center text-slate-400 transition-colors"><i class="fa-solid fa-xmark text-xl"></i></button>
-                </header>
-                
-                <div class="flex-1 overflow-y-auto p-12 custom-scrollbar" id="doc-body-scroll">
-                    
-                    <!-- SECCIÓN: INICIO -->
-                    <div id="doc-inicio" class="doc-section space-y-8 max-w-3xl mx-auto">
-                        <div class="text-center mb-12">
-                            <i class="fa-solid fa-map-location-dot text-7xl text-indigo-500 mb-6 opacity-20"></i>
-                            <h2 class="text-4xl font-black text-slate-900 tracking-tighter uppercase mb-4">Guía Maestra de <br><span class="text-[#1B263B]">IMPROGYP OS v6.0</span></h2>
-                            <p class="text-slate-500 font-medium text-base leading-relaxed">Bienvenido a tu nueva consola de mando. Este documento te enseñará a dominar cada herramienta para maximizar las ventas de IMPROGYP de forma automatizada e inteligente.</p>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                                <h4 class="text-[11px] font-black text-indigo-500 uppercase tracking-widest mb-2">Objetivo 1</h4>
-                                <p class="text-[13px] font-bold text-slate-700">Centralizar la operación B2C y B2B en una sola plataforma ultra rápida.</p>
-                            </div>
-                            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                                <h4 class="text-[11px] font-black text-[#1B263B] uppercase tracking-widest mb-2">Objetivo 2</h4>
-                                <p class="text-[13px] font-bold text-slate-700">Utilizar Inteligencia Artificial (Gemini) para delegar tareas de marketing.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN: RADAR -->
-                    <div id="doc-radar" class="doc-section hidden space-y-8 max-w-3xl mx-auto">
-                        <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase flex items-center gap-4"><i class="fa-solid fa-chart-pie text-indigo-500"></i> Radar de Ventas</h2>
-                        <p class="text-[14px] text-slate-600 font-medium bg-indigo-50/50 p-6 rounded-3xl border border-indigo-100/50 leading-relaxed">El Radar es el corazón comercial de la tienda. Aquí puedes ver en tiempo real quién está navegando y qué productos están "calientes" en este momento.</p>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                                <h4 class="text-[11px] font-black text-indigo-600 uppercase mb-2">Panel: Intención</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">Muestra los productos que los usuarios ya **añadieron a su bolsa**. Es la métrica más cercana a la venta real.</p>
-                            </div>
-                            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                                <h4 class="text-[11px] font-black text-rose-500 uppercase mb-2">Panel: Interés</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">Muestra los productos que solo están siendo **vistos**. Si un producto tiene mucho interés pero poca intención, el precio podría estar muy alto.</p>
-                            </div>
-                            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                                <h4 class="text-[11px] font-black text-slate-900 uppercase mb-2">Categorías Calientes</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">Te dice qué pasillo de tu tienda es el más visitado. Úsalo para decidir qué categoría poner en oferta hoy.</p>
-                            </div>
-                            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                                <h4 class="text-[11px] font-black text-[#1B263B] uppercase mb-2">Registro en Vivo</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">Un feed segundo a segundo de lo que sucede. Si ves mucha actividad pero cero ventas, revisa que el método de pago esté funcionando.</p>
-                            </div>
-                            <div class="bg-rose-50 p-5 rounded-2xl border border-rose-100 col-span-1 md:col-span-2">
-                                <h4 class="text-[11px] font-black text-rose-600 uppercase mb-2">Panel Especial: Limpieza de Inventario</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">Aquí aparecen los **"Productos Fantasma"** (los que nadie está viendo). Tienes un botón de **Impulsar IA** para forzar al algoritmo de la tienda a mostrarlos más seguido y así rotar ese stock estancado.</p>
-                            </div>
-                        </div>
-
-                        <div class="bg-indigo-50 p-6 rounded-3xl border border-indigo-100/50">
-                            <h4 class="text-[11px] font-black text-indigo-900 uppercase tracking-widest mb-2">¿Cómo leer el gráfico de 24h?</h4>
-                            <p class="text-[13px] text-indigo-700 leading-relaxed">Los picos indican las horas de mayor tráfico. Programa tus publicaciones en redes sociales o tus envíos de WhatsApp masivos justo 15 minutos antes de estos picos para maximizar el impacto.</p>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN: INVENTARIO -->
-                    <div id="doc-inventario" class="doc-section hidden space-y-8 max-w-3xl mx-auto">
-                        <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase flex items-center gap-4"><i class="fa-solid fa-boxes-stacked text-[#1B263B]"></i> Inventario Web</h2>
-                        <p class="text-[14px] text-slate-600 font-medium leading-relaxed">Control absoluto sobre lo que tus clientes ven. El sistema sincroniza automáticamente la base de datos con la consola IA (Gemini).</p>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="glass-card p-6 border-slate-100">
-                                <h4 class="text-[11px] font-black text-[#1B263B] uppercase mb-4">Gestión Manual</h4>
-                                <ul class="text-[13px] text-slate-500 space-y-2">
-                                    <li><i class="fa-solid fa-plus text-[#1B263B] mr-2"></i><b>Crear:</b> Usa el formulario de la izquierda.</li>
-                                    <li><i class="fa-solid fa-pen text-blue-400 mr-2"></i><b>Editar:</b> Haz clic en el lápiz azul de la tabla.</li>
-                                    <li><i class="fa-solid fa-toggle-on text-[#1B263B] mr-2"></i><b>Deshabilitar:</b> Usa el switch de la izquierda.</li>
-                                </ul>
-                            </div>
-                            <div class="glass-card p-6 border-slate-100">
-                                <h4 class="text-[11px] font-black text-indigo-500 uppercase mb-4">Gestión Masiva</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed mb-3">Si tienes 100 productos, usa el botón **Actualización Masiva**. Descárgas el CSV, lo editas en Excel, y subes el archivo junto con las fotos.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN: MARKETING IA -->
-                    <div id="doc-marketing" class="doc-section hidden space-y-8 max-w-3xl mx-auto">
-                        <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase flex items-center gap-4"><i class="fa-solid fa-wand-magic-sparkles text-indigo-500"></i> Marketing con IA</h2>
-                        <div class="bg-indigo-600 rounded-[2.5rem] p-8 text-white relative overflow-hidden">
-                            <div class="absolute top-0 right-0 opacity-10 text-9xl -mr-10 -mt-10"><i class="fa-solid fa-brain"></i></div>
-                            <h4 class="text-[11px] font-black uppercase tracking-widest mb-4 opacity-80">El cerebro de IMPROGYP</h4>
-                            <p class="text-base font-medium leading-relaxed mb-6">Esta sección te permite re-escribir toda la tienda utilizando Inteligencia Artificial entrenada en ventas de herramientas.</p>
-                            <div class="space-y-3">
-                                <div class="flex items-center gap-3 text-[13px] font-bold bg-white/10 px-4 py-2 rounded-xl">
-                                    <i class="fa-solid fa-check"></i> El "Texto Láser" es el que tendrá la animación visual dinámica.
-                                </div>
-                                <div class="flex items-center gap-3 text-[13px] font-bold bg-white/10 px-4 py-2 rounded-xl">
-                                    <i class="fa-solid fa-check"></i> Puedes editar manualmente o pedirle a la IA que genere una versión nueva.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN: PAUTAS -->
-                    <div id="doc-pautas" class="doc-section hidden space-y-8 max-w-3xl mx-auto">
-                        <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase flex items-center gap-4"><i class="fa-solid fa-bullhorn text-amber-500"></i> Gestor de Pautas</h2>
-                        <p class="text-[14px] text-slate-600 font-medium leading-relaxed">Define qué es lo primero que ven tus clientes al entrar a la tienda.</p>
-                        
-                        <div class="space-y-6">
-                            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                                <h4 class="text-[11px] font-black text-slate-900 uppercase mb-4 flex items-center gap-2"><i class="fa-solid fa-film text-[#1B263B]"></i> Panel 1: Video Promocional</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">Es el fondo dinámico de la tienda. Puedes subir un video de alta calidad (recomendado MP4 de menos de 10MB) o un enlace directo. Si el video está apagado, el sistema usará el **Banner de Respaldo** automáticamente.</p>
-                            </div>
-
-                            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                                <h4 class="text-[11px] font-black text-slate-900 uppercase mb-4 flex items-center gap-2"><i class="fa-solid fa-rectangle-ad text-blue-400"></i> Panel 2: Banner Rompetráfico</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">Es un banner estático de alta visibilidad. Úsalo para CTAs directas como "Asesoría Gratuita" o "Envíos Gratis". Ideal cuando quieres un mensaje claro que no dependa de un video.</p>
-                            </div>
-
-                            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                                <h4 class="text-[11px] font-black text-slate-900 uppercase mb-4 flex items-center gap-2"><i class="fa-solid fa-crown text-amber-500"></i> Panel 3: Tarjeta Mayoristas VIP</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">Sección diseñada para captar distribuidores. Muestra la oportunidad de negocio y redirige al portal B2B o WhatsApp de ventas por mayor.</p>
-                            </div>
-
-                            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                                <h4 class="text-[11px] font-black text-slate-900 uppercase mb-4 flex items-center gap-2"><i class="fa-solid fa-robot text-purple-500"></i> Panel 4: Campaña IA (Banner Animado)</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">Este es un banner interactivo que flota sobre la página. Aquí es donde configuras el **Título Láser** (animado) y la invitación a usar el Chat Bot. Es perfecto para captar la atención de usuarios indecisos.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN: SEO -->
-                    <div id="doc-seo" class="doc-section hidden space-y-8 max-w-3xl mx-auto">
-                        <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase flex items-center gap-4"><i class="fa-solid fa-magnifying-glass-chart text-[#1B263B]"></i> SEO Dinámico</h2>
-                        <p class="text-[14px] text-slate-600 font-medium leading-relaxed">Controla cómo aparece IMPROGYP en el mundo digital exterior.</p>
-                        
-                        <div class="space-y-6">
-                            <div class="glass-card p-6 border-slate-100">
-                                <h4 class="text-[11px] font-black text-slate-800 uppercase mb-4 flex items-center gap-2">¿Cómo salir en Google?</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">Configura el **Título** y la **Meta Descripción**. Piensa en qué escribiría tu cliente ideal (ej: "Herramientas de drywall en Quito"). El sistema te da una vista previa en tiempo real para que veas cómo queda.</p>
-                            </div>
-                            <div class="glass-card p-6 border-slate-100">
-                                <h4 class="text-[11px] font-black text-indigo-500 uppercase mb-4 flex items-center gap-2">Thumbnail de WhatsApp</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">La **OG:Image** es la foto que sale cuando compartes el link de la tienda. Sube una imagen impactante con tu logo para generar confianza.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN: SOCIAL -->
-                    <div id="doc-social" class="doc-section hidden space-y-8 max-w-3xl mx-auto">
-                        <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase flex items-center gap-4"><i class="fa-solid fa-share-nodes text-pink-500"></i> Marketing Social AI</h2>
-                        <div class="bg-gradient-to-tr from-purple-600 to-pink-500 rounded-[2.5rem] p-8 text-white">
-                            <h4 class="text-[11px] font-black uppercase mb-4 opacity-80 italic">Inteligencia de Datos</h4>
-                            <p class="text-base font-medium leading-relaxed mb-6">Conecta tu Instagram Business para que IMPROGYP OS analice tu rendimiento automáticamente.</p>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="bg-white/10 p-4 rounded-2xl border border-white/20 text-[12px]">
-                                    <h5 class="font-black mb-1 uppercase text-[#1B263B]">Auditoría de IA</h5>
-                                    <p class="opacity-80">Gemini analiza tus métricas y te dice qué tipo de contenido funcionó mejor esta semana.</p>
-                                </div>
-                                <div class="bg-white/10 p-4 rounded-2xl border border-white/20 text-[12px]">
-                                    <h5 class="font-black mb-1 uppercase text-amber-400">Filtro de Periodo</h5>
-                                    <p class="opacity-80">Puedes ver métricas de hoy, 3 días o 7 días para entender tendencias de consumo.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- SECCIÓN: VIP -->
-                    <div id="doc-vip" class="doc-section hidden space-y-8 max-w-3xl mx-auto">
-                        <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase flex items-center gap-4"><i class="fa-solid fa-crown text-amber-500"></i> Directorio de Clientes VIP</h2>
-                        <div class="flex gap-8 items-center bg-amber-50 p-8 rounded-[2.5rem] border border-amber-100">
-                            <div class="w-20 h-20 rounded-3xl bg-amber-500 text-white flex items-center justify-center text-4xl shadow-lg border-4 border-white"><i class="fa-solid fa-sack-dollar"></i></div>
-                            <div class="flex-1">
-                                <h3 class="text-xl font-black text-slate-900 mb-1">Módulo de Rescate B2B</h3>
-                                <p class="text-[13px] text-amber-800 font-bold leading-relaxed">Aquí verás cuánto dinero hay "en la mesa" (Cotizaciones que no se han pagado). Tienes un botón directo para enviarles un WhatsApp y cerrar la venta.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest">Acciones Administrativas B2B:</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="p-5 border border-slate-100 rounded-2xl flex items-center gap-4">
-                                    <i class="fa-solid fa-comments text-indigo-500"></i>
-                                    <span class="text-[13px] font-bold text-slate-600">Ver chats: Escucha lo que los clientes le preguntan a la IA.</span>
-                                </div>
-                                <div class="p-5 border border-slate-100 rounded-2xl flex items-center gap-4">
-                                    <i class="fa-solid fa-broom text-amber-500"></i>
-                                    <span class="text-[13px] font-bold text-slate-600">Limpiar Chat: Resetea la memoria de la IA para un distribuidor.</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECCIÓN: SISTEMA -->
-                    <div id="doc-sistema" class="doc-section hidden space-y-8 max-w-3xl mx-auto">
-                        <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase flex items-center gap-4"><i class="fa-solid fa-server text-slate-400"></i> Infraestructura IMPROGYP OS</h2>
-                        
-                        <div class="space-y-8">
-                            <div class="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100">
-                                <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fa-solid fa-lock text-rose-500"></i> Panel: Acceso B2C (Mantenimiento)</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">Este switch apaga la tienda para el público general. Es útil cuando vas a realizar cambios masivos de precios o inventario y no quieres que nadie compre a mitad del proceso. Los administradores siguen viendo todo normal.</p>
-                            </div>
-
-                            <div class="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100">
-                                <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fa-solid fa-broom text-blue-500"></i> Panel: Memoria del Sistema (Caché)</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">El sistema es muy rápido porque "recuerda" cosas. Si haces un cambio y no lo ves reflejado en la tienda, usa este panel para "borrar la memoria" y obligar al sistema a recargar todo de nuevo.</p>
-                            </div>
-
-                            <div class="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100">
-                                <h4 class="text-[11px] font-black text-amber-600 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fa-solid fa-user-shield"></i> Panel: Gestión de Usuarios</h4>
-                                <p class="text-[13px] text-slate-500 leading-relaxed mb-4">Existen dos niveles de acceso:</p>
-                                <ul class="space-y-3">
-                                    <li class="flex items-center gap-3 text-[13px] font-bold text-slate-700"><div class="w-2 h-2 rounded-full bg-amber-500"></div><b>MASTER:</b> Tiene control total, incluyendo borrar otros usuarios y ver este panel.</li>
-                                    <li class="flex items-center gap-3 text-[13px] font-bold text-slate-400"><div class="w-2 h-2 rounded-full bg-slate-300"></div><b>STAFF:</b> Solo puede ver Radar, Inventario y Marketing. No puede tocar la configuración del sistema.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                
-                <footer class="p-10 bg-slate-50/50 border-t border-slate-50 text-center">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Fin de la documentación • IMPROGYP OS v6 • <a href="https://wa.me/593991754887" target="_blank" class="text-indigo-500 underline">Soporte Técnico</a></p>
-                </footer>
-            </div>
-        </div>
-    </div>
-    <script>
-        // --- CEREBRO DE DOCUMENTACIÓN ---
-        function abrirModalDoc() { 
-            const m = document.getElementById('modal-doc'); 
-            m.classList.remove('hidden'); 
-            setTimeout(()=> { 
-                m.classList.remove('opacity-0'); 
-                document.getElementById('modal-doc-content').classList.remove('scale-95'); 
-            }, 10); 
-            verSeccionDoc('inicio');
-        }
-        function cerrarModalDoc() { 
-            const m = document.getElementById('modal-doc'); 
-            m.classList.add('opacity-0'); 
-            document.getElementById('modal-doc-content').classList.add('scale-95'); 
-            setTimeout(()=> m.classList.add('hidden'), 300); 
-        }
-        function verSeccionDoc(id) {
-            document.querySelectorAll('.doc-section').forEach(s => s.classList.add('hidden'));
-            document.getElementById('doc-' + id).classList.remove('hidden');
-            document.querySelectorAll('.doc-nav-btn').forEach(b => b.classList.remove('bg-indigo-50', 'text-indigo-600', 'border-indigo-400'));
-            const btn = document.querySelector(`[onclick="verSeccionDoc('${id}')"]`);
-            if(btn) btn.classList.add('bg-indigo-50', 'text-indigo-600', 'border-indigo-400');
-            document.getElementById('doc-body-scroll').scrollTop = 0;
-        }
-    </script>
-
     <!-- MODAL GESTIÓN CATEGORÍAS -->
     <div id="modal-cats" class="fixed inset-0 bg-white/80 backdrop-blur-xl z-50 hidden flex items-center justify-center opacity-0 transition-opacity">
         <div class="bg-white border border-slate-100 rounded-[2.5rem] w-full max-w-md mx-4 overflow-hidden transform scale-95 transition-all duration-300 shadow-2xl" id="modal-cats-content">
@@ -4762,6 +3898,34 @@ function extraerTextos($html) {
                 document.getElementById('form-eliminar-impulso').submit();
             }
         }
+
+        document.querySelectorAll('[data-nav-collapse]').forEach((group) => {
+            const key = group.getAttribute('data-nav-collapse');
+            const trigger = group.querySelector('.nav-collapse-trigger');
+            const panel = group.querySelector('.nav-collapse-panel');
+            if (!trigger || !panel) return;
+
+            const forzarAbierto = group.classList.contains('is-open');
+            if (!forzarAbierto && key) {
+                const stored = localStorage.getItem(key);
+                if (stored === 'open') group.classList.add('is-open');
+                if (stored === 'closed') group.classList.remove('is-open');
+            }
+
+            const syncAria = () => {
+                const abierto = group.classList.contains('is-open');
+                trigger.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+            };
+            syncAria();
+
+            trigger.addEventListener('click', () => {
+                group.classList.toggle('is-open');
+                syncAria();
+                if (key) {
+                    localStorage.setItem(key, group.classList.contains('is-open') ? 'open' : 'closed');
+                }
+            });
+        });
     </script>
 
 </body>

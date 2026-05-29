@@ -1,4 +1,4 @@
--- Ejecutar ANTES de importar u718580158_improgyp.sql (phpMyAdmin → SQL, nivel servidor)
+-- Ejecutar ANTES de importar el respaldo .sql (phpMyAdmin → SQL, nivel servidor)
 -- O crear la base manualmente en la pestaña "Bases de datos"
 
 CREATE DATABASE IF NOT EXISTS `u718580158_improgyp`

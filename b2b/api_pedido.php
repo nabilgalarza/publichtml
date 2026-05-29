@@ -1,5 +1,6 @@
 <?php
 // b2b/api_pedido.php - Registro de Órdenes Formales B2B
+require_once dirname(__DIR__) . '/lib/b2b_config.php';
 session_start();
 header('Content-Type: application/json; charset=utf-8');
 error_reporting(0);
@@ -45,6 +46,10 @@ if (!$input || empty($input['items'])) {
 
 $ruc_cliente = $_SESSION['b2b_user']['ruc'];
 $nombre_cliente = $_SESSION['b2b_user']['nombre'];
+
+if (!improgyp_b2b_ruc_permitido($ruc_cliente)) {
+    improgyp_b2b_api_denegado_respuesta();
+}
 
 try {
     $pdo = new PDO($dsn, $db_user, $db_pass);

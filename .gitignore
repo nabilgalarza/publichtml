@@ -3,9 +3,14 @@
 .DS_Store
 *.log
 cache_*.json
+cache_geo/
 img_temp_carga/
 temp/
 copia_seguridad_IMPROGYP.sql
+*.sql
+!database/*.sql
 node_modules/
 .vscode/
 .idea/
+uploads/blog/*
+!uploads/blog/.gitkeep

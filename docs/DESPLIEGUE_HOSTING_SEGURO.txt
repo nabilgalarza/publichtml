@@ -1,0 +1,153 @@
+================================================================================
+IMPROGYP OS — Directrices de despliegue seguro en hosting compartido
+================================================================================
+Usar este checklist al subir el proyecto a producción (cPanel, DirectAdmin, etc.).
+No requiere cambiar la lógica del negocio ni migrar a headless.
+
+--------------------------------------------------------------------------------
+A. ANTES DE SUBIR ARCHIVOS
+--------------------------------------------------------------------------------
+1. Tener el dump de la base de datos (.sql) guardado en tu PC, NO en la carpeta
+   que subes al hosting.
+2. Anotar del panel del hosting: nombre de BD, usuario MySQL, contraseña y host
+   (casi siempre "localhost").
+
+--------------------------------------------------------------------------------
+B. EN EL PANEL DEL HOSTING (cPanel / similar)
+--------------------------------------------------------------------------------
+  [ ] Activar SSL (Let's Encrypt) — dominio principal y www si aplica
+  [ ] Activar "Forzar HTTPS" (redirect 301 a https://)
+  [ ] PHP 8.1 o 8.2 (no usar PHP 7.x)
+  [ ] display_errors = Off en producción
+  [ ] Crear base de datos MySQL y usuario dedicado (solo esa base)
+  [ ] Activar backups automáticos si el plan los incluye
+
+--------------------------------------------------------------------------------
+C. QUÉ SUBIR A public_html (o www)
+--------------------------------------------------------------------------------
+Subir todo el proyecto EXCEPTO:
+
+  - .env          (crearlo solo en el servidor)
+  - .git/
+  - docs/         (opcional: no es necesario en el servidor)
+  - database/     (opcional: no es necesario en el servidor)
+  - scripts/
+  - Cualquier archivo .sql
+
+SÍ debe ir, entre otros:
+  index.php, dashboard.php, productos.php, blog.php
+  components/, lib/, b2b/, js/, css/, uploads/
+  .htaccess, cacert.pem
+  catalogo.json, config_*.json, estado_tienda.json, imágenes, etc.
+
+--------------------------------------------------------------------------------
+D. CREAR .env EN EL SERVIDOR (raíz del sitio, junto a index.php)
+--------------------------------------------------------------------------------
+Permiso recomendado del archivo: 600 (máximo 640).
+
+--- Copiar y completar ---
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=EL_NOMBRE_QUE_TE_DIO_EL_HOSTING
+DB_USER=EL_USUARIO_MYSQL_DEL_HOSTING
+DB_PASS=LA_CONTRASEÑA_DEL_HOSTING
+
+ADMIN_PASSWORD=
+
+MASTER_RECOVERY_KEY=
+
+GEMINI_API_KEY=TU_CLAVE_DE_GOOGLE_AI
+GEMINI_API_KEY_PAID=
+GEMINI_MODEL=gemini-2.5-flash-lite
+
+--- Reglas ---
+
+  DB_*     → Datos del panel MySQL. NO usar "root" ni puerto 8889 de MAMP.
+  ADMIN_PASSWORD → Vacío si ya importaste la BD con usuario admin.
+                   Solo rellenar si usuarios_admin está vacía en el primer arranque;
+                   después volver a dejarlo vacío.
+  MASTER_RECOVERY_KEY → SIEMPRE vacío en producción.
+  GEMINI_API_KEY → Obligatoria si usas IA (tienda, marketing, chat B2B).
+  GEMINI_MODEL → Dejar gemini-2.5-flash-lite salvo decisión contraria.
+
+--------------------------------------------------------------------------------
+E. estado_tienda.json (raíz del sitio)
+--------------------------------------------------------------------------------
+Para el primer deploy:
+
+{
+    "mantenimiento": true,
+    "b2b_publico_activo": false,
+    "b2b_pilot_rucs": ""
+}
+
+  - mantenimiento: true mientras importas BD y pruebas; luego false.
+  - b2b_publico_activo: false hasta go-live del portal mayoristas.
+  - b2b_pilot_rucs: RUCs de piloto separados por coma (opcional).
+
+--------------------------------------------------------------------------------
+F. BASE DE DATOS
+--------------------------------------------------------------------------------
+  1. phpMyAdmin → seleccionar la base → Importar → archivo .sql de respaldo.
+  2. Si falta el blog: ejecutar database/01_improgyp_blog.sql en phpMyAdmin.
+  3. Verificar que existe la tabla usuarios_admin con al menos un administrador.
+
+--------------------------------------------------------------------------------
+G. PERMISOS (File Manager / FTP)
+--------------------------------------------------------------------------------
+  Carpetas (uploads, uploads/blog, etc.)  → 755
+  Archivos PHP, JSON, imágenes            → 644
+  .env                                  → 600
+
+  NO usar 777.
+
+--------------------------------------------------------------------------------
+H. DESPUÉS DEL PRIMER ACCESO AL DASHBOARD
+--------------------------------------------------------------------------------
+  1. Abrir: https://tudominio.com/dashboard.php
+  2. Login con usuario de la BD (ej. admin + contraseña del respaldo).
+  3. Cambiar contraseña del usuario master.
+  4. Confirmar en .env: ADMIN_PASSWORD= y MASTER_RECOVERY_KEY= vacíos.
+  5. Panel → Estado del Sistema → desactivar mantenimiento cuando la tienda esté lista.
+  6. Mantener portal B2B apagado (b2b_publico_activo: false) hasta autorización.
+
+--------------------------------------------------------------------------------
+I. COMPROBACIONES DE SEGURIDAD (deben fallar: 403 o 404)
+--------------------------------------------------------------------------------
+  https://tudominio.com/.env
+  https://tudominio.com/.git/
+  https://tudominio.com/docs/
+  https://tudominio.com/scripts/
+
+Deben funcionar:
+  https://tudominio.com/
+  https://tudominio.com/dashboard.php
+  https://tudominio.com/productos.php
+
+Opcional: en Google AI Studio, poner límite de cuota en GEMINI_API_KEY.
+
+--------------------------------------------------------------------------------
+J. LO QUE YA INCLUYE EL PROYECTO (no reinventar)
+--------------------------------------------------------------------------------
+  - .htaccess bloquea .env, .git y algunos archivos sensibles
+  - Options -Indexes (sin listado de directorios)
+  - Cabeceras en security_headers.php (X-Frame-Options, nosniff, etc.)
+  - CSRF y límite de intentos en login del dashboard
+  - Contraseñas admin con password_hash en base de datos
+  - Rate limit en pedidos públicos (api_pedido_publico.php)
+
+Tu responsabilidad en hosting: .env correcto, HTTPS, no subir basura,
+permisos, estado_tienda.json y contraseñas fuertes.
+
+--------------------------------------------------------------------------------
+K. RESUMEN EN UNA LÍNEA
+--------------------------------------------------------------------------------
+SSL forzado + PHP 8.1+ + .env con BD del hosting sin MASTER_RECOVERY_KEY +
+GEMINI_API_KEY + no subir .sql/.git/scripts + .env en 600 +
+estado_tienda.json (B2B off, mantenimiento hasta probar) +
+cambiar contraseña admin tras el primer login.
+
+================================================================================
+Fin del documento — IMPROGYP OS V1
+================================================================================

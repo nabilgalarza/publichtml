@@ -1,5 +1,6 @@
 <?php
 // api_login.php - Validador de Accesos B2B
+require_once dirname(__DIR__) . '/lib/b2b_config.php';
 session_start();
 error_reporting(0);
 ini_set('display_errors', 0);
@@ -87,17 +88,25 @@ if (empty($ruc) || empty($pin)) {
     exit;
 }
 
+if (!improgyp_b2b_ruc_permitido($ruc)) {
+    improgyp_b2b_api_denegado_respuesta();
+}
+
 // 3. Verificar en la Base de Datos
 try {
     $pdo = new PDO($dsn, $db_user, $db_pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 
-    $stmt = $pdo->prepare("SELECT ruc, pin, nombre, descuento FROM usuarios_b2b WHERE ruc = ? LIMIT 1");
+    $stmt = $pdo->prepare("SELECT ruc, pin, nombre, descuento, activo FROM usuarios_b2b WHERE ruc = ? LIMIT 1");
     $stmt->execute([$ruc]);
     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $login_valido = false;
     if ($usuario) {
+        if (isset($usuario['activo']) && (int) $usuario['activo'] === 0) {
+            echo json_encode(["success" => false, "message" => "Tu acceso mayorista está suspendido. Contacta a IMPROGYP."]);
+            exit;
+        }
         // Validación híbrida: Hash para nuevos / Texto Plano para existentes
         if (password_verify($pin, $usuario['pin'])) {
             $login_valido = true;

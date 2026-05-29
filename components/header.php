@@ -1,5 +1,9 @@
 <?php
 require_once __DIR__ . '/megamenu_config.php';
+if (!function_exists('improgyp_b2b_mostrar_en_tienda')) {
+    require_once __DIR__ . '/../lib/b2b_config.php';
+}
+$b2b_publico_tienda = improgyp_b2b_mostrar_en_tienda();
 
 $header_config_path = __DIR__ . '/../config_header.json';
 $header_data = [];
@@ -93,9 +97,9 @@ $logo_href = 'index.php';
     }
     @media (min-width: 768px) {
         .mega-menu-panel {
-            position: absolute;
+        position: absolute;
             top: 0;
-            left: 0;
+        left: 0;
             right: 0;
             border-radius: 28px;
         }
@@ -244,19 +248,19 @@ $logo_href = 'index.php';
 
             <div class="hidden md:flex flex-1 max-w-lg mx-2 min-w-0">
                 <?php $omnibar_variant = 'header'; include __DIR__ . '/omnibar_input.php'; ?>
-            </div>
+        </div>
 
             <!-- Compartir, deseos, carrito. B2B, sucursales y sitio → megamenú Explorar -->
             <div class="flex items-center gap-2 md:gap-3 shrink-0 ml-auto">
                 <button type="button" onclick="typeof compartirTienda==='function'&&compartirTienda()" class="relative w-9 h-9 md:w-10 md:h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:border-[#1B263B] hover:text-[#1B263B] transition-all shadow-sm" title="Compartir tienda" aria-label="Compartir tienda">
                     <i class="fa-solid fa-share-nodes text-[13px] md:text-sm" aria-hidden="true"></i>
-                </button>
+            </button>
 
-                <div class="relative">
+            <div class="relative">
                     <button type="button" onclick="typeof toggleWishlistModal==='function'&&toggleWishlistModal(event)" class="relative w-9 h-9 md:w-10 md:h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:border-rose-400 hover:text-rose-500 transition-all shadow-sm" title="Lista de deseos" aria-label="Mis deseos">
                         <i class="fa-solid fa-heart text-[13px] md:text-sm" aria-hidden="true"></i>
                         <span id="wishlist-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-bold h-4 w-4 rounded-full flex items-center justify-center shadow-md transition-transform duration-200 hidden" aria-hidden="true">0</span>
-                    </button>
+                </button>
                     <div id="wishlist-modal" class="wishlist-dropdown" role="dialog" aria-hidden="true">
                         <div class="wishlist-header">
                             <span>Mis Deseos</span>
@@ -264,20 +268,20 @@ $logo_href = 'index.php';
                                 <i class="fa-solid fa-xmark text-base"></i>
                             </button>
                         </div>
-                        <div id="wishlist-items-container" class="wishlist-items custom-scrollbar"></div>
+                    <div id="wishlist-items-container" class="wishlist-items custom-scrollbar"></div>
                         <div class="wishlist-footer">
                             <a href="productos.php?wishlist=1">Ver lista completa <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></a>
                         </div>
-                    </div>
                 </div>
-
+            </div>
+               
                 <button type="button" onclick="typeof improgypOpenCart==='function'?improgypOpenCart(event):location.href='productos.php'" class="relative w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#1B263B] border border-[#1B263B] flex items-center justify-center text-white hover:bg-[#3A86FF] transition-all shadow-md shadow-[#1B263B]/30" title="Bolsa de compras" aria-label="Abrir cotización">
                     <i class="fa-solid fa-bag-shopping text-[13px] md:text-sm" aria-hidden="true"></i>
                     <span id="cart-badge" class="absolute -top-1 -right-1 bg-slate-900 text-white text-[9px] font-bold h-4 w-4 rounded-full flex items-center justify-center shadow-md transition-transform duration-200 hidden" aria-hidden="true">0</span>
-                </button>
-            </div>
-        </div>
-    </div>
+            </button>
+                    </div>
+                    </div>
+                </div>
 </nav>
 
 <div class="improgyp-mega-shell" id="improgyp-mega-shell" aria-hidden="true">
@@ -313,13 +317,13 @@ $logo_href = 'index.php';
                                     <span class="truncate"><?= $mtitle ?></span>
                                 </span>
                                 <i class="fa-solid fa-chevron-right mega-acc-chevron shrink-0" aria-hidden="true"></i>
-                            </button>
+                </button>
                             <div class="mega-accordion-panel" id="mega-panel-<?= $mid ?>" role="region" aria-labelledby="mega-acc-trigger-<?= $mid ?>">
                                 <div class="mega-accordion-panel-inner" data-panel-content="<?= $mid ?>"></div>
-                            </div>
-                        </div>
+            </div>
+            </div>
                         <?php endforeach; ?>
-                    </div>
+        </div>
 
                     <!-- Desktop: sidebar -->
                     <div class="mega-sidebar-desktop bg-slate-50/70 p-4 md:p-6 border-r border-slate-100 flex flex-col gap-1.5">
@@ -338,48 +342,50 @@ $logo_href = 'index.php';
                             <i class="fa-solid fa-chevron-right text-[8px] opacity-60"></i>
                         </button>
                         <?php endforeach; ?>
-                    </div>
+        </div>
 
                     <div class="hidden md:grid md:col-span-2 p-4 md:p-8 grid-cols-1 md:grid-cols-2 gap-5 md:gap-8" id="megamenu-content-container"></div>
 
                     <!-- Col 4 asistencia -->
                     <div class="mega-col-aside bg-slate-50/40 p-0 md:p-6 border-l border-slate-100 flex flex-col md:justify-between md:gap-5 max-md:border-l-0">
                         <div class="mega-aside-desktop hidden md:flex md:flex-col md:justify-between md:gap-5 md:flex-1 md:w-full">
-                            <div class="space-y-4">
-                                <div class="p-4 bg-[#3A86FF]/5 border border-[#3A86FF]/10 rounded-2xl">
-                                    <p class="text-[9px] font-black text-[#3A86FF] uppercase tracking-widest leading-none mb-1">
+            <div class="space-y-4">
+                <div class="p-4 bg-[#3A86FF]/5 border border-[#3A86FF]/10 rounded-2xl">
+                    <p class="text-[9px] font-black text-[#3A86FF] uppercase tracking-widest leading-none mb-1">
                                         <i class="fa-solid fa-compass-drafting mr-1"></i> Asesoría en proyectos
                                     </p>
                                     <h5 class="text-[11px] font-bold text-[#1B263B] leading-tight">¿Necesitas ayuda técnica o una cotización a medida para tu obra?</h5>
                                     <p class="text-[9px] text-slate-500 font-medium mt-1.5 leading-relaxed">Nuestros asesores te ayudan a calcular materiales y elegir el mejor sistema constructivo.</p>
-                                </div>
+                </div>
                                 <div class="space-y-2.5">
                                     <a href="https://wa.me/593991754887?text=Hola%20IMPROGYP%2C%20necesito%20asesor%C3%ADa%20t%C3%A9cnica" target="_blank" rel="noopener" class="flex items-center justify-between w-full p-3 rounded-xl border border-slate-200 bg-white hover:border-emerald-500 hover:bg-emerald-500/5 transition-all text-left group">
-                                        <span class="text-[10px] font-black text-slate-600 uppercase tracking-wider group-hover:text-emerald-600">
+                        <span class="text-[10px] font-black text-slate-600 uppercase tracking-wider group-hover:text-emerald-600">
                                             <i class="fa-brands fa-whatsapp text-emerald-500 text-xs mr-2"></i> Asesor en línea
-                                        </span>
+                        </span>
                                         <i class="fa-solid fa-chevron-right text-[9px] text-slate-400 group-hover:text-emerald-500"></i>
-                                    </a>
+                    </a>
                                     <button type="button" onclick="typeof abrirModalLocales==='function'&&abrirModalLocales(); window.hideMegaMenu();" class="flex items-center justify-between w-full p-3 rounded-xl border border-slate-200 bg-white hover:border-[#3A86FF] hover:bg-blue-600/5 transition-all text-left group">
-                                        <span class="text-[10px] font-black text-slate-600 uppercase tracking-wider group-hover:text-[#3A86FF]">
+                        <span class="text-[10px] font-black text-slate-600 uppercase tracking-wider group-hover:text-[#3A86FF]">
                                             <i class="fa-solid fa-map-location-dot text-[#3A86FF] text-xs mr-2"></i> Nuestras sucursales
-                                        </span>
+                        </span>
                                         <i class="fa-solid fa-chevron-right text-[9px] text-slate-400 group-hover:text-[#3A86FF]"></i>
-                                    </button>
-                                </div>
-                            </div>
+                    </button>
+                </div>
+            </div>
+                            <?php if ($b2b_publico_tienda): ?>
                             <div class="mega-b2b-block p-4 bg-slate-100/70 border border-slate-200/50 rounded-2xl text-center">
                                 <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider leading-tight">¿Compra mayorista?</p>
                                 <p class="text-[9px] text-slate-500 font-bold mt-1 mb-2.5">Precios por volumen y stock en tiempo real.</p>
                                 <a href="b2b/" class="inline-flex items-center justify-center w-full py-2 bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black rounded-lg uppercase tracking-widest text-[8px] transition-all shadow-sm">
-                                    Portal B2B Exclusivo <i class="fa-solid fa-arrow-right-to-bracket ml-1.5"></i>
-                                </a>
-                            </div>
-                        </div>
+                    Portal B2B Exclusivo <i class="fa-solid fa-arrow-right-to-bracket ml-1.5"></i>
+                </a>
+            </div>
+                            <?php endif; ?>
+        </div>
 
                         <div class="mega-aside-mobile px-4 py-3">
                             <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2.5">Asistencia y tiendas</p>
-                            <div class="grid grid-cols-2 gap-2">
+                        <div class="grid grid-cols-2 gap-2">
                                 <a href="https://wa.me/593991754887?text=Hola%20IMPROGYP%2C%20necesito%20asesor%C3%ADa%20t%C3%A9cnica" target="_blank" rel="noopener" class="flex flex-col items-center justify-center gap-1.5 p-2.5 rounded-xl border border-slate-200 bg-white text-center min-h-[4.5rem]">
                                     <i class="fa-brands fa-whatsapp text-emerald-500 text-lg"></i>
                                     <span class="text-[8px] font-black text-slate-600 uppercase tracking-wide leading-tight">WhatsApp</span>
@@ -387,15 +393,17 @@ $logo_href = 'index.php';
                                 <button type="button" onclick="typeof abrirModalLocales==='function'&&abrirModalLocales(); window.hideMegaMenu();" class="flex flex-col items-center justify-center gap-1.5 p-2.5 rounded-xl border border-slate-200 bg-white text-center min-h-[4.5rem]">
                                     <i class="fa-solid fa-map-location-dot text-[#3A86FF] text-base"></i>
                                     <span class="text-[8px] font-black text-slate-600 uppercase tracking-wide leading-tight">Sucursales</span>
-                                </button>
-                            </div>
+                            </button>
+                                </div>
+                            <?php if ($b2b_publico_tienda): ?>
                             <a href="b2b/" class="mt-2.5 flex items-center justify-center gap-2 w-full py-2.5 bg-[#1B263B] text-white font-black rounded-xl uppercase tracking-widest text-[9px] hover:bg-[#3A86FF] transition-colors">
                                 <i class="fa-solid fa-arrow-right-to-bracket text-[10px]"></i> Portal B2B
                             </a>
-                        </div>
+                            <?php endif; ?>
+                                </div>
+                                </div>
+                                </div>
                     </div>
-                </div>
-            </div>
 
             <div class="mega-site-footer px-4 md:px-6 py-4 md:py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-3">
                 <a href="productos.php" class="inline-flex items-center gap-2 text-[10px] font-black text-[#1B263B] uppercase tracking-wider hover:text-[#3A86FF] transition-all shrink-0 pb-1 md:pb-0 border-b border-slate-200/80 md:border-b-0">
@@ -419,10 +427,10 @@ $logo_href = 'index.php';
                     <?php endforeach; ?>
                 </nav>
                 <?php endif; ?>
-            </div>
-        </div>
-    </div>
-</div>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
 
 <script>
 const categoryDivisionMap = <?= json_encode($megamenu_js_map, JSON_UNESCAPED_UNICODE) ?>;
@@ -540,20 +548,20 @@ function filterMegaMenuLink(linkType, linkValue, event) {
         }
         if (typeof window.filtrarCategoria === 'function') {
             window.filtrarCategoria(value);
+                return;
+            }
+        window.location.href = 'productos.php?cat=' + encodeURIComponent(value);
             return;
         }
-        window.location.href = 'productos.php?cat=' + encodeURIComponent(value);
-        return;
-    }
     if (isLanding) {
         window.location.href = 'productos.php?q=' + encodeURIComponent(value);
-        return;
-    }
+                return;
+            }
     const input = document.querySelector('.omni-input-field');
     if (input) {
         input.value = value;
         if (typeof window.filtrarPorTexto === 'function') window.filtrarPorTexto(value);
-    } else {
+        } else {
         window.location.href = 'productos.php?q=' + encodeURIComponent(value);
     }
 }
@@ -573,10 +581,10 @@ function openMegaMenuMobile() {
     openMegaAccordionItem(item, id);
 }
 
-function toggleMegaMenu(e) {
-    if (e) e.stopPropagation();
-    const menu = document.getElementById('improgyp-mega-menu');
-    const arrow = document.getElementById('trigger-arrow');
+    function toggleMegaMenu(e) {
+        if (e) e.stopPropagation();
+        const menu = document.getElementById('improgyp-mega-menu');
+        const arrow = document.getElementById('trigger-arrow');
     const backdrop = document.getElementById('mega-menu-backdrop');
     const shell = document.getElementById('improgyp-mega-shell');
     if (!menu) return;
@@ -610,17 +618,17 @@ function toggleMegaMenu(e) {
         } else {
             showCategoryContent(megamenuFirstId);
         }
-    } else {
-        hideMegaMenu();
+        } else {
+            hideMegaMenu();
+        }
     }
-}
 
-function hideMegaMenu() {
-    const menu = document.getElementById('improgyp-mega-menu');
-    const arrow = document.getElementById('trigger-arrow');
+    function hideMegaMenu() {
+        const menu = document.getElementById('improgyp-mega-menu');
+        const arrow = document.getElementById('trigger-arrow');
     const backdrop = document.getElementById('mega-menu-backdrop');
     const shell = document.getElementById('improgyp-mega-shell');
-    if (menu) {
+        if (menu) {
         menu.classList.remove('improgyp-mega-open');
         menu.classList.add('improgyp-mega-closed');
         menu.setAttribute('aria-hidden', 'true');
@@ -628,8 +636,8 @@ function hideMegaMenu() {
     if (shell) {
         shell.setAttribute('aria-hidden', 'true');
         shell.classList.remove('is-open');
-    }
-    if (arrow) arrow.style.transform = 'rotate(0deg)';
+        }
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
     if (backdrop) {
         backdrop.classList.remove('open');
         backdrop.setAttribute('aria-hidden', 'true');
@@ -650,14 +658,14 @@ window.showCategoryContent = showCategoryContent;
 window.toggleMegaAccordion = toggleMegaAccordion;
 window.filterMegaMenuLinkFromEl = filterMegaMenuLinkFromEl;
 
-document.addEventListener('click', (e) => {
-    const menu = document.getElementById('improgyp-mega-menu');
-    const trigger = document.getElementById('mega-menu-trigger');
+    document.addEventListener('click', (e) => {
+        const menu = document.getElementById('improgyp-mega-menu');
+        const trigger = document.getElementById('mega-menu-trigger');
     const backdrop = document.getElementById('mega-menu-backdrop');
     if (!menu || !menu.classList.contains('improgyp-mega-open')) return;
     if (menu.contains(e.target)) return;
     if (backdrop && (e.target === backdrop || backdrop.contains(e.target))) {
-        hideMegaMenu();
+                hideMegaMenu();
         return;
     }
     if (!trigger || !trigger.contains(e.target)) {

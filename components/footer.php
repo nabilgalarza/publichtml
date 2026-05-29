@@ -40,7 +40,9 @@ $footer_page_kind = $improgyp_page ?? '';
                     <li><a href="productos.php" class="hover:text-white transition-colors">Catálogo completo</a></li>
                     <li><a href="productos.php" class="hover:text-white transition-colors">Asesor con IA</a></li>
                     <li><a href="productos.php?wishlist=1" class="hover:text-white transition-colors">Lista de deseos</a></li>
+                    <?php if (function_exists('improgyp_b2b_mostrar_en_tienda') && improgyp_b2b_mostrar_en_tienda()): ?>
                     <li><a href="b2b/" class="hover:text-white transition-colors">Portal mayoristas</a></li>
+                    <?php endif; ?>
                 </ul>
             </div>
 
@@ -101,7 +103,9 @@ $footer_page_kind = $improgyp_page ?? '';
             <div class="flex flex-wrap justify-center gap-4 text-[11px] font-bold">
                 <a href="productos.php" class="<?= improgyp_footer_link_class(improgyp_footer_bottom_link_active('tienda', $footer_page, $footer_page_kind), 'text-slate-500 hover:text-white transition-colors') ?>">Tienda</a>
                 <a href="blog.php" class="<?= improgyp_footer_link_class(improgyp_footer_bottom_link_active('blog', $footer_page, $footer_page_kind), 'text-slate-500 hover:text-white transition-colors') ?>">Blog</a>
+                <?php if (function_exists('improgyp_b2b_mostrar_en_tienda') && improgyp_b2b_mostrar_en_tienda()): ?>
                 <a href="b2b/" class="<?= improgyp_footer_link_class(improgyp_footer_bottom_link_active('b2b', $footer_page, $footer_page_kind), 'text-slate-500 hover:text-white transition-colors') ?>">B2B</a>
+                <?php endif; ?>
                 <a href="index.php#contacto" class="<?= improgyp_footer_link_class(improgyp_footer_bottom_link_active('contacto', $footer_page, $footer_page_kind), 'text-slate-500 hover:text-white transition-colors') ?>">Contacto</a>
             </div>
         </div>

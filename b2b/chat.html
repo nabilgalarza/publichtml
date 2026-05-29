@@ -13,8 +13,11 @@
     
     <script>
         if (localStorage.getItem('b2b_auth_token') !== 'true') {
-            window.location.href = 'index.html'; 
+            window.location.href = 'index.php';
         }
+        fetch('api_status.php', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
+            if (!d.portal_habilitado) { window.location.replace('index.php'); }
+        }).catch(function () {});
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>

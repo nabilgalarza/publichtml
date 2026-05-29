@@ -32,9 +32,11 @@ $heroImg = trim($hero['imagen'] ?? '');
         <a href="<?= htmlspecialchars($cta1url) ?>" class="inline-flex items-center justify-center gap-2 bg-[#1B263B] text-white font-black px-8 py-4 rounded-2xl hover:bg-[#3A86FF] transition-colors shadow-lg shadow-[#1B263B]/20">
             <i class="fa-solid fa-store"></i> <?= htmlspecialchars($cta1) ?>
         </a>
+        <?php if (function_exists('improgyp_b2b_mostrar_en_tienda') && improgyp_b2b_mostrar_en_tienda()): ?>
         <a href="<?= htmlspecialchars($cta2url) ?>" class="inline-flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 font-black px-8 py-4 rounded-2xl hover:border-[#1B263B] transition-colors shadow-sm">
             <i class="fa-solid fa-briefcase"></i> <?= htmlspecialchars($cta2) ?>
         </a>
+        <?php endif; ?>
     </div>
     <?php if ($heroImg): ?>
     <div class="relative z-10 max-w-2xl mx-auto rounded-3xl overflow-hidden border border-slate-100 shadow-xl bg-white p-4">

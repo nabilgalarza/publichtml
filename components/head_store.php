@@ -20,6 +20,7 @@
     
     <script>tailwind.config = { corePlugins: { preflight: true } };</script>
     <script>var IMPROGYP_BASE_URL = <?= json_encode($base_url ?? '', JSON_UNESCAPED_SLASHES) ?>;</script>
+    <script>window.IMPROGYP_B2B_PUBLICO = <?= json_encode(function_exists('improgyp_b2b_mostrar_en_tienda') && improgyp_b2b_mostrar_en_tienda()) ?>;</script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         :root { --bg-color: #f8fafc; --text-dark: #0f172a; --theme-green: #1B263B; --theme-green-hover: #3A86FF; --text-muted: #64748b; }
