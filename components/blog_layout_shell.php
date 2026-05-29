@@ -135,24 +135,33 @@ $bl_open_in_modal = !empty($bl_open_in_modal);
 .bl-article-modal { position: fixed; inset: 0; z-index: 2500; display: none; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .2s ease; }
 .bl-article-modal.is-open { display: flex; opacity: 1; pointer-events: auto; }
 .bl-article-modal-backdrop { position: absolute; inset: 0; background: rgba(15, 23, 42, .6); }
-.bl-article-modal-panel { position: relative; z-index: 1; width: 100%; max-width: 800px; max-height: 92vh; background: #fff; border-radius: 1.25rem; box-shadow: 0 24px 64px rgba(0,0,0,.25); display: flex; flex-direction: column; overflow: hidden; transform: scale(.98) translateY(8px); transition: transform .2s ease; }
+.bl-article-modal-panel { position: relative; z-index: 1; width: 100%; max-width: min(920px, 96vw); max-height: 92vh; background: #fff; border-radius: 1.25rem; box-shadow: 0 24px 64px rgba(0,0,0,.25); display: flex; flex-direction: column; overflow: hidden; transform: scale(.98) translateY(8px); transition: transform .2s ease; }
 .bl-article-modal.is-open .bl-article-modal-panel { transform: scale(1) translateY(0); }
 .bl-article-modal-close { position: absolute; top: 12px; right: 12px; z-index: 5; width: 36px; height: 36px; border: none; border-radius: 999px; background: rgba(255,255,255,.95); color: #64748b; font-size: 1.35rem; line-height: 1; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
 .bl-article-modal-close:hover { color: #e11d48; }
 .bl-article-modal-scroll { overflow-y: auto; flex: 1; min-height: 0; }
 .bl-article-modal-cover { width: 100%; max-height: 240px; object-fit: cover; background: #e2e8f0; display: block; }
-.bl-article-modal-body { padding: 24px 24px 8px; }
-.bl-article-modal-title { font-family: <?= $bl_font_css ?>; font-size: 1.5rem; font-weight: 900; color: #0f172a; margin: 10px 0 8px; line-height: 1.25; }
-.bl-article-modal-resumen { font-size: .95rem; color: #475569; font-weight: 500; margin-bottom: 16px; border-left: 3px solid <?= $bl_accent ?>; padding-left: 12px; }
-.bl-article-modal-prose { font-size: .9rem; color: #334155; line-height: 1.7; }
-.bl-article-modal-prose p { margin-bottom: .75rem; }
-.bl-article-modal-prose img { max-width: 100%; height: auto; border-radius: 8px; }
-.bl-article-modal-footer { padding: 12px 16px 16px; border-top: 1px solid #f1f5f9; flex-shrink: 0; display: flex; flex-wrap: wrap; gap: 10px; justify-content: stretch; }
-.bl-article-modal-btn { flex: 1; min-width: 140px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: .78rem; font-weight: 800; border-radius: 12px; padding: 10px 14px; border: none; cursor: pointer; text-decoration: none; transition: background .2s, color .2s; }
+.bl-article-modal-body { padding: 28px 28px 12px; }
+.bl-article-modal-title { font-family: <?= $bl_font_css ?>; font-size: clamp(1.35rem, 3vw, 1.75rem); font-weight: 900; color: #0f172a; margin: 10px 0 8px; line-height: 1.28; }
+.bl-article-modal-resumen { font-size: 1rem; color: #475569; font-weight: 500; margin-bottom: 20px; border-left: 3px solid <?= $bl_accent ?>; padding-left: 14px; line-height: 1.55; }
+.bl-article-modal-resumen.is-hidden { display: none; }
+.bl-article-modal-prose { font-size: 1rem; color: #334155; line-height: 1.75; }
+.bl-article-modal-prose p { margin-bottom: 1rem; }
+.bl-article-modal-prose h2 { font-size: 1.15rem; font-weight: 800; color: #0f172a; margin: 1.25rem 0 .5rem; }
+.bl-article-modal-prose ul { margin: 0 0 1rem 1.1rem; padding-left: .5rem; }
+.bl-article-modal-prose img { max-width: 100%; height: auto; border-radius: 8px; margin: .75rem 0; }
+.bl-article-modal-footer { padding: 12px 14px 16px; border-top: 1px solid #f1f5f9; flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.bl-article-modal-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: .72rem; font-weight: 800; border-radius: 12px; padding: 10px 8px; border: none; cursor: pointer; text-decoration: none; transition: background .2s, color .2s; min-width: 0; }
 .bl-article-modal-btn--ghost { background: #f1f5f9; color: #475569; }
 .bl-article-modal-btn--ghost:hover { background: #e2e8f0; color: #0f172a; }
+.bl-article-modal-btn--wa { background: #25d366; color: #fff; }
+.bl-article-modal-btn--wa:hover { background: #1ebe57; color: #fff; }
 .bl-article-modal-btn--primary { background: <?= $bl_accent ?>; color: #fff; }
 .bl-article-modal-btn--primary:hover { filter: brightness(1.08); color: #fff; }
+@media (max-width: 520px) {
+    .bl-article-modal-footer { grid-template-columns: 1fr; }
+    .bl-article-modal-body { padding: 20px 18px 10px; }
+}
 .bl-article-loading { text-align: center; color: #94a3b8; font-size: .9rem; padding: 2rem 1rem; }
 .bl-article-modal-progress { position: sticky; top: 0; left: 0; height: 3px; width: 0; background: <?= $bl_accent ?>; z-index: 4; transition: width .1s linear; }
 @media (max-width: 640px) {
@@ -318,9 +327,24 @@ $bl_open_in_modal = !empty($bl_open_in_modal);
         if (metaEl) metaEl.innerHTML = metaHtml(art);
         if (resumenEl) {
             resumenEl.textContent = art.resumen || '';
-            resumenEl.style.display = art.resumen ? '' : 'none';
+            resumenEl.classList.toggle('is-hidden', !art.resumen);
         }
-        if (fullEl) fullEl.href = 'blog.php?slug=' + encodeURIComponent(art.slug || '');
+        if (fullEl) {
+            fullEl.href = 'blog.php?slug=' + encodeURIComponent(art.slug || '');
+            fullEl.setAttribute('title', 'Abrir en página indexable para compartir y SEO');
+        }
+    }
+
+    function articlePublicUrl(slug) {
+        const url = new URL('blog.php', window.location.href);
+        url.searchParams.set('slug', slug);
+        return url.toString();
+    }
+
+    function shareWhatsApp(slug, title, resumen) {
+        const url = articlePublicUrl(slug);
+        const text = (title || 'IMPROGYP Blog') + '\n' + (resumen ? String(resumen).substring(0, 140) + '\n' : '') + url;
+        window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener,noreferrer');
     }
 
     function bindModalReadingProgress() {
@@ -355,6 +379,8 @@ $bl_open_in_modal = !empty($bl_open_in_modal);
         currentModalSlug = slug;
         fillBlogModalMeta(artMeta);
         contentEl.innerHTML = '<p class="bl-article-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Cargando artículo…</p>';
+        const resumenEl = document.getElementById('bl-article-modal-resumen');
+        if (resumenEl) resumenEl.classList.add('is-hidden');
         showBlogArticleModalUi();
         bindModalReadingProgress();
 
@@ -387,6 +413,8 @@ $bl_open_in_modal = !empty($bl_open_in_modal);
 
         fillBlogModalMeta(full);
         contentEl.innerHTML = full.contenido || '<p>Sin contenido.</p>';
+        const resumenElDone = document.getElementById('bl-article-modal-resumen');
+        if (resumenElDone) resumenElDone.classList.add('is-hidden');
         bindModalReadingProgress();
     }
 
@@ -399,27 +427,29 @@ $bl_open_in_modal = !empty($bl_open_in_modal);
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && blogModal.classList.contains('is-open')) closeBlogArticleModal();
             });
-            const shareBtn = document.getElementById('bl-article-modal-share');
-            if (shareBtn) {
-                shareBtn.addEventListener('click', () => {
+            const waBtn = document.getElementById('bl-article-modal-wa');
+            const copyBtn = document.getElementById('bl-article-modal-copy');
+            if (waBtn) {
+                waBtn.addEventListener('click', () => {
                     if (!currentModalSlug) return;
-                    const url = new URL('blog.php', window.location.href);
-                    url.searchParams.set('slug', currentModalSlug);
                     const art = articlesBySlug[currentModalSlug];
-                    const shareData = {
-                        title: (art && art.titulo) || 'IMPROGYP Blog',
-                        text: (art && art.resumen) || '',
-                        url: url.toString(),
+                    shareWhatsApp(currentModalSlug, art && art.titulo, art && art.resumen);
+                });
+            }
+            if (copyBtn) {
+                copyBtn.addEventListener('click', () => {
+                    if (!currentModalSlug) return;
+                    const url = articlePublicUrl(currentModalSlug);
+                    const done = () => {
+                        copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copiado';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fa-solid fa-link"></i> Copiar enlace';
+                        }, 2200);
                     };
-                    if (navigator.share) {
-                        navigator.share(shareData).catch(() => {});
-                    } else if (navigator.clipboard) {
-                        navigator.clipboard.writeText(url.toString()).then(() => {
-                            shareBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copiado';
-                            setTimeout(() => {
-                                shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i> Compartir';
-                            }, 2000);
-                        });
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(url).then(done).catch(() => {});
+                    } else {
+                        window.prompt('Copia este enlace:', url);
                     }
                 });
             }
@@ -558,16 +588,6 @@ $bl_open_in_modal = !empty($bl_open_in_modal);
 
         track.addEventListener('scroll', onScroll, { passive: true });
         buildPagination(0, pages, scrollToWindow);
-    }
-
-    if (CFG.homePreview) {
-        stage.innerHTML = renderGrid3(CFG.articles);
-        bindBlogArticleOpens(stage);
-        if (paginationEl) {
-            paginationEl.hidden = true;
-            paginationEl.innerHTML = '';
-        }
-        return;
     }
 
     if (CFG.layout === 'carousel') {

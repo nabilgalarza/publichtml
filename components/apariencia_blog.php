@@ -43,7 +43,7 @@ $per_page_actual = blog_layout_per_page($layout_actual);
             <h2 class="text-xl font-black text-slate-900 mb-1 flex items-center gap-2">
                 <i class="fa-solid fa-square-rss text-orange-400"></i> Apariencia de Blog
             </h2>
-            <p class="text-xs text-slate-400 font-medium mb-6">Personaliza el diseño que verán tus visitantes en la sección del blog del Home.</p>
+            <p class="text-xs text-slate-400 font-medium mb-6">Aplica al <strong>Home</strong> y a la página <strong>blog.php</strong> (color, tipografía, metadatos y diseño de cuadrícula).</p>
 
             <form id="blog-appearance-form" method="POST" action="dashboard.php?view=apariencia&sub=blog">
                 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">

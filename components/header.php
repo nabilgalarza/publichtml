@@ -212,6 +212,18 @@ $logo_href = 'index.php';
         .mega-accordion-mobile { display: none !important; }
         .mega-aside-mobile { display: none !important; }
     }
+    #mega-menu-trigger.is-mega-open {
+        border-color: rgba(58, 134, 255, 0.55);
+        background: rgba(58, 134, 255, 0.08);
+        color: #3A86FF;
+        box-shadow: 0 0 0 1px rgba(58, 134, 255, 0.15);
+    }
+    #mega-menu-trigger:focus-visible,
+    .mega-accordion-trigger:focus-visible,
+    .sidebar-tab-btn:focus-visible {
+        outline: 2px solid #3A86FF;
+        outline-offset: 2px;
+    }
 </style>
 <nav id="main-nav" class="fixed top-0 w-full z-40 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 nav-transition" data-header-profile="<?= $is_catalog ? 'catalog' : 'default' ?>">
     <div class="relative max-w-[1240px] mx-auto px-4 md:px-6">
@@ -416,6 +428,7 @@ $logo_href = 'index.php';
 const categoryDivisionMap = <?= json_encode($megamenu_js_map, JSON_UNESCAPED_UNICODE) ?>;
 const megamenuFirstId = <?= json_encode($megamenu_first_id) ?>;
 const isLanding = <?= $is_shop ? 'false' : 'true' ?>;
+const MEGA_LAST_DIV_KEY = 'improgyp_mega_last_div';
 
 function isMegaMenuMobile() {
     return window.matchMedia('(max-width: 767px)').matches;
@@ -454,8 +467,15 @@ function closeMegaAccordionItem(item) {
     }
 }
 
+function rememberMegaDivision(catId) {
+    if (catId && isMegaMenuMobile()) {
+        try { sessionStorage.setItem(MEGA_LAST_DIV_KEY, catId); } catch (e) { /* ignore */ }
+    }
+}
+
 function openMegaAccordionItem(item, catId) {
     if (!item) return;
+    rememberMegaDivision(catId);
     const inner = item.querySelector('[data-panel-content]');
     const panel = item.querySelector('.mega-accordion-panel');
     const trigger = item.querySelector('.mega-accordion-trigger');
@@ -539,11 +559,18 @@ function filterMegaMenuLink(linkType, linkValue, event) {
 }
 
 function openMegaMenuMobile() {
-    const first = document.querySelector('.mega-accordion-item');
-    if (!first) return;
+    let item = null;
+    try {
+        const lastId = sessionStorage.getItem(MEGA_LAST_DIV_KEY);
+        if (lastId) {
+            item = document.querySelector('.mega-accordion-item[data-division-id="' + CSS.escape(lastId) + '"]');
+        }
+    } catch (e) { /* ignore */ }
+    if (!item) item = document.querySelector('.mega-accordion-item');
+    if (!item) return;
     document.querySelectorAll('.mega-accordion-item').forEach(el => closeMegaAccordionItem(el));
-    const id = first.getAttribute('data-division-id') || megamenuFirstId;
-    openMegaAccordionItem(first, id);
+    const id = item.getAttribute('data-division-id') || megamenuFirstId;
+    openMegaAccordionItem(item, id);
 }
 
 function toggleMegaMenu(e) {
@@ -573,7 +600,10 @@ function toggleMegaMenu(e) {
             document.body.style.overflow = 'hidden';
         }
         const trigger = document.getElementById('mega-menu-trigger');
-        if (trigger) trigger.setAttribute('aria-expanded', 'true');
+        if (trigger) {
+            trigger.setAttribute('aria-expanded', 'true');
+            trigger.classList.add('is-mega-open');
+        }
 
         if (isMegaMenuMobile()) {
             openMegaMenuMobile();
@@ -605,7 +635,10 @@ function hideMegaMenu() {
         backdrop.setAttribute('aria-hidden', 'true');
     }
     const trigger = document.getElementById('mega-menu-trigger');
-    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    if (trigger) {
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.classList.remove('is-mega-open');
+    }
     if (!document.getElementById('wishlist-modal')?.classList.contains('show')) {
         document.body.style.overflow = '';
     }
@@ -640,6 +673,12 @@ if (improgypMegaMenuEl) {
 if (document.getElementById('mega-menu-backdrop')) {
     document.getElementById('mega-menu-backdrop').addEventListener('click', hideMegaMenu);
 }
+
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' && e.key !== 'Esc') return;
+    const menu = document.getElementById('improgyp-mega-menu');
+    if (menu && menu.classList.contains('improgyp-mega-open')) hideMegaMenu();
+});
 </script>
 
 <?php include __DIR__ . '/cart_checkout_styles.php'; ?>

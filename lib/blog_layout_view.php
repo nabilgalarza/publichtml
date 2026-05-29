@@ -49,16 +49,19 @@ function blog_layout_prepare(array $articulos, string $base_url = '', array $opt
 
     $homePreview = !empty($opts['home_preview']);
     $archiveMode = !empty($opts['archive_mode']);
-
-    if ($homePreview || $archiveMode) {
-        $layout = 'grid3';
-    }
-
     $openInModal = !empty($opts['open_in_modal']);
 
     if ($homePreview) {
-        $perPage = count($articulos);
-        $paginated = false;
+        if ($layout === 'grid3') {
+            $perPage = min(count($articulos), blog_home_fetch_limit());
+            $paginated = count($articulos) > blog_layout_per_page('grid3');
+        } elseif ($layout === 'carousel') {
+            $perPage = blog_layout_per_page('carousel');
+            $paginated = false;
+        } else {
+            $perPage = blog_layout_per_page($layout);
+            $paginated = count($articulos) > $perPage;
+        }
     } elseif ($archiveMode) {
         $perPage = max(1, min(24, (int) ($opts['per_page'] ?? blog_archive_per_page())));
         $paginated = true;

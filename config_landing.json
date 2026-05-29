@@ -38,30 +38,30 @@
         },
         {
             "tipo": "categorias",
-            "titulo": "Explorar por categoría",
-            "subtitulo": "Acceso directo al catálogo con filtros por marca y asesor IA.",
+            "titulo": "Encuentra tu equipo ideal",
+            "subtitulo": "Todo para tu obra, a un clic.",
             "limite": 8,
             "activo": true,
-            "titulo_normal": "Explorar por categoría",
-            "titulo_resaltado": ""
+            "titulo_normal": "Encuentra tu equipo ideal",
+            "titulo_resaltado": "IA te guía"
         },
         {
             "tipo": "tendencias",
-            "titulo": "Tendencias",
-            "subtitulo": "Lo más visto en las últimas 48 horas.",
+            "titulo": "Lo que busca tu obra",
+            "subtitulo": "Las novedades que impulsan tus proyectos hoy.",
             "limite": 8,
             "activo": true,
-            "titulo_normal": "Tendencias",
-            "titulo_resaltado": ""
+            "titulo_normal": "Lo que busca tu obra",
+            "titulo_resaltado": "Lo nuevo"
         },
         {
             "tipo": "mas_vendidos",
-            "titulo": "Más vendidos",
-            "subtitulo": "Selección impulsada por nuestro equipo comercial.",
+            "titulo": "Lo que la gente ama",
+            "subtitulo": "Descubre los favoritos de nuestros clientes y hazlos tuyos hoy.",
             "limite": 8,
             "activo": true,
-            "titulo_normal": "Más vendidos",
-            "titulo_resaltado": ""
+            "titulo_normal": "Lo que la gente ama",
+            "titulo_resaltado": "Lo más top"
         },
         {
             "tipo": "cta",
@@ -83,13 +83,13 @@
         },
         {
             "tipo": "logos",
-            "titulo": "Marcas aliadas",
-            "subtitulo": "Distribuidores oficiales que respaldan tu obra.",
+            "titulo": "Confiamos en ellos",
+            "subtitulo": "Tu proyecto, en manos de los mejores fabricantes.",
             "limite": 10,
             "marquee_seg": 50,
             "activo": true,
-            "titulo_normal": "Marcas aliadas",
-            "titulo_resaltado": ""
+            "titulo_normal": "Confiamos en ellos",
+            "titulo_resaltado": "Grandes Marcas"
         },
         {
             "tipo": "locales",

@@ -1,10 +1,161 @@
 {
-    "megamenu": [],
+    "megamenu": [
+        {
+            "id": "drywall",
+            "title": "Drywall & Yeso",
+            "icon": "fa-trowel-bricks",
+            "iconColor": "text-[#3A86FF]",
+            "titleLeft": "SISTEMAS CONSTRUCTIVOS",
+            "titleRight": "HERRAMIENTAS MASTER",
+            "linksLeft": [
+                {
+                    "name": "Herramientas Drywall",
+                    "linkType": "category",
+                    "linkValue": "Herramientas Drywall"
+                },
+                {
+                    "name": "Accesorios de obra",
+                    "linkType": "category",
+                    "linkValue": "Accesorios"
+                }
+            ],
+            "linksRight": [
+                {
+                    "name": "Lijadoras orbitales",
+                    "linkType": "category",
+                    "linkValue": "Lijadoras Orbitales"
+                },
+                {
+                    "name": "Lijadoras de yeso",
+                    "linkType": "category",
+                    "linkValue": "Lijadoras de Paneles de Yeso"
+                }
+            ]
+        },
+        {
+            "id": "potencia",
+            "title": "Línea de Potencia",
+            "icon": "fa-bolt",
+            "iconColor": "text-amber-500",
+            "titleLeft": "HERRAMIENTAS ELÉCTRICAS",
+            "titleRight": "LÍNEA CONCRETO Y OBRA",
+            "linksLeft": [
+                {
+                    "name": "Taladros percutores",
+                    "linkType": "category",
+                    "linkValue": "Taladros Percutores"
+                },
+                {
+                    "name": "Amoladoras",
+                    "linkType": "category",
+                    "linkValue": "Amoladoras"
+                },
+                {
+                    "name": "Mezcladores",
+                    "linkType": "category",
+                    "linkValue": "Mezclador de Paletas"
+                }
+            ],
+            "linksRight": [
+                {
+                    "name": "Línea de concreto",
+                    "linkType": "category",
+                    "linkValue": "Línea de Concreto"
+                },
+                {
+                    "name": "Cortadoras",
+                    "linkType": "category",
+                    "linkValue": "Cortadoras"
+                },
+                {
+                    "name": "Herramientas varias",
+                    "linkType": "category",
+                    "linkValue": "Herramientas Varias"
+                }
+            ]
+        },
+        {
+            "id": "aplicacion",
+            "title": "Aplicación & Limpieza",
+            "icon": "fa-spray-can-sparkles",
+            "iconColor": "text-[#3A86FF]",
+            "titleLeft": "SISTEMAS DE APLICACIÓN",
+            "titleRight": "TRATAMIENTO Y LIMPIEZA",
+            "linksLeft": [
+                {
+                    "name": "Pulverizadores",
+                    "linkType": "category",
+                    "linkValue": "Pulverizadores de Pintura"
+                },
+                {
+                    "name": "Pistolas de silicona",
+                    "linkType": "category",
+                    "linkValue": "Pistolas de Silicona"
+                }
+            ],
+            "linksRight": [
+                {
+                    "name": "Pistolas de aire caliente",
+                    "linkType": "category",
+                    "linkValue": "Pistolas de Aire Caliente"
+                },
+                {
+                    "name": "Sopladoras",
+                    "linkType": "category",
+                    "linkValue": "Sopladoras"
+                },
+                {
+                    "name": "Aspiradoras",
+                    "linkType": "category",
+                    "linkValue": "Limpieza al Vacío"
+                }
+            ]
+        },
+        {
+            "id": "accesorios",
+            "title": "Accesorios & Kits",
+            "icon": "fa-gears",
+            "iconColor": "text-slate-400",
+            "titleLeft": "CONSUMIBLES PRO",
+            "titleRight": "MÁS CATEGORÍAS",
+            "linksLeft": [
+                {
+                    "name": "Accesorios",
+                    "linkType": "category",
+                    "linkValue": "Accesorios"
+                }
+            ],
+            "linksRight": [
+                {
+                    "name": "Buscar tornillos",
+                    "linkType": "search",
+                    "linkValue": "tornillo"
+                },
+                {
+                    "name": "Buscar MAXXT",
+                    "linkType": "search",
+                    "linkValue": "maxxt"
+                }
+            ]
+        }
+    ],
     "nivel3_menu": [
-        {"text": "Inicio", "link": "index.php"},
-        {"text": "Nosotros", "link": "index.php#nosotros"},
-        {"text": "Blog", "link": "blog.php"},
-        {"text": "Contacto", "link": "index.php#contacto"}
+        {
+            "text": "Inicio",
+            "link": "index.php"
+        },
+        {
+            "text": "Nosotros",
+            "link": "index.php#nosotros"
+        },
+        {
+            "text": "Blog",
+            "link": "blog.php"
+        },
+        {
+            "text": "Contacto",
+            "link": "index.php#contacto"
+        }
     ],
     "mostrar_titulo": true,
     "mostrar_categorias": true

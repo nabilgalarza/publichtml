@@ -7,7 +7,11 @@ if (file_exists($header_config_path)) {
     $header_data = json_decode(file_get_contents($header_config_path), true) ?? [];
 }
 
-$megamenu_initial = improgyp_normalize_megamenu($header_data['megamenu'] ?? null);
+$megamenu_stored_raw = $header_data['megamenu'] ?? null;
+$megamenu_stored_empty = improgyp_megamenu_is_stored_empty($megamenu_stored_raw);
+$megamenu_initial = improgyp_normalize_megamenu($megamenu_stored_raw);
+$nivel3_initial = improgyp_normalize_nivel3_menu($header_data['nivel3_menu'] ?? null);
+$orphan_cats_initial = improgyp_megamenu_orphan_categories($megamenu_initial, improgyp_megamenu_categorias_from_catalogo());
 $categorias_reales = improgyp_megamenu_categorias_from_catalogo();
 
 $catalogo = [];
@@ -18,6 +22,10 @@ if (file_exists($cat_path)) {
 ?>
 <style>
     #mm-preview .sidebar-tab.active { background: #fff; color: #1B263B; border-color: #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    #mm-preview.mm-preview-mobile .mm-preview-desktop { display: none !important; }
+    #mm-preview.mm-preview-mobile .mm-preview-mobile-panel { display: block !important; }
+    #mm-preview:not(.mm-preview-mobile) .mm-preview-mobile-panel { display: none !important; }
+    .mm-preview-mode-btn.active { background: #1B263B; color: #fff; border-color: #1B263B; }
 </style>
 
 <div class="max-w-[1600px] mx-auto space-y-6">
@@ -30,7 +38,10 @@ if (file_exists($cat_path)) {
                 <?= count($catalogo) ?> productos · <?= count($categorias_reales) ?> categorías en catálogo
             </p>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2">
+            <a href="../productos.php" target="_blank" rel="noopener" class="px-4 py-2 border border-[#3A86FF]/30 text-[#3A86FF] font-bold rounded-xl text-xs hover:bg-blue-50">
+                <i class="fa-solid fa-store mr-1"></i> Ver en tienda
+            </a>
             <button type="button" onclick="mmResetDefaults()" class="px-4 py-2 border border-slate-200 text-slate-600 font-bold rounded-xl text-xs hover:bg-slate-50">
                 <i class="fa-solid fa-arrow-rotate-left mr-1"></i> Restablecer
             </button>
@@ -40,9 +51,22 @@ if (file_exists($cat_path)) {
         </div>
     </div>
 
+    <?php if ($megamenu_stored_empty): ?>
+    <div class="bg-amber-50 border border-amber-200 text-amber-900 p-4 rounded-xl text-sm flex gap-3 items-start">
+        <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i>
+        <div>
+            <p class="font-black">Megamenú no guardado en JSON</p>
+            <p class="text-xs mt-1 text-amber-800/90">En <code class="bg-amber-100/80 px-1 rounded">config_header.json</code> el array <code>megamenu</code> está vacío. La tienda muestra los valores por defecto hasta que pulses <strong>Guardar cambios</strong>.</p>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <?php if (isset($_GET['msg']) && $_GET['msg'] === 'guardado'): ?>
-    <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 p-4 rounded-xl text-sm font-bold flex items-center gap-2">
-        <i class="fa-solid fa-circle-check"></i> Megamenú guardado. Los cambios ya están visibles en la tienda pública.
+    <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 p-4 rounded-xl text-sm font-bold flex flex-wrap items-center gap-3">
+        <span class="flex items-center gap-2"><i class="fa-solid fa-circle-check"></i> Megamenú guardado. Los cambios ya están visibles en la tienda pública.</span>
+        <a href="../productos.php" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wide text-emerald-800 underline hover:text-emerald-950">
+            Ver en tienda <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </a>
     </div>
     <?php endif; ?>
 
@@ -50,13 +74,37 @@ if (file_exists($cat_path)) {
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
         <input type="hidden" name="action" value="guardar_megamenu">
         <input type="hidden" name="megamenu_json" id="megamenu_json" value="">
+        <input type="hidden" name="nivel3_json" id="nivel3_json" value="">
 
         <div class="xl:col-span-7 space-y-4">
             <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm text-xs text-slate-500 leading-relaxed">
                 <strong class="text-slate-700">Pestaña</strong> = división del sidebar.
                 <strong class="text-slate-700">Títulos de columna</strong> = solo texto visual.
                 <strong class="text-slate-700">Enlaces</strong> = clic del cliente (categoría exacta o búsqueda).
+                <span class="block mt-2 text-amber-800 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 font-bold">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    En «Abrir categoría», el valor debe coincidir <em>literalmente</em> con el nombre en el catálogo (mayúsculas, tildes y espacios incluidos).
+                </span>
             </div>
+
+            <div id="mm-orphans-panel" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm <?= empty($orphan_cats_initial) ? 'hidden' : '' ?>">
+                <h3 class="text-xs font-black text-slate-700 uppercase tracking-wide flex items-center gap-2">
+                    <i class="fa-solid fa-link-slash text-amber-500"></i> Categorías sin enlace en el menú
+                </h3>
+                <p class="text-[10px] text-slate-500 mt-1">Existen en el catálogo pero no aparecen en ningún enlace de tipo categoría.</p>
+                <ul id="mm-orphans-list" class="mt-3 flex flex-wrap gap-2 text-[10px] font-bold text-amber-800"></ul>
+            </div>
+
+            <details class="bg-white rounded-2xl border border-violet-200 shadow-sm overflow-hidden">
+                <summary class="px-5 py-4 font-black text-sm text-slate-800 cursor-pointer bg-violet-50/80">
+                    <i class="fa-solid fa-bars-staggered text-violet-500 mr-2"></i> Pie del megamenú (nivel 3)
+                </summary>
+                <div class="p-5 border-t border-violet-100 space-y-2" id="nivel3-container"></div>
+                <div class="px-5 pb-5">
+                    <button type="button" onclick="mmAgregarNivel3()" class="text-[10px] font-bold text-violet-600"><i class="fa-solid fa-plus"></i> Añadir enlace</button>
+                </div>
+            </details>
+
             <div id="divisiones-container" class="space-y-4"></div>
             <button type="button" onclick="mmAgregarDivision()" class="w-full py-3 border-2 border-dashed border-emerald-300 text-emerald-700 rounded-2xl font-bold text-xs bg-white hover:bg-emerald-50/30">
                 <i class="fa-solid fa-plus mr-1"></i> Añadir pestaña (división)
@@ -65,9 +113,15 @@ if (file_exists($cat_path)) {
 
         <div class="xl:col-span-5">
             <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm sticky top-24">
-                <h3 class="text-sm font-black text-slate-800 mb-3">Vista previa</h3>
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <h3 class="text-sm font-black text-slate-800">Vista previa</h3>
+                    <div class="flex rounded-lg border border-slate-200 overflow-hidden text-[10px] font-black uppercase">
+                        <button type="button" id="mm-preview-desktop-btn" class="mm-preview-mode-btn active px-3 py-1.5 bg-white text-slate-600" onclick="mmSetPreviewMode('desktop')">Desktop</button>
+                        <button type="button" id="mm-preview-mobile-btn" class="mm-preview-mode-btn px-3 py-1.5 bg-white text-slate-600" onclick="mmSetPreviewMode('mobile')">Móvil</button>
+                    </div>
+                </div>
                 <div id="mm-preview" class="bg-slate-50 rounded-2xl p-2 border border-slate-200">
-                    <div class="bg-white/95 rounded-[18px] border border-slate-200 shadow-lg grid grid-cols-4 min-h-[340px] overflow-hidden text-left">
+                    <div class="mm-preview-desktop bg-white/95 rounded-[18px] border border-slate-200 shadow-lg grid grid-cols-4 min-h-[340px] overflow-hidden text-left">
                         <div class="bg-slate-50/80 p-3 border-r border-slate-100 col-span-1 flex flex-col justify-between">
                             <div class="space-y-1" id="preview-tabs"></div>
                             <p class="text-[7px] font-black text-[#1B263B] uppercase mt-2 opacity-50 ml-1">Ver catálogo →</p>
@@ -82,8 +136,15 @@ if (file_exists($cat_path)) {
                             <div class="p-2 bg-slate-100 rounded text-center mt-2 font-black uppercase">Portal B2B</div>
                         </div>
                     </div>
+                    <div class="mm-preview-mobile-panel mt-2 max-w-[280px] mx-auto">
+                        <div class="bg-white rounded-t-2xl border border-slate-200 shadow-lg overflow-hidden text-left max-h-[360px] flex flex-col">
+                            <div class="px-3 py-2 border-b text-[9px] font-black uppercase text-slate-500">Explorar (móvil)</div>
+                            <div class="overflow-y-auto flex-1 p-2 space-y-1" id="preview-mobile-acc"></div>
+                            <div class="px-3 py-2 border-t bg-slate-50 flex flex-wrap gap-2" id="preview-mobile-footer"></div>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-[10px] text-slate-400 mt-2">Pasa el mouse sobre las pestañas para previsualizar columnas centrales.</p>
+                <p class="text-[10px] text-slate-400 mt-2">Desktop: pasa el mouse sobre las pestañas. Móvil: acordeón simplificado + pie nivel 3.</p>
             </div>
         </div>
     </form>
@@ -94,9 +155,12 @@ if (file_exists($cat_path)) {
     const catalogo = <?= json_encode($catalogo, JSON_UNESCAPED_UNICODE) ?>;
     const categoriasReales = <?= json_encode($categorias_reales, JSON_UNESCAPED_UNICODE) ?>;
     const MEGAMENU_DEFAULTS = <?= json_encode(improgyp_megamenu_defaults(), JSON_UNESCAPED_UNICODE) ?>;
+    const NIVEL3_DEFAULTS = <?= json_encode(improgyp_header_default_nivel3_menu(), JSON_UNESCAPED_UNICODE) ?>;
 
     let megamenuState = <?= json_encode($megamenu_initial, JSON_UNESCAPED_UNICODE) ?>;
+    let nivel3State = <?= json_encode($nivel3_initial, JSON_UNESCAPED_UNICODE) ?>;
     let previewActiveId = megamenuState[0]?.id || null;
+    let previewMode = 'desktop';
 
     function normalize(str) {
         return (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
@@ -139,7 +203,90 @@ if (file_exists($cat_path)) {
 
     function syncHiddenInput() {
         document.getElementById('megamenu_json').value = JSON.stringify(megamenuState);
+        document.getElementById('nivel3_json').value = JSON.stringify(nivel3State);
     }
+
+    /** Actualiza solo el badge de un enlace sin re-renderizar el formulario (evita perder foco al escribir). */
+    function updateLinkBadge(divIdx, key, linkIdx) {
+        const wrap = document.querySelector(`[data-mm-link-badge="${divIdx}-${key}-${linkIdx}"]`);
+        if (!wrap) return;
+        const link = megamenuState[divIdx][key][linkIdx];
+        wrap.innerHTML = badgeHtml(countForLink(link), link);
+    }
+
+    function collectLinkedCategories() {
+        const set = new Set();
+        megamenuState.forEach(div => {
+            ['linksLeft', 'linksRight'].forEach(key => {
+                (div[key] || []).forEach(link => {
+                    if (link.linkType === 'category' && link.linkValue) set.add(link.linkValue);
+                });
+            });
+        });
+        return set;
+    }
+
+    function renderOrphans() {
+        const linked = collectLinkedCategories();
+        const orphans = categoriasReales.filter(c => !linked.has(c));
+        const panel = document.getElementById('mm-orphans-panel');
+        const list = document.getElementById('mm-orphans-list');
+        if (!panel || !list) return;
+        if (!orphans.length) {
+            panel.classList.add('hidden');
+            list.innerHTML = '';
+            return;
+        }
+        panel.classList.remove('hidden');
+        list.innerHTML = orphans.map(c => `<li class="bg-amber-50 border border-amber-100 px-2 py-1 rounded-lg">${esc(c)}</li>`).join('');
+    }
+
+    window.mmSetPreviewMode = function(mode) {
+        previewMode = mode === 'mobile' ? 'mobile' : 'desktop';
+        const wrap = document.getElementById('mm-preview');
+        const dBtn = document.getElementById('mm-preview-desktop-btn');
+        const mBtn = document.getElementById('mm-preview-mobile-btn');
+        if (wrap) wrap.classList.toggle('mm-preview-mobile', previewMode === 'mobile');
+        if (dBtn) dBtn.classList.toggle('active', previewMode === 'desktop');
+        if (mBtn) mBtn.classList.toggle('active', previewMode === 'mobile');
+    };
+
+    window.mmAgregarNivel3 = function() {
+        nivel3State.push({ text: 'Nuevo', link: 'index.php' });
+        renderNivel3();
+    };
+
+    window.mmEliminarNivel3 = function(idx) {
+        nivel3State.splice(idx, 1);
+        renderNivel3();
+    };
+
+    function patchNivel3(idx, field, value) {
+        nivel3State[idx][field] = value;
+        syncHiddenInput();
+        renderPreview();
+    }
+
+    function renderNivel3() {
+        const c = document.getElementById('nivel3-container');
+        if (!c) return;
+        if (!nivel3State.length) {
+            c.innerHTML = '<p class="text-xs text-slate-400">Sin enlaces. Añade al menos uno.</p>';
+            syncHiddenInput();
+            renderPreview();
+            return;
+        }
+        c.innerHTML = nivel3State.map((item, idx) => `
+            <div class="flex flex-wrap gap-2 items-center bg-slate-50 rounded-xl p-3 border border-slate-100">
+                <input type="text" value="${esc(item.text)}" placeholder="Texto" oninput="patchNivel3(${idx},'text',this.value)" class="text-xs font-black border border-slate-200 rounded-lg px-2 py-1.5 flex-1 min-w-[100px]">
+                <input type="text" value="${esc(item.link)}" placeholder="URL (ej. blog.php)" oninput="patchNivel3(${idx},'link',this.value)" class="text-xs font-bold border border-slate-200 rounded-lg px-2 py-1.5 flex-[2] min-w-[140px]">
+                <button type="button" onclick="mmEliminarNivel3(${idx})" class="text-slate-300 hover:text-rose-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
+            </div>`).join('');
+        syncHiddenInput();
+        renderPreview();
+    }
+
+    window.patchNivel3 = patchNivel3;
 
     window.mmResetDefaults = function() {
         if (!confirm('¿Restablecer el megamenú a los valores por defecto de IMPROGYP? Debes guardar para aplicar en la tienda.')) return;
@@ -178,13 +325,31 @@ if (file_exists($cat_path)) {
         }
         renderPreview();
         syncHiddenInput();
-        if (field === 'title') renderEditor();
     }
 
-    function patchLink(divIdx, key, linkIdx, field, value) {
+    /**
+     * @param {boolean} fullRender true = reemplazar todo el editor (añadir/borrar, cambiar tipo)
+     */
+    function patchLink(divIdx, key, linkIdx, field, value, fullRender) {
         megamenuState[divIdx][key][linkIdx][field] = value;
-        renderAll();
+        if (fullRender) {
+            renderAll();
+            return;
+        }
+        syncHiddenInput();
+        updateLinkBadge(divIdx, key, linkIdx);
+        if (field === 'name' || field === 'linkValue') {
+            renderPreview();
+        }
+        if (field === 'linkValue') {
+            renderOrphans();
+        }
     }
+
+    /** Escritura en inputs de texto: no destruye el DOM del formulario. */
+    window.patchLinkInput = function(divIdx, key, linkIdx, field, value) {
+        patchLink(divIdx, key, linkIdx, field, value, false);
+    };
 
     window.mmPatchLinkType = function(divIdx, key, linkIdx, type) {
         const link = megamenuState[divIdx][key][linkIdx];
@@ -217,13 +382,13 @@ if (file_exists($cat_path)) {
         const count = countForLink(link);
         const catOpts = categoriasReales.map(c => `<option value="${esc(c)}" ${link.linkValue===c && link.linkType==='category'?'selected':''}>${esc(c)}</option>`).join('');
         const valField = link.linkType === 'category'
-            ? `<select onchange="patchLink(${divIdx},'${key}',${linkIdx},'linkValue',this.value)" class="text-xs font-bold border border-slate-200 rounded-lg px-2 py-1.5 flex-grow max-w-[220px]"><option value="">— Categoría —</option>${catOpts}</select>`
-            : `<input type="text" value="${esc(link.linkValue)}" placeholder="Palabra clave" oninput="patchLink(${divIdx},'${key}',${linkIdx},'linkValue',this.value)" class="text-xs font-bold border border-slate-200 rounded-lg px-2 py-1.5 flex-grow max-w-[220px]">`;
+            ? `<select onchange="patchLink(${divIdx},'${key}',${linkIdx},'linkValue',this.value,false)" class="text-xs font-bold border border-slate-200 rounded-lg px-2 py-1.5 flex-grow max-w-[220px]"><option value="">— Categoría —</option>${catOpts}</select>`
+            : `<input type="text" value="${esc(link.linkValue)}" placeholder="Palabra clave" oninput="patchLinkInput(${divIdx},'${key}',${linkIdx},'linkValue',this.value)" class="text-xs font-bold border border-slate-200 rounded-lg px-2 py-1.5 flex-grow max-w-[220px]">`;
 
-        return `<div class="bg-white rounded-xl border border-slate-200 p-3 space-y-2">
+        return `<div class="bg-white rounded-xl border border-slate-200 p-3 space-y-2" data-mm-link-row="${divIdx}-${key}-${linkIdx}">
             <div class="flex flex-wrap items-center gap-2 justify-between">
-                <input type="text" value="${esc(link.name)}" oninput="patchLink(${divIdx},'${key}',${linkIdx},'name',this.value)" class="text-xs font-black flex-grow min-w-[100px] border-b border-slate-100 outline-none">
-                ${badgeHtml(count, link)}
+                <input type="text" value="${esc(link.name)}" oninput="patchLinkInput(${divIdx},'${key}',${linkIdx},'name',this.value)" class="text-xs font-black flex-grow min-w-[100px] border-b border-slate-100 outline-none">
+                <span data-mm-link-badge="${divIdx}-${key}-${linkIdx}">${badgeHtml(count, link)}</span>
             </div>
             <div class="flex flex-wrap gap-2 items-center">
                 <select onchange="mmPatchLinkType(${divIdx},'${key}',${linkIdx},this.value)" class="text-[10px] font-black border border-slate-200 rounded-lg px-2 py-1.5">
@@ -288,6 +453,18 @@ if (file_exists($cat_path)) {
     function renderPreview() {
         const tabs = document.getElementById('preview-tabs');
         const center = document.getElementById('preview-center');
+        const mobAcc = document.getElementById('preview-mobile-acc');
+        const mobFoot = document.getElementById('preview-mobile-footer');
+        if (mobAcc) {
+            mobAcc.innerHTML = megamenuState.map(div => `
+                <div class="border border-slate-100 rounded-lg px-2 py-1.5">
+                    <p class="text-[9px] font-black text-slate-600 flex items-center gap-1"><i class="fa-solid ${div.icon} ${div.iconColor} text-[8px]"></i> ${esc(div.title)}</p>
+                    <p class="text-[8px] text-slate-400 mt-0.5">${(div.linksLeft||[]).length + (div.linksRight||[]).length} enlaces</p>
+                </div>`).join('') || '<p class="text-[9px] text-slate-300">Sin divisiones</p>';
+        }
+        if (mobFoot) {
+            mobFoot.innerHTML = nivel3State.map(n => `<span class="text-[8px] font-black uppercase text-slate-500">${esc(n.text)}</span>`).join('');
+        }
         if (!tabs || !center) return;
         tabs.innerHTML = megamenuState.map(div => {
             const act = div.id === previewActiveId;
@@ -303,6 +480,8 @@ if (file_exists($cat_path)) {
 
     function renderAll() {
         renderEditor();
+        renderNivel3();
+        renderOrphans();
         renderPreview();
         syncHiddenInput();
     }

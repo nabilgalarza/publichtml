@@ -203,3 +203,67 @@ function improgyp_header_default_nivel3_menu(): array {
         ['text' => 'Contacto', 'link' => 'index.php#contacto'],
     ];
 }
+
+/** true si en JSON no hay megamenu guardado (la tienda usa defaults en runtime). */
+function improgyp_megamenu_is_stored_empty($raw): bool {
+    return !is_array($raw) || count($raw) === 0;
+}
+
+function improgyp_normalize_nivel3_menu($raw): array {
+    if (!is_array($raw) || empty($raw)) {
+        return improgyp_header_default_nivel3_menu();
+    }
+    $out = [];
+    foreach ($raw as $item) {
+        if (!is_array($item)) {
+            continue;
+        }
+        $text = trim($item['text'] ?? '');
+        if ($text === '') {
+            continue;
+        }
+        $link = trim($item['link'] ?? '');
+        $out[] = ['text' => $text, 'link' => $link !== '' ? $link : '#'];
+    }
+    return !empty($out) ? $out : improgyp_header_default_nivel3_menu();
+}
+
+/** Categorías enlazadas en el megamenú (linkType category). */
+function improgyp_megamenu_linked_categories(array $divisions): array {
+    $linked = [];
+    foreach ($divisions as $div) {
+        if (!is_array($div)) {
+            continue;
+        }
+        foreach (['linksLeft', 'linksRight'] as $key) {
+            $links = $div[$key] ?? [];
+            if (!is_array($links)) {
+                continue;
+            }
+            foreach ($links as $link) {
+                if (!is_array($link)) {
+                    continue;
+                }
+                if (($link['linkType'] ?? 'category') !== 'category') {
+                    continue;
+                }
+                $v = trim($link['linkValue'] ?? '');
+                if ($v !== '') {
+                    $linked[$v] = true;
+                }
+            }
+        }
+    }
+    return array_keys($linked);
+}
+
+/** Categorías del catálogo que no aparecen en ningún enlace del menú. */
+function improgyp_megamenu_orphan_categories(array $divisions, ?array $catalogCategories = null): array {
+    if ($catalogCategories === null) {
+        $catalogCategories = improgyp_megamenu_categorias_from_catalogo();
+    }
+    $linked = improgyp_megamenu_linked_categories($divisions);
+    return array_values(array_filter($catalogCategories, static function ($c) use ($linked) {
+        return !in_array($c, $linked, true);
+    }));
+}

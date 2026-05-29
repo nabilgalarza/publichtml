@@ -1,9 +1,9 @@
 {
-    "layout": "editorial",
+    "layout": "duo50",
     "accent": "#3a86ff",
     "accentRgb": "58, 134, 255",
     "font": "sans",
     "showDate": true,
     "showReadTime": true,
-    "showViews": false
+    "showViews": true
 }

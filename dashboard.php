@@ -898,6 +898,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         if (!is_array($existing)) $existing = [];
         $raw = json_decode($_POST['megamenu_json'] ?? '[]', true);
         $existing['megamenu'] = improgyp_normalize_megamenu($raw);
+        if (isset($_POST['nivel3_json'])) {
+            $n3raw = json_decode($_POST['nivel3_json'] ?? '[]', true);
+            $existing['nivel3_menu'] = improgyp_normalize_nivel3_menu($n3raw);
+        }
         file_put_contents(__DIR__ . '/config_header.json', json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         header("Location: dashboard.php?view=apariencia&sub=megamenu&msg=guardado"); exit;
     }

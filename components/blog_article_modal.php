@@ -1,5 +1,5 @@
 <?php
-/** Modal lector (solo home) — contenido vía api_blog_articulo.php */
+/** Modal lector (Home) — contenido vía api_blog_articulo.php */
 ?>
 <div class="bl-article-modal hidden" id="bl-article-modal" role="dialog" aria-modal="true" aria-labelledby="bl-article-modal-title" aria-hidden="true">
     <div class="bl-article-modal-backdrop" data-bl-close-modal></div>
@@ -19,11 +19,14 @@
             </div>
         </div>
         <div class="bl-article-modal-footer">
-            <button type="button" id="bl-article-modal-share" class="bl-article-modal-btn bl-article-modal-btn--ghost">
-                <i class="fa-solid fa-share-nodes"></i> Compartir
+            <button type="button" id="bl-article-modal-wa" class="bl-article-modal-btn bl-article-modal-btn--wa">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </button>
+            <button type="button" id="bl-article-modal-copy" class="bl-article-modal-btn bl-article-modal-btn--ghost">
+                <i class="fa-solid fa-link"></i> Copiar enlace
             </button>
             <a id="bl-article-modal-full" href="blog.php" class="bl-article-modal-btn bl-article-modal-btn--primary" target="_blank" rel="noopener">
-                Enlace permanente <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                Ver en el blog <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             </a>
         </div>
     </div>

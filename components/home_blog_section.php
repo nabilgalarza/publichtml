@@ -27,7 +27,6 @@ $bl_prep = blog_layout_prepare($_bl_articulos, $base_url ?? '', [
     'show_view_all' => true,
     'open_in_modal' => true,
     'home_preview' => true,
-    'force_layout' => 'grid3',
     'section_id' => 'bl-home-section',
     'section_class_extra' => 'bl-section--home',
 ]);
