@@ -15,7 +15,8 @@
         "whatsapp": "593991754887",
         "whatsapp_msj": "Hola, deseo información de la Sucursal Guayaquil",
         "maps": "https://www.google.com/maps/search/?api=1&query=-2.1287,-79.9171",
-        "horario": ""
+        "horario": "",
+        "imagen": "uploads/locales/gye-matriz_1780319002.jpg"
     },
     {
         "id": "uio-sucursal",
@@ -34,7 +35,8 @@
         "whatsapp": "593999999999",
         "whatsapp_msj": "Hola, deseo información de la Sucursal Quito",
         "maps": "https://www.google.com/maps/search/?api=1&query=-0.1245,-78.4721",
-        "horario": ""
+        "horario": "",
+        "imagen": "uploads/locales/uio-sucursal_1780321654.png"
     },
     {
         "id": "dur-matriz",
@@ -51,7 +53,8 @@
         "whatsapp": "593991754887",
         "whatsapp_msj": "Hola, deseo información de la Sucursal Durán",
         "maps": "https://www.google.com/maps/search/?api=1&query=-2.1585,-79.8412",
-        "horario": ""
+        "horario": "",
+        "imagen": "uploads/locales/dur-matriz_1780321516.jpg"
     },
     {
         "id": "manta-principal",
@@ -71,13 +74,19 @@
         "whatsapp": "593991754887",
         "whatsapp_msj": "Hola, deseo información de la Sucursal Manta",
         "maps": "https://www.google.com/maps/search/?api=1&query=-0.9654,-80.7223",
-        "horario": ""
+        "horario": "",
+        "imagen": "uploads/locales/manta-principal_1780321553.jpg"
     },
     {
         "id": "amb-principal",
         "nombre": "Sucursal Ambato",
         "direccion": "Av. Indoamérica y Buenos Aires",
         "ciudad": "Ambato",
+        "cobertura": [
+            "Ambato",
+            "Riobamba",
+            "Latacunga"
+        ],
         "telefono": "(03) 242-5544",
         "email": "ambato@improgyp.com",
         "lat": -1.2335,
@@ -85,28 +94,7 @@
         "whatsapp": "593991754887",
         "whatsapp_msj": "Hola, deseo información de la Sucursal Ambato",
         "maps": "https://www.google.com/maps/search/?api=1&query=-1.2335,-78.6251",
-        "cobertura": [
-            "Ambato",
-            "Riobamba",
-            "Latacunga"
-        ]
-    },
-    {
-        "id": "loc_483fcda3",
-        "nombre": "Sucursal Loja",
-        "direccion": "Km. 12.5 Via Loja",
-        "ciudad": "Loja",
-        "telefono": "042437775",
-        "email": "nabilgalarza@gmail.com",
-        "lat": -3.9930659,
-        "lng": -79.2127706,
-        "whatsapp": "593991754887",
-        "whatsapp_msj": "Hola, deseo información de la sucursal Loja",
-        "maps": "https://maps.app.goo.gl/mJE6Ht98d7mva3H5A",
-        "horario": "Lunes a Viernes: 08H00 - 18H00 / Sábado: 08H00 - 14H00",
-        "cobertura": [
-            "Loja",
-            "Catamayo"
-        ]
+        "horario": "",
+        "imagen": "uploads/locales/amb-principal_1780321751.jpg"
     }
 ]

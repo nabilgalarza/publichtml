@@ -30,6 +30,13 @@
     }
 
     function photoUrl(loc) {
+        const custom = String(loc.imagen || '').trim().replace(/^\.\//, '');
+        if (custom) {
+            if (/^https?:\/\//i.test(custom)) {
+                return custom;
+            }
+            return custom.startsWith('/') ? custom : custom;
+        }
         const city = (loc.ciudad || '').trim();
         return SHOWROOM_PHOTOS[city] || SHOWROOM_PHOTOS.default;
     }

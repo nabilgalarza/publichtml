@@ -256,68 +256,41 @@ $funnel_base = max(1, (int) ($funnel['visita'] ?? 0));
 </div>
 
 <div class="glass-card p-8 mt-8 relative z-10">
-    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-        <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl border border-rose-100">
-            <i class="fa-solid fa-ghost"></i>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl border border-rose-100">
+                <i class="fa-solid fa-ghost"></i>
+            </div>
+            <div>
+                <h2 class="text-lg font-black text-slate-900 uppercase tracking-tighter">Limpieza de inventario</h2>
+                <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest">
+                    Sin vistas, carrito ni wishlist (histórico) · máx. 8 impulsos activos
+                    <?php if (($productos_fantasma_total ?? 0) > 0): ?>
+                        · <?= (int) count($productos_fantasma) ?> de <?= (int) $productos_fantasma_total ?> mostrados
+                    <?php endif; ?>
+                </p>
+            </div>
         </div>
-        <div>
-            <h2 class="text-lg font-black text-slate-900 uppercase tracking-tighter">Limpieza de inventario</h2>
-            <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest">Sin vistas ni carrito (histórico) · máx. 8 impulsos activos</p>
-        </div>
+        <?php if (($productos_fantasma_total ?? 0) > count($productos_fantasma)): ?>
+        <a href="dashboard.php?view=inventario_fantasma" class="inline-flex items-center gap-2 bg-[#1B263B] hover:bg-[#3A86FF] text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all shrink-0">
+            Ver todos (<?= (int) $productos_fantasma_total ?>)
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <?php elseif (($productos_fantasma_total ?? 0) > 0): ?>
+        <a href="dashboard.php?view=inventario_fantasma" class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-wider text-[#1B263B] border border-[#1B263B]/30 px-4 py-2 rounded-xl hover:bg-[#1B263B]/5 shrink-0">
+            Lista completa <i class="fa-solid fa-list"></i>
+        </a>
+        <?php endif; ?>
     </div>
 
-    <?php if (empty($productos_fantasma)): ?>
+    <?php if (empty($productos_fantasma) && ($productos_fantasma_total ?? 0) === 0): ?>
         <p class="text-sm text-slate-500 text-center py-4">Todos los productos publicados tienen al menos una interacción registrada.</p>
     <?php else: ?>
-        <div class="flex gap-4 overflow-x-auto pb-4 custom-scrollbar">
-            <?php foreach ($productos_fantasma as $pf): ?>
-                <div class="w-[160px] bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center flex-shrink-0 flex flex-col items-center">
-                    <div class="w-20 h-20 bg-white rounded-xl p-2 mb-4 flex items-center justify-center border border-slate-100">
-                        <img src="<?= getCleanImgUrl($pf['imagen_url']) ?>" class="max-w-full max-h-full object-contain" alt="" onerror="this.src='favicon-app.png'">
-                    </div>
-                    <h4 class="text-[12px] font-black text-slate-900 line-clamp-2 mb-3 w-full leading-tight" title="<?= htmlspecialchars($pf['nombre']) ?>"><?= htmlspecialchars($pf['nombre']) ?></h4>
-                    <div class="mt-auto w-full flex flex-col gap-2">
-                        <?php if (!empty($pf['impulsado'])): ?>
-                            <div class="bg-[#1B263B]/10 text-[#1B263B] text-[9px] font-black px-2 py-1 rounded-lg uppercase border border-[#1B263B]/20">
-                                <i class="fa-solid fa-bolt-lightning"></i> Impulsado
-                            </div>
-                        <?php else: ?>
-                            <button type="button" onclick="impulsarProductoIA(<?= json_encode($pf['nombre'], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?>, this)" class="bg-white hover:bg-[#1B263B] text-slate-500 hover:text-white text-[9px] font-black px-2 py-1.5 rounded-lg uppercase border border-slate-200 transition-all">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> Impulsar 24h
-                            </button>
-                            <span class="bg-rose-500/10 text-rose-500 text-[8px] font-black px-2 py-0.5 rounded uppercase">Fantasma</span>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
+        <?php
+        $productos_fantasma_carrusel = array_slice($productos_fantasma, 0, 10);
+        include __DIR__ . '/inventario_fantasma_carousel.php';
+        ?>
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Listado detallado</p>
+        <?php $fantasma_compact = true; include __DIR__ . '/inventario_fantasma_table.php'; ?>
     <?php endif; ?>
 </div>
-
-<script>
-async function impulsarProductoIA(nombre, btn) {
-    const originalHtml = btn.innerHTML;
-    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
-    btn.disabled = true;
-    try {
-        const response = await fetch('dashboard.php?ajax=impulsar_producto', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre: nombre })
-        });
-        const data = await response.json();
-        if (data.status === 'success') {
-            btn.innerHTML = '<i class="fa-solid fa-check"></i> Listo';
-            setTimeout(() => location.reload(), 1200);
-        } else {
-            alert(data.error || 'No se pudo impulsar');
-            btn.innerHTML = originalHtml;
-            btn.disabled = false;
-        }
-    } catch (e) {
-        alert('Error de conexión');
-        btn.innerHTML = originalHtml;
-        btn.disabled = false;
-    }
-}
-</script>

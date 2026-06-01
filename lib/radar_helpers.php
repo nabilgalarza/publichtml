@@ -29,6 +29,75 @@ function improgyp_radar_periodo_label(string $periodo): string
     };
 }
 
+/** Productos publicados sin Ver Producto / carrito / wishlist (histórico). */
+const IMPROGYP_FANTASMA_RADAR_LIMIT = 25;
+const IMPROGYP_FANTASMA_PAGE_SIZE = 50;
+
+function improgyp_productos_fantasma_from_sql(): string
+{
+    return ' FROM improgyp_catalogo c
+             LEFT JOIN metricas_b2c m ON c.nombre = m.valor
+                 AND m.evento IN (\'Ver Producto\', \'Añadir a Carrito\', \'Añadir a Wishlist\')';
+}
+
+function improgyp_productos_fantasma_where_sql(string $busqueda, array &$params): string
+{
+    $where = ' WHERE c.publicado = 1 AND m.id IS NULL';
+    $busqueda = trim($busqueda);
+    if ($busqueda !== '') {
+        $where .= ' AND (c.nombre LIKE ? OR c.categoria LIKE ?)';
+        $like = '%' . $busqueda . '%';
+        $params[] = $like;
+        $params[] = $like;
+    }
+    return $where;
+}
+
+/**
+ * @return array{items: list<array<string, mixed>>, total: int}
+ */
+function improgyp_productos_fantasma_fetch(PDO $pdo, int $limit, int $offset, string $busqueda = ''): array
+{
+    $params = [];
+    $where = improgyp_productos_fantasma_where_sql($busqueda, $params);
+    $from = improgyp_productos_fantasma_from_sql();
+
+    $stmtCount = $pdo->prepare('SELECT COUNT(*)' . $from . $where);
+    $stmtCount->execute($params);
+    $total = (int) $stmtCount->fetchColumn();
+
+    $limit = max(1, min(500, $limit));
+    $offset = max(0, $offset);
+
+    $sql = 'SELECT c.id, c.nombre, c.categoria, c.imagen_url' . $from . $where
+        . ' ORDER BY c.id DESC LIMIT ' . (int) $limit . ' OFFSET ' . (int) $offset;
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    improgyp_productos_fantasma_marcar_impulsados($pdo, $items);
+
+    return ['items' => $items, 'total' => $total];
+}
+
+/**
+ * @param list<array<string, mixed>> $items
+ */
+function improgyp_productos_fantasma_marcar_impulsados(PDO $pdo, array &$items): void
+{
+    if ($items === []) {
+        return;
+    }
+    $impulsados_raw = $pdo->query(
+        'SELECT nombre_producto FROM productos_impulsados WHERE fecha_limite > NOW()'
+    )->fetchAll(PDO::FETCH_COLUMN);
+    $impulsados_set = array_flip($impulsados_raw);
+    foreach ($items as &$f) {
+        $f['impulsado'] = isset($impulsados_set[$f['nombre']]);
+    }
+    unset($f);
+}
+
 /**
  * @return array<string, mixed>
  */
@@ -53,6 +122,7 @@ function improgyp_radar_load(PDO $pdo, string $periodo): array
         'top_categorias' => [],
         'top_regiones' => [],
         'productos_fantasma' => [],
+        'productos_fantasma_total' => 0,
         'heatmap' => array_fill(0, 24, 0),
         'heatmap_dow' => array_fill(1, 7, 0),
         'max_heat' => 1,
@@ -130,22 +200,14 @@ function improgyp_radar_load(PDO $pdo, string $periodo): array
         unset($tr);
         $out['top_regiones'] = $top_regiones;
 
-        $out['productos_fantasma'] = $pdo->query(
-            "SELECT c.nombre, c.categoria, c.imagen_url
-             FROM improgyp_catalogo c
-             LEFT JOIN metricas_b2c m ON c.nombre = m.valor AND m.evento IN ('Ver Producto','Añadir a Carrito','Añadir a Wishlist')
-             WHERE c.publicado = 1 AND m.id IS NULL
-             ORDER BY c.id DESC LIMIT 10"
-        )->fetchAll(PDO::FETCH_ASSOC);
-
-        $impulsados_raw = $pdo->query(
-            "SELECT nombre_producto FROM productos_impulsados WHERE fecha_limite > NOW()"
-        )->fetchAll(PDO::FETCH_COLUMN);
-        $impulsados_set = array_flip($impulsados_raw);
-        foreach ($out['productos_fantasma'] as &$f) {
-            $f['impulsado'] = isset($impulsados_set[$f['nombre']]);
-        }
-        unset($f);
+        $fantasmaResumen = improgyp_productos_fantasma_fetch(
+            $pdo,
+            IMPROGYP_FANTASMA_RADAR_LIMIT,
+            0,
+            ''
+        );
+        $out['productos_fantasma'] = $fantasmaResumen['items'];
+        $out['productos_fantasma_total'] = $fantasmaResumen['total'];
 
         $heatmap_raw = $pdo->query(
             "SELECT HOUR(fecha) as hora, COUNT(*) as total FROM metricas_b2c WHERE 1=1{$df} GROUP BY hora ORDER BY hora ASC"

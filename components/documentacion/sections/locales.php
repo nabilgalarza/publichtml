@@ -2,14 +2,15 @@
 
 <div class="doc-card">
     <h3>Datos por sucursal</h3>
-    <p>Nombre comercial, dirección, referencia, teléfono, horario y coordenadas para el mapa. El visitante elige la tienda más cercana desde la sección de locales en la web.</p>
+    <p>Nombre comercial, dirección, teléfono, horario, coordenadas para el mapa y <strong>foto propia</strong> (sección «Nuestras sucursales» en la home y modal de tienda). Sin foto subida, la web usa una imagen genérica según la ciudad sede.</p>
 </div>
 
 <ol class="doc-steps">
     <li>Abre <strong>Sucursales</strong> en el panel.</li>
-    <li>Alta de local con datos completos (evita mapas en 0,0).</li>
-    <li>Guarda y comprueba el pin en la página pública.</li>
-    <li>Al cerrar temporalmente, edita horario o añade nota en descripción.</li>
+    <li>Alta o edición: completa datos y, si quieres, sube una foto horizontal (JPG/PNG/WebP, ~16:9).</li>
+    <li>Guarda y revisa la miniatura en la tabla y la tarjeta en la página pública.</li>
+    <li>Para volver al fondo genérico, marca <strong>Quitar foto</strong> al editar.</li>
+    <li>Al cerrar temporalmente, edita horario o cobertura de domicilio.</li>
 </ol>
 
 <?= doc_link('locales', 'Gestionar locales') ?>

@@ -14,3 +14,5 @@ node_modules/
 .idea/
 uploads/blog/*
 !uploads/blog/.gitkeep
+uploads/locales/*
+!uploads/locales/.gitkeep

@@ -1010,50 +1010,98 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] === 'guardar_local') {
         require_once __DIR__ . '/includes/locales_cobertura.php';
         require_once __DIR__ . '/includes/whatsapp_normalize.php';
+        require_once __DIR__ . '/lib/locales_imagen.php';
         $locales_path = __DIR__ . '/locales.json';
         $locales = file_exists($locales_path) ? json_decode(file_get_contents($locales_path), true) : [];
-        
-        $id = $_POST['id'] ?? '';
+        if (!is_array($locales)) {
+            $locales = [];
+        }
+
+        $id = trim($_POST['id'] ?? '');
+        $newId = $id ?: ('loc_' . bin2hex(random_bytes(4)));
         $ciudad = trim($_POST['ciudad']);
         $cobertura = improgyp_merge_cobertura_ciudad(
             improgyp_parse_cobertura_post($_POST['cobertura'] ?? ''),
             $ciudad
         );
+
+        $imagenActual = '';
+        if ($id) {
+            foreach ($locales as $l) {
+                if (($l['id'] ?? '') === $id) {
+                    $imagenActual = trim((string) ($l['imagen'] ?? ''));
+                    break;
+                }
+            }
+        }
+        $quitarImagen = !empty($_POST['quitar_imagen']);
+        $imagen = improgyp_local_imagen_guardar(
+            $_FILES['imagen'] ?? null,
+            $newId,
+            $imagenActual ?: trim($_POST['imagen_actual'] ?? ''),
+            $quitarImagen
+        );
+
         $nuevo_local = [
-            "id" => $id ?: "loc_" . bin2hex(random_bytes(4)),
-            "nombre" => trim($_POST['nombre']),
-            "direccion" => trim($_POST['direccion']),
-            "ciudad" => $ciudad,
-            "cobertura" => $cobertura,
-            "telefono" => trim($_POST['telefono']),
-            "email" => trim($_POST['email']),
-            "lat" => (float)$_POST['lat'],
-            "lng" => (float)$_POST['lng'],
-            "whatsapp" => improgyp_normalize_whatsapp(trim($_POST['whatsapp'] ?: '593991754887')),
-            "whatsapp_msj" => trim($_POST['whatsapp_msj'] ?? ''),
-            "maps" => trim($_POST['maps']),
-            "horario" => trim($_POST['horario'])
+            'id' => $newId,
+            'nombre' => trim($_POST['nombre']),
+            'direccion' => trim($_POST['direccion']),
+            'ciudad' => $ciudad,
+            'cobertura' => $cobertura,
+            'telefono' => trim($_POST['telefono']),
+            'email' => trim($_POST['email']),
+            'lat' => (float) $_POST['lat'],
+            'lng' => (float) $_POST['lng'],
+            'whatsapp' => improgyp_normalize_whatsapp(trim($_POST['whatsapp'] ?: '593991754887')),
+            'whatsapp_msj' => trim($_POST['whatsapp_msj'] ?? ''),
+            'maps' => trim($_POST['maps']),
+            'horario' => trim($_POST['horario']),
         ];
+        if ($imagen !== '') {
+            $nuevo_local['imagen'] = $imagen;
+        }
 
         if ($id) {
-            foreach ($locales as &$l) {
-                if ($l['id'] === $id) { $l = $nuevo_local; break; }
+            $found = false;
+            foreach ($locales as $idx => $l) {
+                if (($l['id'] ?? '') === $id) {
+                    $locales[$idx] = $nuevo_local;
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $locales[] = $nuevo_local;
             }
         } else {
             $locales[] = $nuevo_local;
         }
 
-        file_put_contents($locales_path, json_encode($locales, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-        header("Location: dashboard.php?view=locales&msg=local_guardado"); exit;
+        file_put_contents($locales_path, json_encode(array_values($locales), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        header('Location: dashboard.php?view=locales&msg=local_guardado');
+        exit;
     }
 
     if ($_POST['action'] === 'eliminar_local') {
+        require_once __DIR__ . '/lib/locales_imagen.php';
         $id = $_POST['id'];
         $locales_path = __DIR__ . '/locales.json';
         $locales = file_exists($locales_path) ? json_decode(file_get_contents($locales_path), true) : [];
-        $locales = array_filter($locales, function($l) use ($id) { return $l['id'] !== $id; });
-        file_put_contents($locales_path, json_encode(array_values($locales), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-        header("Location: dashboard.php?view=locales&msg=local_eliminado"); exit;
+        if (!is_array($locales)) {
+            $locales = [];
+        }
+        foreach ($locales as $l) {
+            if (($l['id'] ?? '') === $id && !empty($l['imagen'])) {
+                improgyp_local_imagen_borrar($l['imagen']);
+                break;
+            }
+        }
+        $locales = array_values(array_filter($locales, static function ($l) use ($id) {
+            return ($l['id'] ?? '') !== $id;
+        }));
+        file_put_contents($locales_path, json_encode($locales, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        header('Location: dashboard.php?view=locales&msg=local_eliminado');
+        exit;
     }
 
     if ($_POST['action'] === 'guardar_textos_ia') {
@@ -1286,6 +1334,12 @@ function menuActivo($vista_actual, $menu) {
     return $vista_actual === $menu ? 'bg-[#1B263B]/10 text-[#1B263B] border-[#1B263B]' : 'text-slate-500 hover:bg-slate-50 hover:text-[#1B263B] border-transparent'; 
 }
 
+function menuActivoRadar(string $vista_actual): string {
+    return in_array($vista_actual, ['radar', 'inventario_fantasma'], true)
+        ? 'bg-[#1B263B]/10 text-[#1B263B] border-[#1B263B]'
+        : 'text-slate-500 hover:bg-slate-50 hover:text-[#1B263B] border-transparent';
+}
+
 function menuSubApariencia(bool $activo): string {
     return $activo
         ? 'bg-violet-50 text-violet-700 border-violet-400'
@@ -1330,6 +1384,25 @@ elseif ($vista === 'radar') {
     require_once __DIR__ . '/lib/radar_helpers.php';
     $periodo = improgyp_radar_periodo_valido($_GET['periodo'] ?? '7d');
     extract(improgyp_radar_load($pdo, $periodo), EXTR_OVERWRITE);
+}
+elseif ($vista === 'inventario_fantasma') {
+    require_once __DIR__ . '/lib/radar_helpers.php';
+    $fantasma_q = trim((string) ($_GET['q'] ?? ''));
+    $fantasma_page = max(1, (int) ($_GET['page'] ?? 1));
+    $fantasma_per_page = IMPROGYP_FANTASMA_PAGE_SIZE;
+    $fantasma_offset = ($fantasma_page - 1) * $fantasma_per_page;
+    $fantasmaPack = improgyp_productos_fantasma_fetch($pdo, $fantasma_per_page, $fantasma_offset, $fantasma_q);
+    $productos_fantasma = $fantasmaPack['items'];
+    $productos_fantasma_total = $fantasmaPack['total'];
+    $fantasma_pages = max(1, (int) ceil($productos_fantasma_total / $fantasma_per_page));
+    if ($fantasma_page > $fantasma_pages && $productos_fantasma_total > 0) {
+        header('Location: dashboard.php?' . http_build_query([
+            'view' => 'inventario_fantasma',
+            'page' => $fantasma_pages,
+            'q' => $fantasma_q,
+        ]));
+        exit;
+    }
 }
 
 // LÓGICA COMPARTIDA B2B (Mesa de Dinero y KPIs VIP)
@@ -1513,7 +1586,7 @@ function extraerTextos($html) {
         </div>
         <nav class="p-4 flex flex-col gap-2 flex-1 overflow-y-auto custom-scrollbar">
             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-4 mt-2 mb-1">Público (B2C)</p>
-            <a href="?view=radar" class="<?= menuActivo($vista, 'radar') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
+            <a href="?view=radar" class="<?= menuActivoRadar($vista) ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
                 <i class="fa-solid fa-chart-pie w-4"></i> Radar de Ventas
             </a>
             <a href="?view=pedidos_publicos" class="<?= menuActivo($vista, 'pedidos_publicos') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
@@ -1600,7 +1673,8 @@ function extraerTextos($html) {
                     <?php 
                         if($vista=='marketing') echo 'Marketing <span class="text-[#1B263B] font-light">IA</span>'; 
                         elseif($vista=='seo') echo 'SEO <span class="text-[#1B263B] font-light">Dinámico</span>'; 
-                        elseif($vista=='radar') echo 'Radar de <span class="text-[#1B263B] font-light">Ventas</span>'; 
+                        elseif($vista=='radar') echo 'Radar de <span class="text-[#1B263B] font-light">Ventas</span>';
+                        elseif($vista=='inventario_fantasma') echo 'Limpieza de <span class="text-[#1B263B] font-light">Inventario</span>';
                         elseif($vista=='distribuidores') echo 'Directorio <span class="text-[#1B263B] font-light">VIP</span>'; 
                         elseif($vista=='sistema') echo 'Estado del <span class="text-[#1B263B] font-light">Sistema</span>'; 
                         elseif($vista=='ads') echo 'Gestor de <span class="text-[#1B263B] font-light">Pautas</span>'; 
@@ -2086,6 +2160,7 @@ function extraerTextos($html) {
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-slate-50/50 border-b border-slate-100">
+                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest w-16">Foto</th>
                             <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Nombre / Ciudad</th>
                             <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest font-black uppercase">Dirección</th>
                             <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Contacto</th>
@@ -2095,6 +2170,18 @@ function extraerTextos($html) {
                     <tbody class="divide-y divide-slate-50">
                         <?php foreach($locales as $l): ?>
                         <tr class="hover:bg-slate-50/30 transition-colors">
+                            <td class="px-6 py-4">
+                                <?php
+                                $thumbLoc = !empty($l['imagen']) ? getCleanImgUrl($l['imagen']) : '';
+                                ?>
+                                <div class="w-12 h-12 rounded-xl bg-slate-100 border border-slate-100 overflow-hidden flex items-center justify-center">
+                                    <?php if ($thumbLoc): ?>
+                                    <img src="<?= htmlspecialchars($thumbLoc) ?>" alt="" class="w-full h-full object-cover" loading="lazy">
+                                    <?php else: ?>
+                                    <i class="fa-solid fa-store text-slate-300 text-sm"></i>
+                                    <?php endif; ?>
+                                </div>
+                            </td>
                             <td class="px-6 py-4">
                                 <div class="font-black text-slate-900"><?= htmlspecialchars($l['nombre']) ?></div>
                                 <div class="text-[10px] text-[#3A86FF] font-black uppercase tracking-widest mt-0.5"><?= htmlspecialchars($l['ciudad']) ?></div>
@@ -2110,14 +2197,20 @@ function extraerTextos($html) {
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2 text-slate-300">
-                                    <button onclick='editarLocal(<?= json_encode($l, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)' class="w-8 h-8 rounded-lg hover:bg-[#1B263B]/10 hover:text-[#1B263B] transition-all flex items-center justify-center"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <?php
+                                    $lJson = $l;
+                                    if (!empty($l['imagen'])) {
+                                        $lJson['imagen_preview'] = getCleanImgUrl($l['imagen']);
+                                    }
+                                    ?>
+                                    <button onclick='editarLocal(<?= json_encode($lJson, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)' class="w-8 h-8 rounded-lg hover:bg-[#1B263B]/10 hover:text-[#1B263B] transition-all flex items-center justify-center"><i class="fa-solid fa-pen-to-square"></i></button>
                                     <button onclick="confirmarEliminarLocal('<?= $l['id'] ?>')" class="w-8 h-8 rounded-lg hover:bg-rose-50 hover:text-rose-500 transition-all flex items-center justify-center"><i class="fa-solid fa-trash-can"></i></button>
                                 </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
                         <?php if(empty($locales)): ?>
-                        <tr><td colspan="4" class="px-6 py-10 text-center text-slate-400 italic">No hay sucursales configuradas.</td></tr>
+                        <tr><td colspan="5" class="px-6 py-10 text-center text-slate-400 italic">No hay sucursales configuradas.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -2126,10 +2219,11 @@ function extraerTextos($html) {
             <!-- MODAL LOCALES -->
             <div id="modal-local" class="fixed inset-0 bg-[#1B263B]/60 backdrop-blur-md z-50 hidden flex items-center justify-center opacity-0 transition-opacity">
                 <div class="bg-white rounded-[2.5rem] w-full max-w-2xl mx-4 overflow-hidden transform scale-95 transition-all shadow-2xl" id="modal-local-content">
-                    <form method="POST" action="dashboard.php?view=locales">
+                    <form method="POST" action="dashboard.php?view=locales" enctype="multipart/form-data">
                         <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                         <input type="hidden" name="action" value="guardar_local">
                         <input type="hidden" name="id" id="local-id">
+                        <input type="hidden" name="imagen_actual" id="local-imagen-actual" value="">
 
                         <div class="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
                             <h3 class="font-black text-slate-900 text-xl uppercase tracking-tighter" id="modal-local-titulo">Nueva Sucursal</h3>
@@ -2144,6 +2238,22 @@ function extraerTextos($html) {
                             <div class="col-span-2 sm:col-span-1">
                                 <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Ciudad sede</label>
                                 <input type="text" name="ciudad" id="local-ciudad" required placeholder="Ej: Quito" class="premium-input w-full px-5 py-3 rounded-2xl text-sm font-bold border border-slate-100">
+                            </div>
+                            <div class="col-span-2 border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2"><i class="fa-solid fa-image mr-1"></i> Foto de la sucursal (home y modal)</label>
+                                <p class="text-[9px] text-slate-400 mb-3">Recomendado: horizontal 1200×675 px (16:9). JPG, PNG o WebP.</p>
+                                <div class="flex flex-wrap gap-4 items-start">
+                                    <div id="local-imagen-preview-wrap" class="w-32 h-20 rounded-xl bg-slate-200 border border-slate-100 overflow-hidden hidden">
+                                        <img id="local-imagen-preview" src="" alt="" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="flex-1 min-w-[200px] space-y-2">
+                                        <input type="file" name="imagen" id="local-imagen-file" accept="image/jpeg,image/png,image/webp,image/gif" class="w-full text-xs file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-black file:bg-[#1B263B]/10 file:text-[#1B263B]">
+                                        <label class="flex items-center gap-2 text-[10px] font-bold text-slate-500 cursor-pointer">
+                                            <input type="checkbox" name="quitar_imagen" id="local-quitar-imagen" value="1" class="rounded border-slate-300">
+                                            Quitar foto (usará imagen genérica por ciudad)
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-span-2">
                                 <label class="block text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-2"><i class="fa-solid fa-truck-fast mr-1"></i> Cobertura domicilio (ciudades, separadas por coma)</label>
@@ -2211,6 +2321,9 @@ function extraerTextos($html) {
 
         <?php elseif($vista === 'radar'): ?>
             <?php include __DIR__ . '/components/dashboard_radar.php'; ?>
+
+        <?php elseif($vista === 'inventario_fantasma'): ?>
+            <?php include __DIR__ . '/components/dashboard_inventario_fantasma.php'; ?>
 
         <?php elseif($vista === 'apariencia'): ?>
             <?php if(isset($_GET['msg']) && $_GET['msg'] === 'guardado'): ?>
@@ -3578,8 +3691,6 @@ function extraerTextos($html) {
         <?php endif; ?>
     </main>
 
-
-    </script>
     <!-- MODAL ACTUALIZACIÓN MASIVA -->
     <div id="modal-bulk" class="fixed inset-0 bg-white/80 backdrop-blur-xl z-50 hidden flex items-center justify-center opacity-0 transition-opacity">
         <div class="bg-white border border-slate-100 rounded-[2.5rem] w-full max-w-xl mx-4 overflow-hidden transform scale-95 transition-all duration-300 shadow-2xl" id="modal-bulk-content">
@@ -3725,10 +3836,28 @@ function extraerTextos($html) {
 
     <script>
         /* GESTIÓN DE LOCALES */
+        function localImagenPreview(url) {
+            const wrap = document.getElementById('local-imagen-preview-wrap');
+            const img = document.getElementById('local-imagen-preview');
+            const quitar = document.getElementById('local-quitar-imagen');
+            if (!wrap || !img) return;
+            if (url) {
+                img.src = url;
+                wrap.classList.remove('hidden');
+            } else {
+                img.removeAttribute('src');
+                wrap.classList.add('hidden');
+            }
+            if (quitar) quitar.checked = false;
+        }
         function abrirModalLocal() { 
             document.getElementById('modal-local-titulo').innerText = 'Nueva Sucursal';
             document.getElementById('local-id').value = '';
+            document.getElementById('local-imagen-actual').value = '';
             document.getElementById('modal-local').querySelector('form').reset();
+            localImagenPreview('');
+            const fileIn = document.getElementById('local-imagen-file');
+            if (fileIn) fileIn.value = '';
             const m = document.getElementById('modal-local'); 
             m.classList.remove('hidden'); 
             setTimeout(()=> { m.classList.remove('opacity-0'); document.getElementById('modal-local-content').classList.remove('scale-95'); }, 10); 
@@ -3755,11 +3884,29 @@ function extraerTextos($html) {
             document.getElementById('local-maps').value = data.maps || '';
             document.getElementById('local-whatsapp-msj').value = data.whatsapp_msj || '';
             document.getElementById('local-horario').value = data.horario || '';
-            
+            document.getElementById('local-imagen-actual').value = data.imagen || '';
+            localImagenPreview(data.imagen_preview || data.imagen || '');
+            const fileIn = document.getElementById('local-imagen-file');
+            if (fileIn) fileIn.value = '';
+            const quitar = document.getElementById('local-quitar-imagen');
+            if (quitar) quitar.checked = false;
+
             const m = document.getElementById('modal-local'); 
             m.classList.remove('hidden'); 
             setTimeout(()=> { m.classList.remove('opacity-0'); document.getElementById('modal-local-content').classList.remove('scale-95'); }, 10); 
         }
+        (function () {
+            const fileIn = document.getElementById('local-imagen-file');
+            if (fileIn) {
+                fileIn.addEventListener('change', function () {
+                    const f = fileIn.files && fileIn.files[0];
+                    if (!f) return;
+                    localImagenPreview(URL.createObjectURL(f));
+                    const q = document.getElementById('local-quitar-imagen');
+                    if (q) q.checked = false;
+                });
+            }
+        })();
         function confirmarEliminarLocal(id) {
             if (confirm('¿Estás seguro de eliminar esta sucursal? Esta acción no se puede deshacer.')) {
                 document.getElementById('input-eliminar-local').value = id;
@@ -3927,6 +4074,10 @@ function extraerTextos($html) {
             });
         });
     </script>
+
+    <?php if (in_array($vista, ['radar', 'inventario_fantasma'], true)): ?>
+        <?php include __DIR__ . '/components/inventario_fantasma_script.php'; ?>
+    <?php endif; ?>
 
 </body>
 </html>
