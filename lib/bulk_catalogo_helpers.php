@@ -96,16 +96,16 @@ function improgyp_bulk_staging_json_payload(int $okLote = 0, int $skipLote = 0, 
 }
 
 /**
- * Convierte un upload a WebP en img_catalogo/ y devuelve ruta relativa o null.
+ * Guarda imagen local (ruta absoluta) como WebP en img_catalogo/.
  */
-function improgyp_bulk_guardar_imagen_upload(string $tmpName, string $nombreOrig): ?string
+function improgyp_bulk_guardar_imagen_desde_ruta(string $rutaAbs, string $nombreOrig): ?string
 {
-    if (!is_uploaded_file($tmpName)) {
+    if (!is_file($rutaAbs)) {
         return null;
     }
 
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $mime = finfo_file($finfo, $tmpName);
+    $mime = finfo_file($finfo, $rutaAbs);
     finfo_close($finfo);
 
     $validMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -133,13 +133,13 @@ function improgyp_bulk_guardar_imagen_upload(string $tmpName, string $nombreOrig
     $rutaRel = 'img_catalogo/' . $nombreWebp;
 
     if ($ext === 'webp') {
-        if (move_uploaded_file($tmpName, $rutaDest)) {
+        if (@copy($rutaAbs, $rutaDest)) {
             return $rutaRel;
         }
         return null;
     }
 
-    $imgGd = @imagecreatefromstring(file_get_contents($tmpName));
+    $imgGd = @imagecreatefromstring(file_get_contents($rutaAbs));
     if ($imgGd === false) {
         return null;
     }
@@ -150,6 +150,18 @@ function improgyp_bulk_guardar_imagen_upload(string $tmpName, string $nombreOrig
     imagedestroy($imgGd);
 
     return $ok ? $rutaRel : null;
+}
+
+/**
+ * Convierte un upload a WebP en img_catalogo/ y devuelve ruta relativa o null.
+ */
+function improgyp_bulk_guardar_imagen_upload(string $tmpName, string $nombreOrig): ?string
+{
+    if (!is_uploaded_file($tmpName)) {
+        return null;
+    }
+
+    return improgyp_bulk_guardar_imagen_desde_ruta($tmpName, $nombreOrig);
 }
 
 /**

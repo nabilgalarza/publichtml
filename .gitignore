@@ -6,6 +6,7 @@ cache_*.json
 cache_geo/
 img_temp_carga/
 temp/
+storage/import_tmp/
 copia_seguridad_IMPROGYP.sql
 *.sql
 !database/*.sql

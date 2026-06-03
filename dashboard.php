@@ -336,6 +336,12 @@ if ($vista === 'social') {
 
 $sub_vista = $_GET['sub'] ?? '';
 $menu_apariencia_abierto = ($vista === 'apariencia' || $vista === 'blog');
+$menu_inventario_abierto = ($vista === 'catalogo');
+
+if ($vista === 'importacion') {
+    header('Location: dashboard.php?view=catalogo');
+    exit;
+}
 
 if (in_array($vista, ['distribuidores', 'pedidos'], true) && !improgyp_b2b_admin_ver_modulo()) {
     header('Location: dashboard.php?view=catalogo&msg=b2b_oculto');
@@ -372,6 +378,17 @@ $base_url = $protocolo . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER[
         fputcsv($output, ['0', 'Atornillador Gypsum Inalámbrico', '20MDSG20V', 'MAXXT', 'Herramientas Drywall', "Presentación Única: 385.11", 'Potencia tu productividad con el Atornillador Gypsum Inalámbrico...', 'Fuerza: 20V | Velocidad: 4200rpm', '20MDSG20V.webp', '1']);
         fputcsv($output, ['0', 'Taladro Percutor 1/2', 'TB550-B3', 'BLACK+DECKER', 'Taladros Percutores', "Sin Maleta: 65.00\nCon Maleta: 75.00", 'Taladro potente para mampostería y madera.', 'Potencia: 550W | Mandril: 1/2"', 'tb550.webp', '1']);
         fclose($output); exit;
+    }
+    if (isset($_GET['action']) && $_GET['action'] === 'exportar_plantilla_impled') {
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=plantilla_IMPLED_codigo_por_medida.csv');
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['Nombre', 'Codigo', 'Marca', 'Categoria', 'Unidad_Precios', 'Descripcion_Larga', 'Publicado']);
+        fputcsv($output, ['Lija de agua en pliego #80', '20LIJ09', 'IMPLED', 'Abrasivos', 'Presentación Única: 1.20', 'Pliego 230mm x 280mm.', '1']);
+        fputcsv($output, ['Lija de agua en pliego #100', '20LIJ10', 'IMPLED', 'Abrasivos', 'Presentación Única: 1.25', 'Pliego 230mm x 280mm.', '1']);
+        fputcsv($output, ['Lija de agua en pliego #120', '20LIJ11', 'IMPLED', 'Abrasivos', 'Presentación Única: 1.30', 'Pliego 230mm x 280mm.', '1']);
+        fclose($output);
+        exit;
     }
     if (isset($_GET['action']) && $_GET['action'] === 'exportar_csv') {
         header('Content-Type: text/csv; charset=utf-8');
@@ -638,6 +655,176 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'bulk_imagen_lote') {
     $payload = improgyp_bulk_staging_json_payload($res['ok'], $res['skip'], $res['warnings']);
     $payload['status'] = 'success';
     echo json_encode($payload, JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+if (isset($_GET['ajax']) && strpos((string) ($_GET['ajax'] ?? ''), 'importacion_') === 0) {
+    require_once __DIR__ . '/lib/import_masivo.php';
+    improgyp_import_ensure_tables($pdo);
+    header('Content-Type: application/json; charset=utf-8');
+    $batchId = improgyp_import_batch_id();
+    $ajax = $_GET['ajax'];
+
+    if ($ajax === 'importacion_staging_stats') {
+        echo json_encode([
+            'status' => 'success',
+            'total_fotos' => improgyp_import_staging_count($pdo, $batchId),
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(['error' => 'Método no permitido'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    if (!hash_equals($csrf_token, $_POST['csrf_token'] ?? '')) {
+        echo json_encode(['error' => 'Error de seguridad (CSRF).'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    if ($ajax === 'importacion_repreview') {
+        $path = improgyp_import_csv_sesion_path();
+        if ($path === null) {
+            echo json_encode(['error' => 'No hay CSV guardado. Sube el archivo de nuevo.'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        $tabla = improgyp_import_tabla_catalogo();
+        $preview = improgyp_import_csv_preview($pdo, $path, $tabla, $batchId);
+        $preview['csv_en_sesion'] = true;
+        echo json_encode($preview, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    if ($ajax === 'importacion_csv_preview' && isset($_FILES['archivo_csv'])) {
+        $tmp = $_FILES['archivo_csv']['tmp_name'];
+        improgyp_import_guardar_csv_sesion($tmp);
+        $tabla = improgyp_import_tabla_catalogo();
+        $preview = improgyp_import_csv_preview($pdo, $tmp, $tabla, $batchId);
+        $preview['csv_en_sesion'] = true;
+        echo json_encode($preview, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    if ($ajax === 'importacion_zip') {
+        @ini_set('memory_limit', '512M');
+        @set_time_limit(IMPROGYP_IMPORT_ZIP_MAX_SEGUNDOS);
+        $zipFile = $_FILES['archivo_zip'] ?? null;
+        if ($zipFile === null) {
+            echo json_encode(['error' => 'No se recibió el archivo ZIP.'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        $uploadErr = (int) ($zipFile['error'] ?? UPLOAD_ERR_NO_FILE);
+        if ($uploadErr !== UPLOAD_ERR_OK) {
+            echo json_encode(['error' => improgyp_import_upload_error_message($uploadErr)], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        $tmp = $zipFile['tmp_name'] ?? '';
+        if ($tmp === '' || !is_uploaded_file($tmp)) {
+            echo json_encode(['error' => 'El ZIP no se guardó en el servidor. Revisa límites de subida en MAMP.'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        try {
+            $preview = improgyp_import_procesar_zip($pdo, $batchId, $tmp);
+        } catch (Throwable $e) {
+            echo json_encode([
+                'error' => 'Error al procesar el ZIP: ' . $e->getMessage() . '. Prueba CSV y fotos por separado.',
+            ], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        echo json_encode($preview, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    if ($ajax === 'importacion_foto_lote') {
+        $files = $_FILES['fotos'] ?? null;
+        if (!$files || !isset($files['tmp_name'])) {
+            echo json_encode(['error' => 'No se recibieron fotos.'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        $count = is_array($files['tmp_name']) ? count($files['tmp_name']) : 1;
+        if ($count > IMPROGYP_IMPORT_LOTE_MAX) {
+            echo json_encode(['error' => 'Máximo ' . IMPROGYP_IMPORT_LOTE_MAX . ' fotos por tanda.'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        $ok = 0;
+        $skip = 0;
+        $warnings = [];
+        $tmpNames = $files['tmp_name'];
+        $names = $files['name'] ?? [];
+        if (!is_array($tmpNames)) {
+            $tmpNames = [$tmpNames];
+            $names = [$names];
+        }
+        foreach ($tmpNames as $i => $tmp) {
+            if (($files['error'][$i] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
+                $skip++;
+                continue;
+            }
+            $res = improgyp_import_guardar_foto_staging($pdo, $batchId, $files['tmp_name'][$i], $files['name'][$i] ?? '');
+            if ($res) {
+                $ok++;
+                if (!empty($res['warning'])) {
+                    $warnings[] = $res['warning'];
+                }
+            } else {
+                $skip++;
+            }
+        }
+        echo json_encode([
+            'status' => 'success',
+            'ok' => $ok,
+            'skip' => $skip,
+            'total_fotos' => improgyp_import_staging_count($pdo, $batchId),
+            'warnings' => array_values(array_unique($warnings)),
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    if ($ajax === 'importacion_ejecutar') {
+        $csvPath = null;
+        if (!empty($_POST['usar_csv_sesion'])) {
+            $csvPath = improgyp_import_csv_sesion_path();
+        } elseif (isset($_FILES['archivo_csv']['tmp_name']) && is_uploaded_file($_FILES['archivo_csv']['tmp_name'])) {
+            $csvPath = $_FILES['archivo_csv']['tmp_name'];
+        }
+        if ($csvPath === null) {
+            echo json_encode(['error' => 'No hay CSV para importar. Sube el archivo de nuevo.'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        $tabla = improgyp_import_tabla_catalogo();
+        $permitirId = !empty($_POST['permitir_id']);
+        $res = improgyp_import_ejecutar_csv(
+            $pdo,
+            $csvPath,
+            $tabla,
+            $batchId,
+            $permitirId
+        );
+        if (($res['status'] ?? '') === 'success') {
+            regenerarJSON($pdo);
+            improgyp_import_staging_clear($pdo, $batchId);
+            improgyp_import_limpiar_csv_sesion();
+            improgyp_import_nuevo_batch();
+        }
+        echo json_encode($res, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    if ($ajax === 'importacion_solo_fotos') {
+        $tabla = improgyp_import_tabla_catalogo();
+        $res = improgyp_import_solo_fotos($pdo, $tabla, $batchId);
+        regenerarJSON($pdo);
+        echo json_encode(array_merge(['status' => 'success'], $res), JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    if ($ajax === 'importacion_vaciar_fotos') {
+        improgyp_import_vaciar_staging($pdo, $batchId);
+        echo json_encode(['status' => 'success', 'total_fotos' => 0], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    echo json_encode(['error' => 'Acción desconocida'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
@@ -1234,6 +1421,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
     }
 
+    if ($_POST['action'] === 'purgar_impled') {
+        if (!hash_equals($csrf_token, $_POST['csrf_token'] ?? '')) {
+            header('Location: dashboard.php?view=catalogo&msg=csrf_error'); exit;
+        }
+        require_once __DIR__ . '/lib/purgar_impled.php';
+        require_once __DIR__ . '/lib/bulk_catalogo_helpers.php';
+        $res = improgyp_purgar_impled($pdo);
+        $n = (int) $res['eliminados'];
+        header("Location: dashboard.php?view=catalogo&msg=impled_purgado&n=$n"); exit;
+    }
+
     if ($_POST['action'] === 'vaciar_catalogo') {
         $pdo->exec("TRUNCATE TABLE improgyp_catalogo");
         regenerarJSON($pdo);
@@ -1541,9 +1739,17 @@ function extraerTextos($html) {
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
+            min-height: 0;
+            padding-top: 0.125rem;
         }
-        .nav-collapse.is-open .nav-collapse-trigger {
+        .nav-collapse[data-nav-collapse="improgyp_nav_apariencia"].is-open .nav-collapse-trigger {
             color: #6d28d9;
+        }
+        .nav-collapse[data-nav-collapse="improgyp_nav_inventario"].is-open .nav-collapse-trigger {
+            color: #1B263B;
+        }
+        .nav-collapse[data-nav-collapse="improgyp_nav_inventario"].is-open .nav-collapse-trigger span {
+            color: #1B263B;
         }
     </style>
 </head>
@@ -1561,9 +1767,22 @@ function extraerTextos($html) {
             <a href="?view=pedidos_publicos" class="<?= menuActivo($vista, 'pedidos_publicos') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
                 <i class="fa-solid fa-cart-shopping w-4 text-[#1B263B]"></i> Pedidos Públicos <span class="text-[9px] bg-[#1B263B]/20 text-[#1B263B] px-1.5 py-0.5 rounded ml-auto">IA</span>
             </a>
-            <a href="?view=catalogo" class="<?= menuActivo($vista, 'catalogo') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
-                <i class="fa-solid fa-boxes-stacked w-4"></i> Inventario Web
-            </a>
+            <div class="nav-collapse<?= $menu_inventario_abierto ? ' is-open' : '' ?>" data-nav-collapse="improgyp_nav_inventario">
+                <button type="button" class="nav-collapse-trigger" aria-expanded="<?= $menu_inventario_abierto ? 'true' : 'false' ?>" aria-controls="nav-panel-inventario">
+                    <span class="flex items-center gap-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                        <i class="fa-solid fa-boxes-stacked w-4 text-[#1B263B] text-sm normal-case"></i>
+                        Inventario Web
+                    </span>
+                    <i class="fa-solid fa-chevron-down nav-collapse-chevron" aria-hidden="true"></i>
+                </button>
+                <div id="nav-panel-inventario" class="nav-collapse-panel">
+                    <div class="nav-collapse-panel-inner">
+                        <a href="?view=catalogo" class="<?= menuSubApariencia($vista === 'catalogo') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
+                            <i class="fa-solid fa-list w-4 text-[#1B263B]"></i> Productos
+                        </a>
+                    </div>
+                </div>
+            </div>
             <a href="?view=ads" class="<?= menuActivo($vista, 'ads') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
                 <i class="fa-solid fa-bullhorn w-4"></i> Gestor de Pautas
             </a>
@@ -1657,8 +1876,8 @@ function extraerTextos($html) {
             </div>
             <div class="flex gap-3">
                 <?php if ($vista === 'catalogo' || $vista === ''): ?>
-                    <button onclick="abrirModalBulk()" class="bg-[#1B263B] hover:bg-[#3A86FF] text-white px-4 py-2 rounded-lg text-sm font-black flex items-center gap-2 transition-all active:scale-95 group">
-                        Actualización Masiva
+                    <button type="button" onclick="abrirModalBulk()" class="bg-[#1B263B] hover:bg-[#3A86FF] text-white px-4 py-2 rounded-lg text-sm font-black flex items-center gap-2 transition-all active:scale-95 group">
+                        <i class="fa-solid fa-file-csv"></i> Actualización masiva (CSV)
                     </button>
                 <?php endif; ?>
                 <a href="index.php" target="_blank" class="bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-900 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-3 border border-slate-100 transition-all">
@@ -2438,12 +2657,25 @@ function extraerTextos($html) {
                     </div>
                 </div>
             <?php endif; ?>
+            <?php if (isset($_GET['msg']) && $_GET['msg'] === 'impled_purgado'):
+                $nPurgados = (int) ($_GET['n'] ?? 0);
+            ?>
+                <div class="bg-emerald-50 border border-emerald-100 text-emerald-800 p-5 rounded-2xl mb-6 text-sm font-bold flex items-center gap-4 relative z-10 w-full">
+                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-lg"><i class="fa-solid fa-check"></i></div>
+                    <div>
+                        <p class="text-slate-900">IMPLED purgado</p>
+                        <p class="text-[10px] uppercase tracking-widest text-emerald-700/80 font-black mt-0.5">
+                            Se eliminaron <?= $nPurgados ?> producto<?= $nPurgados === 1 ? '' : 's' ?> con marca IMPLED. El catálogo MAXXT se mantiene.
+                        </p>
+                    </div>
+                </div>
+            <?php endif; ?>
             <?php if (isset($_GET['msg']) && $_GET['msg'] === 'bulk_csv_confirm'):
                 $bulkConfirm = $_SESSION['bulk_csv_needs_confirm'] ?? ['filas_con_id' => 0, 'filas_datos' => 0];
             ?>
                 <div class="bg-amber-50 border border-amber-200 text-amber-900 p-5 rounded-2xl mb-6 text-sm font-bold relative z-10 w-full">
                     <p class="font-black">Importación detenida: el CSV trae columna ID</p>
-                    <p class="text-[11px] mt-1 font-medium">Hay <?= (int) ($bulkConfirm['filas_con_id'] ?? 0) ?> filas con ID &gt; 0 (de <?= (int) ($bulkConfirm['filas_datos'] ?? 0) ?> productos). Eso <strong>actualiza</strong> productos existentes, no crea IMPLED nuevos. Abre de nuevo «Actualización masiva», marca la casilla de confirmación y vuelve a sincronizar — o quita la columna ID para solo altas por código.</p>
+                    <p class="text-[11px] mt-1 font-medium">Hay <?= (int) ($bulkConfirm['filas_con_id'] ?? 0) ?> filas con ID &gt; 0 (de <?= (int) ($bulkConfirm['filas_datos'] ?? 0) ?> productos). Eso <strong>actualiza</strong> productos existentes, no crea productos nuevos. Abre «Actualización masiva», marca la casilla de confirmación y vuelve a importar — o quita la columna ID para solo altas por código.</p>
                 </div>
             <?php endif; ?>
             <?php if(isset($_GET['msg']) && $_GET['msg'] == 'eliminado_masivo'): ?>
@@ -2453,7 +2685,7 @@ function extraerTextos($html) {
             <?php endif; ?>
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 relative z-10">
                 
-                <div class="glass-card p-6 h-fit hover:border-[#1B263B]/40 transition-colors" id="panel-form-producto">
+                <div class="glass-card p-6 h-fit xl:sticky xl:top-6 xl:self-start xl:max-h-[calc(100dvh-7rem)] xl:overflow-y-auto custom-scrollbar hover:border-[#1B263B]/40 transition-colors" id="panel-form-producto">
                     <h2 id="titulo-form-prod" class="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-plus text-[#1B263B]"></i> Subir Producto
                     </h2>
@@ -3684,10 +3916,10 @@ function extraerTextos($html) {
                     <div class="w-14 h-14 rounded-2xl bg-[#1B263B]/10 text-[#1B263B] flex items-center justify-center text-3xl border border-[#1B263B]/20"><i class="fa-solid fa-file-csv"></i></div>
                     <div>
                         <h3 class="font-black text-slate-900 text-xl leading-tight uppercase tracking-tighter">Actualización Masiva</h3>
-                        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-black">Catálogo & Multimedia</p>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-black">Solo CSV — fotos en cada producto</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 flex-wrap justify-end">
                     <form method="POST" action="dashboard.php?view=catalogo" onsubmit="return confirm('¿ESTÁS SEGURO? Se borrarán TODOS los productos del catálogo actual. Esta acción es irreversible.');" class="inline">
                         <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                         <input type="hidden" name="action" value="vaciar_catalogo">
@@ -3703,59 +3935,43 @@ function extraerTextos($html) {
                     <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
                         <span class="w-6 h-6 rounded-full bg-[#1B263B] text-white flex items-center justify-center text-[10px] font-black">1</span> Paso 1: Obtener Estructura
                     </h4>
-                    <p class="text-sm text-slate-500 mb-6 font-medium leading-relaxed">Descarga el archivo con los datos actuales para mantener la sincronización de IDs.</p>
-                    <div class="flex gap-4">
-                        <a href="dashboard.php?action=exportar_csv" class="group flex-1 bg-white hover:bg-[#3A86FF] text-slate-900 hover:text-white font-black py-4 rounded-2xl text-center transition-all flex items-center justify-center gap-3 border border-slate-100 shadow-sm hover:shadow-xl">
-                            <i class="fa-solid fa-download text-[#1B263B] group-hover:text-white transition-all duration-300"></i>
-                            <span class="group-hover:text-white transition-colors duration-300">Descargar CSV</span>
+                    <p class="text-sm text-slate-500 mb-4 font-medium leading-relaxed">Una fila = un producto (un código por medida). Para altas nuevas, usa un CSV <strong>sin columna ID</strong>. Las imágenes se cargan al editar cada producto en el catálogo.</p>
+                    <div class="grid grid-cols-2 gap-3 mb-2">
+                        <a href="dashboard.php?action=exportar_csv" class="bg-white hover:bg-slate-50 text-slate-700 font-black py-4 rounded-2xl text-center transition-all flex items-center justify-center gap-2 border border-slate-100 text-[11px] uppercase tracking-widest">
+                            <i class="fa-solid fa-download text-[#1B263B]"></i> Exportar catálogo
                         </a>
-                        <a href="dashboard.php?action=exportar_ejemplo_csv" class="bg-white hover:bg-slate-50 text-slate-400 font-black py-4 px-6 rounded-2xl text-center transition-all flex items-center justify-center gap-3 border border-slate-100 text-[11px] uppercase tracking-widest">
-                            <i class="fa-solid fa-circle-question opacity-40"></i> Ejemplo
+                        <a href="dashboard.php?action=exportar_ejemplo_csv" class="bg-white hover:bg-[#3A86FF] hover:text-white text-slate-700 hover:text-white font-black py-4 rounded-2xl text-center transition-all flex items-center justify-center gap-2 border border-slate-100 text-[11px] uppercase tracking-widest">
+                            <i class="fa-solid fa-file-csv"></i> Ejemplo CSV
                         </a>
                     </div>
                 </div>
-                <div class="pt-10 border-t border-slate-50">
-                    <form id="form-bulk-csv" method="POST" action="dashboard.php?view=catalogo" enctype="multipart/form-data" class="space-y-8">
+                <div class="pt-6 border-t border-slate-50">
+                    <form id="form-bulk-csv" method="POST" action="dashboard.php?view=catalogo" enctype="multipart/form-data" class="space-y-6">
                         <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                         <input type="hidden" name="action" value="actualizar_masivo_csv">
                         <div>
-                            <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-2 flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-[#1B263B] text-white flex items-center justify-center text-[10px] font-black">2</span> Paso 2: Fotos (por lotes)
-                            </h4>
-                            <p class="text-[10px] text-slate-400 mb-3 leading-relaxed">Se envían de a <?= (int) IMPROGYP_BULK_LOTE_MAX ?> archivos. El nombre debe ser el <strong>código SKU</strong> (ej. <code class="text-[#1B263B]">20LAS04.webp</code>). Evita copias tipo <code class="text-amber-600">20LAS04 2.webp</code> (se normalizan, pero mejor un archivo por código).</p>
-                            <div class="bg-slate-50 border-2 border-dashed border-slate-100 rounded-3xl p-8 text-center group hover:border-[#1B263B] transition-all relative cursor-pointer">
-                                <input type="file" id="bulk-fotos-picker" multiple accept="image/jpeg,image/png,image/webp,image/gif" class="absolute inset-0 opacity-0 cursor-pointer">
-                                <div class="w-12 h-12 rounded-2xl bg-white mx-auto mb-3 flex items-center justify-center text-[#1B263B] group-hover:scale-110 transition-transform"><i class="fa-solid fa-cloud-arrow-up text-xl"></i></div>
-                                <p class="text-[13px] text-slate-500 font-bold" id="txt-fotos">Nombre de archivo = código SKU. Máx. <?= (int) IMPROGYP_BULK_LOTE_MAX ?> por tanda.</p>
-                                <p id="bulk-fotos-progress" class="text-[10px] text-[#3A86FF] font-black mt-2 hidden"><i class="fa-solid fa-circle-notch fa-spin"></i> Subiendo fotos…</p>
-                            </div>
-                            <ul id="bulk-fotos-warnings" class="hidden text-[9px] text-amber-700 font-bold mt-2 space-y-1 list-disc list-inside max-h-24 overflow-y-auto"></ul>
-                            <button type="button" id="btn-bulk-staging-reset" class="hidden text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-rose-500 mt-2">Vaciar fotos en cola</button>
-                            <p class="text-[9px] text-slate-400 mt-2">Las fotos quedan en sesión hasta sincronizar el CSV (misma pestaña). También puedes omitir fotos y subir solo el CSV.</p>
-                        </div>
-                        <div>
                             <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-[#1B263B] text-white flex items-center justify-center text-[10px] font-black">3</span> Paso 3: Aplicar CSV
+                                <span class="w-6 h-6 rounded-full bg-[#1B263B] text-white flex items-center justify-center text-[10px] font-black">2</span> Subir CSV e importar
                             </h4>
                             <div class="bg-slate-50 border-2 border-dashed border-slate-100 rounded-3xl p-8 text-center group hover:border-[#1B263B] transition-all relative cursor-pointer">
                                 <input type="file" name="archivo_csv" accept=".csv" required class="absolute inset-0 opacity-0 cursor-pointer" onchange="actualizarNombreCSV(this)">
                                 <div class="w-12 h-12 rounded-2xl bg-white mx-auto mb-3 flex items-center justify-center text-[#1B263B] group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-invoice text-xl"></i></div>
-                                <p class="text-[13px] text-slate-500 font-bold" id="txt-csv">Seleccionar archivo CSV (sin columna ID para productos nuevos)</p>
+                                <p class="text-[13px] text-slate-500 font-bold" id="txt-csv">Seleccionar archivo CSV</p>
                             </div>
                             <label id="bulk-confirm-ids-wrap" class="hidden flex items-start gap-3 mt-4 p-4 rounded-2xl bg-amber-50 border border-amber-100 cursor-pointer">
                                 <input type="checkbox" id="bulk-confirm-ids-cb" class="mt-1 rounded border-amber-300">
-                                <span class="text-[10px] text-amber-900 font-bold leading-relaxed">Confirmo: este CSV <strong>actualiza productos por ID</strong> (no es solo alta IMPLED por código).</span>
+                                <span class="text-[10px] text-amber-900 font-bold leading-relaxed">Confirmo: este CSV <strong>actualiza productos por ID</strong> (no es solo alta por código).</span>
                             </label>
                             <input type="hidden" name="bulk_confirm_ids" id="bulk-confirm-ids" value="">
                         </div>
-                        <button type="submit" id="btn-bulk-sync" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-5 rounded-3xl transition-all active:scale-95 text-sm uppercase tracking-widest">Sincronizar catálogo (CSV)</button>
+                        <button type="submit" id="btn-bulk-sync" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-5 rounded-3xl transition-all active:scale-95 text-sm uppercase tracking-widest">Importar al catálogo</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <?php if ($vista === 'catalogo'): ?>
-    <script src="js/bulk_upload.js?v=3"></script>
+    <script src="js/bulk_upload.js?v=4"></script>
     <?php endif; ?>
     
     <!-- MODAL GESTIÓN CATEGORÍAS -->

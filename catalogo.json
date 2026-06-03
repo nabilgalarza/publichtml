@@ -1,17 +1,927 @@
 [
     {
-        "nombre": "Tornillos en tirillas",
-        "codigo": "20TORTLL",
-        "marca": "MAXXT",
-        "categoria": "Accesorios",
-        "imagen": "img_catalogo/webp_1776873125_tornillos_en_ti.webp",
+        "nombre": "Plancha WPC ranurada Ebano",
+        "codigo": "20LPVC05",
+        "marca": "IMPLED",
+        "categoria": "Revestimientos",
+        "imagen": "img_catalogo/webp_1780524789_plancha_wpc_ran.webp",
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": "7.56"
+                "precio": ""
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con los Tornillos en tirillas, un accesorio original de MAXXT.\r\n\r\nEspecificaciones técnicas: Cantidad: 1000 screws | Material: Steel | Diámetro: 3.5mm | Longitudes: 30/35/40/50mm. Consumible imprescindible para alimentación automática en atornilladores, acelerando el recubrimiento de Drywall.\r\n\r\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Ranurada 23x160x2900mm. Acabado oscuro, vida útil +25 años, limpieza solo con agua."
+    },
+    {
+        "nombre": "Plancha WPC ranurada Cedro",
+        "codigo": "20LPVC06",
+        "marca": "IMPLED",
+        "categoria": "Revestimientos",
+        "imagen": "img_catalogo/webp_1780524812_plancha_wpc_ran.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Ranurada 23x160x2900mm. Disminuye ruido, sin mantenimiento, protección UV."
+    },
+    {
+        "nombre": "Plancha WPC ranurada Nogal",
+        "codigo": "20LPVC07",
+        "marca": "IMPLED",
+        "categoria": "Revestimientos",
+        "imagen": "img_catalogo/webp_1780524824_plancha_wpc_ran.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Ranurada 23x160x2900mm. Instalación fácil, sin mantenimiento, inmune a plagas."
+    },
+    {
+        "nombre": "Plancha WPC ranurada Pino",
+        "codigo": "20LPVC08",
+        "marca": "IMPLED",
+        "categoria": "Revestimientos",
+        "imagen": "img_catalogo/webp_1780524834_plancha_wpc_ran.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Ranurada 23x160x2900mm. Protección UV, vida útil +25 años, no propaga llamas, limpieza con agua."
+    },
+    {
+        "nombre": "Accesorios plancha WPC",
+        "codigo": "20LPVC09",
+        "marca": "IMPLED",
+        "categoria": "Revestimientos",
+        "imagen": "img_catalogo/webp_1780524846_accesorios_plan.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Metálico, anclaje oculto fácil fijación a pared/techo. Utilizar 3 por panel de 2.9m."
+    },
+    {
+        "nombre": "Plancha PVC marmoleada Negro",
+        "codigo": "20LPVC02",
+        "marca": "IMPLED",
+        "categoria": "Revestimientos",
+        "imagen": "img_catalogo/webp_1780524868_plancha_pvc_mar.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Marmoleada. Fácil instalación, sin mantenimiento, no propaga llamas, inmune a plagas."
+    },
+    {
+        "nombre": "Plancha PVC marmoleada Valquiria",
+        "codigo": "20LPVC01",
+        "marca": "IMPLED",
+        "categoria": "Revestimientos",
+        "imagen": "img_catalogo/webp_1780524888_plancha_pvc_mar.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Marmoleada. Fácil instalación, sin mantenimiento, no propaga llamas, inmune a plagas."
+    },
+    {
+        "nombre": "Lija redonda 9\" #150",
+        "codigo": "20LIJ15",
+        "marca": "IMPLED",
+        "categoria": "Abrasivos",
+        "imagen": "img_catalogo/webp_1780524976_lija_redonda_9_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Sin huecos, para lijadoras eléctricas."
+    },
+    {
+        "nombre": "Lija redonda 9\" #100",
+        "codigo": "20LIJ14",
+        "marca": "IMPLED",
+        "categoria": "Abrasivos",
+        "imagen": "img_catalogo/webp_1780525071_lija_redonda_9_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Sin huecos, para lijadoras eléctricas."
+    },
+    {
+        "nombre": "Lija redonda 9\" #80",
+        "codigo": "20LIJ13",
+        "marca": "IMPLED",
+        "categoria": "Abrasivos",
+        "imagen": "img_catalogo/webp_1780525192_lija_redonda_9_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Sin huecos, para lijadoras eléctricas."
+    },
+    {
+        "nombre": "Tornillo p/plancha aquapanel p/broca #8x1 1/2\"",
+        "codigo": "20TPBA0638",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525335_tornillo_p_plan.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Tornillo para plancha aquapanel punta broca #8x1 1/2\"."
+    },
+    {
+        "nombre": "Tornillo p/plancha aquapanel p/broca #8x1\"",
+        "codigo": "20TPBA0625",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525365_tornillo_p_plan.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Tornillo para plancha aquapanel punta broca #8x1\"."
+    },
+    {
+        "nombre": "Tornillo p/broca fibrocemento c/aleta #8x1 1/2\"",
+        "codigo": "20TFA0813",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525386_tornillo_p_broc.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "para plancha fibrocemento 17-20mm"
+    },
+    {
+        "nombre": "Tornillo p/broca fibrocemento #8x1 1/2\"",
+        "codigo": "20TEBPF0425",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525405_tornillo_p_broc.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "para plancha fibrocemento 17-20mm"
+    },
+    {
+        "nombre": "Tornillo p/broca fibrocemento c/aleta #8x1 1/4\"",
+        "codigo": "20TFA0832",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525422_tornillo_p_broc.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "para fibrocemento 10-14mm"
+    },
+    {
+        "nombre": "Tornillo p/broca fibrocemento #8x1 1/4\"",
+        "codigo": "20TEBPF0832",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525503_tornillo_p_broc.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "para plancha fibrocemento 10-14mm"
+    },
+    {
+        "nombre": "Tornillo p/broca fibrocemento #8x1\"",
+        "codigo": "20TEBPF0825",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525519_tornillo_p_broc.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "para plancha fibrocemento 4-8mm"
+    },
+    {
+        "nombre": "Tornillo p/pancha p/ broca 7x1\"",
+        "codigo": "20TPB0601",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525546_tornillo_p_panc.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "galvanizado"
+    },
+    {
+        "nombre": "Tornillo p/plancha p/broca 8x1 1/4\"",
+        "codigo": "20TPB0625",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525569_tornillo_p_plan.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "galvanizado"
+    },
+    {
+        "nombre": "Tornillo p/plancha p/aguda #7x1 1/2\"",
+        "codigo": "20TACP0713",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525607_tornillo_p_plan.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "para doble plancha yeso 5/8\""
+    },
+    {
+        "nombre": "Tornillo p/plancha p/aguda #7x1 1/4\"",
+        "codigo": "20TPA0632",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525625_tornillo_p_plan.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "para doble plancha yeso 1/2\""
+    },
+    {
+        "nombre": "Tornillo p/estructura p/aguda cp #8x1/2\"",
+        "codigo": "20TEACP0813",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780525692_tornillo_p_estr.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Tornillo para estructura punta aguda #8x1/2\"."
+    },
+    {
+        "nombre": "Repuesto rodillo 9\" 10mm",
+        "codigo": "20RO07",
+        "marca": "IMPLED",
+        "categoria": "Herramientas de Pintura",
+        "imagen": "img_catalogo/webp_1780525801_repuesto_rodill.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Micro-fibra afelpada para pinturas. Espesor 10mm."
+    },
+    {
+        "nombre": "Mango rodillo metal 9\"",
+        "codigo": "20RO05",
+        "marca": "IMPLED",
+        "categoria": "Herramientas de Pintura",
+        "imagen": "img_catalogo/webp_1780525833_mango_rodillo_m.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Armazón intercambiable 9\". Facilita montaje/desmontaje de micro-fibra, felpa o espuma."
+    },
+    {
+        "nombre": "Estilete metálico 19mm",
+        "codigo": "20EST04",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780525854_estilete_met__l.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Retráctil, antideslizante, seguro 3 posiciones. Dispositivo para cuerdas. Incluye 3 cuchillas SK5."
+    },
+    {
+        "nombre": "Repuesto Estilete 19mm",
+        "codigo": "20RCUCH03",
+        "marca": "IMPLED",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1780525873_repuesto_estile.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Estuche con 10 cuchillas de repuesto acero SK5. Formato 2.4in x 0.75in x 1.25in."
+    },
+    {
+        "nombre": "Repuesto Estilete 18mm",
+        "codigo": "20RCUCH02",
+        "marca": "IMPLED",
+        "categoria": "Accesorios",
+        "imagen": "img_catalogo/webp_1780525888_repuesto_estile.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Estuche con 10 cuchillas de repuesto acero SK5. Formato 18 X 100mm."
+    },
+    {
+        "nombre": "Cuchillo gypsum curvo",
+        "codigo": "20CG03",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780525917_cuchillo_gypsum.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Sierra 6\"/150mm. Hoja acero 65 Mn térmica. Mango ABS resistente + TPR suave para agarre."
+    },
+    {
+        "nombre": "Llana borde ondulado",
+        "codigo": "20LLON01",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780525943_llana_borde_ond.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Acero inox 9.5x4 pulg. 2 bordes ondulados. Alisado de masillas y diseños modernos."
+    },
+    {
+        "nombre": "Lijadora con mango",
+        "codigo": "20LIJ08",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780525959_lijadora_con_ma.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Formato 10.5x21cm. Almohadilla, mango adaptable para extensión, giro 360°, sujeción con vincha a presión."
+    },
+    {
+        "nombre": "Llana borde en puntas",
+        "codigo": "20LLBP01",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780525970_llana_borde_en_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Acero inox 9.5x4 pulg. 2 bordes en zigzag. Ideal aplicación de morteros y diseños modernos."
+    },
+    {
+        "nombre": "Llana dentada 6mm",
+        "codigo": "20LLDG02",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780525984_llana_dentada_6.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Acero inoxidable 11x5 pulg. Dientes 6x6, mango polipropileno. Aplicación uniforme de morteros."
+    },
+    {
+        "nombre": "Llana dentada grande",
+        "codigo": "20LLDG01",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780525998_llana_dentada_g.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Acero inox formato 120x480 mm. Dientes 10x10, mango ergonómico de madera. Para morteros."
+    },
+    {
+        "nombre": "Llana lisa",
+        "codigo": "20LLNALSPP",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780526012_llana_lisa.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Acero inox 11x5 pulg. Mango polipropileno. Ideal para alisado de masillas y acabados lisos de alto nivel."
+    },
+    {
+        "nombre": "Llana dentada 4mm",
+        "codigo": "20LLNADTCPP",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780526036_llana_dentada_4.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Acero inoxidable 11x5 pulg. Dientes 4x4, mango polipropileno. Fácil de limpiar, no se oxida."
+    },
+    {
+        "nombre": "Punzonadora perfiles",
+        "codigo": "20PUNZAD",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/webp_1780526085_punzonadora_per.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Une perfiles drywall de forma segura y permanente. Reduce uso de tornillos. Acero alta dureza y resistencia."
+    },
+    {
+        "nombre": "Raspador para gypsum",
+        "codigo": "20RASP01",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/webp_1780526108_raspador_para_g.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Cuchillas acero anticorrosivo. Elimina sobrante sin obstruir ni acumular polvo. Mango caucho antideslizante."
+    },
+    {
+        "nombre": "Biselador de aluminio",
+        "codigo": "20BIGYP01",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/webp_1780526129_biselador_de_al.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Biselador en 45° y 90°. Cortes planos y biselados limpios. Incluye cuchillas recambio acero inox. Alta duración."
+    },
+    {
+        "nombre": "Alzador de placas de yeso",
+        "codigo": "20ALB01",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/webp_1780526147_alzador_de_plac.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Precisión en altura/inclinación. Capacidad 68Kg. Brazos hasta 2.90m. Elevación 1.40m a 3.35m. Inclinación 60°"
+    },
+    {
+        "nombre": "Carro porta herramientas",
+        "codigo": "20CART",
+        "marca": "IMPLED",
+        "categoria": "Herramientas",
+        "imagen": "img_catalogo/webp_1780526165_carro_porta_her.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Práctico, ruedas giratorias, aza extensible, plegable, material resistente. Amplio espacio. Incluye tapa."
+    },
+    {
+        "nombre": "Biselador para gypsum",
+        "codigo": "20BIGYP",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/webp_1780526189_biselador_para_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Planos precisos y cantos limpios. Cortadores intercambiables 45° y 60°. Cuchillas acero inoxidable alta dureza."
+    },
+    {
+        "nombre": "Carro porta placas 200kg",
+        "codigo": "20CARPLA02",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/webp_1780526202_carro_porta_pla.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Acero de primera. Cubierta en ángulo, bordes biselados. Ruedas alta resistencia 5\" giro 360° con pedales de freno."
+    },
+    {
+        "nombre": "Tarjeta de objetivo láser",
+        "codigo": "20TARLASER",
+        "marca": "IMPLED",
+        "categoria": "Herramientas de Medición",
+        "imagen": "img_catalogo/webp_1780526262_tarjeta_de_obje.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "Mejora y aumenta 1.3 veces la visibilidad de la línea. Medidas en pulgadas y cm. Borde magnético."
+    },
+    {
+        "nombre": "Atornillador Gypsum Inalámbrico",
+        "codigo": "20MDSG20V",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/20MDSG20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "385.11"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Atornillador Gypsum Inalámbrico de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad en ralentí: 0-4200rpm | Tamaño del mandril: 1\\/4\" (6.35mm) | Peso: 3.5lbs (1.5kgs). Su diseño ergonómico reduce la fatiga y mejora la precisión en el trabajo diario, asegurando instalaciones rápidas y seguras.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Accesorio de cargador para atornillador",
+        "codigo": "20MCM57",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/20MCM57.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "263.05"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con el Accesorio de cargador para atornillador de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Tamaño del tornillo: 25-57mm | Peso: 2lbs (1kgs). Su diseño profesional reduce la fatiga y acelera la alimentación de tornillos, optimizando el tiempo de trabajo continuo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Varilla de extensión para atornillador 24\"",
+        "codigo": "20MER600",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/20MER600.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "297.38"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Varilla de extensión para atornillador 24\" de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un alcance superior con las siguientes características: Longitud de extensión: 24\" (600mm). Su diseño robusto te permite acceder a zonas altas o de difícil alcance sin perder estabilidad ni precisión en el atornillado.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Herramienta de corte sin cable",
+        "codigo": "20MDCOT20V",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/20MDCOT20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "327.26"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Herramienta de corte sin cable de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad en ralentí: 28000rpm | Espesor máximo de corte: 1\" (25.4mm) | Colección: 1\\/8\" y 1\\/4\". Su diseño ergonómico reduce la fatiga y mejora la precisión para cortes limpios en paneles de yeso.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Clavadora inalámbrica",
+        "codigo": "20MDNG20V",
+        "marca": "MAXXT",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/20MDNG20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "340.79"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Clavadora inalámbrica de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Tamaño uña: Ø2.6-03.0mm (L: 15-40mm) | Capacidad: 33 clavos | Tiempo de funcionamiento: ~800 clavos. Elimina la necesidad de mangueras y compresores, brindando total libertad de movimiento.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso",
+        "codigo": "20MBLS400",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MBLS400.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "148.14"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-8500rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 7lbs (3.2kg). Su diseño equilibrado asegura un lijado uniforme en paredes y techos, optimizando el acabado superficial.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso",
+        "codigo": "20MBLS550",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MBLS550.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "157.79"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 550W | Velocidad: 600-1200rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 6.6lbs (3kg). Su motor de alta resistencia permite jornadas continuas de trabajo con mínima vibración.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso con extensión",
+        "codigo": "20MLS820B",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MLS820B.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "99.73"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso con extensión de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Incluye: 18 lijas, tubo de extensión, manguera 2m, bolsa recolectora y adaptadores. Su tubo telescópico facilita el acceso a techos y zonas altas, mejorando la comodidad del operador.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso con extensión",
+        "codigo": "20MLS820P",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MLS820P.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "94.25"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso con extensión de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Incluye: 18 lijas, tubo de extensión, manguera 2m y adaptador. Equipada para brindar una cobertura de lijado excepcional con una extracción de polvo eficiente.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso con extensión",
+        "codigo": "20MLS820",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MLS820.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "121.55"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso con extensión de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 820W | Velocidad: 600-1900rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 7.7lbs (3.5kg). Combina potencia bruta con control preciso para acabados profesionales en grandes superficies.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso",
+        "codigo": "20MLS710EP",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MLS710EP.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "196.24"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 710W | Velocidad: 600-1500rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 8.4lbs (3.8kgs). Ideal para preparar superficies antes de pintar, asegurando un trabajo rápido y limpio.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso",
+        "codigo": "20MLS710SGP",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MLS710SGP.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "165.58"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 710W | Velocidad: 600-1500rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 8.4lbs (3.8kgs). Proporciona un lijado constante y sin marcas, elevando el estándar de tus acabados.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso",
+        "codigo": "20MS810",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MS810.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "111.44"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 810W | Velocidad: 1500-2800rpm | Diámetro almohadilla: 7\" (180mm) | Peso: 6.4lbs (2.9kgs). Una máquina robusta y compacta, diseñada para eliminar imperfecciones con gran agilidad.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora de paneles de yeso inalámbrica",
+        "codigo": "20MDLS20V",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras de Paneles de Yeso",
+        "imagen": "img_catalogo/20MDLS20V.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "96.66"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso inalámbrica de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 600-1200rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 7.3lbs (3.3kgs). Libérate de los cables mientras mantienes la potencia necesaria para un lijado profesional y eficiente.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS400C-2.5",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS400C-2.5.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "85.84"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Diseñada para un pulido extra fino y control absoluto en trabajos detallados de carpintería y pintura.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS400R",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS400R.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "109.99"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 3\\/32\" (2.5mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Su órbita ajustada permite un trabajo meticuloso y suave sobre cualquier superficie.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS400D",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS400D.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "131.69"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 100x152x152mm | Peso: 2.5lbs. Su formato permite llegar a bordes y áreas planas con total estabilidad.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS400S",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS400S.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "128.29"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 81x133mm | Peso: 2.5lbs. Su diseño rectangular compacto es perfecto para trabajos en esquinas y perfilería.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS350C-5.0",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS350C-5.0.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "195.86"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Equilibrio perfecto entre potencia y ligereza para remoción de material rápida y efectiva.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS350C-2.5",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS350C-2.5.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "151.0"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 3\\/32\" (2.5mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Proporciona acabados excepcionales sin fatiga gracias a su bajo peso y motor inteligente.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS350R",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS350R.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "179.27"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 198x70mm | Peso: 2.5lbs. Su formato alargado es ideal para lijar superficies estrechas y listones con alta precisión.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS350D",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS350D.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "106.35"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 100x152x152mm | Peso: 2.5lbs. Una herramienta versátil que se adapta a las exigencias de talleres y proyectos de restauración.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+    },
+    {
+        "nombre": "Lijadora orbital sin escobillas",
+        "codigo": "20MOS350S",
+        "marca": "MAXXT",
+        "categoria": "Lijadoras Orbitales",
+        "imagen": "img_catalogo/20MOS350S.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "104.42"
+            }
+        ],
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 81x133mm | Peso: 2.5lbs. Eficiencia y maniobrabilidad en un formato ligero para acabados impecables en espacios reducidos.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
     },
     {
         "nombre": "Ángulo para amoladora (cubierta contra el polvo)",
@@ -978,341 +1888,5 @@
             }
         ],
         "desc_larga": "Potencia tu productividad con la Lijadora orbital inalámbrica de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 3\\/32\" (2.5mm) | Diámetro: 5\" (125mm) | Peso: 2.2lbs. La comodidad de no tener cables unida a un desempeño excepcional en cada pasada.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora orbital sin escobillas",
-        "codigo": "20MOS350S",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras Orbitales",
-        "imagen": "img_catalogo/20MOS350S.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "104.42"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 81x133mm | Peso: 2.5lbs. Eficiencia y maniobrabilidad en un formato ligero para acabados impecables en espacios reducidos.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora orbital sin escobillas",
-        "codigo": "20MOS350D",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras Orbitales",
-        "imagen": "img_catalogo/20MOS350D.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "106.35"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 100x152x152mm | Peso: 2.5lbs. Una herramienta versátil que se adapta a las exigencias de talleres y proyectos de restauración.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora orbital sin escobillas",
-        "codigo": "20MOS350R",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras Orbitales",
-        "imagen": "img_catalogo/20MOS350R.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "179.27"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 198x70mm | Peso: 2.5lbs. Su formato alargado es ideal para lijar superficies estrechas y listones con alta precisión.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora orbital sin escobillas",
-        "codigo": "20MOS350C-2.5",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras Orbitales",
-        "imagen": "img_catalogo/20MOS350C-2.5.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "151.0"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 3\\/32\" (2.5mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Proporciona acabados excepcionales sin fatiga gracias a su bajo peso y motor inteligente.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora orbital sin escobillas",
-        "codigo": "20MOS350C-5.0",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras Orbitales",
-        "imagen": "img_catalogo/20MOS350C-5.0.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "195.86"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 350W | Velocidad: 4000-10000rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Equilibrio perfecto entre potencia y ligereza para remoción de material rápida y efectiva.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora orbital sin escobillas",
-        "codigo": "20MOS400S",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras Orbitales",
-        "imagen": "img_catalogo/20MOS400S.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "128.29"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 81x133mm | Peso: 2.5lbs. Su diseño rectangular compacto es perfecto para trabajos en esquinas y perfilería.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora orbital sin escobillas",
-        "codigo": "20MOS400D",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras Orbitales",
-        "imagen": "img_catalogo/20MOS400D.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "131.69"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Dimensiones: 100x152x152mm | Peso: 2.5lbs. Su formato permite llegar a bordes y áreas planas con total estabilidad.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora orbital sin escobillas",
-        "codigo": "20MOS400R",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras Orbitales",
-        "imagen": "img_catalogo/20MOS400R.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "109.99"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 3\\/32\" (2.5mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Su órbita ajustada permite un trabajo meticuloso y suave sobre cualquier superficie.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora orbital sin escobillas",
-        "codigo": "20MOS400C-2.5",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras Orbitales",
-        "imagen": "img_catalogo/20MOS400C-2.5.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "85.84"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 1\\/8\" (3mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Diseñada para un pulido extra fino y control absoluto en trabajos detallados de carpintería y pintura.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora orbital sin escobillas",
-        "codigo": "",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras Orbitales",
-        "imagen": "img_catalogo/20MOS350S.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "194.22"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital sin escobillas de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-10000rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 2.5lbs. Su motor brushless garantiza menor desgaste, mayor eficiencia y un acabado libre de marcas circulares.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora de paneles de yeso inalámbrica",
-        "codigo": "20MDLS20V",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras de Paneles de Yeso",
-        "imagen": "img_catalogo/20MDLS20V.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "96.66"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso inalámbrica de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 600-1200rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 7.3lbs (3.3kgs). Libérate de los cables mientras mantienes la potencia necesaria para un lijado profesional y eficiente.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora de paneles de yeso",
-        "codigo": "20MS810",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras de Paneles de Yeso",
-        "imagen": "img_catalogo/20MS810.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "111.44"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 810W | Velocidad: 1500-2800rpm | Diámetro almohadilla: 7\" (180mm) | Peso: 6.4lbs (2.9kgs). Una máquina robusta y compacta, diseñada para eliminar imperfecciones con gran agilidad.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora de paneles de yeso",
-        "codigo": "20MLS710SGP",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras de Paneles de Yeso",
-        "imagen": "img_catalogo/20MLS710SGP.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "165.58"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 710W | Velocidad: 600-1500rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 8.4lbs (3.8kgs). Proporciona un lijado constante y sin marcas, elevando el estándar de tus acabados.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora de paneles de yeso",
-        "codigo": "20MLS710EP",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras de Paneles de Yeso",
-        "imagen": "img_catalogo/20MLS710EP.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "196.24"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 710W | Velocidad: 600-1500rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 8.4lbs (3.8kgs). Ideal para preparar superficies antes de pintar, asegurando un trabajo rápido y limpio.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora de paneles de yeso con extensión",
-        "codigo": "20MLS820",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras de Paneles de Yeso",
-        "imagen": "img_catalogo/20MLS820.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "121.55"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso con extensión de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 820W | Velocidad: 600-1900rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 7.7lbs (3.5kg). Combina potencia bruta con control preciso para acabados profesionales en grandes superficies.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora de paneles de yeso con extensión",
-        "codigo": "20MLS820P",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras de Paneles de Yeso",
-        "imagen": "img_catalogo/20MLS820P.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "94.25"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso con extensión de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Incluye: 18 lijas, tubo de extensión, manguera 2m y adaptador. Equipada para brindar una cobertura de lijado excepcional con una extracción de polvo eficiente.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora de paneles de yeso con extensión",
-        "codigo": "20MLS820B",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras de Paneles de Yeso",
-        "imagen": "img_catalogo/20MLS820B.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "99.73"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso con extensión de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Incluye: 18 lijas, tubo de extensión, manguera 2m, bolsa recolectora y adaptadores. Su tubo telescópico facilita el acceso a techos y zonas altas, mejorando la comodidad del operador.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora de paneles de yeso",
-        "codigo": "20MBLS550",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras de Paneles de Yeso",
-        "imagen": "img_catalogo/20MBLS550.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "157.79"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 550W | Velocidad: 600-1200rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 6.6lbs (3kg). Su motor de alta resistencia permite jornadas continuas de trabajo con mínima vibración.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Lijadora de paneles de yeso",
-        "codigo": "20MBLS400",
-        "marca": "MAXXT",
-        "categoria": "Lijadoras de Paneles de Yeso",
-        "imagen": "img_catalogo/20MBLS400.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "148.14"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Lijadora de paneles de yeso de MAXXT, la solución ideal para el área de Lijadoras de Paneles de Yeso.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 400W | Velocidad: 4000-8500rpm | Diámetro almohadilla: 8.5\" (215mm) | Peso: 7lbs (3.2kg). Su diseño equilibrado asegura un lijado uniforme en paredes y techos, optimizando el acabado superficial.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Clavadora inalámbrica",
-        "codigo": "20MDNG20V",
-        "marca": "MAXXT",
-        "categoria": "Herramientas Drywall",
-        "imagen": "img_catalogo/20MDNG20V.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "340.79"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Clavadora inalámbrica de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Tamaño uña: Ø2.6-03.0mm (L: 15-40mm) | Capacidad: 33 clavos | Tiempo de funcionamiento: ~800 clavos. Elimina la necesidad de mangueras y compresores, brindando total libertad de movimiento.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Herramienta de corte sin cable",
-        "codigo": "20MDCOT20V",
-        "marca": "MAXXT",
-        "categoria": "Herramientas Drywall",
-        "imagen": "img_catalogo/20MDCOT20V.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "327.26"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Herramienta de corte sin cable de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad en ralentí: 28000rpm | Espesor máximo de corte: 1\" (25.4mm) | Colección: 1\\/8\" y 1\\/4\". Su diseño ergonómico reduce la fatiga y mejora la precisión para cortes limpios en paneles de yeso.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Varilla de extensión para atornillador 24\"",
-        "codigo": "20MER600",
-        "marca": "MAXXT",
-        "categoria": "Herramientas Drywall",
-        "imagen": "img_catalogo/20MER600.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "297.38"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con la Varilla de extensión para atornillador 24\" de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un alcance superior con las siguientes características: Longitud de extensión: 24\" (600mm). Su diseño robusto te permite acceder a zonas altas o de difícil alcance sin perder estabilidad ni precisión en el atornillado.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Accesorio de cargador para atornillador",
-        "codigo": "20MCM57",
-        "marca": "MAXXT",
-        "categoria": "Herramientas Drywall",
-        "imagen": "img_catalogo/20MCM57.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "263.05"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con el Accesorio de cargador para atornillador de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Tamaño del tornillo: 25-57mm | Peso: 2lbs (1kgs). Su diseño profesional reduce la fatiga y acelera la alimentación de tornillos, optimizando el tiempo de trabajo continuo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
-    },
-    {
-        "nombre": "Atornillador Gypsum Inalámbrico",
-        "codigo": "20MDSG20V",
-        "marca": "MAXXT",
-        "categoria": "Herramientas Drywall",
-        "imagen": "img_catalogo/20MDSG20V.webp",
-        "presentaciones": [
-            {
-                "opcion": "Presentación Única",
-                "precio": "385.11"
-            }
-        ],
-        "desc_larga": "Potencia tu productividad con el Atornillador Gypsum Inalámbrico de MAXXT, la solución ideal para el área de Herramientas Drywall.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad en ralentí: 0-4200rpm | Tamaño del mandril: 1\\/4\" (6.35mm) | Peso: 3.5lbs (1.5kgs). Su diseño ergonómico reduce la fatiga y mejora la precisión en el trabajo diario, asegurando instalaciones rápidas y seguras.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
     }
 ]
