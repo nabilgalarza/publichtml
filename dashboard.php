@@ -323,71 +323,6 @@ if (!isset($_SESSION['admin_logueado']) || $_SESSION['admin_logueado'] !== true)
             <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-4 rounded-2xl transition-all active:scale-[0.98] uppercase tracking-widest text-sm shadow-lg shadow-[#1B263B]/20">Entrar al Sistema</button>
         </form>
     </div>
-    <!-- MODAL ACTUALIZACIÓN MASIVA -->
-    <div id="modal-bulk" class="fixed inset-0 bg-white/80 backdrop-blur-xl z-50 hidden flex items-center justify-center opacity-0 transition-opacity">
-        <div class="bg-white border border-slate-100 rounded-[2.5rem] w-full max-w-xl mx-4 overflow-hidden transform scale-95 transition-all duration-300 shadow-2xl" id="modal-bulk-content">
-            <div class="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-                <div class="flex items-center gap-5">
-                    <div class="w-14 h-14 rounded-2xl bg-[#1B263B]/10 text-[#1B263B] flex items-center justify-center text-3xl border border-[#1B263B]/20"><i class="fa-solid fa-file-csv"></i></div>
-                    <div>
-                        <h3 class="font-black text-slate-900 text-xl leading-tight uppercase tracking-tighter">Actualización Masiva</h3>
-                        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-black">Catálogo & Multimedia</p>
-                    </div>
-                </div>
-                <button type="button" onclick="cerrarModalBulk()" class="text-slate-300 hover:text-slate-900 transition-colors w-12 h-12 flex items-center justify-center rounded-2xl hover:bg-white border border-transparent hover:border-slate-100"><i class="fa-solid fa-xmark text-2xl"></i></button>
-            </div>
-            <div class="p-10 space-y-10 max-h-[75vh] overflow-y-auto custom-scrollbar">
-                <div>
-                    <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <span class="w-6 h-6 rounded-full bg-[#1B263B] text-white flex items-center justify-center text-[10px] font-black">1</span> Paso 1: Obtener Estructura
-                    </h4>
-                    <p class="text-sm text-slate-500 mb-6 font-medium leading-relaxed">Descarga el archivo con los datos actuales para mantener la sincronización de IDs.</p>
-                    <div class="flex gap-4">
-                        <a href="dashboard.php?action=exportar_csv" class="group flex-1 bg-white hover:bg-[#3A86FF] text-slate-900 hover:text-white font-black py-4 rounded-2xl text-center transition-all flex items-center justify-center gap-3 border border-slate-100 shadow-sm hover:shadow-xl">
-                            <i class="fa-solid fa-download text-[#1B263B] group-hover:text-white transition-all duration-300"></i>
-                            <span class="group-hover:text-white transition-colors duration-300">Descargar CSV</span>
-                        </a>
-                        <a href="dashboard.php?action=exportar_ejemplo_csv" class="bg-white hover:bg-slate-50 text-slate-400 font-black py-4 px-6 rounded-2xl text-center transition-all flex items-center justify-center gap-3 border border-slate-100 text-[11px] uppercase tracking-widest">
-                            <i class="fa-solid fa-circle-question opacity-40"></i> Ejemplo
-                        </a>
-                    </div>
-                </div>
-                <div class="pt-10 border-t border-slate-50">
-                    <form method="POST" action="dashboard.php?view=catalogo" enctype="multipart/form-data" class="space-y-8">
-                        <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-                        <input type="hidden" name="action" value="actualizar_masivo_csv">
-                        <div>
-                            <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-[#1B263B] text-white flex items-center justify-center text-[10px] font-black">2</span> Paso 2: Cargar Multimedia
-                            </h4>
-                            <div class="bg-slate-50 border-2 border-dashed border-slate-100 rounded-3xl p-8 text-center group hover:border-[#1B263B] transition-all relative cursor-pointer">
-                                <input type="file" name="fotos_lote[]" multiple accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="actualizarContadorFotos(this)">
-                                <div class="w-12 h-12 rounded-2xl bg-white mx-auto mb-3 flex items-center justify-center text-[#1B263B] group-hover:scale-110 transition-transform"><i class="fa-solid fa-cloud-arrow-up text-xl"></i></div>
-                                <p class="text-[13px] text-slate-500 font-bold" id="txt-fotos">Sube las fotos de los productos</p>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-[#1B263B] text-white flex items-center justify-center text-[10px] font-black">3</span> Paso 3: Aplicar Cambios (CSV)
-                            </h4>
-                            <div class="bg-slate-50 border-2 border-dashed border-slate-100 rounded-3xl p-8 text-center group hover:border-[#1B263B] transition-all relative cursor-pointer">
-                                <input type="file" name="archivo_csv" accept=".csv" required class="absolute inset-0 opacity-0 cursor-pointer" onchange="actualizarNombreCSV(this)">
-                                <div class="w-12 h-12 rounded-2xl bg-white mx-auto mb-3 flex items-center justify-center text-[#1B263B] group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-invoice text-xl"></i></div>
-                                <p class="text-[13px] text-slate-500 font-bold" id="txt-csv">Seleccionar archivo CSV final</p>
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-5 rounded-3xl transition-all active:scale-95 text-sm uppercase tracking-widest">Sincronizar Todo el Sistema</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        function actualizarContadorFotos(input) { const txt = document.getElementById('txt-fotos'); if (input.files.length > 0) { txt.innerText = input.files.length + ' fotos listas'; txt.classList.replace('text-slate-400', 'text-[#1B263B]'); } }
-        function actualizarNombreCSV(input) { const txt = document.getElementById('txt-csv'); if (input.files.length > 0) { txt.innerText = input.files[0].name; txt.classList.replace('text-slate-400', 'text-[#1B263B]'); } }
-        function abrirModalBulk() { const m = document.getElementById('modal-bulk'); m.classList.remove('hidden'); setTimeout(()=> { m.classList.remove('opacity-0'); document.getElementById('modal-bulk-content').classList.remove('scale-95'); }, 10); }
-        function cerrarModalBulk() { const m = document.getElementById('modal-bulk'); m.classList.add('opacity-0'); document.getElementById('modal-bulk-content').classList.add('scale-95'); setTimeout(()=> m.classList.add('hidden'), 300); }
-    </script>
 
 </body>
 </html>
@@ -480,47 +415,28 @@ $base_url = $protocolo . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER[
     }
 
         if (($_POST['action'] ?? '') === 'actualizar_masivo_csv' && isset($_FILES['archivo_csv'])) {
+        require_once __DIR__ . '/lib/bulk_catalogo_helpers.php';
         set_time_limit(300); 
         ini_set('memory_limit', '512M'); 
         
         $upd_count = 0; $new_count = 0; $err_count = 0;
+        $img_ok = 0; $img_sin = 0;
         
-        $mapeo_imagenes = [];
-        if (isset($_FILES['fotos_lote'])) {
-            $total_files = count($_FILES['fotos_lote']['tmp_name']);
-            for ($i = 0; $i < $total_files; $i++) {
-                if ($_FILES['fotos_lote']['error'][$i] === UPLOAD_ERR_OK) {
-                    $tmp_name = $_FILES['fotos_lote']['tmp_name'][$i];
-                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                    $mime = finfo_file($finfo, $tmp_name);
-                    finfo_close($finfo);
-                    
-                    $valid_mimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-                    if (!in_array($mime, $valid_mimes)) { continue; }
-
-                    $nombre_orig = strtolower($_FILES['fotos_lote']['name'][$i]);
-                    $ext = pathinfo($nombre_orig, PATHINFO_EXTENSION);
-                    $nombre_webp = "bulk_" . time() . "_" . bin2hex(random_bytes(4)) . ".webp";
-                    $ruta_dest = __DIR__ . '/img_catalogo/' . $nombre_webp;
-                    if (!is_dir(__DIR__ . '/img_catalogo')) mkdir(__DIR__ . '/img_catalogo', 0755, true);
-
-                    if ($ext === 'webp') {
-                        if (move_uploaded_file($tmp_name, $ruta_dest)) {
-                            $mapeo_imagenes[$nombre_orig] = "img_catalogo/" . $nombre_webp;
-                            $mapeo_imagenes[pathinfo($nombre_orig, PATHINFO_FILENAME)] = "img_catalogo/" . $nombre_webp;
-                        }
-                    } else {
-                        $img_gd = @imagecreatefromstring(file_get_contents($tmp_name));
-                        if ($img_gd !== false) {
-                            imagepalettetotruecolor($img_gd); imagealphablending($img_gd, false); imagesavealpha($img_gd, true);
-                            imagewebp($img_gd, $ruta_dest, 75); imagedestroy($img_gd);
-                            $mapeo_imagenes[$nombre_orig] = "img_catalogo/" . $nombre_webp;
-                            $mapeo_imagenes[pathinfo($nombre_orig, PATHINFO_FILENAME)] = "img_catalogo/" . $nombre_webp;
-                        }
-                    }
-                }
+        if (empty($_POST['bulk_confirm_ids'])) {
+            $resumenIds = improgyp_bulk_csv_resumen_ids($_FILES['archivo_csv']['tmp_name']);
+            if ($resumenIds['tiene_id'] && $resumenIds['filas_con_id'] >= 5) {
+                $_SESSION['bulk_csv_needs_confirm'] = [
+                    'filas_con_id' => (int) $resumenIds['filas_con_id'],
+                    'filas_datos' => (int) $resumenIds['filas_datos'],
+                ];
+                header('Location: dashboard.php?view=catalogo&msg=bulk_csv_confirm');
+                exit;
             }
         }
+        unset($_SESSION['bulk_csv_needs_confirm']);
+
+        $mapeo_imagenes = improgyp_bulk_mapeo_desde_post();
+        $img_staged = improgyp_bulk_archivos_staging_count();
 
         $file = $_FILES['archivo_csv']['tmp_name'];
         if (($handle = fopen($file, "r")) !== FALSE) {
@@ -574,11 +490,13 @@ $base_url = $protocolo . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER[
 
                         if (empty($nombre)) continue;
 
-                        $img_key = strtolower($img_csv);
-                        if (isset($mapeo_imagenes[$img_key])) {
-                            $img_csv = $mapeo_imagenes[$img_key];
-                        } else if (isset($mapeo_imagenes[pathinfo($img_key, PATHINFO_FILENAME)])) {
-                            $img_csv = $mapeo_imagenes[pathinfo($img_key, PATHINFO_FILENAME)];
+                        $img_csv = improgyp_bulk_resolver_imagen_ruta($img_csv, $codigo, $mapeo_imagenes);
+                        $tieneImagen = $img_csv !== ''
+                            && (strpos($img_csv, 'http') === 0 || strpos($img_csv, 'img_catalogo/') === 0);
+                        if ($tieneImagen) {
+                            $img_ok++;
+                        } elseif ($codigo !== '') {
+                            $img_sin++;
                         }
 
                         // INTELIGENCIA: Si no hay ID, buscar por SKU (Código)
@@ -612,7 +530,8 @@ $base_url = $protocolo . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER[
             }
             fclose($handle);
             regenerarJSON($pdo);
-            header("Location: dashboard.php?view=catalogo&msg=csv_procesado&upd=$upd_count&new=$new_count&err=$err_count"); exit;
+            improgyp_bulk_imagen_map_clear();
+            header("Location: dashboard.php?view=catalogo&msg=csv_procesado&upd=$upd_count&new=$new_count&err=$err_count&img_ok=$img_ok&img_sin=$img_sin&img_staged=$img_staged"); exit;
         }
     }
 
@@ -669,6 +588,56 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'cargar_chat_b2b') {
     $stmt = $pdo->prepare("SELECT * FROM b2b_historial_chat WHERE ruc_cliente = ? ORDER BY fecha ASC");
     $stmt->execute([$ruc]);
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+    exit;
+}
+
+require_once __DIR__ . '/lib/bulk_catalogo_helpers.php';
+
+if (isset($_GET['ajax']) && $_GET['ajax'] === 'bulk_staging_reset') {
+    header('Content-Type: application/json; charset=utf-8');
+    improgyp_bulk_imagen_map_clear();
+    $payload = improgyp_bulk_staging_json_payload();
+    $payload['status'] = 'success';
+    echo json_encode($payload, JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+if (isset($_GET['ajax']) && $_GET['ajax'] === 'bulk_staging_count') {
+    header('Content-Type: application/json; charset=utf-8');
+    $payload = improgyp_bulk_staging_json_payload();
+    $payload['status'] = 'success';
+    echo json_encode($payload, JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+if (isset($_GET['ajax']) && $_GET['ajax'] === 'bulk_imagen_lote') {
+    header('Content-Type: application/json; charset=utf-8');
+    if (!hash_equals($csrf_token, $_POST['csrf_token'] ?? '')) {
+        echo json_encode(['error' => 'Error de seguridad (CSRF).'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    $files = $_FILES['fotos'] ?? $_FILES['fotos_lote'] ?? null;
+    if (!$files || !isset($files['tmp_name'])) {
+        echo json_encode(['error' => 'No se recibieron archivos.'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    $count = is_array($files['tmp_name']) ? count($files['tmp_name']) : 1;
+    if ($count > IMPROGYP_BULK_LOTE_MAX) {
+        echo json_encode([
+            'error' => 'Máximo ' . IMPROGYP_BULK_LOTE_MAX . ' fotos por lote. El sistema sube automáticamente en varias tandas.',
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    $res = improgyp_bulk_procesar_files_array($files);
+    if ($res['ok'] === 0 && $res['skip'] > 0) {
+        $payload = improgyp_bulk_staging_json_payload(0, $res['skip'], $res['warnings']);
+        $payload['error'] = 'Ninguna imagen del lote se pudo guardar. Revisa formato (JPG/PNG/WebP/GIF) y que GD/WebP esté activo en PHP.';
+        echo json_encode($payload, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    $payload = improgyp_bulk_staging_json_payload($res['ok'], $res['skip'], $res['warnings']);
+    $payload['status'] = 'success';
+    echo json_encode($payload, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
@@ -2447,9 +2416,12 @@ function extraerTextos($html) {
 
                 <?php elseif($vista === 'catalogo'): ?>
             <?php if(isset($_GET['msg']) && $_GET['msg'] == 'csv_procesado'): 
-                $upd = $_GET['upd'] ?? 0;
-                $new = $_GET['new'] ?? 0;
-                $err = $_GET['err'] ?? 0;
+                $upd = (int)($_GET['upd'] ?? 0);
+                $new = (int)($_GET['new'] ?? 0);
+                $err = (int)($_GET['err'] ?? 0);
+                $img_ok = (int)($_GET['img_ok'] ?? 0);
+                $img_sin = (int)($_GET['img_sin'] ?? 0);
+                $img_staged = (int)($_GET['img_staged'] ?? 0);
             ?>
                 <div class="bg-[#1B263B]/10 border border-[#1B263B]/30 text-[#1B263B] p-5 rounded-2xl mb-6 text-sm font-bold flex items-center gap-4 relative z-10 w-full animate-in fade-in slide-in-from-top-4 duration-500 shadow-sm">
                     <div class="w-10 h-10 rounded-full bg-[#1B263B]/20 flex items-center justify-center text-[#1B263B] text-lg shadow-inner"><i class="fa-solid fa-circle-check"></i></div>
@@ -2458,7 +2430,20 @@ function extraerTextos($html) {
                         <p class="text-[10px] uppercase tracking-widest text-[#1B263B]/70 font-black mt-0.5">
                             <?= $upd ?> Actualizados | <?= $new ?> Nuevos | <span class="<?= $err > 0 ? 'text-rose-500' : '' ?>"><?= $err ?> Errores</span>
                         </p>
+                        <?php if ($img_staged > 0 || $img_ok > 0 || $img_sin > 0): ?>
+                        <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">
+                            Fotos subidas: <?= $img_staged ?> · Con imagen en CSV: <?= $img_ok ?><?php if ($img_sin > 0): ?> · <span class="text-amber-600">Sin imagen: <?= $img_sin ?></span><?php endif; ?>
+                        </p>
+                        <?php endif; ?>
                     </div>
+                </div>
+            <?php endif; ?>
+            <?php if (isset($_GET['msg']) && $_GET['msg'] === 'bulk_csv_confirm'):
+                $bulkConfirm = $_SESSION['bulk_csv_needs_confirm'] ?? ['filas_con_id' => 0, 'filas_datos' => 0];
+            ?>
+                <div class="bg-amber-50 border border-amber-200 text-amber-900 p-5 rounded-2xl mb-6 text-sm font-bold relative z-10 w-full">
+                    <p class="font-black">Importación detenida: el CSV trae columna ID</p>
+                    <p class="text-[11px] mt-1 font-medium">Hay <?= (int) ($bulkConfirm['filas_con_id'] ?? 0) ?> filas con ID &gt; 0 (de <?= (int) ($bulkConfirm['filas_datos'] ?? 0) ?> productos). Eso <strong>actualiza</strong> productos existentes, no crea IMPLED nuevos. Abre de nuevo «Actualización masiva», marca la casilla de confirmación y vuelve a sincronizar — o quita la columna ID para solo altas por código.</p>
                 </div>
             <?php endif; ?>
             <?php if(isset($_GET['msg']) && $_GET['msg'] == 'eliminado_masivo'): ?>
@@ -3730,41 +3715,48 @@ function extraerTextos($html) {
                     </div>
                 </div>
                 <div class="pt-10 border-t border-slate-50">
-                    <form method="POST" action="dashboard.php?view=catalogo" enctype="multipart/form-data" class="space-y-8">
+                    <form id="form-bulk-csv" method="POST" action="dashboard.php?view=catalogo" enctype="multipart/form-data" class="space-y-8">
                         <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                         <input type="hidden" name="action" value="actualizar_masivo_csv">
                         <div>
-                            <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-[#1B263B] text-white flex items-center justify-center text-[10px] font-black">2</span> Paso 2: Cargar Multimedia
+                            <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-full bg-[#1B263B] text-white flex items-center justify-center text-[10px] font-black">2</span> Paso 2: Fotos (por lotes)
                             </h4>
+                            <p class="text-[10px] text-slate-400 mb-3 leading-relaxed">Se envían de a <?= (int) IMPROGYP_BULK_LOTE_MAX ?> archivos. El nombre debe ser el <strong>código SKU</strong> (ej. <code class="text-[#1B263B]">20LAS04.webp</code>). Evita copias tipo <code class="text-amber-600">20LAS04 2.webp</code> (se normalizan, pero mejor un archivo por código).</p>
                             <div class="bg-slate-50 border-2 border-dashed border-slate-100 rounded-3xl p-8 text-center group hover:border-[#1B263B] transition-all relative cursor-pointer">
-                                <input type="file" name="fotos_lote[]" multiple accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="actualizarContadorFotos(this)">
+                                <input type="file" id="bulk-fotos-picker" multiple accept="image/jpeg,image/png,image/webp,image/gif" class="absolute inset-0 opacity-0 cursor-pointer">
                                 <div class="w-12 h-12 rounded-2xl bg-white mx-auto mb-3 flex items-center justify-center text-[#1B263B] group-hover:scale-110 transition-transform"><i class="fa-solid fa-cloud-arrow-up text-xl"></i></div>
-                                <p class="text-[13px] text-slate-500 font-bold" id="txt-fotos">Sube las fotos de los productos</p>
+                                <p class="text-[13px] text-slate-500 font-bold" id="txt-fotos">Nombre de archivo = código SKU. Máx. <?= (int) IMPROGYP_BULK_LOTE_MAX ?> por tanda.</p>
+                                <p id="bulk-fotos-progress" class="text-[10px] text-[#3A86FF] font-black mt-2 hidden"><i class="fa-solid fa-circle-notch fa-spin"></i> Subiendo fotos…</p>
                             </div>
+                            <ul id="bulk-fotos-warnings" class="hidden text-[9px] text-amber-700 font-bold mt-2 space-y-1 list-disc list-inside max-h-24 overflow-y-auto"></ul>
+                            <button type="button" id="btn-bulk-staging-reset" class="hidden text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-rose-500 mt-2">Vaciar fotos en cola</button>
+                            <p class="text-[9px] text-slate-400 mt-2">Las fotos quedan en sesión hasta sincronizar el CSV (misma pestaña). También puedes omitir fotos y subir solo el CSV.</p>
                         </div>
                         <div>
                             <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-[#1B263B] text-white flex items-center justify-center text-[10px] font-black">3</span> Paso 3: Aplicar Cambios (CSV)
+                                <span class="w-6 h-6 rounded-full bg-[#1B263B] text-white flex items-center justify-center text-[10px] font-black">3</span> Paso 3: Aplicar CSV
                             </h4>
                             <div class="bg-slate-50 border-2 border-dashed border-slate-100 rounded-3xl p-8 text-center group hover:border-[#1B263B] transition-all relative cursor-pointer">
                                 <input type="file" name="archivo_csv" accept=".csv" required class="absolute inset-0 opacity-0 cursor-pointer" onchange="actualizarNombreCSV(this)">
                                 <div class="w-12 h-12 rounded-2xl bg-white mx-auto mb-3 flex items-center justify-center text-[#1B263B] group-hover:scale-110 transition-transform"><i class="fa-solid fa-file-invoice text-xl"></i></div>
-                                <p class="text-[13px] text-slate-500 font-bold" id="txt-csv">Seleccionar archivo CSV final</p>
+                                <p class="text-[13px] text-slate-500 font-bold" id="txt-csv">Seleccionar archivo CSV (sin columna ID para productos nuevos)</p>
                             </div>
+                            <label id="bulk-confirm-ids-wrap" class="hidden flex items-start gap-3 mt-4 p-4 rounded-2xl bg-amber-50 border border-amber-100 cursor-pointer">
+                                <input type="checkbox" id="bulk-confirm-ids-cb" class="mt-1 rounded border-amber-300">
+                                <span class="text-[10px] text-amber-900 font-bold leading-relaxed">Confirmo: este CSV <strong>actualiza productos por ID</strong> (no es solo alta IMPLED por código).</span>
+                            </label>
+                            <input type="hidden" name="bulk_confirm_ids" id="bulk-confirm-ids" value="">
                         </div>
-                        <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-5 rounded-3xl transition-all active:scale-95 text-sm uppercase tracking-widest">Sincronizar Todo el Sistema</button>
+                        <button type="submit" id="btn-bulk-sync" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-5 rounded-3xl transition-all active:scale-95 text-sm uppercase tracking-widest">Sincronizar catálogo (CSV)</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        function actualizarContadorFotos(input) { const txt = document.getElementById('txt-fotos'); if (input.files.length > 0) { txt.innerText = input.files.length + ' fotos listas'; txt.classList.replace('text-slate-400', 'text-[#1B263B]'); } }
-        function actualizarNombreCSV(input) { const txt = document.getElementById('txt-csv'); if (input.files.length > 0) { txt.innerText = input.files[0].name; txt.classList.replace('text-slate-400', 'text-[#1B263B]'); } }
-        function abrirModalBulk() { const m = document.getElementById('modal-bulk'); m.classList.remove('hidden'); setTimeout(()=> { m.classList.remove('opacity-0'); document.getElementById('modal-bulk-content').classList.remove('scale-95'); }, 10); }
-        function cerrarModalBulk() { const m = document.getElementById('modal-bulk'); m.classList.add('opacity-0'); document.getElementById('modal-bulk-content').classList.add('scale-95'); setTimeout(()=> m.classList.add('hidden'), 300); }
-    </script>
+    <?php if ($vista === 'catalogo'): ?>
+    <script src="js/bulk_upload.js?v=3"></script>
+    <?php endif; ?>
     
     <!-- MODAL GESTIÓN CATEGORÍAS -->
     <div id="modal-cats" class="fixed inset-0 bg-white/80 backdrop-blur-xl z-50 hidden flex items-center justify-center opacity-0 transition-opacity">
