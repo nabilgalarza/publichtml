@@ -267,3 +267,112 @@ function improgyp_megamenu_orphan_categories(array $divisions, ?array $catalogCa
         return !in_array($c, $linked, true);
     }));
 }
+
+function improgyp_megamenu_normalize_match(string $text): string {
+    $text = mb_strtolower(trim($text), 'UTF-8');
+    return preg_replace('/\s+/', ' ', $text) ?? $text;
+}
+
+/**
+ * Sugiere división del megamenú para una categoría del catálogo.
+ */
+function improgyp_megamenu_guess_division_id(string $categoria): string {
+    $n = improgyp_megamenu_normalize_match($categoria);
+    $rules = [
+        'drywall' => ['lijador', 'lija', 'drywall', 'yeso', 'gypsum', 'atornill', 'zanco', 'panel de yeso', 'herramientas drywall', 'revestimiento'],
+        'potencia' => ['taladro', 'amoladora', 'mezclador', 'concreto', 'cortadora', 'sierra', 'rotomart', 'percutor', 'esmeril', 'demolición'],
+        'aplicacion' => ['pulveriz', 'silicona', 'pistola', 'soplador', 'aspiradora', 'limpieza', 'vacío', 'vacio', 'aire caliente', 'estirado'],
+        'accesorios' => ['accesorio', 'abrasivo', 'consumible', 'bater', 'cargador', 'tornillo', 'kit', 'repuesto'],
+    ];
+    foreach ($rules as $id => $needles) {
+        foreach ($needles as $needle) {
+            if ($needle !== '' && str_contains($n, $needle)) {
+                return $id;
+            }
+        }
+    }
+    return 'accesorios';
+}
+
+/**
+ * Añade enlaces de categoría a una división/columna (sin duplicar linkValue).
+ *
+ * @param array<int, array<string, mixed>> $divisions
+ * @param list<string> $categories
+ * @return array{0: array, 1: int} [divisions actualizadas, cantidad añadida]
+ */
+function improgyp_megamenu_append_category_links(array $divisions, string $divisionId, string $column, array $categories): array {
+    $linksKey = ($column === 'right') ? 'linksRight' : 'linksLeft';
+    $linked = array_flip(improgyp_megamenu_linked_categories($divisions));
+    $added = 0;
+    foreach ($divisions as $idx => $div) {
+        if (!is_array($div) || ($div['id'] ?? '') !== $divisionId) {
+            continue;
+        }
+        if (!isset($divisions[$idx][$linksKey]) || !is_array($divisions[$idx][$linksKey])) {
+            $divisions[$idx][$linksKey] = [];
+        }
+        foreach ($categories as $cat) {
+            $cat = trim((string) $cat);
+            if ($cat === '' || isset($linked[$cat])) {
+                continue;
+            }
+            $divisions[$idx][$linksKey][] = [
+                'name' => $cat,
+                'linkType' => 'category',
+                'linkValue' => $cat,
+            ];
+            $linked[$cat] = true;
+            $added++;
+        }
+        break;
+    }
+    return [$divisions, $added];
+}
+
+/**
+ * Distribuye huérfanas por división sugerida (columna izquierda).
+ *
+ * @param array<int, array<string, mixed>> $divisions
+ * @param list<string> $categories
+ * @return array{0: array, 1: int}
+ */
+function improgyp_megamenu_auto_distribute_orphans(array $divisions, array $categories): array {
+    $byDiv = [];
+    foreach ($categories as $cat) {
+        $cat = trim((string) $cat);
+        if ($cat === '') {
+            continue;
+        }
+        $divId = improgyp_megamenu_guess_division_id($cat);
+        $byDiv[$divId][] = $cat;
+    }
+    $total = 0;
+    foreach ($byDiv as $divId => $cats) {
+        [$divisions, $n] = improgyp_megamenu_append_category_links($divisions, $divId, 'left', $cats);
+        $total += $n;
+    }
+    return [$divisions, $total];
+}
+
+/** Carga megamenú guardado + huérfanas actuales del catálogo. */
+function improgyp_megamenu_load_with_orphans(): array {
+    $path = dirname(__DIR__) . '/config_header.json';
+    $header = [];
+    if (is_file($path)) {
+        $header = json_decode((string) file_get_contents($path), true) ?? [];
+    }
+    if (!is_array($header)) {
+        $header = [];
+    }
+    $divisions = improgyp_normalize_megamenu($header['megamenu'] ?? null);
+    $orphans = improgyp_megamenu_orphan_categories($divisions);
+    return ['divisions' => $divisions, 'orphans' => $orphans];
+}
+
+/** Actualiza contador de huérfanas en sesión (tras regenerar catálogo o guardar menú). */
+function improgyp_megamenu_refresh_orphan_session(): void {
+    $data = improgyp_megamenu_load_with_orphans();
+    $_SESSION['megamenu_orphan_count'] = count($data['orphans']);
+    $_SESSION['megamenu_orphan_list'] = array_slice($data['orphans'], 0, 30);
+}

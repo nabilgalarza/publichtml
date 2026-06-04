@@ -577,6 +577,8 @@ function regenerarJSON($pdo) {
         ];
     }
     file_put_contents(__DIR__ . '/catalogo.json', json_encode($catalogoOficial, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    require_once __DIR__ . '/components/megamenu_config.php';
+    improgyp_megamenu_refresh_orphan_session();
 }
 
 require_once __DIR__ . '/lib/copy_ia_helpers.php';
@@ -1070,6 +1072,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $existing['nivel3_menu'] = improgyp_normalize_nivel3_menu($n3raw);
         }
         file_put_contents(__DIR__ . '/config_header.json', json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        improgyp_megamenu_refresh_orphan_session();
         header("Location: dashboard.php?view=apariencia&sub=megamenu&msg=guardado"); exit;
     }
 
@@ -1535,7 +1538,9 @@ if ($vista === 'blog' && isset($_GET['ajax']) && $_GET['ajax'] === 'articulo') {
 }
 
 elseif ($vista === 'catalogo') { 
-    $catalogo_local = $pdo->query("SELECT * FROM improgyp_catalogo ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC); 
+    $catalogo_local = $pdo->query("SELECT * FROM improgyp_catalogo ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+    require_once __DIR__ . '/components/megamenu_config.php';
+    improgyp_megamenu_refresh_orphan_session();
 }
 elseif ($vista === 'seo') { 
     $seo_guardado = []; 
@@ -2681,6 +2686,35 @@ function extraerTextos($html) {
             <?php if(isset($_GET['msg']) && $_GET['msg'] == 'eliminado_masivo'): ?>
                 <div class="bg-rose-50 border border-rose-100 text-rose-500 p-4 rounded-2xl mb-6 text-sm font-bold flex items-center gap-2 relative z-10 w-full animate-in fade-in slide-in-from-top-4 duration-500">
                     <i class="fa-solid fa-trash-can"></i> Los productos seleccionados han sido eliminados del catálogo.
+                </div>
+            <?php endif; ?>
+            <?php if (isset($_GET['msg']) && $_GET['msg'] === 'guardado'): ?>
+                <div class="bg-emerald-50 border border-emerald-100 text-emerald-800 p-4 rounded-2xl mb-6 text-sm font-bold flex items-center gap-3 relative z-10 w-full">
+                    <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                    <span>Producto guardado y catálogo público actualizado.</span>
+                </div>
+            <?php endif; ?>
+            <?php
+                $megamenu_orphan_n = (int) ($_SESSION['megamenu_orphan_count'] ?? 0);
+                if ($megamenu_orphan_n > 0):
+                    $megamenu_orphan_sample = $_SESSION['megamenu_orphan_list'] ?? [];
+            ?>
+                <div class="bg-amber-50 border border-amber-200 text-amber-950 p-5 rounded-2xl mb-6 text-sm relative z-10 w-full flex flex-col md:flex-row md:items-center gap-4">
+                    <div class="flex-1">
+                        <p class="font-black flex items-center gap-2">
+                            <i class="fa-solid fa-sitemap text-amber-600"></i>
+                            <?= $megamenu_orphan_n ?> categoría<?= $megamenu_orphan_n === 1 ? '' : 's' ?> no aparecen en «Explorar Divisiones»
+                        </p>
+                        <p class="text-[11px] mt-1 text-amber-900/90 font-medium">
+                            Los productos ya están en la tienda; el megamenú es independiente. Enlázalas en un clic y luego guarda el menú.
+                            <?php if (!empty($megamenu_orphan_sample)): ?>
+                                <span class="block mt-1 text-[10px] text-amber-800/80">Ej.: <?= htmlspecialchars(implode(', ', array_slice($megamenu_orphan_sample, 0, 4)), ENT_QUOTES, 'UTF-8') ?><?= count($megamenu_orphan_sample) > 4 ? '…' : '' ?></span>
+                            <?php endif; ?>
+                        </p>
+                    </div>
+                    <a href="dashboard.php?view=apariencia&sub=megamenu#mm-orphans-panel" class="shrink-0 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-black text-[11px] uppercase tracking-wide rounded-xl transition-colors">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Sincronizar menú
+                    </a>
                 </div>
             <?php endif; ?>
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 relative z-10">

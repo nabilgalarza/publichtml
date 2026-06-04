@@ -13,6 +13,7 @@ $megamenu_initial = improgyp_normalize_megamenu($megamenu_stored_raw);
 $nivel3_initial = improgyp_normalize_nivel3_menu($header_data['nivel3_menu'] ?? null);
 $orphan_cats_initial = improgyp_megamenu_orphan_categories($megamenu_initial, improgyp_megamenu_categorias_from_catalogo());
 $categorias_reales = improgyp_megamenu_categorias_from_catalogo();
+improgyp_megamenu_refresh_orphan_session();
 
 $catalogo = [];
 $cat_path = __DIR__ . '/../catalogo.json';
@@ -68,6 +69,15 @@ if (file_exists($cat_path)) {
             Ver en tienda <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
         </a>
     </div>
+    <?php
+        $orphans_after_save = (int) ($_SESSION['megamenu_orphan_count'] ?? 0);
+        if ($orphans_after_save > 0):
+    ?>
+    <div class="bg-amber-50 border border-amber-200 text-amber-900 p-4 rounded-xl text-xs font-medium">
+        Aún hay <strong><?= $orphans_after_save ?></strong> categoría<?= $orphans_after_save === 1 ? '' : 's' ?> del catálogo sin enlace en el menú.
+        <a href="#mm-orphans-panel" class="font-black underline text-amber-950 ml-1">Sincronizar aquí</a>
+    </div>
+    <?php endif; ?>
     <?php endif; ?>
 
     <form id="form-megamenu" action="dashboard.php" method="POST" class="grid grid-cols-1 xl:grid-cols-12 gap-6">
@@ -87,12 +97,47 @@ if (file_exists($cat_path)) {
                 </span>
             </div>
 
-            <div id="mm-orphans-panel" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm <?= empty($orphan_cats_initial) ? 'hidden' : '' ?>">
+            <div id="mm-orphans-panel" class="bg-white rounded-2xl border border-amber-200 p-4 shadow-sm scroll-mt-24 <?= empty($orphan_cats_initial) ? 'hidden' : '' ?>">
                 <h3 class="text-xs font-black text-slate-700 uppercase tracking-wide flex items-center gap-2">
                     <i class="fa-solid fa-link-slash text-amber-500"></i> Categorías sin enlace en el menú
+                    <span id="mm-orphans-count" class="ml-auto text-[10px] font-black text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full"><?= count($orphan_cats_initial) ?></span>
                 </h3>
-                <p class="text-[10px] text-slate-500 mt-1">Existen en el catálogo pero no aparecen en ningún enlace de tipo categoría.</p>
+                <p class="text-[10px] text-slate-500 mt-1">Existen en el catálogo pero no aparecen en «Explorar Divisiones». Añádelas aquí y pulsa <strong>Guardar cambios</strong> para publicar.</p>
                 <ul id="mm-orphans-list" class="mt-3 flex flex-wrap gap-2 text-[10px] font-bold text-amber-800"></ul>
+                <div id="mm-orphans-actions" class="mt-4 flex flex-wrap gap-2">
+                    <button type="button" onclick="mmOpenOrphanModal()" class="px-4 py-2 bg-[#1B263B] text-white font-black text-[10px] uppercase tracking-wide rounded-xl hover:bg-[#3A86FF] transition-colors">
+                        <i class="fa-solid fa-plus mr-1"></i> Añadir al menú…
+                    </button>
+                    <button type="button" onclick="mmAutoDistributeOrphans()" class="px-4 py-2 border border-amber-300 text-amber-900 font-black text-[10px] uppercase tracking-wide rounded-xl hover:bg-amber-50 transition-colors">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Distribuir automáticamente
+                    </button>
+                </div>
+            </div>
+
+            <div id="mm-orphan-modal" class="fixed inset-0 z-[200] hidden items-center justify-center p-4" aria-hidden="true">
+                <div class="absolute inset-0 bg-slate-900/50" onclick="mmCloseOrphanModal()"></div>
+                <div class="relative bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-lg p-6 z-10">
+                    <h3 class="text-sm font-black text-slate-900">Añadir categorías al megamenú</h3>
+                    <p class="text-[11px] text-slate-500 mt-1">El texto del enlace será el nombre exacto de la categoría (filtro en tienda).</p>
+                    <div class="mt-4 grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[9px] font-black text-slate-400 uppercase">División (pestaña)</label>
+                            <select id="mm-orphan-division" class="w-full mt-1 text-xs font-bold border border-slate-200 rounded-lg px-3 py-2"></select>
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-slate-400 uppercase">Columna</label>
+                            <select id="mm-orphan-column" class="w-full mt-1 text-xs font-bold border border-slate-200 rounded-lg px-3 py-2">
+                                <option value="left">Izquierda</option>
+                                <option value="right">Derecha</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-4 max-h-48 overflow-y-auto custom-scrollbar border border-slate-100 rounded-xl p-3 space-y-2" id="mm-orphan-checkboxes"></div>
+                    <div class="mt-4 flex flex-wrap justify-end gap-2">
+                        <button type="button" onclick="mmCloseOrphanModal()" class="px-4 py-2 text-slate-500 font-bold text-xs rounded-xl hover:bg-slate-50">Cancelar</button>
+                        <button type="button" onclick="mmApplyOrphanModal()" class="px-5 py-2 bg-emerald-500 text-white font-black text-xs rounded-xl hover:bg-emerald-600">Añadir seleccionadas</button>
+                    </div>
+                </div>
             </div>
 
             <details class="bg-white rounded-2xl border border-violet-200 shadow-sm overflow-hidden">
@@ -226,20 +271,137 @@ if (file_exists($cat_path)) {
         return set;
     }
 
-    function renderOrphans() {
+    function getOrphanCategories() {
         const linked = collectLinkedCategories();
-        const orphans = categoriasReales.filter(c => !linked.has(c));
+        return categoriasReales.filter(c => !linked.has(c));
+    }
+
+    function guessDivisionId(categoria) {
+        const n = normalize(categoria);
+        const rules = [
+            ['drywall', ['lijador', 'lija', 'drywall', 'yeso', 'gypsum', 'atornill', 'zanco', 'panel de yeso', 'herramientas drywall', 'revestimiento']],
+            ['potencia', ['taladro', 'amoladora', 'mezclador', 'concreto', 'cortadora', 'sierra', 'rotomart', 'percutor', 'esmeril', 'demolicion']],
+            ['aplicacion', ['pulveriz', 'silicona', 'pistola', 'soplador', 'aspiradora', 'limpieza', 'vacio', 'aire caliente', 'estirado']],
+            ['accesorios', ['accesorio', 'abrasivo', 'consumible', 'bater', 'cargador', 'tornillo', 'kit', 'repuesto']],
+        ];
+        for (const [id, needles] of rules) {
+            if (needles.some(needle => n.includes(needle))) return id;
+        }
+        return 'accesorios';
+    }
+
+    function divisionIndexById(divId) {
+        return megamenuState.findIndex(d => d.id === divId);
+    }
+
+    function appendCategoriesToDivision(divId, column, categories) {
+        let idx = divisionIndexById(divId);
+        if (idx < 0 && megamenuState.length) {
+            idx = 0;
+        }
+        if (idx < 0) return 0;
+        const key = column === 'right' ? 'linksRight' : 'linksLeft';
+        const linked = collectLinkedCategories();
+        let added = 0;
+        categories.forEach(cat => {
+            if (!cat || linked.has(cat)) return;
+            megamenuState[idx][key].push({ name: cat, linkType: 'category', linkValue: cat });
+            linked.add(cat);
+            added++;
+        });
+        return added;
+    }
+
+    function renderOrphans() {
+        const orphans = getOrphanCategories();
         const panel = document.getElementById('mm-orphans-panel');
         const list = document.getElementById('mm-orphans-list');
+        const countEl = document.getElementById('mm-orphans-count');
+        const actions = document.getElementById('mm-orphans-actions');
         if (!panel || !list) return;
         if (!orphans.length) {
             panel.classList.add('hidden');
             list.innerHTML = '';
+            if (actions) actions.classList.add('hidden');
             return;
         }
         panel.classList.remove('hidden');
+        if (actions) actions.classList.remove('hidden');
+        if (countEl) countEl.textContent = String(orphans.length);
         list.innerHTML = orphans.map(c => `<li class="bg-amber-50 border border-amber-100 px-2 py-1 rounded-lg">${esc(c)}</li>`).join('');
     }
+
+    window.mmOpenOrphanModal = function() {
+        const orphans = getOrphanCategories();
+        if (!orphans.length) {
+            alert('No hay categorías huérfanas.');
+            return;
+        }
+        const sel = document.getElementById('mm-orphan-division');
+        const box = document.getElementById('mm-orphan-checkboxes');
+        const modal = document.getElementById('mm-orphan-modal');
+        if (!sel || !box || !modal) return;
+        sel.innerHTML = megamenuState.map(d => `<option value="${esc(d.id)}">${esc(d.title)}</option>`).join('');
+        const firstGuess = guessDivisionId(orphans[0]);
+        if (divisionIndexById(firstGuess) >= 0) sel.value = firstGuess;
+        box.innerHTML = orphans.map(c => `
+            <label class="flex items-start gap-2 text-xs font-bold text-slate-700 cursor-pointer">
+                <input type="checkbox" class="mm-orphan-cb mt-0.5 rounded border-slate-300" value="${esc(c)}" checked>
+                <span>${esc(c)} <span class="text-[9px] text-slate-400 font-medium">→ ${esc(guessDivisionId(c))}</span></span>
+            </label>`).join('');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        modal.setAttribute('aria-hidden', 'false');
+    };
+
+    window.mmCloseOrphanModal = function() {
+        const modal = document.getElementById('mm-orphan-modal');
+        if (!modal) return;
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        modal.setAttribute('aria-hidden', 'true');
+    };
+
+    window.mmApplyOrphanModal = function() {
+        const divId = document.getElementById('mm-orphan-division')?.value;
+        const col = document.getElementById('mm-orphan-column')?.value || 'left';
+        const checked = [...document.querySelectorAll('.mm-orphan-cb:checked')].map(el => el.value).filter(Boolean);
+        if (!divId || !checked.length) {
+            alert('Elige al menos una categoría.');
+            return;
+        }
+        const n = appendCategoriesToDivision(divId, col, checked);
+        mmCloseOrphanModal();
+        renderAll();
+        if (n > 0) {
+            alert(`Se añadieron ${n} enlace${n === 1 ? '' : 's'}. Pulsa «Guardar cambios» para publicar en la tienda.`);
+        } else {
+            alert('No se añadió ningún enlace (ya existían o la división no es válida).');
+        }
+    };
+
+    window.mmAutoDistributeOrphans = function() {
+        const orphans = getOrphanCategories();
+        if (!orphans.length) {
+            alert('Todas las categorías del catálogo ya están enlazadas en el menú.');
+            return;
+        }
+        if (!confirm(`¿Distribuir ${orphans.length} categoría(s) en las divisiones sugeridas (columna izquierda)? Podrás revisar antes de guardar.`)) return;
+        const byDiv = {};
+        orphans.forEach(cat => {
+            const id = guessDivisionId(cat);
+            if (!byDiv[id]) byDiv[id] = [];
+            byDiv[id].push(cat);
+        });
+        let total = 0;
+        Object.keys(byDiv).forEach(divId => {
+            total += appendCategoriesToDivision(divId, 'left', byDiv[divId]);
+        });
+        renderAll();
+        alert(total > 0
+            ? `Se añadieron ${total} enlace${total === 1 ? '' : 's'}. Revisa la vista previa y pulsa «Guardar cambios».`
+            : 'No se pudo añadir ningún enlace (revisa que existan las divisiones drywall, potencia, aplicacion, accesorios).');
+    };
 
     window.mmSetPreviewMode = function(mode) {
         previewMode = mode === 'mobile' ? 'mobile' : 'desktop';
@@ -494,5 +656,12 @@ if (file_exists($cat_path)) {
     });
 
     renderAll();
+
+    if (window.location.hash === '#mm-orphans-panel') {
+        const orphanPanel = document.getElementById('mm-orphans-panel');
+        if (orphanPanel) {
+            setTimeout(() => orphanPanel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+        }
+    }
 })();
 </script>

@@ -91,6 +91,21 @@
                     "name": "Pistolas de silicona",
                     "linkType": "category",
                     "linkValue": "Pistolas de Silicona"
+                },
+                {
+                    "name": "Acabados",
+                    "linkType": "category",
+                    "linkValue": "Acabados"
+                },
+                {
+                    "name": "Herramientas de Pintura",
+                    "linkType": "category",
+                    "linkValue": "Herramientas de Pintura"
+                },
+                {
+                    "name": "Revestimientos",
+                    "linkType": "category",
+                    "linkValue": "Revestimientos"
                 }
             ],
             "linksRight": [
@@ -123,6 +138,26 @@
                     "name": "Accesorios",
                     "linkType": "category",
                     "linkValue": "Accesorios"
+                },
+                {
+                    "name": "Abrasivos",
+                    "linkType": "category",
+                    "linkValue": "Abrasivos"
+                },
+                {
+                    "name": "Cintas",
+                    "linkType": "category",
+                    "linkValue": "Cintas"
+                },
+                {
+                    "name": "Consumibles",
+                    "linkType": "category",
+                    "linkValue": "Consumibles"
+                },
+                {
+                    "name": "Fijaciones",
+                    "linkType": "category",
+                    "linkValue": "Fijaciones"
                 }
             ],
             "linksRight": [
@@ -137,6 +172,58 @@
                     "linkValue": "maxxt"
                 }
             ]
+        },
+        {
+            "id": "herramientas_generales",
+            "title": "Herramientas Generales",
+            "icon": "fa-tools",
+            "iconColor": "text-rose-500",
+            "titleLeft": "GRUPO IZQUIERDO",
+            "titleRight": "GRUPO DERECHO",
+            "linksLeft": [
+                {
+                    "name": "Nuevo enlace",
+                    "linkType": "category",
+                    "linkValue": "Abrasivos"
+                },
+                {
+                    "name": "Herramientas",
+                    "linkType": "category",
+                    "linkValue": "Herramientas"
+                },
+                {
+                    "name": "Herramientas Manuales",
+                    "linkType": "category",
+                    "linkValue": "Herramientas Manuales"
+                },
+                {
+                    "name": "Herramientas de Medición",
+                    "linkType": "category",
+                    "linkValue": "Herramientas de Medición"
+                }
+            ],
+            "linksRight": []
+        },
+        {
+            "id": "seguridad_industrial",
+            "title": "Seguridad Industrial",
+            "icon": "fa-user-shield",
+            "iconColor": "text-emerald-500",
+            "titleLeft": "GRUPO IZQUIERDO",
+            "titleRight": "GRUPO DERECHO",
+            "linksLeft": [
+                {
+                    "name": "Nuevo enlace",
+                    "linkType": "category",
+                    "linkValue": "Abrasivos"
+                },
+                {
+                    "name": "Seguridad Industrial",
+                    "linkType": "category",
+                    "linkValue": "Seguridad Industrial"
+                }
+            ],
+            "linksRight": []
         }
     ],
     "nivel3_menu": [
