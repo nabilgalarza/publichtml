@@ -8,7 +8,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Ranurada 23x160x2900mm. Acabado oscuro, vida útil +25 años, limpieza solo con agua."
@@ -22,7 +22,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Ranurada 23x160x2900mm. Disminuye ruido, sin mantenimiento, protección UV."
@@ -36,7 +36,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Ranurada 23x160x2900mm. Instalación fácil, sin mantenimiento, inmune a plagas."
@@ -50,7 +50,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Ranurada 23x160x2900mm. Protección UV, vida útil +25 años, no propaga llamas, limpieza con agua."
@@ -64,10 +64,66 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Metálico, anclaje oculto fácil fijación a pared/techo. Utilizar 3 por panel de 2.9m."
+    },
+    {
+        "nombre": "Plancha PVC marmoleada Gris Pacífico",
+        "codigo": "20LPVC11",
+        "marca": "IMPLED",
+        "categoria": "Revestimientos",
+        "imagen": "img_catalogo/webp_1780582665_plancha_pvc_mar.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Marmoleada. Fácil instalación, sin mantenimiento, no propaga llamas, inmune a plagas."
+    },
+    {
+        "nombre": "Plancha PVC marmoleada Blanco Calacatta",
+        "codigo": "20LPVC10",
+        "marca": "IMPLED",
+        "categoria": "Revestimientos",
+        "imagen": "img_catalogo/webp_1780582760_plancha_pvc_mar.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Marmoleada. Fácil instalación, sin mantenimiento, no propaga llamas, inmune a plagas."
+    },
+    {
+        "nombre": "Plancha PVC marmoleada Olive",
+        "codigo": "20LPVC04",
+        "marca": "IMPLED",
+        "categoria": "Revestimientos",
+        "imagen": "img_catalogo/webp_1780582825_plancha_pvc_mar.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Marmoleada. Fácil instalación, sin mantenimiento, no propaga llamas, inmune a plagas."
+    },
+    {
+        "nombre": "Plancha PVC marmoleada Café",
+        "codigo": "20LPVC03",
+        "marca": "IMPLED",
+        "categoria": "Revestimientos",
+        "imagen": "img_catalogo/webp_1780582838_plancha_pvc_mar.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Marmoleada. Fácil instalación, sin mantenimiento, no propaga llamas, inmune a plagas."
     },
     {
         "nombre": "Plancha PVC marmoleada Negro",
@@ -78,7 +134,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Marmoleada. Fácil instalación, sin mantenimiento, no propaga llamas, inmune a plagas."
@@ -92,38 +148,278 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Marmoleada. Fácil instalación, sin mantenimiento, no propaga llamas, inmune a plagas."
     },
     {
-        "nombre": "Lija redonda 9\" #150",
-        "codigo": "20LIJ15",
+        "nombre": "Pintura para cubierta de fibrocemento Eternit caneca 5 GL",
+        "codigo": "20PFIB29",
         "marca": "IMPLED",
-        "categoria": "Abrasivos",
-        "imagen": "img_catalogo/webp_1780524976_lija_redonda_9_.webp",
+        "categoria": "Acabados",
+        "imagen": "img_catalogo/webp_1780582909_pintura_para_cu.webp",
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
-        "desc_larga": "Sin huecos, para lijadoras eléctricas."
+        "desc_larga": "Pintura para cubierta de fibrocemento Eternit caneca 5 GL."
     },
     {
-        "nombre": "Lija redonda 9\" #100",
-        "codigo": "20LIJ14",
+        "nombre": "Pintura para cubierta de fibrocemento Eternit 1 GL",
+        "codigo": "20PFIB28",
         "marca": "IMPLED",
-        "categoria": "Abrasivos",
-        "imagen": "img_catalogo/webp_1780525071_lija_redonda_9_.webp",
+        "categoria": "Acabados",
+        "imagen": "img_catalogo/webp_1780582952_pintura_para_cu.webp",
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Pintura para cubierta de fibrocemento Eternit 1 GL."
+    },
+    {
+        "nombre": "Empaste maestro interior Sika 20 kg",
+        "codigo": "20EMPINTS04",
+        "marca": "IMPLED",
+        "categoria": "Acabados",
+        "imagen": "img_catalogo/webp_1780582980_empaste_maestro.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Ofrece un acabado excelente, ideal para lograr superficies lisas y estéticas en paredes interiores. Posee alto poder de cubrimiento lo que facilita el trabajo sobre enlucidos gruesos o finos."
+    },
+    {
+        "nombre": "Pintura Unacapa Knauf 26.5 kg",
+        "codigo": "20PINTKG",
+        "marca": "IMPLED",
+        "categoria": "Acabados",
+        "imagen": "img_catalogo/webp_1780583027_pintura_unacapa.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Es una pintura estireno - acrílica tipo 2, diseñada con alta tecnologia que brinda un excelente cubrimiento, rendimiento, nivelación, durabilidad, lavabilidad y protección contra hongos y moho."
+    },
+    {
+        "nombre": "Pintura Unacapa Knauf 1gl",
+        "codigo": "20PINTIC",
+        "marca": "IMPLED",
+        "categoria": "Acabados",
+        "imagen": "img_catalogo/webp_1780583066_pintura_unacapa.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Es una pintura estireno - acrílica tipo 2, diseñada con alta tecnología que brinda un excelente cubrimiento, rendimiento, nivelación, durabilidad, lavabilidad y protección contra hongos y moho."
+    },
+    {
+        "nombre": "Cinta barrera resistente al agua",
+        "codigo": "20CP72",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583124_cinta_barrera_r.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "1.5x50mt Tyvek"
+    },
+    {
+        "nombre": "Cinta barrera de vapor Provind 50MM X 30M",
+        "codigo": "20CB02",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583147_cinta_barrera_d.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Cinta de barrera de vapor Provind."
+    },
+    {
+        "nombre": "Cinta barrera de vapor Provind 1.5M x 50M",
+        "codigo": "20CB01",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583251_cinta_barrera_d.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Cinta de barrera de vapor Provind."
+    },
+    {
+        "nombre": "Cinta malla celeste Knauf 1x50mts",
+        "codigo": "20CMF02",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583279_cinta_malla_cel.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Lámina de fibra de vidrio tipo malla reforzada para el Sistema de fachadas AQUAPANEL"
+    },
+    {
+        "nombre": "Cinta malla refuerzo Provind 1m x 50m",
+        "codigo": "20CMP01",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583307_cinta_malla_ref.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Lámina de fibra de vidrio tipo malla reforzada para muros exteriores y fachadas con sistemas EIFS o DEFS."
+    },
+    {
+        "nombre": "Cinta malla junta exterior Provind 100mm x 45m",
+        "codigo": "20CMJ01",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583531_cinta_malla_jun.webp",
+        "presentaciones": [
+            {
+                "opcion": "20CMJ01 - 100mm x 45m",
+                "precio": "17.56"
+            },
+            {
+                "opcion": "20CMJ02 - 250mm x 45m",
+                "precio": "18.56"
+            }
+        ],
+        "desc_larga": "Cinta para juntas de placas cementicias y exteriores, reforzada para evitar fisuras, complemento perfecto para utilizar con masilla basecoat."
+    },
+    {
+        "nombre": "Cinta velo fibra de vidrio Provind 50mm x 75m",
+        "codigo": "20CMF06",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583595_cinta_velo_fibr.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Cinta tipo velo de fibra de vidrio para el tratamiento de juntas de placas de yeso, evita burbujas y protuberancias."
+    },
+    {
+        "nombre": "Cinta malla Provind 50mm x 90m",
+        "codigo": "20CMF",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583682_cinta_malla_pro.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Cinta de malla de fibra de vidrio para sellar juntas en placas de yeso, reduce el consumo de masilla."
+    },
+    {
+        "nombre": "Cinta de papel Provind 50mm x 75m",
+        "codigo": "20CPRO75",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583768_cinta_de_papel_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Cinta de papel para el tratamiento de juntas en placas de yeso, micro-perforada para evitar burbujas de aire, viene pre marcada."
+    },
+    {
+        "nombre": "Cinta Flex corner Provind 50mm x 30mt",
+        "codigo": "20CFMET",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583826_cinta_flex_corn.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Cinta con láminas de acero galvanizado especialmente para esquinas en drywall se usa en ángulos internos y externos, protege contra los golpes."
+    },
+    {
+        "nombre": "Cinta de papel Knauf 50mm x 23 mt",
+        "codigo": "20CP73",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583907_cinta_de_papel_.webp",
+        "presentaciones": [
+            {
+                "opcion": "20CP73 - 50mm x 23 mt",
+                "precio": "4.56"
+            },
+            {
+                "opcion": "20CP75 - 50mm x 75 mt",
+                "precio": "5.56"
+            }
+        ],
+        "desc_larga": "Cinta de papel con centro premarcado y microperforaciones"
+    },
+    {
+        "nombre": "Cinta filamento Monodireccionado 25mm",
+        "codigo": "20CFV03",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780583999_cinta_filamento.webp",
+        "presentaciones": [
+            {
+                "opcion": "25mm",
+                "precio": "7.56"
+            },
+            {
+                "opcion": "48mm",
                 "precio": ""
             }
         ],
-        "desc_larga": "Sin huecos, para lijadoras eléctricas."
+        "desc_larga": "Fibra de vidrio, autoadhesiva, reforzada. Alta resistencia. Formato: 25mmx50mx125mic."
+    },
+    {
+        "nombre": "Cinta transparente 45mic",
+        "codigo": "20CET01",
+        "marca": "IMPLED",
+        "categoria": "Cintas",
+        "imagen": "img_catalogo/webp_1780584531_cinta_transpare.webp",
+        "presentaciones": [
+            {
+                "opcion": "20CET01 - 80 yardas",
+                "precio": "5.56"
+            },
+            {
+                "opcion": "20CET03 - 100 yardas",
+                "precio": "6.56"
+            }
+        ],
+        "desc_larga": "100% clear. Excelente adherencia, alta resistencia."
     },
     {
         "nombre": "Lija redonda 9\" #80",
@@ -133,11 +429,75 @@
         "imagen": "img_catalogo/webp_1780525192_lija_redonda_9_.webp",
         "presentaciones": [
             {
-                "opcion": "Presentación Única",
-                "precio": ""
+                "opcion": "20LIJ13 - #80",
+                "precio": "7.56"
+            },
+            {
+                "opcion": "20LIJ14 - #100",
+                "precio": "8.56"
+            },
+            {
+                "opcion": "20LIJ15 - #150",
+                "precio": "9.56"
             }
         ],
         "desc_larga": "Sin huecos, para lijadoras eléctricas."
+    },
+    {
+        "nombre": "Lija normal en rollo #80",
+        "codigo": "20LIJROLL02",
+        "marca": "IMPLED",
+        "categoria": "Abrasivos",
+        "imagen": "img_catalogo/webp_1780584922_lija_normal_en_.webp",
+        "presentaciones": [
+            {
+                "opcion": "20LIJROLL01 - #80",
+                "precio": "11.50"
+            },
+            {
+                "opcion": "20LIJROLL012- #100",
+                "precio": "12.50"
+            },
+            {
+                "opcion": "20LIJROLL03 - #120",
+                "precio": "13.50"
+            },
+            {
+                "opcion": "20LIJROLL04 - #150",
+                "precio": "14.50"
+            }
+        ],
+        "desc_larga": "Rollo 29cm x 50 mt."
+    },
+    {
+        "nombre": "Lija de agua en pliego #80",
+        "codigo": "20LIJ09",
+        "marca": "IMPLED",
+        "categoria": "Abrasivos",
+        "imagen": "img_catalogo/webp_1780585046_lija_de_agua_en.webp",
+        "presentaciones": [
+            {
+                "opcion": "20LIJ09 - #80",
+                "precio": "30"
+            },
+            {
+                "opcion": "20LIJ10 - #100",
+                "precio": "30"
+            },
+            {
+                "opcion": "20LIJ11 - #120",
+                "precio": "30"
+            },
+            {
+                "opcion": "20LIJ12 - #150",
+                "precio": "30"
+            },
+            {
+                "opcion": "20LIJ16 - #180",
+                "precio": "29.2"
+            }
+        ],
+        "desc_larga": "Pliego 230mm x 280mm."
     },
     {
         "nombre": "Tornillo p/plancha aquapanel p/broca #8x1 1/2\"",
@@ -148,7 +508,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Tornillo para plancha aquapanel punta broca #8x1 1/2\"."
@@ -162,7 +522,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Tornillo para plancha aquapanel punta broca #8x1\"."
@@ -176,7 +536,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "para plancha fibrocemento 17-20mm"
@@ -190,7 +550,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "para plancha fibrocemento 17-20mm"
@@ -204,7 +564,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "para fibrocemento 10-14mm"
@@ -218,7 +578,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "para plancha fibrocemento 10-14mm"
@@ -232,7 +592,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "para plancha fibrocemento 4-8mm"
@@ -246,7 +606,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "galvanizado"
@@ -260,10 +620,24 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "galvanizado"
+    },
+    {
+        "nombre": "Tornillo p/plancha p/aguda #7x2\"",
+        "codigo": "20ТРАСP0702",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780585506_tornillo_p_plan.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "para triple plancha yeso 1/2\""
     },
     {
         "nombre": "Tornillo p/plancha p/aguda #7x1 1/2\"",
@@ -274,7 +648,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "para doble plancha yeso 5/8\""
@@ -288,10 +662,52 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "para doble plancha yeso 1/2\""
+    },
+    {
+        "nombre": "Tornillo p/plancha p/aguda #6x1\"",
+        "codigo": "20ΤΡΑ0625",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780585453_tornillo_p_plan.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "para plancha yeso 1/2\""
+    },
+    {
+        "nombre": "Tornillo p/estructura p/broca cp #8x1\"",
+        "codigo": "20ТЕРСP0825",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780585544_tornillo_p_estr.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Tornillo para estructura punta broca #8x1\"."
+    },
+    {
+        "nombre": "Tornillo p/estructura p/ broca cp #8x1/2\"",
+        "codigo": "20ТЕВСР0813",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780585754_tornillo_p_estr.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Tornillo para estructura punta broca #8x1/2\"."
     },
     {
         "nombre": "Tornillo p/estructura p/aguda cp #8x1/2\"",
@@ -302,10 +718,186 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Tornillo para estructura punta aguda #8x1/2\"."
+    },
+    {
+        "nombre": "Clavo AG 13MM 1/2\"",
+        "codigo": "20CLAG13",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780585864_clavo_ag_13mm_1.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "13MM 1/2\""
+    },
+    {
+        "nombre": "Clavo AG 17 MM - 5/8",
+        "codigo": "20CLAG17",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780585876_clavo_ag_17_mm_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "17 MM - 5/8"
+    },
+    {
+        "nombre": "Clavo negro Don Quichotte 16X2.0MM 5/8\"",
+        "codigo": "20CN01",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780585938_clavo_negro_don.webp",
+        "presentaciones": [
+            {
+                "opcion": "20CN - 2X20 MM  3/4”",
+                "precio": ""
+            },
+            {
+                "opcion": "20CN01 - 16X2.0MM 5/8\"",
+                "precio": ""
+            }
+        ],
+        "desc_larga": "16X2.0MM 5/8\""
+    },
+    {
+        "nombre": "Clavo negro Don Quichotte 2X20 MM 3/4\"",
+        "codigo": "20CN",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780585964_clavo_negro_don.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "2X20 MM 3/4\""
+    },
+    {
+        "nombre": "Fulminante café 0.22",
+        "codigo": "20CLAFUL022CAFE",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780585984_fulminante_caf_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "tiro a tiro"
+    },
+    {
+        "nombre": "Fulminante amarillo 0.22",
+        "codigo": "20CLAFUL022AM",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780586007_fulminante_amar.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "tiro a tiro"
+    },
+    {
+        "nombre": "Clavo fulminante verde 0.27 tirilla",
+        "codigo": "20CLAFUL027",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780586146_fulminante_verd.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "0.27 en tirilla"
+    },
+    {
+        "nombre": "Clavo fulminante amarillo 0.27 tirilla",
+        "codigo": "20CLAFUL027AM",
+        "marca": "IMPLED",
+        "categoria": "Fijaciones",
+        "imagen": "img_catalogo/webp_1780586254_clavo_fulminant.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "0.27 en tirilla"
+    },
+    {
+        "nombre": "Manga anti-corte protectora brazo",
+        "codigo": "20FUNP01",
+        "marca": "IMPLED",
+        "categoria": "Seguridad Industrial",
+        "imagen": "img_catalogo/webp_1780586351_manga_anti-cort.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Talla XL."
+    },
+    {
+        "nombre": "Guantes DG anti-corte Talla L",
+        "codigo": "20GUAN01",
+        "marca": "IMPLED",
+        "categoria": "Seguridad Industrial",
+        "imagen": "img_catalogo/webp_1780586450_guantes_dg_anti.webp",
+        "presentaciones": [
+            {
+                "opcion": "20GUAN01 - Talla L",
+                "precio": "29.2"
+            },
+            {
+                "opcion": "20GUAN02 - Talla XL",
+                "precio": "34.2"
+            }
+        ],
+        "desc_larga": "Palma y dedos lisos con soporte textil. Talla L"
+    },
+    {
+        "nombre": "Guantes polialgodón revestido nitrilo Talla XL",
+        "codigo": "20GUAN03",
+        "marca": "IMPLED",
+        "categoria": "Seguridad Industrial",
+        "imagen": "img_catalogo/webp_1780586480_guantes_polialg.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Producto fabricado con tejido suave. Talla XL"
+    },
+    {
+        "nombre": "Disco de corte 355mm",
+        "codigo": "20DISCORTE01",
+        "marca": "IMPLED",
+        "categoria": "Consumibles",
+        "imagen": "img_catalogo/webp_1780586533_disco_de_corte_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Agujero 25.4mm, 80 dientes"
     },
     {
         "nombre": "Repuesto rodillo 9\" 10mm",
@@ -316,10 +908,24 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Micro-fibra afelpada para pinturas. Espesor 10mm."
+    },
+    {
+        "nombre": "Repuesto rodillo 9\" 8mm",
+        "codigo": "20R006",
+        "marca": "IMPLED",
+        "categoria": "Herramientas de Pintura",
+        "imagen": "img_catalogo/webp_1780586604_repuesto_rodill.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Micro-fibra afelpada para pinturas. Espesor 8mm."
     },
     {
         "nombre": "Mango rodillo metal 9\"",
@@ -330,10 +936,24 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Armazón intercambiable 9\". Facilita montaje/desmontaje de micro-fibra, felpa o espuma."
+    },
+    {
+        "nombre": "Tijera de aviación corte recto jt -2-563",
+        "codigo": "20TIJ03",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780586685_tijera_de_aviac.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Corta metales y perfiles galvanizados. Formato 10\"x250mm inoxidable. Mango ergonómico."
     },
     {
         "nombre": "Estilete metálico 19mm",
@@ -344,7 +964,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Retráctil, antideslizante, seguro 3 posiciones. Dispositivo para cuerdas. Incluye 3 cuchillas SK5."
@@ -358,7 +978,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Estuche con 10 cuchillas de repuesto acero SK5. Formato 2.4in x 0.75in x 1.25in."
@@ -372,10 +992,24 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Estuche con 10 cuchillas de repuesto acero SK5. Formato 18 X 100mm."
+    },
+    {
+        "nombre": "Estilete plástico 18mm",
+        "codigo": "20ESTO1",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780586802_estilete_pl__st.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Plástico alta resistencia, cortador y seguro. Cuchilla acero SK5 18x100mm incluida. Largo 165mm."
     },
     {
         "nombre": "Cuchillo gypsum curvo",
@@ -386,10 +1020,24 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Sierra 6\"/150mm. Hoja acero 65 Mn térmica. Mango ABS resistente + TPR suave para agarre."
+    },
+    {
+        "nombre": "Lijadora manual",
+        "codigo": "20LIJO6",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Manuales",
+        "imagen": "img_catalogo/webp_1780586880_lijadora_manual.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Formato 10.5x23cm. Mango ergonómico, sujeción a presión con vinchas metálicas. Plástico resistente."
     },
     {
         "nombre": "Llana borde ondulado",
@@ -400,7 +1048,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Acero inox 9.5x4 pulg. 2 bordes ondulados. Alisado de masillas y diseños modernos."
@@ -414,7 +1062,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Formato 10.5x21cm. Almohadilla, mango adaptable para extensión, giro 360°, sujeción con vincha a presión."
@@ -428,7 +1076,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Acero inox 9.5x4 pulg. 2 bordes en zigzag. Ideal aplicación de morteros y diseños modernos."
@@ -442,7 +1090,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Acero inoxidable 11x5 pulg. Dientes 6x6, mango polipropileno. Aplicación uniforme de morteros."
@@ -456,7 +1104,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Acero inox formato 120x480 mm. Dientes 10x10, mango ergonómico de madera. Para morteros."
@@ -470,7 +1118,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Acero inox 11x5 pulg. Mango polipropileno. Ideal para alisado de masillas y acabados lisos de alto nivel."
@@ -484,10 +1132,66 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Acero inoxidable 11x5 pulg. Dientes 4x4, mango polipropileno. Fácil de limpiar, no se oxida."
+    },
+    {
+        "nombre": "Pistola de impacto tiro a tiro A307",
+        "codigo": "20PISTO3",
+        "marca": "IMPLED",
+        "categoria": "Herramientas",
+        "imagen": "img_catalogo/webp_1780586958_pistola_de_impa.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Acero alta calidad. Fijaciones en concreto, madera o acero. Diseño ergonómico. Calibre 22. Clavos desde 1\"."
+    },
+    {
+        "nombre": "Perforadora Manual",
+        "codigo": "20PERHIO2",
+        "marca": "IMPLED",
+        "categoria": "Herramientas",
+        "imagen": "img_catalogo/webp_1780587014_perforadora_man.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Punzón 28mm-34mm-1mm, incluye estuche."
+    },
+    {
+        "nombre": "Pistola de impacto tirilla STD - A301",
+        "codigo": "20PISTO2",
+        "marca": "IMPLED",
+        "categoria": "Herramientas",
+        "imagen": "img_catalogo/webp_1780586970_pistola_de_impa.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Semiautomática, acero alta calidad para concreto/madera/acero. Calibre 27. Usa fulminantes de 10 cartuchos."
+    },
+    {
+        "nombre": "Perforadora hidráulica",
+        "codigo": "20PERHI01",
+        "marca": "IMPLED",
+        "categoria": "Herramientas",
+        "imagen": "img_catalogo/webp_1780587027_perforadora_hid.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Presión 6 toneladas, garganta 70mm. Perfora hierro 1.5mm y acero inox 1mm. Incluye 5 matrices."
     },
     {
         "nombre": "Punzonadora perfiles",
@@ -498,7 +1202,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Une perfiles drywall de forma segura y permanente. Reduce uso de tornillos. Acero alta dureza y resistencia."
@@ -512,7 +1216,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Cuchillas acero anticorrosivo. Elimina sobrante sin obstruir ni acumular polvo. Mango caucho antideslizante."
@@ -526,7 +1230,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Biselador en 45° y 90°. Cortes planos y biselados limpios. Incluye cuchillas recambio acero inox. Alta duración."
@@ -540,7 +1244,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Precisión en altura/inclinación. Capacidad 68Kg. Brazos hasta 2.90m. Elevación 1.40m a 3.35m. Inclinación 60°"
@@ -554,7 +1258,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Práctico, ruedas giratorias, aza extensible, plegable, material resistente. Amplio espacio. Incluye tapa."
@@ -568,7 +1272,7 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Planos precisos y cantos limpios. Cortadores intercambiables 45° y 60°. Cuchillas acero inoxidable alta dureza."
@@ -582,24 +1286,84 @@
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Acero de primera. Cubierta en ángulo, bordes biselados. Ruedas alta resistencia 5\" giro 360° con pedales de freno."
+    },
+    {
+        "nombre": "Aplicador de cinta",
+        "codigo": "20BIGYP",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/webp_1780587129_aplicador_de_ci.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Instala cinta junto a masilla. Reduce tiempos. Diseño ergonómico con correas. Accesorio para esquinas. No usa electricidad."
+    },
+    {
+        "nombre": "Zancos drywall 18\" a 30\"",
+        "codigo": "20SAN01",
+        "marca": "IMPLED",
+        "categoria": "Herramientas Drywall",
+        "imagen": "img_catalogo/webp_1780587203_zancos_drywall_.webp",
+        "presentaciones": [
+            {
+                "opcion": "20SAN01 - 18\" a 30\"",
+                "precio": "85.81"
+            },
+            {
+                "opcion": "20SAN01 - 24\" a 40\"",
+                "precio": "105.81"
+            }
+        ],
+        "desc_larga": "Altura ajustable 18\"-30\". Aluminio industrial liviano. Soporta +250lbs, con suspensión para piernas."
     },
     {
         "nombre": "Tarjeta de objetivo láser",
         "codigo": "20TARLASER",
         "marca": "IMPLED",
         "categoria": "Herramientas de Medición",
-        "imagen": "img_catalogo/webp_1780526262_tarjeta_de_obje.webp",
+        "imagen": "img_catalogo/webp_1780591339_tarjeta_de_obje.webp",
         "presentaciones": [
             {
                 "opcion": "Presentación Única",
-                "precio": ""
+                "precio": "23.99"
             }
         ],
         "desc_larga": "Mejora y aumenta 1.3 veces la visibilidad de la línea. Medidas en pulgadas y cm. Borde magnético."
+    },
+    {
+        "nombre": "Repuesto batería láser 3D",
+        "codigo": "20BATLASER",
+        "marca": "IMPLED",
+        "categoria": "Herramientas de Medición",
+        "imagen": "img_catalogo/webp_1780587360_repuesto_bater_.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Batería de repuesto para nivelador láser 3D."
+    },
+    {
+        "nombre": "Nivelador láser 3D",
+        "codigo": "20LAS04",
+        "marca": "IMPLED",
+        "categoria": "Herramientas de Medición",
+        "imagen": "img_catalogo/webp_1780587284_nivelador_l__se.webp",
+        "presentaciones": [
+            {
+                "opcion": "Presentación Única",
+                "precio": "23.99"
+            }
+        ],
+        "desc_larga": "Nivel láser 12 lineas con trípode. Control táctil resistente a humedad y polvo. Autonivelante, sensor/alarma, giro 360°, opción outdoor."
     },
     {
         "nombre": "Atornillador Gypsum Inalámbrico",
@@ -935,7 +1699,7 @@
                 "precio": "38.75"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con el Ángulo para amoladora (cubierta contra el polvo), un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Ajuste: 5\" \\/ 4-1\\/2\" (110mm-125mm) para amoladora angular. Un complemento de seguridad que protege al usuario y conecta a extractores para un trabajo limpio.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con el Ángulo para amoladora (cubierta contra el polvo), un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Ajuste: 5\" \\/ 4-1\\/2\" (110mm-125mm) para amoladora angular. Un complemento de seguridad que protege al usuario y conecta a extractores para un trabajo limpio.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nAjuste: 5\" \\/ 4-1\\/2\" (110mm-125mm) para amoladora angular"
     },
     {
         "nombre": "Cepillo de carburo de silicio para estirado",
@@ -949,7 +1713,7 @@
                 "precio": "41.57"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con el Cepillo de carburo de silicio para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100 | Abertura: 19mm | Material: Silicona carbide brush. Las cerdas impregnadas de abrasivo logran acabados decorativos y limpieza profunda.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con el Cepillo de carburo de silicio para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100 | Abertura: 19mm | Material: Silicona carbide brush. Las cerdas impregnadas de abrasivo logran acabados decorativos y limpieza profunda.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nRueda: 120X100 | Abertura: 19mm | Material: Silicona carbide brush"
     },
     {
         "nombre": "Disco de acero para estirado",
@@ -963,7 +1727,7 @@
                 "precio": "36.93"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con el Disco de acero para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100 | Abertura: 19mm | Material: 0.3mm\\/0.5mm Copper-plated Steel. Alambres agresivos para remover costras gruesas de óxido, pintura vieja y escoria.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con el Disco de acero para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100 | Abertura: 19mm | Material: 0.3mm\\/0.5mm Copper-plated Steel. Alambres agresivos para remover costras gruesas de óxido, pintura vieja y escoria.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nRueda: 120X100 | Abertura: 19mm | Material: 0.3mm\\/0.5mm Copper-plated Steel"
     },
     {
         "nombre": "Disco abrasivo de óxido de aluminio",
@@ -977,7 +1741,7 @@
                 "precio": "22.43"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con el Disco abrasivo de óxido de aluminio, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100mm | Abertura: 19mm | Sémola: #60, #80, #100, #120. Excelente para debastar, difuminar soldaduras y dar textura homogénea.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con el Disco abrasivo de óxido de aluminio, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100mm | Abertura: 19mm | Sémola: #60, #80, #100, #120. Excelente para debastar, difuminar soldaduras y dar textura homogénea.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nRueda: 120X100mm | Abertura: 19mm | Sémola: #60, #80, #100, #120"
     },
     {
         "nombre": "Cepillo de nylon para estirado de alambre",
@@ -991,7 +1755,7 @@
                 "precio": "27.54"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con el Cepillo de nylon para estirado de alambre, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100mm | Abertura: 19mm | Sémola: #60 a #400. Cerdas resistentes para lograr el efecto satinado o envejecido en madera y metal.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con el Cepillo de nylon para estirado de alambre, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100mm | Abertura: 19mm | Sémola: #60 a #400. Cerdas resistentes para lograr el efecto satinado o envejecido en madera y metal.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nRueda: 120X100mm | Abertura: 19mm | Sémola: #60 a #400"
     },
     {
         "nombre": "Disco de nylon para estirado",
@@ -1005,7 +1769,7 @@
                 "precio": "13.33"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con el Disco de nylon para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100mm | Abertura: 19mm | Sémola: #60 a #400. Elimina óxido y prepara superficies metálicas sin comprometer el material base.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con el Disco de nylon para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100mm | Abertura: 19mm | Sémola: #60 a #400. Elimina óxido y prepara superficies metálicas sin comprometer el material base.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nRueda: 120X100mm | Abertura: 19mm | Sémola: #60 a #400"
     },
     {
         "nombre": "Disco de fieltro para estirado",
@@ -1019,133 +1783,73 @@
                 "precio": "43.76"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con el Disco de fieltro para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100 | Abertura: 19mm | Material principal: Wool felt. Indispensable para trabajos de pulido final que requieren el máximo brillo como espejos.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con el Disco de fieltro para estirado, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Rueda: 120X100 | Abertura: 19mm | Material principal: Wool felt. Indispensable para trabajos de pulido final que requieren el máximo brillo como espejos.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nRueda: 120X100 | Abertura: 19mm | Material principal: Wool felt"
     },
     {
         "nombre": "Lija redonda 9\" 6 huecos #100",
-        "codigo": "webp_1774464903_lija_redonda_9_",
+        "codigo": "20LIJ23",
         "marca": "MAXXT",
         "categoria": "Accesorios",
         "imagen": "img_catalogo/webp_1774464903_lija_redonda_9_.webp",
         "presentaciones": [
             {
-                "opcion": "Presentación Única",
+                "opcion": "20LIJ23 - #100",
                 "precio": "25.27"
-            }
-        ],
-        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 6 huecos #100, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #100 | Tamaño: 9\" | Huecos: 6. Máxima abrasión para arrancar residuos y nivelar paredes rápidamente.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
-    },
-    {
-        "nombre": "Lija redonda 9\" 6 huecos #120",
-        "codigo": "webp_1774464914_lija_redonda_9_",
-        "marca": "MAXXT",
-        "categoria": "Accesorios",
-        "imagen": "img_catalogo/webp_1774464914_lija_redonda_9_.webp",
-        "presentaciones": [
+            },
             {
-                "opcion": "Presentación Única",
-                "precio": "11.38"
-            }
-        ],
-        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 6 huecos #120, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #120 | Tamaño: 9\" | Huecos: 6. El consumible perfecto para tareas intermedias y preparación de paredes de yeso.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
-    },
-    {
-        "nombre": "Lija redonda 9\" 6 huecos #150",
-        "codigo": "webp_1774464926_lija_redonda_9_",
-        "marca": "MAXXT",
-        "categoria": "Accesorios",
-        "imagen": "img_catalogo/webp_1774464926_lija_redonda_9_.webp",
-        "presentaciones": [
+                "opcion": "20LIJ24 - #120",
+                "precio": ""
+            },
             {
-                "opcion": "Presentación Única",
-                "precio": "35.07"
+                "opcion": "20LIJ25 - #150",
+                "precio": ""
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 6 huecos #150, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #150 | Tamaño: 9\" | Huecos: 6. Diseñada para un anclaje firme y una absorción eficaz del polvo durante el lijado fino.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 6 huecos #100, un accesorio original de MAXXT.\r\n\r\nEspecificaciones técnicas: Sémola: #100 | Tamaño: 9\" | Huecos: 6. Máxima abrasión para arrancar residuos y nivelar paredes rápidamente.\r\n\r\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nSémola: #100 | Tamaño: 9\" | Huecos: 6"
     },
     {
         "nombre": "Lija redonda 9\" 8 huecos #100",
-        "codigo": "webp_1774464963_lija_redonda_9_",
+        "codigo": "20LIJ17",
         "marca": "MAXXT",
         "categoria": "Accesorios",
         "imagen": "img_catalogo/webp_1774464963_lija_redonda_9_.webp",
         "presentaciones": [
             {
-                "opcion": "Presentación Única",
-                "precio": "30.01"
-            }
-        ],
-        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 8 huecos #100, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #100 | Tamaño: 9\" | Huecos: 8. Ideal para el primer contacto con superficies porosas y desbaste intensivo.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
-    },
-    {
-        "nombre": "Lija redonda 9\" 8 huecos #120",
-        "codigo": "webp_1774464977_lija_redonda_9_",
-        "marca": "MAXXT",
-        "categoria": "Accesorios",
-        "imagen": "img_catalogo/webp_1774464977_lija_redonda_9_.webp",
-        "presentaciones": [
+                "opcion": "20LIJ17 - #100",
+                "precio": "7.56"
+            },
             {
-                "opcion": "Presentación Única",
-                "precio": "36.43"
-            }
-        ],
-        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 8 huecos #120, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #120 | Tamaño: 9\" | Huecos: 8. Excelente balance entre remoción de capas y suavidad en superficies amplias.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
-    },
-    {
-        "nombre": "Lija redonda 9\" 8 huecos #150",
-        "codigo": "webp_1774464988_lija_redonda_9_",
-        "marca": "MAXXT",
-        "categoria": "Accesorios",
-        "imagen": "img_catalogo/webp_1774464988_lija_redonda_9_.webp",
-        "presentaciones": [
+                "opcion": "20LIJ18 - #120",
+                "precio": "7.56"
+            },
             {
-                "opcion": "Presentación Única",
-                "precio": "31.26"
+                "opcion": "20LIJ19 - #150",
+                "precio": "7.56"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 8 huecos #150, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #150 | Tamaño: 9\" | Huecos: 8. Formato amplio para lijadoras de pared, asegurando pulidos lisos y sin rayones.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 9\" 8 huecos #100, un accesorio original de MAXXT.\r\n\r\nEspecificaciones técnicas: Sémola: #100 | Tamaño: 9\" | Huecos: 8. Ideal para el primer contacto con superficies porosas y desbaste intensivo.\r\n\r\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nSémola: #100 | Tamaño: 9\" | Huecos: 8"
     },
     {
         "nombre": "Lija redonda 7\" 8 huecos #100",
-        "codigo": "webp_1774464780_lija_redonda_7_",
+        "codigo": "20LIJ20",
         "marca": "MAXXT",
         "categoria": "Accesorios",
         "imagen": "img_catalogo/webp_1774464780_lija_redonda_7_.webp",
         "presentaciones": [
             {
-                "opcion": "Presentación Única",
+                "opcion": "20LIJ20 - #100",
                 "precio": "27.21"
-            }
-        ],
-        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 7\" 8 huecos #100, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #100 | Tamaño: 7\" | Huecos: 8. Especial para remover material grueso e imperfecciones con gran velocidad.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
-    },
-    {
-        "nombre": "Lija redonda 7\" 8 huecos #120",
-        "codigo": "webp_1774464798_lija_redonda_7_",
-        "marca": "MAXXT",
-        "categoria": "Accesorios",
-        "imagen": "img_catalogo/webp_1774464798_lija_redonda_7_.webp",
-        "presentaciones": [
+            },
             {
-                "opcion": "Presentación Única",
-                "precio": "19.55"
-            }
-        ],
-        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 7\" 8 huecos #120, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #120 | Tamaño: 7\" | Huecos: 8. Granos de alta durabilidad ideales para preparaciones medias antes del acabado final.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
-    },
-    {
-        "nombre": "Lija redonda 7\" 8 huecos #150",
-        "codigo": "webp_1774464828_lija_redonda_7_",
-        "marca": "MAXXT",
-        "categoria": "Accesorios",
-        "imagen": "img_catalogo/webp_1774464828_lija_redonda_7_.webp",
-        "presentaciones": [
+                "opcion": "20LIJ21 - #120",
+                "precio": "7.56"
+            },
             {
-                "opcion": "Presentación Única",
-                "precio": "36.67"
+                "opcion": "20LIJ22 - #150",
+                "precio": "7.56"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 7\" 8 huecos #150, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Sémola: #150 | Tamaño: 7\" | Huecos: 8. Material abrasivo de primera categoría que garantiza acabados uniformes y excelente extracción de polvo.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con la Lija redonda 7\" 8 huecos #100, un accesorio original de MAXXT.\r\n\r\nEspecificaciones técnicas: Sémola: #100 | Tamaño: 7\" | Huecos: 8. Especial para remover material grueso e imperfecciones con gran velocidad.\r\n\r\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nSémola: #100 | Tamaño: 7\" | Huecos: 8"
     },
     {
         "nombre": "Batería 4.0Ah",
@@ -1159,7 +1863,7 @@
                 "precio": "153.0"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con la Batería 4.0Ah, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Celda de Batería: 21700 | Paquete: 4.0Ah (120min) o 8.0Ah (240min). Alta capacidad para las tareas más demandantes, asegurando largas jornadas ininterrumpidas.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con la Batería 4.0Ah, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Celda de Batería: 21700 | Paquete: 4.0Ah (120min) o 8.0Ah (240min). Alta capacidad para las tareas más demandantes, asegurando largas jornadas ininterrumpidas.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nCelda de Batería: 21700 | Paquete: 4.0Ah (120min) o 8.0Ah (240min)"
     },
     {
         "nombre": "Batería 2.0Ah",
@@ -1173,7 +1877,7 @@
                 "precio": "225.47"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con la Batería 2.0Ah, un accesorio original de MAXXT.\r\n\r\nEspecificaciones técnicas: Celda de Batería: 18650 | Paquete: 2.0Ah (60min) o 4.0Ah (120min). Batería de iones de litio sin efecto memoria que mantiene tus equipos funcionando al máximo rendimiento.\r\n\r\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con la Batería 2.0Ah, un accesorio original de MAXXT.\r\n\r\nEspecificaciones técnicas: Celda de Batería: 18650 | Paquete: 2.0Ah (60min) o 4.0Ah (120min). Batería de iones de litio sin efecto memoria que mantiene tus equipos funcionando al máximo rendimiento.\r\n\r\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nCelda de Batería: 18650 | Paquete: 2.0Ah (60min) o 4.0Ah (120min)"
     },
     {
         "nombre": "Cargador 2A",
@@ -1187,7 +1891,7 @@
                 "precio": "8.17"
             }
         ],
-        "desc_larga": "Optimiza el uso de tus herramientas con el Cargador 2A, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Corriente de Carga: 2A | Voltaje de Entrada: 100-240V AC | Voltaje de Salida: 20V DC. Diseñado con tecnología inteligente para proteger y alargar la vida útil de tus celdas de energía.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga."
+        "desc_larga": "Optimiza el uso de tus herramientas con el Cargador 2A, un accesorio original de MAXXT.\n\nEspecificaciones técnicas: Corriente de Carga: 2A | Voltaje de Entrada: 100-240V AC | Voltaje de Salida: 20V DC. Diseñado con tecnología inteligente para proteger y alargar la vida útil de tus celdas de energía.\n\nMAXXT Ecuador te ofrece calidad comprobada y repuestos originales para que tu trabajo no se detenga.\n\nDATOS TÉCNICOS:\nCorriente de Carga: 2A | Voltaje de Entrada: 100-240V AC | Voltaje de Salida: 20V DC"
     },
     {
         "nombre": "Pistola engrasadora manual a batería",
@@ -1201,7 +1905,7 @@
                 "precio": "207.02"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Pistola engrasadora manual a batería de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Voltaje: 20V | Longitud de Manguera: 1 Metro | Batería: 4Ah | Incluye Manguera flexible. Lubrica maquinaria pesada de forma rápida y constante sin esfuerzo de bombeo manual.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Pistola engrasadora manual a batería de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Voltaje: 20V | Longitud de Manguera: 1 Metro | Batería: 4Ah | Incluye Manguera flexible. Lubrica maquinaria pesada de forma rápida y constante sin esfuerzo de bombeo manual.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nVoltaje: 20V | Longitud de Manguera: 1 Metro | Batería: 4Ah | Incluye Manguera flexible"
     },
     {
         "nombre": "Herramienta de cinta pasacable",
@@ -1215,7 +1919,7 @@
                 "precio": "416.54"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Herramienta de cinta pasacable de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad en ralentí: 0-28 m\\/min | Longitud cable guía: 20m | Peso: 5.4kgs. Acelera el tendido eléctrico con un sistema motorizado que previene atascos en la tubería.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Herramienta de cinta pasacable de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad en ralentí: 0-28 m\\/min | Longitud cable guía: 20m | Peso: 5.4kgs. Acelera el tendido eléctrico con un sistema motorizado que previene atascos en la tubería.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Velocidad en ralentí: 0-28 m\\/min | Longitud cable guía: 20m | Peso: 5.4kgs"
     },
     {
         "nombre": "Pistola de llave de impacto automotriz",
@@ -1229,7 +1933,7 @@
                 "precio": "306.32"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Pistola de llave de impacto automotriz de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Motor: 20V Brushless | Torque Max: 1000 N.m | Encastre: 1\\/2\" | Velocidad: 0-2400 rpm. Afloja tuercas y pernos oxidados con un torque monstruoso, indispensable en talleres mecánicos y montajes pesados.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Pistola de llave de impacto automotriz de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Motor: 20V Brushless | Torque Max: 1000 N.m | Encastre: 1\\/2\" | Velocidad: 0-2400 rpm. Afloja tuercas y pernos oxidados con un torque monstruoso, indispensable en talleres mecánicos y montajes pesados.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nMotor: 20V Brushless | Torque Max: 1000 N.m | Encastre: 1\\/2\" | Velocidad: 0-2400 rpm"
     },
     {
         "nombre": "Remachadora inalámbrica con batería",
@@ -1243,7 +1947,7 @@
                 "precio": "325.96"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Remachadora inalámbrica con batería de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Remaches: 3\\/32\" - 3\\/16\" (2.4-6.0mm) | Fuerza ajuste: 2040kg \\/ 20000N. Fija piezas metálicas en milisegundos sin el cansancio de las herramientas manuales tradicionales.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Remachadora inalámbrica con batería de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Remaches: 3\\/32\" - 3\\/16\" (2.4-6.0mm) | Fuerza ajuste: 2040kg \\/ 20000N. Fija piezas metálicas en milisegundos sin el cansancio de las herramientas manuales tradicionales.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Remaches: 3\\/32\" - 3\\/16\" (2.4-6.0mm) | Fuerza ajuste: 2040kg \\/ 20000N"
     },
     {
         "nombre": "Ventosa para baldosas y vidrio",
@@ -1257,7 +1961,7 @@
                 "precio": "151.92"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Ventosa para baldosas y vidrio de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Vibración: 6000-10000 rpm | Capacidad max carga: 150 kg | Batería: 2Ah. Su vibración inteligente expulsa el aire bajo la baldosa, asegurando una adherencia perfecta del mortero.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Ventosa para baldosas y vidrio de MAXXT, la solución ideal para el área de Herramientas Varias.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Vibración: 6000-10000 rpm | Capacidad max carga: 150 kg | Batería: 2Ah. Su vibración inteligente expulsa el aire bajo la baldosa, asegurando una adherencia perfecta del mortero.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Vibración: 6000-10000 rpm | Capacidad max carga: 150 kg | Batería: 2Ah"
     },
     {
         "nombre": "Soplador alta velocidad a batería 130m\\/s",
@@ -1271,7 +1975,7 @@
                 "precio": "164.52"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Soplador alta velocidad a batería 130m\\/s de MAXXT, la solución ideal para el área de Sopladoras.\n\nOfrece un rendimiento superior con las siguientes características: Voltaje: 20V | Velocidad Aire: 130 m\\/s | Volumen: 10.4 m3\\/min | Fuerza: 11N. Su chorro concentrado de aire de alta velocidad expulsa los residuos más pesados sin esfuerzo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Soplador alta velocidad a batería 130m\\/s de MAXXT, la solución ideal para el área de Sopladoras.\n\nOfrece un rendimiento superior con las siguientes características: Voltaje: 20V | Velocidad Aire: 130 m\\/s | Volumen: 10.4 m3\\/min | Fuerza: 11N. Su chorro concentrado de aire de alta velocidad expulsa los residuos más pesados sin esfuerzo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nVoltaje: 20V | Velocidad Aire: 130 m\\/s | Volumen: 10.4 m3\\/min | Fuerza: 11N"
     },
     {
         "nombre": "Soplador de alta velocidad a batería",
@@ -1285,7 +1989,7 @@
                 "precio": "320.52"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Soplador de alta velocidad a batería de MAXXT, la solución ideal para el área de Sopladoras.\n\nOfrece un rendimiento superior con las siguientes características: Voltaje: 20V | Velocidad Aire: 50 m/s | Volumen: 10.4 m3/min | Fuerza: 11N. Limpia rápidamente áreas de trabajo, removiendo polvo y aserrín con un potente flujo de aire.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Soplador de alta velocidad a batería de MAXXT, la solución ideal para el área de Sopladoras.\n\nOfrece un rendimiento superior con las siguientes características: Voltaje: 20V | Velocidad Aire: 50 m/s | Volumen: 10.4 m3/min | Fuerza: 11N. Limpia rápidamente áreas de trabajo, removiendo polvo y aserrín con un potente flujo de aire.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nVoltaje: 20V | Velocidad Aire: 50 m/s | Volumen: 10.4 m3/min | Fuerza: 11N"
     },
     {
         "nombre": "Pistola para silicona inalámbrica",
@@ -1299,7 +2003,7 @@
                 "precio": "85.81"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Pistola para silicona inalámbrica de MAXXT, la solución ideal para el área de Pistolas de Silicona.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0.8-8 mm/s | Presión Max: 2500N | Capacidad: 10oz (300ml). Su diseño ligero reduce la fatiga en la mano, ideal para sellado de ventanas y carpintería.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Pistola para silicona inalámbrica de MAXXT, la solución ideal para el área de Pistolas de Silicona.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0.8-8 mm/s | Presión Max: 2500N | Capacidad: 10oz (300ml). Su diseño ligero reduce la fatiga en la mano, ideal para sellado de ventanas y carpintería.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Velocidad: 0.8-8 mm/s | Presión Max: 2500N | Capacidad: 10oz (300ml)"
     },
     {
         "nombre": "Pistola de calafateo inalámbrica",
@@ -1313,7 +2017,7 @@
                 "precio": "39.8"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Pistola de calafateo inalámbrica de MAXXT, la solución ideal para el área de Pistolas de Silicona.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0.8-8 mm\\/s | Presión Max: 2500N | Capacidad: 20oz (600ml). Dispensa selladores con flujo constante, previniendo el goteo y ahorrando material valioso.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Pistola de calafateo inalámbrica de MAXXT, la solución ideal para el área de Pistolas de Silicona.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0.8-8 mm\\/s | Presión Max: 2500N | Capacidad: 20oz (600ml). Dispensa selladores con flujo constante, previniendo el goteo y ahorrando material valioso.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Velocidad: 0.8-8 mm\\/s | Presión Max: 2500N | Capacidad: 20oz (600ml)"
     },
     {
         "nombre": "Pistola de calor inalámbrica",
@@ -1327,7 +2031,7 @@
                 "precio": "30.36"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Pistola de calor inalámbrica de MAXXT, la solución ideal para el área de Pistolas de Aire Caliente.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Temperaturas: 280°C \\/ 530°C | Volumen viento: 109 \\/ 190 L\\/min. Calentamiento rápido y autonomía total para trabajos de detalle o reparaciones automotrices en el sitio.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Pistola de calor inalámbrica de MAXXT, la solución ideal para el área de Pistolas de Aire Caliente.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Temperaturas: 280°C \\/ 530°C | Volumen viento: 109 \\/ 190 L\\/min. Calentamiento rápido y autonomía total para trabajos de detalle o reparaciones automotrices en el sitio.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Temperaturas: 280°C \\/ 530°C | Volumen viento: 109 \\/ 190 L\\/min"
     },
     {
         "nombre": "Pistola de calor con cable",
@@ -1341,7 +2045,7 @@
                 "precio": "24.5"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Pistola de calor con cable de MAXXT, la solución ideal para el área de Pistolas de Aire Caliente.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1800W | Temperaturas: 450°C \\/ 580°C | Volumen viento: 300 \\/ 500 L\\/min. Una herramienta indispensable de dos velocidades, fiable y resistente para uso continuo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Pistola de calor con cable de MAXXT, la solución ideal para el área de Pistolas de Aire Caliente.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1800W | Temperaturas: 450°C \\/ 580°C | Volumen viento: 300 \\/ 500 L\\/min. Una herramienta indispensable de dos velocidades, fiable y resistente para uso continuo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1800W | Temperaturas: 450°C \\/ 580°C | Volumen viento: 300 \\/ 500 L\\/min"
     },
     {
         "nombre": "Pistola de calor con pantalla LCD",
@@ -1355,7 +2059,7 @@
                 "precio": "82.48"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Pistola de calor con pantalla LCD de MAXXT, la solución ideal para el área de Pistolas de Aire Caliente.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 2000W | Temperatura: 50°C - 600°C (122F-1112F) | Volumen viento: 300-550 L\\/min. Su pantalla digital permite un control térmico milimétrico para moldear plásticos, decapar pintura o contraer cables.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Pistola de calor con pantalla LCD de MAXXT, la solución ideal para el área de Pistolas de Aire Caliente.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 2000W | Temperatura: 50°C - 600°C (122F-1112F) | Volumen viento: 300-550 L\\/min. Su pantalla digital permite un control térmico milimétrico para moldear plásticos, decapar pintura o contraer cables.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 2000W | Temperatura: 50°C - 600°C (122F-1112F) | Volumen viento: 300-550 L\\/min"
     },
     {
         "nombre": "Pulverizador de pintura sin aire en soporte",
@@ -1369,7 +2073,7 @@
                 "precio": "42.87"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Pulverizador de pintura sin aire en soporte de MAXXT, la solución ideal para el área de Pulverizadores de Pintura.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1300W | Presión Max: 227 Bar (3300 PSI) | Caudal Max: 0.5 Gal\\/min (2.3 L\\/min). Incrementa el flujo de trabajo y la presión para aplicaciones de pinturas densas sin diluir.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Pulverizador de pintura sin aire en soporte de MAXXT, la solución ideal para el área de Pulverizadores de Pintura.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1300W | Presión Max: 227 Bar (3300 PSI) | Caudal Max: 0.5 Gal\\/min (2.3 L\\/min). Incrementa el flujo de trabajo y la presión para aplicaciones de pinturas densas sin diluir.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1300W | Presión Max: 227 Bar (3300 PSI) | Caudal Max: 0.5 Gal\\/min (2.3 L\\/min)"
     },
     {
         "nombre": "Pulverizador de pintura sin aire en soporte",
@@ -1383,7 +2087,7 @@
                 "precio": "27.19"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Pulverizador de pintura sin aire en soporte de MAXXT, la solución ideal para el área de Pulverizadores de Pintura.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1200W | Presión Max: 226 Bar (3300 PSI) | Caudal Max: 0.42 Gal\\/min (1.6 L\\/min). Tecnología Airless para cubrir grandes superficies comerciales o residenciales en tiempo récord.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Pulverizador de pintura sin aire en soporte de MAXXT, la solución ideal para el área de Pulverizadores de Pintura.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1200W | Presión Max: 226 Bar (3300 PSI) | Caudal Max: 0.42 Gal\\/min (1.6 L\\/min). Tecnología Airless para cubrir grandes superficies comerciales o residenciales en tiempo récord.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1200W | Presión Max: 226 Bar (3300 PSI) | Caudal Max: 0.42 Gal\\/min (1.6 L\\/min)"
     },
     {
         "nombre": "Pulverizador de pintura de mano con batería",
@@ -1397,7 +2101,7 @@
                 "precio": "183.98"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Pulverizador de pintura de mano con batería de MAXXT, la solución ideal para el área de Pulverizadores de Pintura.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Presión Max: 25Kpa | Caudal Max: 0.26 Gal\\/min (1.0 L\\/min) | Botella: 1000ml. Logra un acabado uniforme y sin marcas de brocha en muebles y paredes con total libertad de cable.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Pulverizador de pintura de mano con batería de MAXXT, la solución ideal para el área de Pulverizadores de Pintura.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Presión Max: 25Kpa | Caudal Max: 0.26 Gal\\/min (1.0 L\\/min) | Botella: 1000ml. Logra un acabado uniforme y sin marcas de brocha en muebles y paredes con total libertad de cable.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Presión Max: 25Kpa | Caudal Max: 0.26 Gal\\/min (1.0 L\\/min) | Botella: 1000ml"
     },
     {
         "nombre": "Tronzadora / Sierra de corte con disco de piedra 14\"",
@@ -1411,7 +2115,7 @@
                 "precio": "8.91"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Tronzadora/Sierra de corte con disco de piedra 14\" de MAXXT, la solución ideal para el área de Cortadoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 2300W | Velocidad: 4000 r/min | Disco: 14\" (355mm) | Corte redondo max: 130mm. Especialmente fabricada para resistir el polvo abrasivo y ofrecer durabilidad en el corte de mampostería.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Tronzadora/Sierra de corte con disco de piedra 14\" de MAXXT, la solución ideal para el área de Cortadoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 2300W | Velocidad: 4000 r/min | Disco: 14\" (355mm) | Corte redondo max: 130mm. Especialmente fabricada para resistir el polvo abrasivo y ofrecer durabilidad en el corte de mampostería.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nPotencia: 2300W | Velocidad: 4000 r\\/min | Disco: 14\" (355mm) | Corte redondo max: 130mm"
     },
     {
         "nombre": "Tronzadora / Sierra de corte con disco de metal 14\"",
@@ -1425,7 +2129,7 @@
                 "precio": "6.46"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Tronzadora/Sierra de corte con disco de metal 14\" de MAXXT, la solución ideal para el área de Cortadoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 2000W | Velocidad: 1300r/min | Cuchilla: 14\"/15\" (355/380mm) | Bisel máximo: 45°. Máxima tenacidad para seccionar vigas, tubos y barras de acero en segundos.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Tronzadora/Sierra de corte con disco de metal 14\" de MAXXT, la solución ideal para el área de Cortadoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 2000W | Velocidad: 1300r/min | Cuchilla: 14\"/15\" (355/380mm) | Bisel máximo: 45°. Máxima tenacidad para seccionar vigas, tubos y barras de acero en segundos.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 2000W | Velocidad: 1300r\\/min | Cuchilla: 14\"\\/15\" (355\\/380mm) | Bisel máximo: 45°"
     },
     {
         "nombre": "Cortador con sierra de cinta con base",
@@ -1439,7 +2143,7 @@
                 "precio": "79.59"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Cortador con sierra de cinta con base de MAXXT, la solución ideal para el área de Cortadoras.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1100W | Velocidad: 0-472 SFPM | Capacidad max corte: 5\" x 5\" (127x127mm) | Con Base. Estabilidad estacionaria garantizada para cortes seriados de alta precisión en tu taller.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Cortador con sierra de cinta con base de MAXXT, la solución ideal para el área de Cortadoras.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1100W | Velocidad: 0-472 SFPM | Capacidad max corte: 5\" x 5\" (127x127mm) | Con Base. Estabilidad estacionaria garantizada para cortes seriados de alta precisión en tu taller.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1100W | Velocidad: 0-472 SFPM | Capacidad max corte: 5\" x 5\" (127x127mm) | Con Base"
     },
     {
         "nombre": "Sierra de cinta inalámbrica",
@@ -1453,7 +2157,7 @@
                 "precio": "70.3"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Sierra de cinta inalámbrica de MAXXT, la solución ideal para el área de Cortadoras.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0-630 SFPM | Capacidad max corte: 2.5\" x 2.5\" (65x65mm) | Peso: 8.3lbs. Ligera y compacta para cortar tuberías y conduit directamente en la posición de instalación.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Sierra de cinta inalámbrica de MAXXT, la solución ideal para el área de Cortadoras.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0-630 SFPM | Capacidad max corte: 2.5\" x 2.5\" (65x65mm) | Peso: 8.3lbs. Ligera y compacta para cortar tuberías y conduit directamente en la posición de instalación.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Velocidad: 0-630 SFPM | Capacidad max corte: 2.5\" x 2.5\" (65x65mm) | Peso: 8.3lbs"
     },
     {
         "nombre": "Sierra de cinta inalámbrica",
@@ -1467,7 +2171,7 @@
                 "precio": "62.67"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Sierra de cinta inalámbrica de MAXXT, la solución ideal para el área de Cortadoras.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0-420 SFPM | Capacidad max corte: 5\" x 5\" (127x127mm) | Peso: 13.88lbs. Su capacidad de corte libre de chispas la hace segura y rápida para perfiles metálicos.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Sierra de cinta inalámbrica de MAXXT, la solución ideal para el área de Cortadoras.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 0-420 SFPM | Capacidad max corte: 5\" x 5\" (127x127mm) | Peso: 13.88lbs. Su capacidad de corte libre de chispas la hace segura y rápida para perfiles metálicos.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Velocidad: 0-420 SFPM | Capacidad max corte: 5\" x 5\" (127x127mm) | Peso: 13.88lbs"
     },
     {
         "nombre": "Cortadora de cerámica",
@@ -1481,7 +2185,7 @@
                 "precio": "64.55"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Cortadora de cerámica de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1400W | Velocidad: 11300rpm | Hoja: 5\" (125mm) | Capacidad corte: 1.2\" (30mm) | Riel 1.5m. Cortes rectos y sin astilladuras en porcelanatos y cerámicas de gran formato.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Cortadora de cerámica de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1400W | Velocidad: 11300rpm | Hoja: 5\" (125mm) | Capacidad corte: 1.2\" (30mm) | Riel 1.5m. Cortes rectos y sin astilladuras en porcelanatos y cerámicas de gran formato.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1400W | Velocidad: 11300rpm | Hoja: 5\" (125mm) | Capacidad corte: 1.2\" (30mm) | Riel 1.5m"
     },
     {
         "nombre": "Sierra de hormigón",
@@ -1495,7 +2199,7 @@
                 "precio": "99.92"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Sierra de hormigón de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 2600W | Velocidad: 4300r\\/min | Diámetro espada: 14\" (355mm) | Profundidad: 5\" (125mm). Diseñada para cortes profundos y precisos en bloque, piedra y pavimentos.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Sierra de hormigón de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 2600W | Velocidad: 4300r\\/min | Diámetro espada: 14\" (355mm) | Profundidad: 5\" (125mm). Diseñada para cortes profundos y precisos en bloque, piedra y pavimentos.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 2600W | Velocidad: 4300r\\/min | Diámetro espada: 14\" (355mm) | Profundidad: 5\" (125mm)"
     },
     {
         "nombre": "Ranuradora de pared",
@@ -1509,7 +2213,7 @@
                 "precio": "67.84"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Ranuradora de pared de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1700W | Velocidad: 7000r\\/min | Disco: 6\" (150mm) | Profundidad de corte: 10-50mm. Realiza canales limpios para tuberías y cableado en un solo paso, optimizando el tiempo de instalación.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Ranuradora de pared de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1700W | Velocidad: 7000r\\/min | Disco: 6\" (150mm) | Profundidad de corte: 10-50mm. Realiza canales limpios para tuberías y cableado en un solo paso, optimizando el tiempo de instalación.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1700W | Velocidad: 7000r\\/min | Disco: 6\" (150mm) | Profundidad de corte: 10-50mm"
     },
     {
         "nombre": "Vibrador de concreto inalámbrico",
@@ -1523,7 +2227,7 @@
                 "precio": "332.49"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Vibrador de concreto inalámbrico de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Vibración por minuto: 0-12500 | Diámetro cabeza: 1 inch (25.4mm) | Eje: 4ft. Elimina burbujas de aire y asegura la compactación estructural perfecta sin molestos cables en obra.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Vibrador de concreto inalámbrico de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Vibración por minuto: 0-12500 | Diámetro cabeza: 1 inch (25.4mm) | Eje: 4ft. Elimina burbujas de aire y asegura la compactación estructural perfecta sin molestos cables en obra.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Vibración por minuto: 0-12500 | Diámetro cabeza: 1 inch (25.4mm) | Eje: 4ft"
     },
     {
         "nombre": "Herramienta multifunción",
@@ -1537,7 +2241,7 @@
                 "precio": "15.0"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Herramienta multifunción de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 300W | Velocidad: 15000-220000pm | Grados oscilantes: 3° | Cambio sin herramientas. Corta, lija y raspa en espacios ajustados donde otras herramientas no pueden llegar.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Herramienta multifunción de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 300W | Velocidad: 15000-220000pm | Grados oscilantes: 3° | Cambio sin herramientas. Corta, lija y raspa en espacios ajustados donde otras herramientas no pueden llegar.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 300W | Velocidad: 15000-220000pm | Grados oscilantes: 3° | Cambio sin herramientas"
     },
     {
         "nombre": "Pulidor de tambores",
@@ -1551,7 +2255,7 @@
                 "precio": "94.22"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Pulidor de tambores de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1300W | Velocidad: 900-3700rpm | Diámetro abrasivo: 4-3\\/4\" (120mm) | Peso: 9.52lbs. Su diseño cilíndrico brinda un acabado satinado perfecto en metales y superficies extensas.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Pulidor de tambores de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1300W | Velocidad: 900-3700rpm | Diámetro abrasivo: 4-3\\/4\" (120mm) | Peso: 9.52lbs. Su diseño cilíndrico brinda un acabado satinado perfecto en metales y superficies extensas.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1300W | Velocidad: 900-3700rpm | Diámetro abrasivo: 4-3\\/4\" (120mm) | Peso: 9.52lbs"
     },
     {
         "nombre": "Amoladora de concreto 5\"",
@@ -1565,7 +2269,7 @@
                 "precio": "63.21"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Amoladora de concreto 5\" de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1500W | Velocidad: 1000-8500rpm | Diámetro abrasivo: 5\" (125mm) | Peso: 6.7lbs. Especialmente calibrada para alisar, nivelar y retirar imperfecciones en superficies de hormigón.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Amoladora de concreto 5\" de MAXXT, la solución ideal para el área de Línea de Concreto.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1500W | Velocidad: 1000-8500rpm | Diámetro abrasivo: 5\" (125mm) | Peso: 6.7lbs. Especialmente calibrada para alisar, nivelar y retirar imperfecciones en superficies de hormigón.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1500W | Velocidad: 1000-8500rpm | Diámetro abrasivo: 5\" (125mm) | Peso: 6.7lbs"
     },
     {
         "nombre": "Amoladora / Pulidora angular 9\"",
@@ -1579,7 +2283,7 @@
                 "precio": "98.93"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular 9\" de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 2500W | Cable: 4m | Cambio de Disco: Bloqueo de eje | Mango trasero rotativo. Su mango adaptable brinda un control excepcional en cortes profundos y desbaste masivo.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular 9\" de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 2500W | Cable: 4m | Cambio de Disco: Bloqueo de eje | Mango trasero rotativo. Su mango adaptable brinda un control excepcional en cortes profundos y desbaste masivo.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nPotencia: 2500W | Cable: 4m | Cambio de Disco: Bloqueo de eje | Mango trasero rotativo"
     },
     {
         "nombre": "Amoladora / Pulidora angular 7\"",
@@ -1593,7 +2297,7 @@
                 "precio": "43.88"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular 7\" de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 2000W | Cable: 4m | Cambio de Disco: Bloqueo de eje | Guarda de ajuste rápido. Un equipo industrial preparado para las tareas de herrería y construcción más arduas.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular 7\" de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 2000W | Cable: 4m | Cambio de Disco: Bloqueo de eje | Guarda de ajuste rápido. Un equipo industrial preparado para las tareas de herrería y construcción más arduas.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nPotencia: 2000W | Cable: 4m | Cambio de Disco: Bloqueo de eje | Guarda de ajuste rápido"
     },
     {
         "nombre": "Amoladora / Pulidora angular inalámbrica",
@@ -1607,7 +2311,7 @@
                 "precio": "98.75"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular inalámbrica de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidades: 3000 / 6000 / 8500 rpm | Diámetro máximo: 5\" (125mm) | Peso: 4.9lbs. La portabilidad definitiva sin sacrificar el poder de corte que tus proyectos demandan.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular inalámbrica de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidades: 3000 / 6000 / 8500 rpm | Diámetro máximo: 5\" (125mm) | Peso: 4.9lbs. La portabilidad definitiva sin sacrificar el poder de corte que tus proyectos demandan.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Velocidades: 3000 \\/ 6000 \\/ 8500 rpm | Diámetro máximo: 5\" (125mm) | Peso: 4.9lbs"
     },
     {
         "nombre": "Amoladora / Pulidora angular",
@@ -1621,7 +2325,7 @@
                 "precio": "43.81"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1700W | Velocidad: 3200-9200rpm | Diámetro máximo: 5\" (125mm) | Peso: 5.29lbs. Su potente motor corta y desbasta metal o piedra con extrema facilidad y seguridad.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Amoladora/Pulidora angular de MAXXT, la solución ideal para el área de Amoladoras.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1700W | Velocidad: 3200-9200rpm | Diámetro máximo: 5\" (125mm) | Peso: 5.29lbs. Su potente motor corta y desbasta metal o piedra con extrema facilidad y seguridad.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1700W | Velocidad: 3200-9200rpm | Diámetro máximo: 5\" (125mm) | Peso: 5.29lbs"
     },
     {
         "nombre": "Taladro percutor 850W",
@@ -1635,7 +2339,7 @@
                 "precio": "36.46"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 850W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm. Desempeño robusto y duradero para los contratistas más exigentes.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 850W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm. Desempeño robusto y duradero para los contratistas más exigentes.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nPotencia: 850W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm"
     },
     {
         "nombre": "Taladro percutor 750W",
@@ -1649,7 +2353,7 @@
                 "precio": "40.17"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 750W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm. Su mecanismo de impacto de alta frecuencia acelera el trabajo en construcción y albañilería.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 750W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm. Su mecanismo de impacto de alta frecuencia acelera el trabajo en construcción y albañilería.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nPotencia: 750W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm"
     },
     {
         "nombre": "Taladro percutor 550W",
@@ -1663,7 +2367,7 @@
                 "precio": "32.67"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 550W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm. Ligero, versátil y confiable, es la herramienta perfecta para instalaciones cotidianas.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 550W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm. Ligero, versátil y confiable, es la herramienta perfecta para instalaciones cotidianas.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nPotencia: 550W | Velocidad: 0-3000 rpm | Impactos: 0-48000 bpm | Mandril: 1.5-13mm"
     },
     {
         "nombre": "Taladro percutor 1050W",
@@ -1677,7 +2381,7 @@
                 "precio": "86.95"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 1050W | Velocidades: 0-1100 / 0-3000 rpm | Impactos: 0-17600 / 0-48000 bpm | Mandril: 1.5-13mm. Fuerza bruta para perforar concreto y materiales de alta dureza sin esfuerzo.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Taladro percutor de MAXXT, la solución ideal para el área de Taladros Percutores.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Potencia: 1050W | Velocidades: 0-1100 / 0-3000 rpm | Impactos: 0-17600 / 0-48000 bpm | Mandril: 1.5-13mm. Fuerza bruta para perforar concreto y materiales de alta dureza sin esfuerzo.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nPotencia: 1050W | Velocidades: 0-1100 / 0-3000 rpm | Impactos: 0-17600 / 0-48000 bpm | Mandril: 1.5-13mm"
     },
     {
         "nombre": "Taladro a batería",
@@ -1691,7 +2395,7 @@
                 "precio": "222.25"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Taladro a batería de MAXXT, la solución ideal para el área de Taladros Percutores.\n\nOfrece un rendimiento superior con las siguientes características: Motor: 20V Brushless | Torque Max: 60 Nm | Velocidades: 0-450 \\/ 0-2000 rpm | Mandril: 13mm (1\\/2\"). Potencia, autonomía y tecnología sin escobillas para perforaciones impecables en madera, metal y mampostería.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Taladro a batería de MAXXT, la solución ideal para el área de Taladros Percutores.\n\nOfrece un rendimiento superior con las siguientes características: Motor: 20V Brushless | Torque Max: 60 Nm | Velocidades: 0-450 \\/ 0-2000 rpm | Mandril: 13mm (1\\/2\"). Potencia, autonomía y tecnología sin escobillas para perforaciones impecables en madera, metal y mampostería.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nMotor: 20V Brushless | Torque Max: 60 Nm | Velocidades: 0-450 \\/ 0-2000 rpm | Mandril: 13mm (1\\/2\")"
     },
     {
         "nombre": "Amasadora sin escobillas sin cable",
@@ -1705,7 +2409,7 @@
                 "precio": "85.51"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Amasadora sin escobillas sin cable de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidades: 0-450rpm \\/ 0-720rpm | Volumen máximo: 32Gal (120L) | Paleta: 5-1\\/3\". Movilidad absoluta en obra sin depender de tomas de corriente, manteniendo un nivel de fuerza profesional.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Amasadora sin escobillas sin cable de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidades: 0-450rpm \\/ 0-720rpm | Volumen máximo: 32Gal (120L) | Paleta: 5-1\\/3\". Movilidad absoluta en obra sin depender de tomas de corriente, manteniendo un nivel de fuerza profesional.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Velocidades: 0-450rpm \\/ 0-720rpm | Volumen máximo: 32Gal (120L) | Paleta: 5-1\\/3\""
     },
     {
         "nombre": "Taladro / Mezclador de baja velocidad",
@@ -1719,7 +2423,7 @@
                 "precio": "64.14"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Taladro / Mezclador de baja velocidad de MAXXT, la solución ideal para el área de Mezclador de Paletas.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1050W | Velocidad: 0-550rpm | Volumen máximo: 21Gal (80L) | Paleta: 4-3/4\". Su alto torque en bajas revoluciones es perfecto para mezclas pesadas y espesas.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Taladro / Mezclador de baja velocidad de MAXXT, la solución ideal para el área de Mezclador de Paletas.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1050W | Velocidad: 0-550rpm | Volumen máximo: 21Gal (80L) | Paleta: 4-3/4\". Su alto torque en bajas revoluciones es perfecto para mezclas pesadas y espesas.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1050W | Velocidad: 0-550rpm | Volumen máximo: 21Gal (80L) | Paleta: 4-3\\/4\""
     },
     {
         "nombre": "Mezcladora - batidora doble",
@@ -1733,7 +2437,7 @@
                 "precio": "74.87"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Mezcladora - batidora doble de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1600W | Velocidades: 200-480rpm \\/ 250-680rpm | Volumen máximo: 36Gal (140L) | Paleta: 4-3\\/4\". Su sistema de doble paleta evita la rotación del recipiente, ofreciendo una mezcla intensiva y sin esfuerzo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Mezcladora - batidora doble de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1600W | Velocidades: 200-480rpm \\/ 250-680rpm | Volumen máximo: 36Gal (140L) | Paleta: 4-3\\/4\". Su sistema de doble paleta evita la rotación del recipiente, ofreciendo una mezcla intensiva y sin esfuerzo.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1600W | Velocidades: 200-480rpm \\/ 250-680rpm | Volumen máximo: 36Gal (140L) | Paleta: 4-3\\/4\""
     },
     {
         "nombre": "Mezcladora - batidora",
@@ -1747,7 +2451,7 @@
                 "precio": "73.0"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Mezcladora - batidora de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1600W | Velocidades: 180-460rpm \\/ 300-750rpm | Volumen máximo: 32Gal (120L) | Paleta: 5-1\\/3\". Su caja de velocidades permite adaptar la fuerza según la densidad del material a mezclar.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Mezcladora - batidora de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1600W | Velocidades: 180-460rpm \\/ 300-750rpm | Volumen máximo: 32Gal (120L) | Paleta: 5-1\\/3\". Su caja de velocidades permite adaptar la fuerza según la densidad del material a mezclar.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1600W | Velocidades: 180-460rpm \\/ 300-750rpm | Volumen máximo: 32Gal (120L) | Paleta: 5-1\\/3\""
     },
     {
         "nombre": "Mezcladora de barro eléctrico",
@@ -1761,7 +2465,7 @@
                 "precio": "67.25"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Mezcladora de barro eléctrico de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1200W | Velocidad: 0-800rpm | Volumen máximo: 21Gal (80L) | Paleta: 4-3\\/4\" (120mm). Homogeneiza mortero, pintura o resinas rápidamente, ahorrando esfuerzo físico.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Mezcladora de barro eléctrico de MAXXT, la solución ideal para el área de Mezclador de Paletas.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1200W | Velocidad: 0-800rpm | Volumen máximo: 21Gal (80L) | Paleta: 4-3\\/4\" (120mm). Homogeneiza mortero, pintura o resinas rápidamente, ahorrando esfuerzo físico.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1200W | Velocidad: 0-800rpm | Volumen máximo: 21Gal (80L) | Paleta: 4-3\\/4\" (120mm)"
     },
     {
         "nombre": "Soplador / Aspiradora",
@@ -1775,7 +2479,7 @@
                 "precio": "89.46"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Soplador / Aspiradora de MAXXT, la solución ideal para el área de Limpieza al Vacío.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 700W | Soplado: 110CFM | Succión: 115CFM | Peso: 5.62lbs. Un equipo 2 en 1 ligero y práctico, indispensable para la limpieza rápida de talleres y obras.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Soplador / Aspiradora de MAXXT, la solución ideal para el área de Limpieza al Vacío.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 700W | Soplado: 110CFM | Succión: 115CFM | Peso: 5.62lbs. Un equipo 2 en 1 ligero y práctico, indispensable para la limpieza rápida de talleres y obras.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 700W | Soplado: 110CFM | Succión: 115CFM | Peso: 5.62lbs"
     },
     {
         "nombre": "Aspiradora",
@@ -1789,7 +2493,7 @@
                 "precio": "64.52"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Aspiradora de MAXXT, la solución ideal para el área de Limpieza al Vacío.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1600W | Capacidad contenedor: 8gal (30L) | Succión máxima: 70.5CFM. Su motor de alto rendimiento aspira polvo fino y residuos gruesos para dejar tu área impecable.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Aspiradora de MAXXT, la solución ideal para el área de Limpieza al Vacío.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1600W | Capacidad contenedor: 8gal (30L) | Succión máxima: 70.5CFM. Su motor de alto rendimiento aspira polvo fino y residuos gruesos para dejar tu área impecable.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1600W | Capacidad contenedor: 8gal (30L) | Succión máxima: 70.5CFM"
     },
     {
         "nombre": "Extractor de polvo / Aspiradora",
@@ -1803,7 +2507,7 @@
                 "precio": "29.2"
             }
         ],
-        "desc_larga": "Potencia tu productividad con el Extractor de polvo / Aspiradora de MAXXT, la solución ideal para el área de Limpieza al Vacío.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1400W (Max 3800W) | Capacidad contenedor: 10.56gal (40L) | Succión máxima: 160CFM. Mantiene tu espacio de trabajo libre de partículas nocivas gracias a su potente capacidad de succión industrial.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con el Extractor de polvo / Aspiradora de MAXXT, la solución ideal para el área de Limpieza al Vacío.\r\n\r\nOfrece un rendimiento superior con las siguientes características: Fuerza: 1400W (Max 3800W) | Capacidad contenedor: 10.56gal (40L) | Succión máxima: 160CFM. Mantiene tu espacio de trabajo libre de partículas nocivas gracias a su potente capacidad de succión industrial.\r\n\r\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 1400W (Max 3800W) | Capacidad contenedor: 10.56gal (40L) | Succión máxima: 160CFM"
     },
     {
         "nombre": "Lijadora orbital aleatoria",
@@ -1817,7 +2521,7 @@
                 "precio": "150.66"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital aleatoria de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 600W | Velocidad: 4000-7000rpm | Trazo: 3\\/16\" (5mm) | Dimensiones: 400x70mm | Peso: 7lbs. Su amplia base garantiza planitud perfecta en piezas largas o de gran formato.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital aleatoria de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 600W | Velocidad: 4000-7000rpm | Trazo: 3\\/16\" (5mm) | Dimensiones: 400x70mm | Peso: 7lbs. Su amplia base garantiza planitud perfecta en piezas largas o de gran formato.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 600W | Velocidad: 4000-7000rpm | Trazo: 3\\/16\" (5mm) | Dimensiones: 400x70mm | Peso: 7lbs"
     },
     {
         "nombre": "Lijadora orbital aleatoria",
@@ -1831,7 +2535,7 @@
                 "precio": "164.22"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital aleatoria de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 800W | Velocidad: 3300-7250rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 6.6lbs. Con máxima potencia, es la máquina indicada para desbaste pesado y remoción de recubrimientos duros.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital aleatoria de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 800W | Velocidad: 3300-7250rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 6.6lbs. Con máxima potencia, es la máquina indicada para desbaste pesado y remoción de recubrimientos duros.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 800W | Velocidad: 3300-7250rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 6.6lbs"
     },
     {
         "nombre": "Lijadora orbital aleatoria",
@@ -1845,7 +2549,7 @@
                 "precio": "132.97"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital aleatoria de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 500W | Velocidad: 2500-6250rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 6.6lbs. Su patrón aleatorio previene marcas profundas, logrando un pulido ultrasuave en maderas y metales.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital aleatoria de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 500W | Velocidad: 2500-6250rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 6.6lbs. Su patrón aleatorio previene marcas profundas, logrando un pulido ultrasuave en maderas y metales.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 500W | Velocidad: 2500-6250rpm | Trazo: 3\\/16\" (5mm) | Diámetro: 6\" (150mm) | Peso: 6.6lbs"
     },
     {
         "nombre": "Lijadora orbital inalámbrica",
@@ -1859,7 +2563,7 @@
                 "precio": "119.69"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital inalámbrica de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 1\\/16\" (1.5mm) | Dimensiones: 100x152x152mm | Peso: 2.2lbs. Diseñada para llevar el acabado profesional a cualquier lugar, dentro o fuera del taller.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital inalámbrica de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 1\\/16\" (1.5mm) | Dimensiones: 100x152x152mm | Peso: 2.2lbs. Diseñada para llevar el acabado profesional a cualquier lugar, dentro o fuera del taller.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 1\\/16\" (1.5mm) | Dimensiones: 100x152x152mm | Peso: 2.2lbs"
     },
     {
         "nombre": "Lijadora orbital inalámbrica",
@@ -1873,7 +2577,7 @@
                 "precio": "143.97"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital inalámbrica de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 1\\/16\" (1.5mm) | Dimensiones: 81x133mm | Peso: 2.2lbs. Su perfil compacto te brinda control total sin restricciones de movilidad.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital inalámbrica de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 1\\/16\" (1.5mm) | Dimensiones: 81x133mm | Peso: 2.2lbs. Su perfil compacto te brinda control total sin restricciones de movilidad.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 1\\/16\" (1.5mm) | Dimensiones: 81x133mm | Peso: 2.2lbs"
     },
     {
         "nombre": "Lijadora orbital inalámbrica",
@@ -1887,6 +2591,6 @@
                 "precio": "194.41"
             }
         ],
-        "desc_larga": "Potencia tu productividad con la Lijadora orbital inalámbrica de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 3\\/32\" (2.5mm) | Diámetro: 5\" (125mm) | Peso: 2.2lbs. La comodidad de no tener cables unida a un desempeño excepcional en cada pasada.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada."
+        "desc_larga": "Potencia tu productividad con la Lijadora orbital inalámbrica de MAXXT, la solución ideal para el área de Lijadoras Orbitales.\n\nOfrece un rendimiento superior con las siguientes características: Fuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 3\\/32\" (2.5mm) | Diámetro: 5\" (125mm) | Peso: 2.2lbs. La comodidad de no tener cables unida a un desempeño excepcional en cada pasada.\n\nToma el poder en tus manos con el respaldo de MAXXT Ecuador. Disfruta de 1 año de garantía contra defectos de fábrica y asesoría técnica especializada.\n\nDATOS TÉCNICOS:\nFuerza: 20V | Velocidad: 4000-10000rpm | Trazo: 3\\/32\" (2.5mm) | Diámetro: 5\" (125mm) | Peso: 2.2lbs"
     }
 ]

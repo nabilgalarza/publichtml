@@ -2927,20 +2927,53 @@ function extraerTextos($html) {
                     }
                 } 
 
+                function parseLineaPresentacion(linea) {
+                    const i = linea.indexOf(':');
+                    if (i === -1) {
+                        return { opcion: linea.trim(), precio: '' };
+                    }
+                    return {
+                        opcion: linea.slice(0, i).trim(),
+                        precio: linea.slice(i + 1).trim()
+                    };
+                }
+
                 function agregarFilaPresentacion(opcion = '', precio = '') {
                     const cont = document.getElementById('contenedor-presentaciones');
                     const div = document.createElement('div');
-                    div.className = "flex gap-2 animate-in fade-in slide-in-from-left-2 duration-300";
-                    div.innerHTML = `
-                        <input type="text" name="pres_opcion[]" value="${opcion}" placeholder="Ej. Frasco 60 caps" required class="flex-1 premium-input rounded-lg px-3 py-2 text-xs font-bold">
-                        <div class="relative w-20">
-                            <span class="absolute left-2 top-1/2 -translate-y-1/2 text-slate-300 text-[10px]">$</span>
-                            <input type="text" name="pres_precio[]" value="${precio}" placeholder="0.00" class="w-full premium-input rounded-lg pl-5 pr-2 py-2 text-xs font-bold">
-                        </div>
-                        <button type="button" onclick="eliminarFilaPresentacion(this)" class="w-8 h-8 flex items-center justify-center bg-rose-50 text-rose-400 hover:bg-rose-500 hover:text-white rounded-lg transition-all border border-rose-100">
-                            <i class="fa-solid fa-trash-can text-[10px]"></i>
-                        </button>
-                    `;
+                    div.className = 'flex gap-2 animate-in fade-in slide-in-from-left-2 duration-300';
+
+                    const inputOpcion = document.createElement('input');
+                    inputOpcion.type = 'text';
+                    inputOpcion.name = 'pres_opcion[]';
+                    inputOpcion.value = opcion;
+                    inputOpcion.placeholder = 'Ej. 18" o Frasco 60 caps';
+                    inputOpcion.required = true;
+                    inputOpcion.className = 'flex-1 premium-input rounded-lg px-3 py-2 text-xs font-bold';
+
+                    const wrapPrecio = document.createElement('div');
+                    wrapPrecio.className = 'relative w-20';
+                    const spanPrecio = document.createElement('span');
+                    spanPrecio.className = 'absolute left-2 top-1/2 -translate-y-1/2 text-slate-300 text-[10px]';
+                    spanPrecio.textContent = '$';
+                    const inputPrecio = document.createElement('input');
+                    inputPrecio.type = 'text';
+                    inputPrecio.name = 'pres_precio[]';
+                    inputPrecio.value = precio;
+                    inputPrecio.placeholder = '0.00';
+                    inputPrecio.className = 'w-full premium-input rounded-lg pl-5 pr-2 py-2 text-xs font-bold';
+                    wrapPrecio.appendChild(spanPrecio);
+                    wrapPrecio.appendChild(inputPrecio);
+
+                    const btnEliminar = document.createElement('button');
+                    btnEliminar.type = 'button';
+                    btnEliminar.className = 'w-8 h-8 flex items-center justify-center bg-rose-50 text-rose-400 hover:bg-rose-500 hover:text-white rounded-lg transition-all border border-rose-100';
+                    btnEliminar.addEventListener('click', () => eliminarFilaPresentacion(btnEliminar));
+                    btnEliminar.innerHTML = '<i class="fa-solid fa-trash-can text-[10px]"></i>';
+
+                    div.appendChild(inputOpcion);
+                    div.appendChild(wrapPrecio);
+                    div.appendChild(btnEliminar);
                     cont.appendChild(div);
                 }
 
@@ -2990,8 +3023,8 @@ function extraerTextos($html) {
                         const lineas = presRaw.split('\n');
                         lineas.forEach(linea => {
                             if (linea.trim()) {
-                                const partes = linea.split(':');
-                                agregarFilaPresentacion(partes[0].trim(), (partes[1] || '').trim());
+                                const { opcion, precio } = parseLineaPresentacion(linea);
+                                agregarFilaPresentacion(opcion, precio);
                             }
                         });
                     }
