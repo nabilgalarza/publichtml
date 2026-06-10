@@ -54,17 +54,10 @@ function improgyp_landing_dedup_catalogo(array $items) {
     return $out;
 }
 
-function improgyp_landing_categorias($limite = 8) {
-    $catalogo = improgyp_landing_load_catalogo();
-    $counts = [];
-    foreach ($catalogo as $p) {
-        $cat = trim($p['categoria'] ?? '');
-        if ($cat === '') continue;
-        $counts[$cat] = ($counts[$cat] ?? 0) + 1;
-    }
-    arsort($counts);
-    $cats = array_slice(array_keys($counts), 0, (int) $limite);
-    $icons = [
+/** Iconos por defecto si no hay override en config_landing (retrocompat). */
+function improgyp_landing_categoria_icon_defaults(): array
+{
+    return [
         'Accesorios' => 'fa-gears',
         'Herramientas Drywall' => 'fa-trowel-bricks',
         'Taladros Percutores' => 'fa-screwdriver-wrench',
@@ -72,16 +65,177 @@ function improgyp_landing_categorias($limite = 8) {
         'Lijadoras de Paneles de Yeso' => 'fa-sheet-plastic',
         'Pulverizadores de Pintura' => 'fa-spray-can',
     ];
-    $result = [];
-    foreach ($cats as $cat) {
-        $result[] = [
-            'nombre' => $cat,
-            'count' => $counts[$cat],
-            'icon' => $icons[$cat] ?? 'fa-tag',
+}
+
+function improgyp_landing_normalize_icon_class(string $raw): string
+{
+    $raw = trim($raw);
+    if ($raw === '') {
+        return 'fa-tag';
+    }
+    if (preg_match('/^fa-[a-z0-9\-]+$/i', $raw)) {
+        return strtolower($raw);
+    }
+    if (preg_match('/^[a-z0-9\-]+$/i', $raw)) {
+        return 'fa-' . strtolower($raw);
+    }
+    return 'fa-tag';
+}
+
+/** @return array<string, int> categoría canónica => cantidad de productos */
+function improgyp_landing_categorias_catalog_counts(): array
+{
+    $counts = [];
+    foreach (improgyp_landing_load_catalogo() as $p) {
+        $cat = trim($p['categoria'] ?? '');
+        if ($cat === '') {
+            continue;
+        }
+        $counts[$cat] = ($counts[$cat] ?? 0) + 1;
+    }
+    arsort($counts);
+    return $counts;
+}
+
+/**
+ * Tarjetas de categorías para el home (vitrina).
+ * $sec = bloque categorias de config_landing (limite, overrides).
+ *
+ * @return list<array{nombre: string, nombre_canonico: string, count: int, icon: string, href: string}>
+ */
+function improgyp_landing_categorias(array $sec = []): array
+{
+    $limite = max(4, min(12, (int) ($sec['limite'] ?? 8)));
+    $counts = improgyp_landing_categorias_catalog_counts();
+    $overrides = is_array($sec['overrides'] ?? null) ? $sec['overrides'] : [];
+    $defaults = improgyp_landing_categoria_icon_defaults();
+
+    $candidates = [];
+    foreach ($counts as $cat => $count) {
+        $ov = is_array($overrides[$cat] ?? null) ? $overrides[$cat] : [];
+        if (array_key_exists('visible', $ov) && $ov['visible'] === false) {
+            continue;
+        }
+        $nombreVisible = trim((string) ($ov['nombre_visible'] ?? ''));
+        $iconRaw = trim((string) ($ov['icono'] ?? ''));
+        $icon = $iconRaw !== ''
+            ? improgyp_landing_normalize_icon_class($iconRaw)
+            : ($defaults[$cat] ?? 'fa-tag');
+        $orden = isset($ov['orden']) && $ov['orden'] !== '' ? (int) $ov['orden'] : null;
+
+        $candidates[] = [
+            'nombre' => $nombreVisible !== '' ? $nombreVisible : $cat,
+            'nombre_canonico' => $cat,
+            'count' => $count,
+            'icon' => $icon,
             'href' => 'productos.php?cat=' . rawurlencode($cat),
+            '_orden' => $orden,
+            '_count_sort' => $count,
         ];
     }
+
+    usort($candidates, static function (array $a, array $b): int {
+        $ao = $a['_orden'];
+        $bo = $b['_orden'];
+        if ($ao !== null && $bo !== null && $ao !== $bo) {
+            return $ao <=> $bo;
+        }
+        if ($ao !== null && $bo === null) {
+            return -1;
+        }
+        if ($ao === null && $bo !== null) {
+            return 1;
+        }
+        return $b['_count_sort'] <=> $a['_count_sort'];
+    });
+
+    $result = array_slice($candidates, 0, $limite);
+    foreach ($result as &$row) {
+        unset($row['_orden'], $row['_count_sort']);
+    }
+    unset($row);
+
     return $result;
+}
+
+/** Datos para el editor del dashboard (todas las categorías del catálogo + huérfanos). */
+function improgyp_landing_categorias_for_editor(): array
+{
+    $counts = improgyp_landing_categorias_catalog_counts();
+    $sec = improgyp_landing_find_section(improgyp_landing_config()['secciones'], 'categorias') ?? [];
+    $overrides = is_array($sec['overrides'] ?? null) ? $sec['overrides'] : [];
+    $defaults = improgyp_landing_categoria_icon_defaults();
+
+    $orphans = [];
+    foreach (array_keys($overrides) as $key) {
+        if (!isset($counts[$key])) {
+            $orphans[] = $key;
+        }
+    }
+
+    $rows = [];
+    foreach ($counts as $cat => $count) {
+        $ov = is_array($overrides[$cat] ?? null) ? $overrides[$cat] : [];
+        $rows[] = [
+            'canonico' => $cat,
+            'count' => $count,
+            'nombre_visible' => (string) ($ov['nombre_visible'] ?? ''),
+            'icono' => (string) ($ov['icono'] ?? ($defaults[$cat] ?? '')),
+            'visible' => !array_key_exists('visible', $ov) || $ov['visible'] !== false,
+            'orden' => isset($ov['orden']) ? (string) $ov['orden'] : '',
+        ];
+    }
+
+    usort($rows, static fn(array $a, array $b): int => $b['count'] <=> $a['count']);
+
+    return ['rows' => $rows, 'orphans' => $orphans];
+}
+
+/** Persiste overrides de vitrina desde POST del editor home (no modifica inventario). */
+function improgyp_landing_build_categorias_overrides_from_post(array $post): array
+{
+    $canonicos = $post['cat_canonico'] ?? [];
+    if (!is_array($canonicos)) {
+        return [];
+    }
+
+    $nombres = is_array($post['cat_nombre_visible'] ?? null) ? $post['cat_nombre_visible'] : [];
+    $iconos = is_array($post['cat_icono'] ?? null) ? $post['cat_icono'] : [];
+    $ordenes = is_array($post['cat_orden'] ?? null) ? $post['cat_orden'] : [];
+    $visibles = is_array($post['cat_visible'] ?? null) ? $post['cat_visible'] : [];
+
+    $overrides = [];
+    foreach ($canonicos as $i => $cat) {
+        $cat = trim((string) $cat);
+        if ($cat === '') {
+            continue;
+        }
+
+        $nombreVisible = trim((string) ($nombres[$i] ?? ''));
+        $icono = trim((string) ($iconos[$i] ?? ''));
+        $ordenRaw = trim((string) ($ordenes[$i] ?? ''));
+        $visible = isset($visibles[$cat]);
+
+        $entry = [];
+        if ($nombreVisible !== '') {
+            $entry['nombre_visible'] = $nombreVisible;
+        }
+        if ($icono !== '') {
+            $entry['icono'] = improgyp_landing_normalize_icon_class($icono);
+        }
+        if ($ordenRaw !== '' && is_numeric($ordenRaw)) {
+            $entry['orden'] = (int) $ordenRaw;
+        }
+        if (!$visible) {
+            $entry['visible'] = false;
+        }
+
+        if ($entry !== []) {
+            $overrides[$cat] = $entry;
+        }
+    }
+
+    return $overrides;
 }
 
 function improgyp_landing_ranking(): array
@@ -173,6 +327,14 @@ function improgyp_landing_merge_portada_section(?array $prev, array $updates): a
         }
         if (isset($updates['marquee_seg'])) {
             $base['marquee_seg'] = $updates['marquee_seg'];
+        }
+        if (($tipo ?? '') === 'categorias') {
+            if (array_key_exists('overrides', $updates) && is_array($updates['overrides'])) {
+                $base['overrides'] = $updates['overrides'];
+            }
+            if (isset($updates['modo'])) {
+                $base['modo'] = $updates['modo'];
+            }
         }
         return $base;
     }

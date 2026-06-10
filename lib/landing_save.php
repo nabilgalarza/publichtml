@@ -78,6 +78,8 @@ function improgyp_landing_build_payload_from_post(array $post, array $files, boo
             'tipo' => 'categorias',
             'activo' => isset($post['sec_categorias_activo']),
             'limite' => max(4, min(12, (int) ($post['sec_categorias_limite'] ?? 8))),
+            'modo' => 'auto',
+            'overrides' => improgyp_landing_build_categorias_overrides_from_post($post),
         ],
         'categorias'
     );

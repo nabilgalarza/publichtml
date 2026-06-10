@@ -1,8 +1,7 @@
 <?php
 /** @var array $sec */
 /** @var string $base_url */
-$limite = (int) ($sec['limite'] ?? 8);
-$cats = improgyp_landing_categorias($limite);
+$cats = improgyp_landing_categorias($sec);
 if (empty($cats)) {
     return;
 }

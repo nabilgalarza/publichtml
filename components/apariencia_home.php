@@ -26,6 +26,7 @@ $secCta = improgyp_home_sec($secciones, 'cta');
 $secBlog = improgyp_home_sec($secciones, 'blog');
 $secLogos = improgyp_home_sec($secciones, 'logos');
 $secLocales = improgyp_home_sec($secciones, 'locales');
+$catEditorData = improgyp_landing_categorias_for_editor();
 
 $slidesCfg = $secSlider['slides'] ?? [['titulo' => '', 'subtitulo' => '', 'imagen' => '', 'cta_texto' => 'Ver más', 'cta_url' => 'productos.php', 'etiqueta' => '']];
 while (count($slidesCfg) < 3) {
@@ -80,6 +81,7 @@ function improgyp_home_preview_heading(array $sec): string
         <p class="font-black text-violet-900 mb-2 uppercase tracking-wider text-[10px]">¿Dónde edito qué?</p>
         <ul class="space-y-1 list-disc list-inside">
             <li><strong>Home (index):</strong> esta pantalla</li>
+            <li><strong>Categorías del home (tarjetas):</strong> bloque «Categorías de equipos» abajo — nombre e icono de vitrina (no cambia inventario)</li>
             <li><strong>Catálogo (productos.php):</strong> <a href="?view=marketing" class="text-[#0E75AE] font-bold underline">Marketing IA</a> → <code class="text-[10px] bg-white/80 px-1 rounded">textos_tienda.json</code></li>
             <li><strong>Banners en catálogo:</strong> Gestor de Pautas → <code class="text-[10px] bg-white/80 px-1 rounded">ads.json</code></li>
             <li><strong>Artículos del blog:</strong> <a href="?view=blog" class="text-[#0E75AE] font-bold underline">Gestor de Blog</a></li>
@@ -158,7 +160,7 @@ function improgyp_home_preview_heading(array $sec): string
         </details>
 
         <?php
-        $renderBloqueLaser = static function (array $bloque) {
+        $renderBloqueLaser = static function (array $bloque) use ($catEditorData) {
             $bk = $bloque['key'];
             $bs = $bloque['sec'];
             $h = improgyp_landing_section_heading($bs);
@@ -215,6 +217,62 @@ function improgyp_home_preview_heading(array $sec): string
                         <input type="text" id="sub_<?= $bk ?>" name="subtitulo[<?= $bk ?>]" value="<?= htmlspecialchars($h['sub']) ?>" class="w-full premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
                     </div>
                 </div>
+                <?php if ($bk === 'categorias'): ?>
+                <div class="rounded-xl border border-slate-200 bg-slate-50/80 p-4 space-y-4">
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-500">Vitrina de categorías (solo home)</p>
+                        <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">La lista sale del <strong>catálogo</strong> (campo categoría de cada producto). Aquí solo cambias nombre visible, icono y orden. El filtro en tienda usa siempre el nombre del inventario.</p>
+                    </div>
+                    <?php if (!empty($catEditorData['orphans'])): ?>
+                    <div class="p-3 rounded-lg bg-amber-50 border border-amber-200 text-[11px] text-amber-900">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                        Overrides huérfanos (categoría ya no existe en catálogo):
+                        <strong><?= htmlspecialchars(implode(', ', $catEditorData['orphans']), ENT_QUOTES, 'UTF-8') ?></strong>.
+                        Se eliminarán al guardar.
+                    </div>
+                    <?php endif; ?>
+                    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+                        <table class="w-full text-left text-xs min-w-[640px]">
+                            <thead class="bg-slate-100 text-[10px] font-black uppercase text-slate-500">
+                                <tr>
+                                    <th class="px-3 py-2">Inventario</th>
+                                    <th class="px-3 py-2">Nombre en home</th>
+                                    <th class="px-3 py-2">Icono FA</th>
+                                    <th class="px-3 py-2 w-16">Orden</th>
+                                    <th class="px-3 py-2 w-16 text-center">Ver</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <?php foreach ($catEditorData['rows'] as $ci => $crow): ?>
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="px-3 py-2.5 align-middle">
+                                        <input type="hidden" name="cat_canonico[]" value="<?= htmlspecialchars($crow['canonico'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <span class="font-bold text-slate-800 block leading-tight"><?= htmlspecialchars($crow['canonico']) ?></span>
+                                        <span class="text-[10px] text-slate-400"><?= (int) $crow['count'] ?> prod.</span>
+                                    </td>
+                                    <td class="px-3 py-2.5 align-middle">
+                                        <input type="text" name="cat_nombre_visible[]" value="<?= htmlspecialchars($crow['nombre_visible']) ?>" placeholder="<?= htmlspecialchars($crow['canonico']) ?>" class="w-full premium-input rounded-lg px-2 py-1.5 text-xs border border-slate-100">
+                                    </td>
+                                    <td class="px-3 py-2.5 align-middle">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fa-solid <?= htmlspecialchars(improgyp_landing_normalize_icon_class($crow['icono'] ?: 'fa-tag')) ?> text-[#0E75AE] text-sm w-5 text-center shrink-0 cat-icon-preview" aria-hidden="true"></i>
+                                            <input type="text" name="cat_icono[]" value="<?= htmlspecialchars($crow['icono']) ?>" placeholder="fa-tag" class="cat-icon-input w-full premium-input rounded-lg px-2 py-1.5 text-xs border border-slate-100 font-mono">
+                                        </div>
+                                    </td>
+                                    <td class="px-3 py-2.5 align-middle">
+                                        <input type="number" name="cat_orden[]" value="<?= htmlspecialchars($crow['orden']) ?>" min="1" max="99" placeholder="—" class="w-full premium-input rounded-lg px-2 py-1.5 text-xs border border-slate-100 text-center">
+                                    </td>
+                                    <td class="px-3 py-2.5 align-middle text-center">
+                                        <input type="checkbox" name="cat_visible[<?= htmlspecialchars($crow['canonico'], ENT_QUOTES, 'UTF-8') ?>]" value="1" <?= !empty($crow['visible']) ? 'checked' : '' ?> class="rounded border-slate-300" title="Visible en home">
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-[10px] text-slate-400">Iconos: clase Font Awesome sin prefijo <code class="bg-white px-1 rounded">fa-</code> (ej. <code class="bg-white px-1 rounded">fa-gears</code>, <code class="bg-white px-1 rounded">fa-screwdriver</code>). Orden opcional: menor número = más arriba; vacío = por cantidad de productos.</p>
+                </div>
+                <?php endif; ?>
             </div>
         </details>
         <?php
@@ -376,4 +434,16 @@ async function generarCopySeccionIA(seccion, idNorm, idResal, idSub, btnElement)
         setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
     }
 })();
+
+document.querySelectorAll('.cat-icon-input').forEach(function (input) {
+    input.addEventListener('input', function () {
+        var row = this.closest('tr');
+        var preview = row ? row.querySelector('.cat-icon-preview') : null;
+        if (!preview) return;
+        var cls = this.value.trim();
+        if (cls && cls.indexOf('fa-') !== 0) cls = 'fa-' + cls;
+        if (!cls) cls = 'fa-tag';
+        preview.className = 'fa-solid ' + cls + ' text-[#0E75AE] text-sm w-5 text-center shrink-0 cat-icon-preview';
+    });
+});
 </script>
