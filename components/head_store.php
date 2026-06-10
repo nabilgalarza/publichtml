@@ -150,6 +150,10 @@
         .modal-overlay.show { opacity: 1; pointer-events: auto; }
         .product-modal-content { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(0.95) translateY(20px); max-height: 92vh; overflow-y: auto; overflow-x: hidden; }
         .modal-overlay.show .product-modal-content { transform: scale(1) translateY(0); }
+        @media (max-width: 767px) {
+            .modal-overlay { padding: 12px 8px; }
+            .improgyp-product-modal { width: 100%; max-width: none; margin-left: 0; margin-right: 0; }
+        }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }

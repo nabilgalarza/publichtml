@@ -256,13 +256,13 @@
         const safe = identificador.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
         if (item) {
-            wrapper.innerHTML = `<div class="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-1 h-10 w-28 shadow-inner">
+            wrapper.innerHTML = `<div class="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-1 h-10 w-full md:w-28 shadow-inner">
                 <button type="button" onclick="improgypModificarCantidadLanding('${safe}', -1)" class="w-8 h-full rounded-lg bg-white text-slate-500 shadow-sm hover:text-rose-500 font-black text-base active:scale-95">-</button>
                 <span class="font-black text-[14px] text-slate-800 flex-grow text-center select-none">${item.cantidad}</span>
                 <button type="button" onclick="improgypModificarCantidadLanding('${safe}', 1)" class="w-8 h-full rounded-lg bg-white text-slate-500 shadow-sm hover:text-[#1B263B] font-black text-base active:scale-95">+</button>
             </div>`;
         } else {
-            wrapper.innerHTML = `<button type="button" class="btn-IMPROGYP px-4 h-10 text-[13px] w-28" onclick="agregarAlCarritoLanding('${safe}')"><i class="fa-solid fa-cart-plus"></i> <span class="ml-1">Añadir</span></button>`;
+            wrapper.innerHTML = `<button type="button" class="btn-IMPROGYP w-full md:w-28 px-4 h-10 text-[13px]" onclick="agregarAlCarritoLanding('${safe}')"><i class="fa-solid fa-cart-plus"></i> <span class="ml-1">Añadir</span></button>`;
         }
     }
 

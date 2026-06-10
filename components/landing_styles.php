@@ -237,8 +237,13 @@
         transform: scale(0.95) translateY(20px);
         max-height: 92vh;
         overflow-y: auto;
+        overflow-x: hidden;
     }
     .modal-overlay.show .product-modal-content { transform: scale(1) translateY(0); }
+    @media (max-width: 767px) {
+        .modal-overlay { padding: 12px 8px; }
+        .improgyp-product-modal { width: 100%; max-width: none; margin-left: 0; margin-right: 0; }
+    }
     .custom-scrollbar::-webkit-scrollbar { width: 6px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     .location-card {

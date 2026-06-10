@@ -59,35 +59,7 @@
         </div>
     </main>
 
-    <div class="modal-overlay" id="product-modal" onclick="cerrarModalProducto(event)">
-        <div class="product-modal-content flex flex-col md:flex-row gap-0 md:gap-6 p-5 relative bg-white w-full max-w-3xl mx-4 rounded-2xl shadow-2xl custom-scrollbar" onclick="event.stopPropagation()">
-            <button class="absolute top-3 right-3 md:top-4 md:right-4 text-slate-400 hover:text-rose-500 text-xl z-20 w-8 h-8 flex items-center justify-center bg-slate-100 md:bg-transparent rounded-full transition-colors" onclick="cerrarModalProducto()">&times;</button>
-            <div class="w-full md:w-5/12 bg-[#f8fafc] rounded-xl p-4 flex justify-center items-center relative mb-4 md:mb-0 border border-slate-100 flex-shrink-0">
-                <span id="modal-cat" class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#1B263B] text-[9px] font-bold px-2.5 py-1 rounded uppercase tracking-wider shadow-sm border border-[#1B263B]/20 z-10"></span>
-                <img id="modal-img" src="" class="w-full max-h-48 sm:max-h-56 md:max-h-64 object-contain mix-blend-multiply" onerror="this.onerror=null; this.src='favicon-app.png?v=5';">
-            </div>
-            <div class="w-full md:w-7/12 flex flex-col pt-1">
-                <h2 id="modal-title" class="text-xl md:text-2xl font-black text-slate-800 mb-1 leading-tight"></h2>
-                <div id="modal-brand-sku" class="flex items-center gap-2 mb-4">
-                    <span id="modal-marca-label" class="brand-label !mb-0"></span>
-                    <span id="modal-sku-label" class="sku-label !mt-0"></span>
-                </div>
-                <div class="custom-scrollbar overflow-y-auto pr-3 mb-4" style="max-height: 18vh;"><p id="modal-desc" class="text-[13px] text-slate-500 leading-relaxed whitespace-pre-line"></p></div>
-                <div class="mb-4 flex-shrink-0"><p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2.5">Presentaciones disponibles</p><div id="modal-presentations" class="flex flex-wrap gap-2"></div></div>
-                <div class="flex items-end justify-between mt-auto pt-4 border-t border-slate-100 flex-shrink-0">
-                    <div><p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">Precio</p><span id="modal-price" class="text-2xl font-black text-slate-800"></span></div>
-                    <div class="flex gap-2">
-                         <button id="modal-btn-share" class="w-10 h-10 rounded-lg flex items-center justify-center text-lg transition-colors border border-slate-200 shadow-sm text-slate-400 hover:text-[#1B263B] hover:border-[#1B263B]/30" title="Compartir producto"><i class="fa-solid fa-share-nodes"></i></button>
-                         <button id="modal-btn-wishlist" class="w-10 h-10 rounded-lg flex items-center justify-center text-lg transition-colors border border-slate-200 shadow-sm"></button>
-                         <div id="modal-btn-add-wrapper" class="flex-shrink-0"><button id="modal-btn-add" class="btn-IMPROGYP px-4 h-10 text-[13px] w-28"><i class="fa-solid fa-cart-plus"></i> <span class="ml-1">Añadir</span></button></div>
-                    </div>
-                </div>
-                
-                <!-- UPSELLING / RELACIONADOS -->
-                <div id="modal-related-container"></div>
-            </div>
-        </div>
-    </div>
+    <?php include __DIR__ . '/product_modal.php'; ?>
 
     <div class="bottom-sheet-overlay" id="category-bottom-sheet" onclick="toggleBottomSheet()">
         <div class="bottom-sheet" id="bs-panel" onclick="event.stopPropagation()">
