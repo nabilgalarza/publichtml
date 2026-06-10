@@ -379,17 +379,6 @@ $base_url = $protocolo . "://" . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER[
         fputcsv($output, ['0', 'Taladro Percutor 1/2', 'TB550-B3', 'BLACK+DECKER', 'Taladros Percutores', "Sin Maleta: 65.00\nCon Maleta: 75.00", 'Taladro potente para mampostería y madera.', 'Potencia: 550W | Mandril: 1/2"', 'tb550.webp', '1']);
         fclose($output); exit;
     }
-    if (isset($_GET['action']) && $_GET['action'] === 'exportar_plantilla_impled') {
-        header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Disposition: attachment; filename=plantilla_IMPLED_codigo_por_medida.csv');
-        $output = fopen('php://output', 'w');
-        fputcsv($output, ['Nombre', 'Codigo', 'Marca', 'Categoria', 'Unidad_Precios', 'Descripcion_Larga', 'Publicado']);
-        fputcsv($output, ['Lija de agua en pliego #80', '20LIJ09', 'IMPLED', 'Abrasivos', 'Presentación Única: 1.20', 'Pliego 230mm x 280mm.', '1']);
-        fputcsv($output, ['Lija de agua en pliego #100', '20LIJ10', 'IMPLED', 'Abrasivos', 'Presentación Única: 1.25', 'Pliego 230mm x 280mm.', '1']);
-        fputcsv($output, ['Lija de agua en pliego #120', '20LIJ11', 'IMPLED', 'Abrasivos', 'Presentación Única: 1.30', 'Pliego 230mm x 280mm.', '1']);
-        fclose($output);
-        exit;
-    }
     if (isset($_GET['action']) && $_GET['action'] === 'exportar_csv') {
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename=catalogo_IMPROGYP.csv');
@@ -657,176 +646,6 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'bulk_imagen_lote') {
     $payload = improgyp_bulk_staging_json_payload($res['ok'], $res['skip'], $res['warnings']);
     $payload['status'] = 'success';
     echo json_encode($payload, JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-if (isset($_GET['ajax']) && strpos((string) ($_GET['ajax'] ?? ''), 'importacion_') === 0) {
-    require_once __DIR__ . '/lib/import_masivo.php';
-    improgyp_import_ensure_tables($pdo);
-    header('Content-Type: application/json; charset=utf-8');
-    $batchId = improgyp_import_batch_id();
-    $ajax = $_GET['ajax'];
-
-    if ($ajax === 'importacion_staging_stats') {
-        echo json_encode([
-            'status' => 'success',
-            'total_fotos' => improgyp_import_staging_count($pdo, $batchId),
-        ], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        echo json_encode(['error' => 'Método no permitido'], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-    if (!hash_equals($csrf_token, $_POST['csrf_token'] ?? '')) {
-        echo json_encode(['error' => 'Error de seguridad (CSRF).'], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    if ($ajax === 'importacion_repreview') {
-        $path = improgyp_import_csv_sesion_path();
-        if ($path === null) {
-            echo json_encode(['error' => 'No hay CSV guardado. Sube el archivo de nuevo.'], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-        $tabla = improgyp_import_tabla_catalogo();
-        $preview = improgyp_import_csv_preview($pdo, $path, $tabla, $batchId);
-        $preview['csv_en_sesion'] = true;
-        echo json_encode($preview, JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    if ($ajax === 'importacion_csv_preview' && isset($_FILES['archivo_csv'])) {
-        $tmp = $_FILES['archivo_csv']['tmp_name'];
-        improgyp_import_guardar_csv_sesion($tmp);
-        $tabla = improgyp_import_tabla_catalogo();
-        $preview = improgyp_import_csv_preview($pdo, $tmp, $tabla, $batchId);
-        $preview['csv_en_sesion'] = true;
-        echo json_encode($preview, JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    if ($ajax === 'importacion_zip') {
-        @ini_set('memory_limit', '512M');
-        @set_time_limit(IMPROGYP_IMPORT_ZIP_MAX_SEGUNDOS);
-        $zipFile = $_FILES['archivo_zip'] ?? null;
-        if ($zipFile === null) {
-            echo json_encode(['error' => 'No se recibió el archivo ZIP.'], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-        $uploadErr = (int) ($zipFile['error'] ?? UPLOAD_ERR_NO_FILE);
-        if ($uploadErr !== UPLOAD_ERR_OK) {
-            echo json_encode(['error' => improgyp_import_upload_error_message($uploadErr)], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-        $tmp = $zipFile['tmp_name'] ?? '';
-        if ($tmp === '' || !is_uploaded_file($tmp)) {
-            echo json_encode(['error' => 'El ZIP no se guardó en el servidor. Revisa límites de subida en MAMP.'], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-        try {
-            $preview = improgyp_import_procesar_zip($pdo, $batchId, $tmp);
-        } catch (Throwable $e) {
-            echo json_encode([
-                'error' => 'Error al procesar el ZIP: ' . $e->getMessage() . '. Prueba CSV y fotos por separado.',
-            ], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-        echo json_encode($preview, JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    if ($ajax === 'importacion_foto_lote') {
-        $files = $_FILES['fotos'] ?? null;
-        if (!$files || !isset($files['tmp_name'])) {
-            echo json_encode(['error' => 'No se recibieron fotos.'], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-        $count = is_array($files['tmp_name']) ? count($files['tmp_name']) : 1;
-        if ($count > IMPROGYP_IMPORT_LOTE_MAX) {
-            echo json_encode(['error' => 'Máximo ' . IMPROGYP_IMPORT_LOTE_MAX . ' fotos por tanda.'], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-        $ok = 0;
-        $skip = 0;
-        $warnings = [];
-        $tmpNames = $files['tmp_name'];
-        $names = $files['name'] ?? [];
-        if (!is_array($tmpNames)) {
-            $tmpNames = [$tmpNames];
-            $names = [$names];
-        }
-        foreach ($tmpNames as $i => $tmp) {
-            if (($files['error'][$i] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
-                $skip++;
-                continue;
-            }
-            $res = improgyp_import_guardar_foto_staging($pdo, $batchId, $files['tmp_name'][$i], $files['name'][$i] ?? '');
-            if ($res) {
-                $ok++;
-                if (!empty($res['warning'])) {
-                    $warnings[] = $res['warning'];
-                }
-            } else {
-                $skip++;
-            }
-        }
-        echo json_encode([
-            'status' => 'success',
-            'ok' => $ok,
-            'skip' => $skip,
-            'total_fotos' => improgyp_import_staging_count($pdo, $batchId),
-            'warnings' => array_values(array_unique($warnings)),
-        ], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    if ($ajax === 'importacion_ejecutar') {
-        $csvPath = null;
-        if (!empty($_POST['usar_csv_sesion'])) {
-            $csvPath = improgyp_import_csv_sesion_path();
-        } elseif (isset($_FILES['archivo_csv']['tmp_name']) && is_uploaded_file($_FILES['archivo_csv']['tmp_name'])) {
-            $csvPath = $_FILES['archivo_csv']['tmp_name'];
-        }
-        if ($csvPath === null) {
-            echo json_encode(['error' => 'No hay CSV para importar. Sube el archivo de nuevo.'], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-        $tabla = improgyp_import_tabla_catalogo();
-        $permitirId = !empty($_POST['permitir_id']);
-        $res = improgyp_import_ejecutar_csv(
-            $pdo,
-            $csvPath,
-            $tabla,
-            $batchId,
-            $permitirId
-        );
-        if (($res['status'] ?? '') === 'success') {
-            regenerarJSON($pdo);
-            improgyp_import_staging_clear($pdo, $batchId);
-            improgyp_import_limpiar_csv_sesion();
-            improgyp_import_nuevo_batch();
-        }
-        echo json_encode($res, JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    if ($ajax === 'importacion_solo_fotos') {
-        $tabla = improgyp_import_tabla_catalogo();
-        $res = improgyp_import_solo_fotos($pdo, $tabla, $batchId);
-        regenerarJSON($pdo);
-        echo json_encode(array_merge(['status' => 'success'], $res), JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    if ($ajax === 'importacion_vaciar_fotos') {
-        improgyp_import_vaciar_staging($pdo, $batchId);
-        echo json_encode(['status' => 'success', 'total_fotos' => 0], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    echo json_encode(['error' => 'Acción desconocida'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
@@ -1422,17 +1241,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             regenerarJSON($pdo);
             header("Location: dashboard.php?view=catalogo&msg=eliminado_masivo"); exit;
         }
-    }
-
-    if ($_POST['action'] === 'purgar_impled') {
-        if (!hash_equals($csrf_token, $_POST['csrf_token'] ?? '')) {
-            header('Location: dashboard.php?view=catalogo&msg=csrf_error'); exit;
-        }
-        require_once __DIR__ . '/lib/purgar_impled.php';
-        require_once __DIR__ . '/lib/bulk_catalogo_helpers.php';
-        $res = improgyp_purgar_impled($pdo);
-        $n = (int) $res['eliminados'];
-        header("Location: dashboard.php?view=catalogo&msg=impled_purgado&n=$n"); exit;
     }
 
     if ($_POST['action'] === 'vaciar_catalogo') {
@@ -2659,19 +2467,6 @@ function extraerTextos($html) {
                             Fotos subidas: <?= $img_staged ?> · Con imagen en CSV: <?= $img_ok ?><?php if ($img_sin > 0): ?> · <span class="text-amber-600">Sin imagen: <?= $img_sin ?></span><?php endif; ?>
                         </p>
                         <?php endif; ?>
-                    </div>
-                </div>
-            <?php endif; ?>
-            <?php if (isset($_GET['msg']) && $_GET['msg'] === 'impled_purgado'):
-                $nPurgados = (int) ($_GET['n'] ?? 0);
-            ?>
-                <div class="bg-emerald-50 border border-emerald-100 text-emerald-800 p-5 rounded-2xl mb-6 text-sm font-bold flex items-center gap-4 relative z-10 w-full">
-                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-lg"><i class="fa-solid fa-check"></i></div>
-                    <div>
-                        <p class="text-slate-900">IMPLED purgado</p>
-                        <p class="text-[10px] uppercase tracking-widest text-emerald-700/80 font-black mt-0.5">
-                            Se eliminaron <?= $nPurgados ?> producto<?= $nPurgados === 1 ? '' : 's' ?> con marca IMPLED. El catálogo MAXXT se mantiene.
-                        </p>
                     </div>
                 </div>
             <?php endif; ?>

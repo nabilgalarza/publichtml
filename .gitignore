@@ -9,7 +9,6 @@ temp/
 storage/import_tmp/
 copia_seguridad_IMPROGYP.sql
 *.sql
-!database/*.sql
 node_modules/
 .vscode/
 .idea/
