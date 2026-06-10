@@ -12,22 +12,22 @@ $h = improgyp_landing_section_heading($sec);
                     <?php if ($h['normal'] !== '' || $h['resalt'] !== ''): ?>
                     <div class="locales-premium-heading mb-8">
                         <p class="locales-premium-eyebrow">Cerca de ti</p>
-                        <h2 class="text-2xl md:text-[2rem] font-black text-slate-900 tracking-tight leading-tight">
+                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
                             <?= htmlspecialchars($h['normal']) ?>
                             <?php if ($h['resalt'] !== ''): ?>
                             <span class="laser-text block sm:inline"><?= htmlspecialchars($h['resalt']) ?></span>
                             <?php endif; ?>
                         </h2>
                         <?php if ($h['sub'] !== ''): ?>
-                        <p class="text-slate-500 text-sm mt-3 leading-relaxed"><?= htmlspecialchars($h['sub']) ?></p>
+                        <p class="text-slate-500 text-sm md:text-base mt-3 leading-relaxed"><?= htmlspecialchars($h['sub']) ?></p>
                         <?php endif; ?>
                     </div>
                     <?php else: ?>
                     <div class="locales-premium-heading mb-8">
                         <p class="locales-premium-eyebrow">Cerca de ti</p>
-                        <h2 class="text-2xl md:text-[2rem] font-black text-slate-900 tracking-tight leading-tight"><?= htmlspecialchars($titulo) ?></h2>
+                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight"><?= htmlspecialchars($titulo) ?></h2>
                         <?php if ($sub): ?>
-                        <p class="text-slate-500 text-sm mt-3 leading-relaxed"><?= htmlspecialchars($sub) ?></p>
+                        <p class="text-slate-500 text-sm md:text-base mt-3 leading-relaxed"><?= htmlspecialchars($sub) ?></p>
                         <?php endif; ?>
                     </div>
                     <?php endif; ?>

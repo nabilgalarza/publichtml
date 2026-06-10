@@ -15,7 +15,7 @@ $heroImg = trim($hero['imagen'] ?? '');
     <div class="landing-hero-glow" aria-hidden="true"></div>
     <?php if ($badge): ?>
     <span class="relative z-10 inline-flex items-center gap-2 bg-white/80 border border-slate-200/80 text-[10px] font-black uppercase tracking-widest text-[#1B263B] px-4 py-2 rounded-full mb-6 shadow-sm">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#3A86FF] animate-pulse"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#0E75AE] animate-pulse"></span>
         <?= htmlspecialchars($badge) ?>
     </span>
     <?php endif; ?>
@@ -29,7 +29,7 @@ $heroImg = trim($hero['imagen'] ?? '');
     <p class="relative z-10 text-slate-500 font-medium text-sm md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed"><?= htmlspecialchars($sub) ?></p>
     <?php endif; ?>
     <div class="relative z-10 flex flex-col sm:flex-row gap-3 justify-center mb-10">
-        <a href="<?= htmlspecialchars($cta1url) ?>" class="inline-flex items-center justify-center gap-2 bg-[#1B263B] text-white font-black px-8 py-4 rounded-2xl hover:bg-[#3A86FF] transition-colors shadow-lg shadow-[#1B263B]/20">
+        <a href="<?= htmlspecialchars($cta1url) ?>" class="inline-flex items-center justify-center gap-2 bg-[#1B263B] text-white font-black px-8 py-4 rounded-2xl hover:bg-[#0E75AE] transition-colors shadow-lg shadow-[#1B263B]/20">
             <i class="fa-solid fa-store"></i> <?= htmlspecialchars($cta1) ?>
         </a>
         <?php if (function_exists('improgyp_b2b_mostrar_en_tienda') && improgyp_b2b_mostrar_en_tienda()): ?>

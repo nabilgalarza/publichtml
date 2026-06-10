@@ -27,7 +27,7 @@ $imgFallback = 'favicon-app.png?v=5';
             </h2>
             <p class="text-sm text-slate-500 mt-1">Artículos publicados en home y <code class="bg-slate-100 px-1 rounded">blog.php</code>.</p>
         </div>
-        <button type="button" onclick="openBlogModal()" class="bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black px-5 py-3 rounded-xl text-sm transition-colors">
+        <button type="button" onclick="openBlogModal()" class="bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black px-5 py-3 rounded-xl text-sm transition-colors">
             <i class="fa-solid fa-plus"></i> Nuevo artículo
         </button>
     </div>
@@ -63,7 +63,7 @@ $imgFallback = 'favicon-app.png?v=5';
                         <?php endif; ?>
                     </td>
                     <td class="p-3 text-right space-x-2">
-                        <button type="button" class="text-[#3A86FF] font-bold hover:underline" onclick='editBlog(<?= json_encode($a, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT) ?>)'>Editar</button>
+                        <button type="button" class="text-[#0E75AE] font-bold hover:underline" onclick='editBlog(<?= json_encode($a, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT) ?>)'>Editar</button>
                         <form method="POST" class="inline" onsubmit="return confirm('¿Eliminar este artículo?');">
                             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token ?? '') ?>">
                             <input type="hidden" name="action" value="blog_eliminar">

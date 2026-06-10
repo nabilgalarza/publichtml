@@ -9,7 +9,7 @@ $slug = isset($_GET['slug']) ? preg_replace('/[^a-z0-9-]/', '', strtolower($_GET
 $articulo = $slug !== '' ? blog_fetch_by_slug($slug) : null;
 
 $cfg = blog_layout_load_config();
-$accent = $cfg['accent'] ?? '#3A86FF';
+$accent = $cfg['accent'] ?? '#0E75AE';
 $showDate = !empty($cfg['showDate']);
 $showReadTime = !empty($cfg['showReadTime']);
 $showViews = !empty($cfg['showViews']);
@@ -76,13 +76,13 @@ $articleCanonical = $articulo ? blog_seo_canonical_url($articulo['slug'], $base_
 <?php if ($articulo): ?>
 <main class="pt-28 max-w-[900px] mx-auto px-6 pb-28 md:pb-8">
     <nav class="text-sm font-bold text-slate-400 mb-6 flex flex-wrap items-center gap-2" aria-label="Migas de pan">
-        <a href="index.php" class="hover:text-[#3A86FF]">Inicio</a>
+        <a href="index.php" class="hover:text-[#0E75AE]">Inicio</a>
         <span aria-hidden="true">›</span>
-        <a href="blog.php" class="hover:text-[#3A86FF]">Blog</a>
+        <a href="blog.php" class="hover:text-[#0E75AE]">Blog</a>
         <span aria-hidden="true">›</span>
         <span class="text-slate-600 truncate max-w-[200px] md:max-w-none"><?= htmlspecialchars($articulo['titulo']) ?></span>
     </nav>
-    <a href="blog.php" id="blog-back-link" class="text-sm font-bold text-slate-400 hover:text-[#3A86FF] mb-4 inline-block">← Volver al blog</a>
+    <a href="blog.php" id="blog-back-link" class="text-sm font-bold text-slate-400 hover:text-[#0E75AE] mb-4 inline-block">← Volver al blog</a>
     <article class="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm mb-4" itemscope itemtype="https://schema.org/Article">
         <img src="<?= htmlspecialchars($articleImg) ?>" alt="<?= htmlspecialchars($articulo['titulo']) ?>" class="w-full h-56 md:h-72 object-cover bg-slate-100" itemprop="image">
         <div class="p-8 md:p-12">
@@ -200,8 +200,8 @@ $articleCanonical = $articulo ? blog_seo_canonical_url($articulo['slug'], $base_
         <div class="bg-white rounded-3xl border border-slate-100 p-12 text-center text-slate-500">
             <i class="fa-solid fa-pen-nib text-3xl text-slate-200 mb-4 block"></i>
             <p class="font-bold">Próximamente publicaciones.</p>
-            <p class="text-sm mt-2">Crea artículos en el <a href="dashboard.php?view=blog" class="text-[#3A86FF] font-bold">Gestor de Blog</a>.</p>
-            <a href="productos.php" class="inline-block mt-6 text-[#3A86FF] font-black text-sm">Ir a la tienda →</a>
+            <p class="text-sm mt-2">Crea artículos en el <a href="dashboard.php?view=blog" class="text-[#0E75AE] font-bold">Gestor de Blog</a>.</p>
+            <a href="productos.php" class="inline-block mt-6 text-[#0E75AE] font-black text-sm">Ir a la tienda →</a>
         </div>
     </div>
     <?php else:

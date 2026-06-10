@@ -70,7 +70,7 @@ function improgyp_home_preview_heading(array $sec): string
 
     <div class="mb-6">
         <h2 class="text-xl font-black text-slate-900 flex items-center gap-2">
-            <i class="fa-solid fa-house-chimney text-[#3A86FF]"></i> Editor del Home
+            <i class="fa-solid fa-house-chimney text-[#0E75AE]"></i> Editor del Home
         </h2>
         <p class="text-sm text-slate-500 mt-1">Un solo lugar para <strong>index.php</strong>: enciende bloques, límites y títulos láser por sección. Un guardado actualiza todo <code class="text-xs bg-slate-100 px-1 rounded">config_landing.json</code>.</p>
         <?php include __DIR__ . '/gemini_status_badge.php'; ?>
@@ -80,9 +80,9 @@ function improgyp_home_preview_heading(array $sec): string
         <p class="font-black text-violet-900 mb-2 uppercase tracking-wider text-[10px]">¿Dónde edito qué?</p>
         <ul class="space-y-1 list-disc list-inside">
             <li><strong>Home (index):</strong> esta pantalla</li>
-            <li><strong>Catálogo (productos.php):</strong> <a href="?view=marketing" class="text-[#3A86FF] font-bold underline">Marketing IA</a> → <code class="text-[10px] bg-white/80 px-1 rounded">textos_tienda.json</code></li>
+            <li><strong>Catálogo (productos.php):</strong> <a href="?view=marketing" class="text-[#0E75AE] font-bold underline">Marketing IA</a> → <code class="text-[10px] bg-white/80 px-1 rounded">textos_tienda.json</code></li>
             <li><strong>Banners en catálogo:</strong> Gestor de Pautas → <code class="text-[10px] bg-white/80 px-1 rounded">ads.json</code></li>
-            <li><strong>Artículos del blog:</strong> <a href="?view=blog" class="text-[#3A86FF] font-bold underline">Gestor de Blog</a></li>
+            <li><strong>Artículos del blog:</strong> <a href="?view=blog" class="text-[#0E75AE] font-bold underline">Gestor de Blog</a></li>
         </ul>
     </div>
 
@@ -93,7 +93,7 @@ function improgyp_home_preview_heading(array $sec): string
         <details class="home-accordion bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" open>
             <summary class="flex items-center justify-between gap-3 px-5 py-4 hover:bg-slate-50/80">
                 <span class="flex items-center gap-3 min-w-0">
-                    <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-[#3A86FF]/10 text-[#3A86FF] text-xs font-black flex items-center justify-center">H</span>
+                    <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-[#0E75AE]/10 text-[#0E75AE] text-xs font-black flex items-center justify-center">H</span>
                     <span class="min-w-0">
                         <span class="block font-black text-slate-800 text-sm">Hero (opcional, encima del slider)</span>
                         <span class="block text-[11px] text-slate-400 truncate"><?= htmlspecialchars(improgyp_home_preview_heading($hero)) ?></span>
@@ -193,9 +193,9 @@ function improgyp_home_preview_heading(array $sec): string
                     </div>
                     <?php endif; ?>
                 </div>
-                <div class="rounded-xl border border-[#3A86FF]/20 bg-[#3A86FF]/5 p-4 space-y-4">
+                <div class="rounded-xl border border-[#0E75AE]/20 bg-[#0E75AE]/5 p-4 space-y-4">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                        <p class="text-[10px] font-black uppercase tracking-widest text-[#3A86FF]">Título visible (efecto láser)</p>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-[#0E75AE]">Título visible (efecto láser)</p>
                         <button type="button" onclick="generarCopySeccionIA('<?= $bk ?>', 'tit_norm_<?= $bk ?>', 'tit_resal_<?= $bk ?>', 'sub_<?= $bk ?>', this)" class="btn-copy-ia bg-white hover:bg-[#1B263B] text-[#1B263B] hover:text-white border border-[#1B263B]/20 rounded-lg py-1.5 px-4 text-xs font-black transition-colors flex items-center justify-center gap-2">
                             <i class="fa-solid fa-robot"></i> <span class="btn-text">Generar con IA</span>
                         </button>
@@ -282,19 +282,19 @@ function improgyp_home_preview_heading(array $sec): string
                     <input type="text" name="sec_locales_titulo" value="<?= htmlspecialchars($secLocales['titulo'] ?? 'Red de sucursales') ?>" placeholder="Título (texto plano)" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
                     <input type="text" name="sec_locales_subtitulo" value="<?= htmlspecialchars($secLocales['subtitulo'] ?? '') ?>" placeholder="Subtítulo" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
                 </div>
-                <p class="text-[10px] text-slate-400">El listado de locales se edita en <a href="?view=locales" class="text-[#3A86FF] font-bold underline">Red de Sucursales</a>.</p>
+                <p class="text-[10px] text-slate-400">El listado de locales se edita en <a href="?view=locales" class="text-[#0E75AE] font-bold underline">Red de Sucursales</a>.</p>
             </div>
         </details>
 
         <div class="mt-6 pt-2 border-t border-slate-200">
-            <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-4 rounded-xl transition-colors uppercase tracking-widest text-xs">
+            <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black py-4 rounded-xl transition-colors uppercase tracking-widest text-xs">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Guardar home
             </button>
         </div>
     </form>
 
     <p class="text-center mt-6 pb-8">
-        <a href="index.php" target="_blank" class="text-[#3A86FF] font-bold text-sm hover:underline">Ver home en nueva pestaña →</a>
+        <a href="index.php" target="_blank" class="text-[#0E75AE] font-bold text-sm hover:underline">Ver home en nueva pestaña →</a>
     </p>
 </div>
 

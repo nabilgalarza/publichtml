@@ -12,7 +12,7 @@
 <div class="doc-infographic">
     <svg viewBox="0 0 520 140" xmlns="http://www.w3.org/2000/svg">
         <circle cx="260" cy="70" r="55" fill="none" stroke="#e2e8f0" stroke-width="12"/>
-        <path d="M260 15 A55 55 0 0 1 305 95" fill="none" stroke="#3A86FF" stroke-width="12" stroke-linecap="round"/>
+        <path d="M260 15 A55 55 0 0 1 305 95" fill="none" stroke="#0E75AE" stroke-width="12" stroke-linecap="round"/>
         <text x="260" y="75" text-anchor="middle" font-size="18" font-weight="800" fill="#1B263B">KPI</text>
         <text x="80" y="125" font-size="10" fill="#64748b">Pedidos</text>
         <text x="260" y="125" font-size="10" fill="#64748b" text-anchor="middle">Conversión</text>

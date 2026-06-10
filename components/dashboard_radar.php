@@ -36,7 +36,7 @@ $funnel_base = max(1, (int) ($funnel['visita'] ?? 0));
 </div>
 
 <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 relative z-10 mb-8">
-    <div class="glass-card p-5 border-l-4 border-l-[#3A86FF]">
+    <div class="glass-card p-5 border-l-4 border-l-[#0E75AE]">
         <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest">Visitantes</p>
         <p class="text-2xl font-black text-slate-900 mt-1"><?= number_format((int) $visitantes_unicos) ?></p>
         <p class="text-[10px] text-slate-500 mt-1">únicos (cookie / IP)</p>
@@ -70,7 +70,7 @@ $funnel_base = max(1, (int) ($funnel['visita'] ?? 0));
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <?php
         $funnel_steps = [
-            ['key' => 'visita', 'label' => 'Visitas', 'color' => 'bg-[#3A86FF]'],
+            ['key' => 'visita', 'label' => 'Visitas', 'color' => 'bg-[#0E75AE]'],
             ['key' => 'ver_producto', 'label' => 'Ver producto', 'color' => 'bg-indigo-500'],
             ['key' => 'carrito', 'label' => 'Añadir carrito', 'color' => 'bg-emerald-500'],
             ['key' => 'checkout', 'label' => 'Checkout', 'color' => 'bg-orange-500'],
@@ -216,7 +216,7 @@ $funnel_base = max(1, (int) ($funnel['visita'] ?? 0));
                             <span class="text-xs font-black text-[#1B263B]"><?= (int) $cat['total'] ?></span>
                         </div>
                         <div class="w-full bg-slate-50 border border-slate-100 rounded-xl h-3 overflow-hidden">
-                            <div class="h-full rounded-lg bg-gradient-to-r from-[#1B263B] to-[#3A86FF]" style="width: <?= $w ?>%"></div>
+                            <div class="h-full rounded-lg bg-gradient-to-r from-[#1B263B] to-[#0E75AE]" style="width: <?= $w ?>%"></div>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -272,7 +272,7 @@ $funnel_base = max(1, (int) ($funnel['visita'] ?? 0));
             </div>
         </div>
         <?php if (($productos_fantasma_total ?? 0) > count($productos_fantasma)): ?>
-        <a href="dashboard.php?view=inventario_fantasma" class="inline-flex items-center gap-2 bg-[#1B263B] hover:bg-[#3A86FF] text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all shrink-0">
+        <a href="dashboard.php?view=inventario_fantasma" class="inline-flex items-center gap-2 bg-[#1B263B] hover:bg-[#0E75AE] text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all shrink-0">
             Ver todos (<?= (int) $productos_fantasma_total ?>)
             <i class="fa-solid fa-arrow-right"></i>
         </a>

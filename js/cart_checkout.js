@@ -57,7 +57,7 @@
         updateBadge(carrito);
 
         if (!carrito.length) {
-            container.innerHTML = '<div class="h-full flex flex-col items-center justify-center p-6 text-center text-slate-400"><i class="fa-solid fa-box-open text-4xl mb-3 text-slate-200"></i><p class="text-[13px] font-medium">Tu bolsa está vacía.</p><a href="productos.php" class="mt-3 text-[12px] font-bold text-[#3A86FF]">Ir a la tienda</a></div>';
+            container.innerHTML = '<div class="h-full flex flex-col items-center justify-center p-6 text-center text-slate-400"><i class="fa-solid fa-box-open text-4xl mb-3 text-slate-200"></i><p class="text-[13px] font-medium">Tu bolsa está vacía.</p><a href="productos.php" class="mt-3 text-[12px] font-bold text-[#0E75AE]">Ir a la tienda</a></div>';
             totalEl.textContent = '$0.00';
             return;
         }

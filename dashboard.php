@@ -320,7 +320,7 @@ if (!isset($_SESSION['admin_logueado']) || $_SESSION['admin_logueado'] !== true)
                 <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm"></i>
                 <input type="password" name="password" placeholder="••••••••" class="w-full pl-11 pr-4 py-4 rounded-2xl bg-slate-50 border border-slate-100 text-slate-900 focus:bg-white focus:border-[#1B263B] focus:ring-4 focus:ring-[#1B263B]/10 outline-none transition-all placeholder:text-slate-300 font-mono" required>
             </div>
-            <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-4 rounded-2xl transition-all active:scale-[0.98] uppercase tracking-widest text-sm shadow-lg shadow-[#1B263B]/20">Entrar al Sistema</button>
+            <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black py-4 rounded-2xl transition-all active:scale-[0.98] uppercase tracking-widest text-sm shadow-lg shadow-[#1B263B]/20">Entrar al Sistema</button>
         </form>
     </div>
 
@@ -916,7 +916,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     if ($_POST['action'] === 'guardar_apariencia_blog') {
         require_once __DIR__ . '/lib/blog_layout_slots.php';
-        $accent = trim($_POST['accent'] ?? '#3a86ff');
+        $accent = trim($_POST['accent'] ?? '#0e75ae');
         $hex = ltrim($accent, '#');
         if (strlen($hex) === 3) {
             $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
@@ -1140,6 +1140,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
         $pdo->prepare("DELETE FROM usuarios_b2b WHERE id = ?")->execute([(int)$_POST['id_b2b']]); 
         header("Location: dashboard.php?view=distribuidores&msg=b2b_eliminado"); exit; 
+    }
+
+    if ($_POST['action'] === 'sync_catalogo_json') {
+        require_once __DIR__ . '/lib/sync_catalogo_json_to_db.php';
+        $result = improgyp_sync_catalogo_json_to_db($pdo);
+        if (!empty($result['ok'])) {
+            regenerarJSON($pdo);
+            require_once __DIR__ . '/components/megamenu_config.php';
+            improgyp_megamenu_refresh_orphan_session();
+            $q = http_build_query([
+                'view' => 'catalogo',
+                'msg' => 'sync_json',
+                'ins' => (int) ($result['inserted'] ?? 0),
+                'upd' => (int) ($result['updated'] ?? 0),
+            ]);
+            header('Location: dashboard.php?' . $q);
+            exit;
+        }
+        header('Location: dashboard.php?view=catalogo&err=sync_json&detail=' . rawurlencode($result['message'] ?? 'Error'));
+        exit;
     }
 
     if ($_POST['action'] === 'toggle_publicado') { 
@@ -1437,6 +1457,10 @@ elseif ($vista === 'marketing') {
 }
 elseif ($vista === 'catalogo') { 
     try { $catalogo_local = $pdo->query("SELECT * FROM improgyp_catalogo ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC); } catch(Exception $e) {}
+    require_once __DIR__ . '/lib/sync_catalogo_json_to_db.php';
+    $catalogo_json_count = improgyp_catalogo_json_count();
+    $catalogo_db_count = count($catalogo_local);
+    $mostrar_banner_sync_json = $catalogo_json_count > 0 && $catalogo_db_count === 0;
 }
 elseif ($vista === 'seo') { 
     if (file_exists(__DIR__ . '/seo.json')) { $seo_guardado = json_decode(file_get_contents(__DIR__ . '/seo.json'), true); } 
@@ -1689,7 +1713,7 @@ function extraerTextos($html) {
             </div>
             <div class="flex gap-3">
                 <?php if ($vista === 'catalogo' || $vista === ''): ?>
-                    <button type="button" onclick="abrirModalBulk()" class="bg-[#1B263B] hover:bg-[#3A86FF] text-white px-4 py-2 rounded-lg text-sm font-black flex items-center gap-2 transition-all active:scale-95 group">
+                    <button type="button" onclick="abrirModalBulk()" class="bg-[#1B263B] hover:bg-[#0E75AE] text-white px-4 py-2 rounded-lg text-sm font-black flex items-center gap-2 transition-all active:scale-95 group">
                         <i class="fa-solid fa-file-csv"></i> Actualización masiva (CSV)
                     </button>
                 <?php endif; ?>
@@ -1976,7 +2000,7 @@ function extraerTextos($html) {
                 </div>
 
                 <div class="fixed bottom-8 right-8 z-50">
-                    <button type="submit" class="bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-5 px-10 rounded-3xl transition-all flex items-center gap-4 text-sm hover:scale-105 shadow-2xl shadow-[#1B263B]/30 active:scale-95">
+                    <button type="submit" class="bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black py-5 px-10 rounded-3xl transition-all flex items-center gap-4 text-sm hover:scale-105 shadow-2xl shadow-[#1B263B]/30 active:scale-95">
                         <i class="fa-solid fa-cloud-arrow-up text-xl"></i> Sincronizar Todas las Pautas
                     </button>
                 </div>
@@ -2041,7 +2065,7 @@ function extraerTextos($html) {
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">RUC piloto (opcional, separados por coma)</label>
                         <input type="text" name="b2b_pilot_rucs" value="<?= htmlspecialchars($b2b_pilot_rucs_ui) ?>" placeholder="1790012345001, 1790099999001" class="w-full premium-input rounded-xl px-4 py-3 text-sm border border-slate-100">
                     </div>
-                    <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-4 rounded-xl transition-transform active:scale-95 flex justify-center items-center gap-2 text-sm uppercase tracking-widest">
+                    <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black py-4 rounded-xl transition-transform active:scale-95 flex justify-center items-center gap-2 text-sm uppercase tracking-widest">
                         <i class="fa-solid fa-floppy-disk"></i> Guardar módulo B2B
                     </button>
                 </form>
@@ -2070,7 +2094,7 @@ function extraerTextos($html) {
                     
                     <?php if($mantenimiento_activo): ?>
                         <input type="hidden" name="estado" value="0">
-                        <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-4 rounded-xl transition-transform active:scale-95 flex justify-center items-center gap-2 text-base">
+                        <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black py-4 rounded-xl transition-transform active:scale-95 flex justify-center items-center gap-2 text-base">
                             <i class="fa-solid fa-unlock"></i> Abrir Tienda (Desactivar Mantenimiento)
                         </button>
                     <?php else: ?>
@@ -2146,7 +2170,7 @@ function extraerTextos($html) {
         ?>
             <div class="flex justify-between items-center mb-8 relative z-10">
                 <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Puntos de Distribución Geográfica</p>
-                <button onclick="abrirModalLocal()" class="bg-[#1B263B] hover:bg-[#3A86FF] text-white px-5 py-2.5 rounded-xl text-sm font-black flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-[#1B263B]/20">
+                <button onclick="abrirModalLocal()" class="bg-[#1B263B] hover:bg-[#0E75AE] text-white px-5 py-2.5 rounded-xl text-sm font-black flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-[#1B263B]/20">
                     <i class="fa-solid fa-plus"></i> Nueva Sucursal
                 </button>
             </div>
@@ -2185,7 +2209,7 @@ function extraerTextos($html) {
                             </td>
                             <td class="px-6 py-4">
                                 <div class="font-black text-slate-900"><?= htmlspecialchars($l['nombre']) ?></div>
-                                <div class="text-[10px] text-[#3A86FF] font-black uppercase tracking-widest mt-0.5"><?= htmlspecialchars($l['ciudad']) ?></div>
+                                <div class="text-[10px] text-[#0E75AE] font-black uppercase tracking-widest mt-0.5"><?= htmlspecialchars($l['ciudad']) ?></div>
                             </td>
                             <td class="px-6 py-4 text-xs text-slate-500 font-medium max-w-xs truncate" title="<?= htmlspecialchars($l['direccion']) ?>">
                                 <?= htmlspecialchars($l['direccion']) ?>
@@ -2289,7 +2313,7 @@ function extraerTextos($html) {
                                 <input type="text" name="lng" id="local-lng" required step="any" placeholder="-78.12345" class="premium-input w-full px-5 py-3 rounded-2xl text-sm font-bold border border-slate-100">
                             </div>
                             <div class="col-span-2">
-                                <p class="text-[9px] text-slate-400 font-bold mb-4 uppercase leading-tight italic">Puedes obtener estas coordenadas buscando tu local en <a href="https://www.google.com/maps" target="_blank" class="text-[#3A86FF] hover:underline">Google Maps</a> y copiando los números de la URL o haciendo clic derecho en el mapa.</p>
+                                <p class="text-[9px] text-slate-400 font-bold mb-4 uppercase leading-tight italic">Puedes obtener estas coordenadas buscando tu local en <a href="https://www.google.com/maps" target="_blank" class="text-[#0E75AE] hover:underline">Google Maps</a> y copiando los números de la URL o haciendo clic derecho en el mapa.</p>
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Google Maps URL</label>
@@ -2306,7 +2330,7 @@ function extraerTextos($html) {
                         </div>
 
                         <div class="p-8 flex gap-4">
-                            <button type="submit" class="flex-1 bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-4 rounded-xl transition-all shadow-lg shadow-[#1B263B]/20 uppercase tracking-widest text-xs">Guardar Sucursal</button>
+                            <button type="submit" class="flex-1 bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black py-4 rounded-xl transition-all shadow-lg shadow-[#1B263B]/20 uppercase tracking-widest text-xs">Guardar Sucursal</button>
                             <button type="button" onclick="cerrarModalLocal()" class="px-6 py-4 rounded-xl border border-slate-100 text-slate-400 font-bold hover:bg-slate-50 transition-all text-xs">Cancelar</button>
                         </div>
                     </form>
@@ -2373,7 +2397,7 @@ function extraerTextos($html) {
                 <?php else: ?>
                     <p>Tras guardar cambios, abre el depurador de Meta con tu URL pública y pulsa <strong>Scrape Again</strong> para refrescar la miniatura en WhatsApp.</p>
                 <?php endif; ?>
-                <a href="<?= htmlspecialchars($seo_fb_debug_href) ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 mt-3 text-[11px] font-black uppercase tracking-wider text-[#1B263B] hover:text-[#3A86FF]">
+                <a href="<?= htmlspecialchars($seo_fb_debug_href) ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 mt-3 text-[11px] font-black uppercase tracking-wider text-[#1B263B] hover:text-[#0E75AE]">
                     <i class="fa-brands fa-facebook"></i> Abrir Sharing Debugger
                     <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
                 </a>
@@ -2410,7 +2434,7 @@ function extraerTextos($html) {
                             <p class="text-[10px] text-slate-400 mt-2 font-medium">Recomendado 1200×630 px, JPG horizontal. Se publica en <code class="text-[9px] bg-slate-100 px-1 rounded">index.php</code> y <code class="text-[9px] bg-slate-100 px-1 rounded">productos.php</code>.</p>
                         </div>
 
-                        <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-4 rounded-2xl transition-all active:scale-95 mt-4 flex justify-center items-center gap-3 text-sm uppercase tracking-widest">
+                        <button type="submit" class="w-full bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black py-4 rounded-2xl transition-all active:scale-95 mt-4 flex justify-center items-center gap-3 text-sm uppercase tracking-widest">
                             <i class="fa-solid fa-cloud-arrow-up text-lg"></i> Actualizar SEO
                         </button>
                     </form>
@@ -2487,6 +2511,39 @@ function extraerTextos($html) {
                 <div class="bg-emerald-50 border border-emerald-100 text-emerald-800 p-4 rounded-2xl mb-6 text-sm font-bold flex items-center gap-3 relative z-10 w-full">
                     <i class="fa-solid fa-circle-check text-emerald-600"></i>
                     <span>Producto guardado y catálogo público actualizado.</span>
+                </div>
+            <?php endif; ?>
+            <?php if (isset($_GET['msg']) && $_GET['msg'] === 'sync_json'): ?>
+                <div class="bg-emerald-50 border border-emerald-100 text-emerald-800 p-4 rounded-2xl mb-6 text-sm font-bold flex items-center gap-3 relative z-10 w-full">
+                    <i class="fa-solid fa-database text-emerald-600"></i>
+                    <span>Catálogo importado desde catalogo.json — <?= (int) ($_GET['ins'] ?? 0) ?> nuevos, <?= (int) ($_GET['upd'] ?? 0) ?> actualizados. IA y panel listos.</span>
+                </div>
+            <?php endif; ?>
+            <?php if (isset($_GET['err']) && $_GET['err'] === 'sync_json'): ?>
+                <div class="bg-rose-50 border border-rose-100 text-rose-700 p-4 rounded-2xl mb-6 text-sm font-bold flex items-center gap-3 relative z-10 w-full">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span><?= htmlspecialchars($_GET['detail'] ?? 'No se pudo importar catalogo.json') ?></span>
+                </div>
+            <?php endif; ?>
+            <?php if (!empty($mostrar_banner_sync_json)): ?>
+                <div class="bg-[#0E75AE]/10 border border-[#0E75AE]/25 text-slate-800 p-5 rounded-2xl mb-6 text-sm relative z-10 w-full flex flex-col md:flex-row md:items-center gap-4">
+                    <div class="flex-1">
+                        <p class="font-black flex items-center gap-2 text-[#1B263B]">
+                            <i class="fa-solid fa-cloud-arrow-up text-[#0E75AE]"></i>
+                            Despliegue Hostinger: importar catálogo a la base de datos
+                        </p>
+                        <p class="text-[11px] mt-1 text-slate-600 font-medium">
+                            Hay <strong><?= (int) $catalogo_json_count ?></strong> productos en <code class="text-[10px] bg-white/80 px-1 rounded">catalogo.json</code> (la tienda ya los muestra).
+                            Importa una vez para activar el asesor IA, el panel y los pedidos sin dump SQL.
+                        </p>
+                    </div>
+                    <form method="POST" action="dashboard.php?view=catalogo" class="shrink-0">
+                        <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+                        <input type="hidden" name="action" value="sync_catalogo_json">
+                        <button type="submit" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#0E75AE] hover:bg-[#1B263B] text-white font-black text-[11px] uppercase tracking-wide rounded-xl transition-colors">
+                            <i class="fa-solid fa-file-import"></i> Importar desde catalogo.json
+                        </button>
+                    </form>
                 </div>
             <?php endif; ?>
             <?php
@@ -2577,7 +2634,7 @@ function extraerTextos($html) {
                         </div>
 
                         <div class="flex gap-2 pt-2">
-                            <button type="submit" id="btn-submit-prod" class="flex-1 bg-[#1B263B] text-white hover:bg-[#3A86FF] font-bold py-3 rounded-xl transition-colors">Guardar Producto</button>
+                            <button type="submit" id="btn-submit-prod" class="flex-1 bg-[#1B263B] text-white hover:bg-[#0E75AE] font-bold py-3 rounded-xl transition-colors">Guardar Producto</button>
                             <button type="button" id="btn-cancel-prod" onclick="limpiarFormProd()" class="hidden bg-slate-700 text-white hover:bg-slate-600 font-bold py-3 px-4 rounded-xl transition-colors" title="Cancelar">
                                 <i class="fa-solid fa-xmark"></i>
                             </button>
@@ -3121,7 +3178,7 @@ function extraerTextos($html) {
                             <input type="text" name="telefono" id="b2b_telefono" required placeholder="099..." autocomplete="off" class="w-full premium-input rounded-lg px-3 py-2.5 text-sm">
                         </div>
                         <div class="flex gap-2 pt-2">
-                            <button type="submit" id="btn-submit-b2b" class="flex-1 bg-[#1B263B] text-white hover:bg-[#3A86FF] font-black py-3 rounded-xl transition-all shadow-lg shadow-[#1B263B]/20 uppercase tracking-widest text-xs">Generar Acceso B2B</button>
+                            <button type="submit" id="btn-submit-b2b" class="flex-1 bg-[#1B263B] text-white hover:bg-[#0E75AE] font-black py-3 rounded-xl transition-all shadow-lg shadow-[#1B263B]/20 uppercase tracking-widest text-xs">Generar Acceso B2B</button>
                             <button type="button" id="btn-cancel-b2b" onclick="limpiarFormB2B()" class="hidden bg-slate-100 text-slate-500 hover:bg-slate-200 font-bold py-3 px-4 rounded-xl transition-colors border border-slate-200" title="Cancelar">
                                 <i class="fa-solid fa-xmark"></i>
                             </button>
@@ -3356,7 +3413,7 @@ function extraerTextos($html) {
             <?php list($tit_todos_normal, $tit_todos_resaltado) = extraerTextos($textos_guardados['Todos']['tit'] ?? ""); if(empty($tit_todos_normal)) { $tit_todos_normal = "Herramientas profesionales para"; $tit_todos_resaltado = "tu obra."; } ?>
             <div class="glass-card p-8 relative z-10 hover:border-[#1B263B]/40 transition-colors">
                 <h2 class="text-xl font-black text-slate-900 mb-2 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-[#1B263B]"></i> Textos Persuasivos (IA)</h2>
-                <p class="text-sm text-slate-500 mb-2">Publica en <strong>productos.php</strong> vía <code class="text-xs bg-slate-100 px-1 rounded">textos_tienda.json</code>. Los encabezados del <strong>home</strong> (index) se editan en <a href="?view=apariencia&sub=home" class="text-[#3A86FF] font-bold underline">Editor del Home</a>.</p>
+                <p class="text-sm text-slate-500 mb-2">Publica en <strong>productos.php</strong> vía <code class="text-xs bg-slate-100 px-1 rounded">textos_tienda.json</code>. Los encabezados del <strong>home</strong> (index) se editan en <a href="?view=apariencia&sub=home" class="text-[#0E75AE] font-bold underline">Editor del Home</a>.</p>
                 <?php include __DIR__ . '/components/gemini_status_badge.php'; ?>
                 <p class="text-[11px] text-slate-400 mb-6">Tras usar IA, pulsa <strong>Guardar y Sincronizar Tienda</strong> para que se vea en el catálogo. Un botón IA a la vez.</p>
                 <form method="POST" action="dashboard.php?view=marketing" id="form-marketing-ia">
@@ -3421,7 +3478,7 @@ function extraerTextos($html) {
                         <?php endforeach; ?>
                     </div>
                     <div class="mt-8 sticky bottom-4 flex justify-end z-20">
-                        <button type="submit" class="bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-4 px-10 rounded-2xl transition-all flex items-center gap-3 text-sm hover:scale-105 transition-transform">
+                        <button type="submit" class="bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black py-4 px-10 rounded-2xl transition-all flex items-center gap-3 text-sm hover:scale-105 transition-transform">
                             <i class="fa-solid fa-cloud-arrow-up text-lg"></i> Guardar y Sincronizar Tienda
                         </button>
                     </div>
@@ -3505,7 +3562,7 @@ function extraerTextos($html) {
                             </p>
                         </div>
                         <?php if ($cupos_restantes > 0): ?>
-                            <button onclick="document.getElementById('modal-usuario').classList.remove('hidden'); document.getElementById('form-u-action').value='crear_usuario_admin'; document.getElementById('titulo-modal-u').innerText='Nuevo Gestor'; document.getElementById('form-u-id').value=''; document.getElementById('form-u-nombre').value=''; document.getElementById('form-u-user').value=''; document.getElementById('form-u-pass').required=true;" class="bg-[#1B263B] hover:bg-[#3A86FF] text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 uppercase tracking-widest transition-all">
+                            <button onclick="document.getElementById('modal-usuario').classList.remove('hidden'); document.getElementById('form-u-action').value='crear_usuario_admin'; document.getElementById('titulo-modal-u').innerText='Nuevo Gestor'; document.getElementById('form-u-id').value=''; document.getElementById('form-u-nombre').value=''; document.getElementById('form-u-user').value=''; document.getElementById('form-u-pass').required=true;" class="bg-[#1B263B] hover:bg-[#0E75AE] text-white px-5 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 uppercase tracking-widest transition-all">
                                 <i class="fa-solid fa-user-plus"></i> Crear Gestor
                             </button>
                         <?php endif; ?>
@@ -3802,7 +3859,7 @@ function extraerTextos($html) {
                         <a href="dashboard.php?action=exportar_csv" class="bg-white hover:bg-slate-50 text-slate-700 font-black py-4 rounded-2xl text-center transition-all flex items-center justify-center gap-2 border border-slate-100 text-[11px] uppercase tracking-widest">
                             <i class="fa-solid fa-download text-[#1B263B]"></i> Exportar catálogo
                         </a>
-                        <a href="dashboard.php?action=exportar_ejemplo_csv" class="bg-white hover:bg-[#3A86FF] hover:text-white text-slate-700 hover:text-white font-black py-4 rounded-2xl text-center transition-all flex items-center justify-center gap-2 border border-slate-100 text-[11px] uppercase tracking-widest">
+                        <a href="dashboard.php?action=exportar_ejemplo_csv" class="bg-white hover:bg-[#0E75AE] hover:text-white text-slate-700 hover:text-white font-black py-4 rounded-2xl text-center transition-all flex items-center justify-center gap-2 border border-slate-100 text-[11px] uppercase tracking-widest">
                             <i class="fa-solid fa-file-csv"></i> Ejemplo CSV
                         </a>
                     </div>
@@ -3826,7 +3883,7 @@ function extraerTextos($html) {
                             </label>
                             <input type="hidden" name="bulk_confirm_ids" id="bulk-confirm-ids" value="">
                         </div>
-                        <button type="submit" id="btn-bulk-sync" class="w-full bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black py-5 rounded-3xl transition-all active:scale-95 text-sm uppercase tracking-widest">Importar al catálogo</button>
+                        <button type="submit" id="btn-bulk-sync" class="w-full bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black py-5 rounded-3xl transition-all active:scale-95 text-sm uppercase tracking-widest">Importar al catálogo</button>
                     </form>
                 </div>
             </div>
@@ -3849,7 +3906,7 @@ function extraerTextos($html) {
                     <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                     <input type="hidden" name="action" value="crear_categoria">
                     <input type="text" name="nombre_categoria" placeholder="Nueva categoría..." required class="flex-1 premium-input rounded-xl px-4 py-3 text-sm font-bold">
-                    <button type="submit" class="bg-[#1B263B] text-white w-12 h-12 rounded-xl hover:bg-[#3A86FF] transition-all flex items-center justify-center shadow-lg shadow-[#1B263B]/20"><i class="fa-solid fa-plus text-lg"></i></button>
+                    <button type="submit" class="bg-[#1B263B] text-white w-12 h-12 rounded-xl hover:bg-[#0E75AE] transition-all flex items-center justify-center shadow-lg shadow-[#1B263B]/20"><i class="fa-solid fa-plus text-lg"></i></button>
                 </form>
                 
                 <!-- Listado con Scroll -->
@@ -3883,7 +3940,7 @@ function extraerTextos($html) {
                     <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                     <input type="hidden" name="action" value="crear_marca">
                     <input type="text" name="nombre_marca" placeholder="Nueva marca..." required class="flex-1 premium-input rounded-xl px-4 py-3 text-sm font-bold">
-                    <button type="submit" class="bg-[#1B263B] text-white w-12 h-12 rounded-xl hover:bg-[#3A86FF] transition-all flex items-center justify-center shadow-lg"><i class="fa-solid fa-plus text-lg"></i></button>
+                    <button type="submit" class="bg-[#1B263B] text-white w-12 h-12 rounded-xl hover:bg-[#0E75AE] transition-all flex items-center justify-center shadow-lg"><i class="fa-solid fa-plus text-lg"></i></button>
                 </form>
                 
                 <!-- Listado con Scroll -->

@@ -19,7 +19,7 @@ if (empty($cats)) {
         <?php endforeach; ?>
     </div>
     <div class="text-center mt-8">
-        <a href="productos.php" class="inline-flex items-center gap-2 text-[13px] font-black text-[#1B263B] hover:text-[#3A86FF] transition-colors">
+        <a href="productos.php" class="inline-flex items-center gap-2 text-[13px] font-black text-[#1B263B] hover:text-[#0E75AE] transition-colors">
             Ver catálogo completo <i class="fa-solid fa-arrow-right-long"></i>
         </a>
     </div>

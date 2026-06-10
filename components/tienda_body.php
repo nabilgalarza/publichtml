@@ -37,7 +37,7 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-[#1B263B]"></span> Sucursal Cercana
                     </span>
                     <div id="nearest-location-widget"></div>
-                    <button onclick="abrirModalLocales()" class="w-full mt-4 text-[11px] font-bold text-slate-400 hover:text-[#3A86FF] transition-colors flex items-center justify-center gap-2">
+                    <button onclick="abrirModalLocales()" class="w-full mt-4 text-[11px] font-bold text-slate-400 hover:text-[#0E75AE] transition-colors flex items-center justify-center gap-2">
                         <i class="fa-solid fa-map-location-dot"></i> Ver todos los locales
                     </button>
                 </div>
@@ -46,7 +46,7 @@
                 <div class="bg-blue-50/50 border border-blue-100 rounded-[2rem] p-6 shadow-sm shadow-blue-900/5 fade-in">
                     <h3 class="text-[11px] font-black text-[#1B263B] uppercase tracking-widest mb-4">Asesoría Técnica</h3>
                     <p class="text-[13px] text-slate-500 leading-relaxed mb-6 font-medium">¿Necesitas ayuda con las cantidades para tu obra?</p>
-                    <a href="https://wa.me/593991754887" target="_blank" class="text-[11px] font-black text-[#1B263B] hover:text-[#3A86FF] uppercase tracking-widest flex items-center gap-2 group transition-colors">
+                    <a href="https://wa.me/593991754887" target="_blank" class="text-[11px] font-black text-[#1B263B] hover:text-[#0E75AE] uppercase tracking-widest flex items-center gap-2 group transition-colors">
                         Contactar Soporte <i class="fa-solid fa-arrow-right-long mt-0.5 group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>

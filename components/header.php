@@ -186,10 +186,10 @@ $logo_href = 'index.php';
             color: #94a3b8;
             font-size: 10px;
         }
-        .mega-accordion-item.is-open .mega-accordion-trigger { color: #3A86FF; }
+        .mega-accordion-item.is-open .mega-accordion-trigger { color: #0E75AE; }
         .mega-accordion-item.is-open .mega-acc-chevron {
             transform: rotate(90deg);
-            color: #3A86FF;
+            color: #0E75AE;
         }
         .mega-accordion-panel {
             max-height: 0;
@@ -217,15 +217,15 @@ $logo_href = 'index.php';
         .mega-aside-mobile { display: none !important; }
     }
     #mega-menu-trigger.is-mega-open {
-        border-color: rgba(58, 134, 255, 0.55);
-        background: rgba(58, 134, 255, 0.08);
-        color: #3A86FF;
-        box-shadow: 0 0 0 1px rgba(58, 134, 255, 0.15);
+        border-color: rgba(14, 117, 174, 0.55);
+        background: rgba(14, 117, 174, 0.08);
+        color: #0E75AE;
+        box-shadow: 0 0 0 1px rgba(14, 117, 174, 0.15);
     }
     #mega-menu-trigger:focus-visible,
     .mega-accordion-trigger:focus-visible,
     .sidebar-tab-btn:focus-visible {
-        outline: 2px solid #3A86FF;
+        outline: 2px solid #0E75AE;
         outline-offset: 2px;
     }
 </style>
@@ -239,8 +239,8 @@ $logo_href = 'index.php';
             <button id="mega-menu-trigger" type="button" onclick="window.toggleMegaMenu(event)" aria-expanded="false" aria-controls="improgyp-mega-menu"
                 class="flex-shrink-0 flex items-center gap-1.5 md:gap-2 px-2.5 md:px-4 py-2 bg-white border border-slate-200 text-[#1B263B] font-bold rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all text-[10px] md:text-[11px] uppercase tracking-wider shadow-sm select-none active:scale-95 max-w-[42vw] md:max-w-none">
                 <span class="relative flex h-2 w-2 shrink-0" aria-hidden="true">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3A86FF] opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-[#3A86FF]"></span>
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0E75AE] opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-[#0E75AE]"></span>
                 </span>
                 <span class="truncate"><span class="md:hidden">Explorar</span><span class="hidden md:inline">Explorar Divisiones</span></span>
                 <i id="trigger-arrow" class="fa-solid fa-chevron-down text-[8px] text-slate-400 transition-transform duration-300 shrink-0" aria-hidden="true"></i>
@@ -275,7 +275,7 @@ $logo_href = 'index.php';
                 </div>
             </div>
                
-                <button type="button" onclick="typeof improgypOpenCart==='function'?improgypOpenCart(event):location.href='productos.php'" class="relative w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#1B263B] border border-[#1B263B] flex items-center justify-center text-white hover:bg-[#3A86FF] transition-all shadow-md shadow-[#1B263B]/30" title="Bolsa de compras" aria-label="Abrir cotización">
+                <button type="button" onclick="typeof improgypOpenCart==='function'?improgypOpenCart(event):location.href='productos.php'" class="relative w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#1B263B] border border-[#1B263B] flex items-center justify-center text-white hover:bg-[#0E75AE] transition-all shadow-md shadow-[#1B263B]/30" title="Bolsa de compras" aria-label="Abrir cotización">
                     <i class="fa-solid fa-bag-shopping text-[13px] md:text-sm" aria-hidden="true"></i>
                     <span id="cart-badge" class="absolute -top-1 -right-1 bg-slate-900 text-white text-[9px] font-bold h-4 w-4 rounded-full flex items-center justify-center shadow-md transition-transform duration-200 hidden" aria-hidden="true">0</span>
             </button>
@@ -350,8 +350,8 @@ $logo_href = 'index.php';
                     <div class="mega-col-aside bg-slate-50/40 p-0 md:p-6 border-l border-slate-100 flex flex-col md:justify-between md:gap-5 max-md:border-l-0">
                         <div class="mega-aside-desktop hidden md:flex md:flex-col md:justify-between md:gap-5 md:flex-1 md:w-full">
             <div class="space-y-4">
-                <div class="p-4 bg-[#3A86FF]/5 border border-[#3A86FF]/10 rounded-2xl">
-                    <p class="text-[9px] font-black text-[#3A86FF] uppercase tracking-widest leading-none mb-1">
+                <div class="p-4 bg-[#0E75AE]/5 border border-[#0E75AE]/10 rounded-2xl">
+                    <p class="text-[9px] font-black text-[#0E75AE] uppercase tracking-widest leading-none mb-1">
                                         <i class="fa-solid fa-compass-drafting mr-1"></i> Asesoría en proyectos
                                     </p>
                                     <h5 class="text-[11px] font-bold text-[#1B263B] leading-tight">¿Necesitas ayuda técnica o una cotización a medida para tu obra?</h5>
@@ -364,11 +364,11 @@ $logo_href = 'index.php';
                         </span>
                                         <i class="fa-solid fa-chevron-right text-[9px] text-slate-400 group-hover:text-emerald-500"></i>
                     </a>
-                                    <button type="button" onclick="typeof abrirModalLocales==='function'&&abrirModalLocales(); window.hideMegaMenu();" class="flex items-center justify-between w-full p-3 rounded-xl border border-slate-200 bg-white hover:border-[#3A86FF] hover:bg-blue-600/5 transition-all text-left group">
-                        <span class="text-[10px] font-black text-slate-600 uppercase tracking-wider group-hover:text-[#3A86FF]">
-                                            <i class="fa-solid fa-map-location-dot text-[#3A86FF] text-xs mr-2"></i> Nuestras sucursales
+                                    <button type="button" onclick="typeof abrirModalLocales==='function'&&abrirModalLocales(); window.hideMegaMenu();" class="flex items-center justify-between w-full p-3 rounded-xl border border-slate-200 bg-white hover:border-[#0E75AE] hover:bg-[#0E75AE]/5 transition-all text-left group">
+                        <span class="text-[10px] font-black text-slate-600 uppercase tracking-wider group-hover:text-[#0E75AE]">
+                                            <i class="fa-solid fa-map-location-dot text-[#0E75AE] text-xs mr-2"></i> Nuestras sucursales
                         </span>
-                                        <i class="fa-solid fa-chevron-right text-[9px] text-slate-400 group-hover:text-[#3A86FF]"></i>
+                                        <i class="fa-solid fa-chevron-right text-[9px] text-slate-400 group-hover:text-[#0E75AE]"></i>
                     </button>
                 </div>
             </div>
@@ -376,7 +376,7 @@ $logo_href = 'index.php';
                             <div class="mega-b2b-block p-4 bg-slate-100/70 border border-slate-200/50 rounded-2xl text-center">
                                 <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider leading-tight">¿Compra mayorista?</p>
                                 <p class="text-[9px] text-slate-500 font-bold mt-1 mb-2.5">Precios por volumen y stock en tiempo real.</p>
-                                <a href="b2b/" class="inline-flex items-center justify-center w-full py-2 bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black rounded-lg uppercase tracking-widest text-[8px] transition-all shadow-sm">
+                                <a href="b2b/" class="inline-flex items-center justify-center w-full py-2 bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black rounded-lg uppercase tracking-widest text-[8px] transition-all shadow-sm">
                     Portal B2B Exclusivo <i class="fa-solid fa-arrow-right-to-bracket ml-1.5"></i>
                 </a>
             </div>
@@ -391,12 +391,12 @@ $logo_href = 'index.php';
                                     <span class="text-[8px] font-black text-slate-600 uppercase tracking-wide leading-tight">WhatsApp</span>
                                 </a>
                                 <button type="button" onclick="typeof abrirModalLocales==='function'&&abrirModalLocales(); window.hideMegaMenu();" class="flex flex-col items-center justify-center gap-1.5 p-2.5 rounded-xl border border-slate-200 bg-white text-center min-h-[4.5rem]">
-                                    <i class="fa-solid fa-map-location-dot text-[#3A86FF] text-base"></i>
+                                    <i class="fa-solid fa-map-location-dot text-[#0E75AE] text-base"></i>
                                     <span class="text-[8px] font-black text-slate-600 uppercase tracking-wide leading-tight">Sucursales</span>
                             </button>
                                 </div>
                             <?php if ($b2b_publico_tienda): ?>
-                            <a href="b2b/" class="mt-2.5 flex items-center justify-center gap-2 w-full py-2.5 bg-[#1B263B] text-white font-black rounded-xl uppercase tracking-widest text-[9px] hover:bg-[#3A86FF] transition-colors">
+                            <a href="b2b/" class="mt-2.5 flex items-center justify-center gap-2 w-full py-2.5 bg-[#1B263B] text-white font-black rounded-xl uppercase tracking-widest text-[9px] hover:bg-[#0E75AE] transition-colors">
                                 <i class="fa-solid fa-arrow-right-to-bracket text-[10px]"></i> Portal B2B
                             </a>
                             <?php endif; ?>
@@ -406,7 +406,7 @@ $logo_href = 'index.php';
                     </div>
 
             <div class="mega-site-footer px-4 md:px-6 py-4 md:py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-3">
-                <a href="productos.php" class="inline-flex items-center gap-2 text-[10px] font-black text-[#1B263B] uppercase tracking-wider hover:text-[#3A86FF] transition-all shrink-0 pb-1 md:pb-0 border-b border-slate-200/80 md:border-b-0">
+                <a href="productos.php" class="inline-flex items-center gap-2 text-[10px] font-black text-[#1B263B] uppercase tracking-wider hover:text-[#0E75AE] transition-all shrink-0 pb-1 md:pb-0 border-b border-slate-200/80 md:border-b-0">
                     Ver catálogo total <i class="fa-solid fa-arrow-right-long"></i>
                 </a>
                 <?php if (!empty($header_site_nav)): ?>
@@ -420,7 +420,7 @@ $logo_href = 'index.php';
                         }
                         $nav_icon = improgyp_header_site_nav_icon($item['text']);
                     ?>
-                    <a href="<?= htmlspecialchars($item['link']) ?>" class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider transition-colors max-md:py-1 <?= $nav_active ? 'text-[#3A86FF]' : 'text-slate-500 hover:text-[#1B263B]' ?>">
+                    <a href="<?= htmlspecialchars($item['link']) ?>" class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider transition-colors max-md:py-1 <?= $nav_active ? 'text-[#0E75AE]' : 'text-slate-500 hover:text-[#1B263B]' ?>">
                         <i class="fa-solid <?= $nav_icon ?> text-[9px]"></i>
                         <?= htmlspecialchars($item['text']) ?>
                     </a>
@@ -454,7 +454,7 @@ function buildCategoryContentHtml(catId) {
             const name = item.name || item.linkValue || '';
             const lt = item.linkType === 'search' ? 'search' : 'category';
             const lv = item.linkValue || name;
-            return `<li><a href="#" class="submenu-item text-[11px] font-bold text-slate-500 hover:text-[#3A86FF] transition-all" data-link-type="${lt}" data-link-value="${String(lv).replace(/"/g, '&quot;')}" onclick="window.filterMegaMenuLinkFromEl(this, event)">${name}</a></li>`;
+            return `<li><a href="#" class="submenu-item text-[11px] font-bold text-slate-500 hover:text-[#0E75AE] transition-all" data-link-type="${lt}" data-link-value="${String(lv).replace(/"/g, '&quot;')}" onclick="window.filterMegaMenuLinkFromEl(this, event)">${name}</a></li>`;
         }).join('');
     };
     const linksLeft = mapping.linksLeft || mapping.catsLeft || [];

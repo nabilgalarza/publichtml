@@ -40,7 +40,7 @@ if (file_exists($cat_path)) {
             </p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-            <a href="../productos.php" target="_blank" rel="noopener" class="px-4 py-2 border border-[#3A86FF]/30 text-[#3A86FF] font-bold rounded-xl text-xs hover:bg-blue-50">
+            <a href="../productos.php" target="_blank" rel="noopener" class="px-4 py-2 border border-[#0E75AE]/30 text-[#0E75AE] font-bold rounded-xl text-xs hover:bg-blue-50">
                 <i class="fa-solid fa-store mr-1"></i> Ver en tienda
             </a>
             <button type="button" onclick="mmResetDefaults()" class="px-4 py-2 border border-slate-200 text-slate-600 font-bold rounded-xl text-xs hover:bg-slate-50">
@@ -105,7 +105,7 @@ if (file_exists($cat_path)) {
                 <p class="text-[10px] text-slate-500 mt-1">Existen en el catálogo pero no aparecen en «Explorar Divisiones». Añádelas aquí y pulsa <strong>Guardar cambios</strong> para publicar.</p>
                 <ul id="mm-orphans-list" class="mt-3 flex flex-wrap gap-2 text-[10px] font-bold text-amber-800"></ul>
                 <div id="mm-orphans-actions" class="mt-4 flex flex-wrap gap-2">
-                    <button type="button" onclick="mmOpenOrphanModal()" class="px-4 py-2 bg-[#1B263B] text-white font-black text-[10px] uppercase tracking-wide rounded-xl hover:bg-[#3A86FF] transition-colors">
+                    <button type="button" onclick="mmOpenOrphanModal()" class="px-4 py-2 bg-[#1B263B] text-white font-black text-[10px] uppercase tracking-wide rounded-xl hover:bg-[#0E75AE] transition-colors">
                         <i class="fa-solid fa-plus mr-1"></i> Añadir al menú…
                     </button>
                     <button type="button" onclick="mmAutoDistributeOrphans()" class="px-4 py-2 border border-amber-300 text-amber-900 font-black text-[10px] uppercase tracking-wide rounded-xl hover:bg-amber-50 transition-colors">
@@ -174,7 +174,7 @@ if (file_exists($cat_path)) {
                         <div class="col-span-2 p-4 grid grid-cols-2 gap-3" id="preview-center"></div>
                         <div class="bg-slate-50/50 p-3 border-l border-slate-100 col-span-1 flex flex-col justify-between text-[8px] text-slate-400 select-none">
                             <div class="space-y-1.5 opacity-80">
-                                <div class="p-2 bg-[#3A86FF]/5 border border-[#3A86FF]/10 rounded-lg font-bold text-[#3A86FF]">Asesoría (fijo)</div>
+                                <div class="p-2 bg-[#0E75AE]/5 border border-[#0E75AE]/10 rounded-lg font-bold text-[#0E75AE]">Asesoría (fijo)</div>
                                 <div class="p-1.5 border rounded bg-white">WhatsApp</div>
                                 <div class="p-1.5 border rounded bg-white">Sucursales</div>
                             </div>
@@ -242,7 +242,7 @@ if (file_exists($cat_path)) {
     }
 
     function iconColorOptions(selected) {
-        const opts = [['text-[#3A86FF]','Azul'],['text-amber-500','Ámbar'],['text-slate-400','Gris'],['text-emerald-500','Verde'],['text-rose-500','Rojo']];
+        const opts = [['text-[#0E75AE]','Azul'],['text-amber-500','Ámbar'],['text-slate-400','Gris'],['text-emerald-500','Verde'],['text-rose-500','Rojo']];
         return opts.map(([v,l]) => `<option value="${v}" ${selected===v?'selected':''}>${l}</option>`).join('');
     }
 

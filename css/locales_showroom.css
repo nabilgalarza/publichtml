@@ -77,7 +77,7 @@
     box-shadow: 0 4px 16px rgba(15, 23, 42, 0.4);
 }
 .locales-showroom-badge i {
-    color: #3A86FF;
+    color: #0E75AE;
 }
 .locales-showroom-body {
     padding: 1.15rem 1.25rem;
@@ -123,7 +123,7 @@
     margin: 0.75rem 0;
 }
 .locales-showroom-hours i {
-    color: #3A86FF;
+    color: #0E75AE;
 }
 .locales-showroom-actions {
     display: flex;
@@ -148,7 +148,7 @@
     transition: background 0.2s;
 }
 .locales-showroom-btn-primary:hover {
-    background: #3A86FF;
+    background: #0E75AE;
     color: #fff;
 }
 .locales-showroom-btn-wa {
@@ -194,7 +194,7 @@
 }
 .locales-showroom-thumb:hover,
 .locales-showroom-thumb.is-active {
-    border-color: #3A86FF;
+    border-color: #0E75AE;
     transform: translateY(-2px);
 }
 .locales-showroom-thumb-photo {
@@ -237,7 +237,7 @@
     transition: background 0.2s ease;
 }
 .locales-showroom-cta:hover {
-    background: #3A86FF;
+    background: #0E75AE;
 }
 
 @media (min-width: 768px) {

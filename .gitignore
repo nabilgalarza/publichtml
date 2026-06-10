@@ -9,6 +9,7 @@ temp/
 storage/import_tmp/
 copia_seguridad_IMPROGYP.sql
 *.sql
+improgyp_deploy.zip
 node_modules/
 .vscode/
 .idea/

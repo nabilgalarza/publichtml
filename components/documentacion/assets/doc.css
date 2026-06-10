@@ -1,6 +1,6 @@
 :root {
     --doc-brand: #1B263B;
-    --doc-accent: #3A86FF;
+    --doc-accent: #0E75AE;
     --doc-indigo: #6366f1;
     --doc-bg: #f8fafc;
     --doc-sidebar: #f1f5f9;
@@ -22,7 +22,7 @@ body.doc-demo {
 }
 
 .doc-demo-banner {
-    background: linear-gradient(135deg, #1e293b 0%, #1B263B 50%, #3A86FF 100%);
+    background: linear-gradient(135deg, #1e293b 0%, #1B263B 50%, #0E75AE 100%);
     color: #fff;
     padding: 12px 24px;
     display: flex;

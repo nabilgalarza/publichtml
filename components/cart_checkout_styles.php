@@ -204,9 +204,9 @@
     }
     .checkout-input:focus {
         outline: none;
-        border-color: #3A86FF;
+        border-color: #0E75AE;
         background: #fff;
-        box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.12);
+        box-shadow: 0 0 0 3px rgba(14, 117, 174, 0.12);
     }
     .checkout-input-on-panel { margin-top: 8px; background: #fff; }
     .checkout-stores-scroll {
@@ -450,8 +450,8 @@
         border-color: #60a5fa;
     }
     .checkout-store-dropdown-trigger[aria-expanded="true"] {
-        border-color: #3A86FF;
-        box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.18);
+        border-color: #0E75AE;
+        box-shadow: 0 0 0 3px rgba(14, 117, 174, 0.18);
     }
     .checkout-store-dropdown-trigger[aria-expanded="true"] .checkout-store-trigger-chevron {
         transform: rotate(180deg);
@@ -510,7 +510,7 @@
     }
     .checkout-store-dropdown-option:hover,
     .checkout-store-dropdown-option:focus {
-        background: #3A86FF;
+        background: #0E75AE;
         outline: none;
         color: #fff;
     }
@@ -599,9 +599,9 @@
         flex-shrink: 0;
     }
     .checkout-advisor-link:hover {
-        background: #3A86FF;
+        background: #0E75AE;
         color: #fff;
-        border-color: #3A86FF;
+        border-color: #0E75AE;
         transform: translateY(-1px);
     }
     .checkout-empty {

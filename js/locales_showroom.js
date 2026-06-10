@@ -102,7 +102,7 @@
             <div class="locales-showroom-modal-card-body">
                 <h4>${esc(loc.nombre)}</h4>
                 <p class="text-[10px] text-slate-500 m-0">${esc(loc.ciudad || '')}${d ? ' · ' + d : ''}</p>
-                <p class="text-[10px] text-slate-600 mt-1 mb-0"><i class="fa-solid fa-clock text-[#3A86FF]"></i> ${esc(horario(loc))}</p>
+                <p class="text-[10px] text-slate-600 mt-1 mb-0"><i class="fa-solid fa-clock text-[#0E75AE]"></i> ${esc(horario(loc))}</p>
                 <div class="locales-showroom-modal-card-actions">
                     <a href="${esc(loc.maps || '#')}" target="_blank" rel="noopener" class="locales-showroom-btn-primary"><i class="fa-solid fa-location-dot"></i> Maps</a>
                     <a href="${esc(waLink(loc))}" target="_blank" rel="noopener" class="locales-showroom-btn-wa" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>

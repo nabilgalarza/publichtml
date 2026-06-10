@@ -23,7 +23,7 @@
     <script>window.IMPROGYP_B2B_PUBLICO = <?= json_encode(function_exists('improgyp_b2b_mostrar_en_tienda') && improgyp_b2b_mostrar_en_tienda()) ?>;</script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        :root { --bg-color: #f8fafc; --text-dark: #0f172a; --theme-green: #1B263B; --theme-green-hover: #3A86FF; --text-muted: #64748b; }
+        :root { --bg-color: #f8fafc; --text-dark: #0f172a; --theme-green: #1B263B; --theme-green-hover: #0E75AE; --text-muted: #64748b; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 30px 30px; color: var(--text-dark); overflow-x: hidden; padding-bottom: 0; scroll-behavior: smooth; }
         .site-footer { margin-bottom: 0; }
@@ -94,7 +94,7 @@
             .rt-home-cta-btn { margin-top: 1.3rem; padding: 13px 22px; }
         }
 
-        .laser-text { background: linear-gradient(90deg, #3A86FF 0%, #FFFFFF 50%, #3A86FF 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: laserSweep 3s linear infinite; }
+        .laser-text { background: linear-gradient(90deg, #0E75AE 0%, #FFFFFF 50%, #0E75AE 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: laserSweep 3s linear infinite; }
         @keyframes laserSweep { 0% { background-position: -100% center; } 100% { background-position: 200% center; } }
         
         /* Estilos Tarjetas Productos */

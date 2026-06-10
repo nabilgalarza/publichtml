@@ -14,7 +14,7 @@ $bl_open_in_modal = !empty($bl_open_in_modal);
 .bl-section * { box-sizing: border-box; }
 .bl-inner { max-width: 1260px; margin: 0 auto; padding: 0 24px; font-family: <?= $bl_font_css ?>; }
 .bl-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 44px; flex-wrap: wrap; gap: 16px; }
-.bl-header h2 { font-family: <?= $bl_font_css ?>; font-size: clamp(1.7rem, 3vw, 2.6rem); font-weight: 900; color: #0f172a; line-height: 1.15; letter-spacing: -.025em; margin: 0; }
+.bl-header h2 { font-family: <?= $bl_font_css ?>; font-size: clamp(1.875rem, 4vw, 3rem); font-weight: 900; color: #0f172a; line-height: 1.1; letter-spacing: -.025em; margin: 0; }
 .bl-header h2 span { color: <?= $bl_accent ?>; }
 .bl-view-all { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border: 2px solid <?= $bl_accent ?>; color: <?= $bl_accent ?>; border-radius: 50px; font-size: .82rem; font-weight: 800; text-decoration: none; transition: all .25s; white-space: nowrap; }
 .bl-view-all:hover { background: <?= $bl_accent ?>; color: white; transform: translateY(-2px); }

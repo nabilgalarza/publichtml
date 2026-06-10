@@ -9,7 +9,7 @@ function improgyp_megamenu_defaults() {
             'id' => 'drywall',
             'title' => 'Drywall & Yeso',
             'icon' => 'fa-trowel-bricks',
-            'iconColor' => 'text-[#3A86FF]',
+            'iconColor' => 'text-[#0E75AE]',
             'titleLeft' => 'SISTEMAS CONSTRUCTIVOS',
             'titleRight' => 'HERRAMIENTAS MASTER',
             'linksLeft' => [
@@ -43,7 +43,7 @@ function improgyp_megamenu_defaults() {
             'id' => 'aplicacion',
             'title' => 'Aplicación & Limpieza',
             'icon' => 'fa-spray-can-sparkles',
-            'iconColor' => 'text-[#3A86FF]',
+            'iconColor' => 'text-[#0E75AE]',
             'titleLeft' => 'SISTEMAS DE APLICACIÓN',
             'titleRight' => 'TRATAMIENTO Y LIMPIEZA',
             'linksLeft' => [

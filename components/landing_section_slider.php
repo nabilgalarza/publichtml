@@ -20,13 +20,13 @@ $interval = max(3000, (int) ($sec['intervalo_ms'] ?? 6000));
             <?php endif; ?>
             <div class="relative z-20 flex flex-col justify-center h-full min-h-[280px] md:min-h-[360px] p-8 md:p-14 max-w-xl">
                 <?php if (!empty($slide['etiqueta'])): ?>
-                <span class="inline-block text-[10px] font-black uppercase tracking-widest text-[#3A86FF] mb-3"><?= htmlspecialchars($slide['etiqueta']) ?></span>
+                <span class="inline-block text-[10px] font-black uppercase tracking-widest text-[#0E75AE] mb-3"><?= htmlspecialchars($slide['etiqueta']) ?></span>
                 <?php endif; ?>
                 <h2 class="text-2xl md:text-4xl font-black text-white leading-tight mb-3"><?= htmlspecialchars($slide['titulo'] ?? '') ?></h2>
                 <?php if (!empty($slide['subtitulo'])): ?>
                 <p class="text-slate-300 text-sm md:text-base mb-6 font-medium"><?= htmlspecialchars($slide['subtitulo']) ?></p>
                 <?php endif; ?>
-                <a href="<?= htmlspecialchars($ctaUrl) ?>" class="inline-flex items-center gap-2 bg-[#3A86FF] hover:bg-white hover:text-[#1B263B] text-white font-black px-6 py-3 rounded-xl transition-colors text-sm w-fit">
+                <a href="<?= htmlspecialchars($ctaUrl) ?>" class="inline-flex items-center gap-2 bg-[#0E75AE] hover:bg-white hover:text-[#1B263B] text-white font-black px-6 py-3 rounded-xl transition-colors text-sm w-fit">
                     <?= htmlspecialchars($ctaText) ?> <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>

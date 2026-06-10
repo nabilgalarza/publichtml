@@ -70,7 +70,7 @@ function blog_layout_prepare(array $articulos, string $base_url = '', array $opt
         $paginated = blog_layout_is_paginated($layout);
     }
 
-    $accent = $cfg['accent'] ?? '#3a86ff';
+    $accent = $cfg['accent'] ?? '#0e75ae';
     $font = $cfg['font'] ?? 'sans';
     $fontMap = [
         'sans'  => "'Outfit', 'Plus Jakarta Sans', sans-serif",
@@ -82,7 +82,7 @@ function blog_layout_prepare(array $articulos, string $base_url = '', array $opt
     return [
         'layout'            => $layout,
         'accent'            => $accent,
-        'accent_rgb'        => $cfg['accentRgb'] ?? '58, 134, 255',
+        'accent_rgb'        => $cfg['accentRgb'] ?? '14, 117, 174',
         'font_css'          => $fontMap[$font] ?? $fontMap['sans'],
         'is_cyber'          => $layout === 'cyberneon',
         'open_in_modal'     => $openInModal,

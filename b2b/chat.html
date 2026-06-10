@@ -115,7 +115,7 @@
             font-size: 12px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
             table-layout: fixed; background: #0f172a;
         }
-        .message th { background: rgba(27, 38, 59, 0.15); color: #3A86FF; padding: 10px 4px; font-size: 10px; word-wrap: break-word; text-transform: uppercase; letter-spacing: 0.5px;}
+        .message th { background: rgba(27, 38, 59, 0.15); color: #0E75AE; padding: 10px 4px; font-size: 10px; word-wrap: break-word; text-transform: uppercase; letter-spacing: 0.5px;}
         .message td { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 10px 4px; background: transparent; vertical-align: middle; color: #cbd5e1;}
         
         .message th:nth-child(1), .message td:nth-child(1) { width: 15%; text-align: center; }
@@ -168,7 +168,7 @@
         .send-btn:active { transform: scale(0.95); }
 
         .loading { display: none; padding: 10px 15px; align-items: center; gap: 5px; margin-left: 35px;}
-        .dot { width: 6px; height: 6px; background-color: #3A86FF; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+        .dot { width: 6px; height: 6px; background-color: #0E75AE; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
         .dot:nth-child(1) { animation-delay: -0.32s; }
         .dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); opacity: 0.3;} 40% { transform: scale(1); opacity: 1;} }
@@ -213,7 +213,7 @@
     <div class="loading" id="load"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
 
     <div style="text-align: center; margin-bottom: 10px; z-index: 10; padding: 0 15px;">
-        <span style="font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"><i class="fa-solid fa-lock" style="color: #3A86FF; margin-right: 3px;"></i> Historial encriptado. Se depura periódicamente por seguridad.</span>
+        <span style="font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"><i class="fa-solid fa-lock" style="color: #0E75AE; margin-right: 3px;"></i> Historial encriptado. Se depura periódicamente por seguridad.</span>
     </div>
 
     <div class="input-area">
@@ -276,7 +276,7 @@
             sessH.forEach(it => {
                 let htmlSeguro = it.aHtml;
                 if (htmlSeguro) {
-                    htmlSeguro = htmlSeguro.replace(/color:\s*#1B263B/gi, 'color: #3A86FF');
+                    htmlSeguro = htmlSeguro.replace(/color:\s*#1B263B/gi, 'color: #0E75AE');
                 } else {
                     let htmlFormateado = aplicarFormatosFrontend(it.aRaw);
                     htmlSeguro = DOMPurify.sanitize(marked.parse(htmlFormateado), { ADD_ATTR: ['onclick', 'target', 'style', 'class', 'src', 'onerror'], ADD_TAGS: ['i', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'small', 'br', 'span', 'b', 'img', 'a'] });
@@ -389,7 +389,7 @@
                             // INYECCIÓN MENSAJE PDF (Estrategia Frontend UI)
                             const msgPDF = document.createElement('div');
                             msgPDF.style.cssText = "text-align: center; margin-top: 14px; padding-top: 14px; border-top: 1px dashed rgba(255,255,255,0.1);";
-                            msgPDF.innerHTML = '<span style="font-size: 11.5px; color: #94a3b8; font-weight: 500; line-height: 1.5; display: block;">📄 ¿Necesitas respaldar esta propuesta?<br>Descarga tu <b style="color: #3A86FF; cursor: pointer; border-bottom: 1px solid #3A86FF;" onclick="generarPDFCotizacion()">Cotización en PDF</b> oficial desde el menú superior (⋮) a la derecha.</span>';
+                            msgPDF.innerHTML = '<span style="font-size: 11.5px; color: #94a3b8; font-weight: 500; line-height: 1.5; display: block;">📄 ¿Necesitas respaldar esta propuesta?<br>Descarga tu <b style="color: #0E75AE; cursor: pointer; border-bottom: 1px solid #0E75AE;" onclick="generarPDFCotizacion()">Cotización en PDF</b> oficial desde el menú superior (⋮) a la derecha.</span>';
                             enlaces[enlaces.length - 1].parentNode.insertBefore(msgPDF, enlaces[enlaces.length - 1].nextSibling);
 
                             htmlSeguro = tempDiv.innerHTML; 

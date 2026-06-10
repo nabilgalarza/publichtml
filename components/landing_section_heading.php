@@ -6,17 +6,17 @@ if ($h['normal'] === '' && $h['resalt'] === '') {
     return;
 }
 ?>
-<div class="text-center mb-10">
+<div class="text-center mb-12">
     <?php if (!empty($eyebrow)): ?>
-    <p class="text-[10px] font-black uppercase tracking-[0.25em] text-[#3A86FF] mb-2"><?= htmlspecialchars($eyebrow) ?></p>
+    <p class="text-[10px] font-black uppercase tracking-[0.25em] text-[#0E75AE] mb-3"><?= htmlspecialchars($eyebrow) ?></p>
     <?php endif; ?>
-    <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+    <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
         <?= htmlspecialchars($h['normal']) ?>
         <?php if ($h['resalt'] !== ''): ?>
         <span class="laser-text block sm:inline"><?= htmlspecialchars($h['resalt']) ?></span>
         <?php endif; ?>
     </h2>
     <?php if ($h['sub'] !== ''): ?>
-    <p class="text-slate-500 text-sm mt-2 max-w-xl mx-auto font-medium"><?= htmlspecialchars($h['sub']) ?></p>
+    <p class="text-slate-500 text-sm md:text-base mt-3 max-w-2xl mx-auto font-medium leading-relaxed"><?= htmlspecialchars($h['sub']) ?></p>
     <?php endif; ?>
 </div>

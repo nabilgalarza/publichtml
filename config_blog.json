@@ -1,7 +1,7 @@
 {
     "layout": "duo50",
-    "accent": "#3a86ff",
-    "accentRgb": "58, 134, 255",
+    "accent": "#0e75ae",
+    "accentRgb": "14, 117, 174",
     "font": "sans",
     "showDate": true,
     "showReadTime": true,

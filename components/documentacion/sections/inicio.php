@@ -14,7 +14,7 @@
 <div class="doc-infographic">
     <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <rect x="20" y="70" width="120" height="60" rx="12" fill="#1B263B"/><text x="80" y="105" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Dashboard</text>
-        <rect x="180" y="30" width="100" height="50" rx="10" fill="#3A86FF"/><text x="230" y="60" fill="#fff" font-size="10" text-anchor="middle">B2C Web</text>
+        <rect x="180" y="30" width="100" height="50" rx="10" fill="#0E75AE"/><text x="230" y="60" fill="#fff" font-size="10" text-anchor="middle">B2C Web</text>
         <rect x="180" y="100" width="100" height="50" rx="10" fill="#6366f1"/><text x="230" y="130" fill="#fff" font-size="10" text-anchor="middle">Blog</text>
         <rect x="320" y="30" width="100" height="50" rx="10" fill="#10b981"/><text x="370" y="60" fill="#fff" font-size="10" text-anchor="middle">SEO / Ads</text>
         <rect x="320" y="100" width="100" height="50" rx="10" fill="#f59e0b"/><text x="370" y="130" fill="#fff" font-size="10" text-anchor="middle">B2B Portal</text>

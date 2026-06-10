@@ -1,0 +1,107 @@
+IMPROGYP — Despliegue en Hostinger (BD + .env + archivos)
+==========================================================
+
+RESUMEN
+-------
+1. Crear base MySQL en Hostinger
+2. Subir ZIP (scripts/preparar_subida.sh) y extraer en public_html
+3. Crear .env en el servidor (ver .env.example)
+4. Entrar a dashboard.php → login admin
+5. Pulsar «Importar catálogo desde catalogo.json» (una vez)
+6. Probar index.php y productos.php
+
+NO necesitas dump SQL si subes catalogo.json + img_catalogo/ y haces el paso 5.
+
+
+FASE 1 — Base de datos Hostinger
+---------------------------------
+- hPanel → Bases de datos MySQL → Crear
+- Nombre sugerido: improgyp_web  →  u718580158_improgyp_web
+- Anota: DB_NAME, DB_USER, DB_PASS
+- Host: localhost | Puerto: 3306
+
+
+FASE 2 — Generar ZIP en tu Mac
+------------------------------
+  cd /Applications/MAMP/htdocs/publichtml
+  bash scripts/preparar_subida.sh
+
+Se crea: ../improgyp_deploy.zip (carpeta padre de publichtml)
+
+
+FASE 3 — Subir al Administrador de archivos
+-------------------------------------------
+- Ir a public_html (raíz del dominio)
+- Subir improgyp_deploy.zip → Extraer
+- Debe quedar: public_html/index.php (NO public_html/publichtml/index.php)
+
+
+FASE 4 — Crear .env en el servidor
+----------------------------------
+Archivo nuevo: public_html/.env
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=u718580158_improgyp_web
+DB_USER=u718580158_xxxx
+DB_PASS=tu_contraseña
+
+ADMIN_PASSWORD=ClaveSeguraAdmin2026!
+GEMINI_API_KEY=tu_clave_google
+GEMINI_MODEL=gemini-2.5-flash-lite
+
+Permisos recomendados: 600
+
+
+FASE 5 — PHP en hPanel
+----------------------
+- PHP 8.1 u 8.2
+- Zona horaria: America/Guayaquil
+- SSL activado para el dominio
+
+
+FASE 6 — Primer acceso dashboard
+--------------------------------
+URL: https://tudominio.com/dashboard.php
+
+- Si la BD estaba vacía: se crean todas las tablas automáticamente
+- Login: usuario admin | contraseña = ADMIN_PASSWORD del .env
+- En Catálogo verás un banner azul si hay productos en catalogo.json pero la BD está vacía
+- Clic: «Importar catálogo desde catalogo.json»
+  → Llena improgyp_catalogo para IA, panel admin y pedidos
+
+
+FASE 7 — Verificación
+---------------------
+[ ] https://tudominio.com/              → Home con slider
+[ ] https://tudominio.com/productos.php  → Productos con imágenes
+[ ] Omnibar / IA responde (GEMINI_API_KEY)
+[ ] Carrito → WhatsApp
+[ ] dashboard.php → lista de productos
+
+estado_tienda.json → "mantenimiento": false
+
+
+CARPETAS ESCRIBIBLES (755 o 775 si falla al guardar)
+----------------------------------------------------
+img_catalogo/
+ads_media/
+uploads/blog/
+uploads/locales/
+Raíz (catalogo.json, seo.json, config_*.json)
+
+
+QUÉ NO SUBIR
+------------
+.git/
+.env local
+*.sql
+cache_geo/, temp/, img_temp_carga/, storage/import_tmp/
+
+
+ARCHIVOS CRÍTICOS INCLUIDOS EN EL ZIP
+-------------------------------------
+catalogo.json          (~179 productos)
+img_catalogo/          (imágenes producto)
+ads_media/             (banners home)
+config_*.json, seo.json, locales.json, textos_tienda.json, estado_tienda.json

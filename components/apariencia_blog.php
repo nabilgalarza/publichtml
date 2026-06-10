@@ -10,7 +10,7 @@ $cfg_path = __DIR__ . '/../config_blog.json';
 $cfg = file_exists($cfg_path) ? (json_decode(file_get_contents($cfg_path), true) ?: []) : [];
 
 $layout_actual = blog_layout_normalize($cfg['layout'] ?? 'editorial');
-$accent_actual = $cfg['accent']       ?? '#3a86ff';
+$accent_actual = $cfg['accent']       ?? '#0e75ae';
 $font_actual   = $cfg['font']         ?? 'sans';
 $showDate      = !empty($cfg['showDate']);
 $showReadTime  = !empty($cfg['showReadTime']);
@@ -72,7 +72,7 @@ $per_page_actual = blog_layout_per_page($layout_actual);
                             class="w-12 h-12 rounded-xl border-2 border-slate-200 cursor-pointer p-1 bg-white"
                             oninput="updateAccentPreview(this.value)">
                         <div class="flex gap-2 flex-wrap">
-                            <?php foreach (['#3a86ff','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#06b6d4'] as $c): ?>
+                            <?php foreach (['#0e75ae','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#06b6d4'] as $c): ?>
                             <button type="button" onclick="document.getElementById('f-accent').value='<?= $c ?>'; updateAccentPreview('<?= $c ?>')"
                                 class="w-7 h-7 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform"
                                 style="background:<?= $c ?>"></button>

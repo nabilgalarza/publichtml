@@ -15,7 +15,7 @@
         </div>
         <h1 class="text-xl font-black text-white uppercase tracking-tight mb-3">Portal mayoristas en preparación</h1>
         <p class="text-slate-400 text-sm leading-relaxed mb-8">El acceso B2B no está habilitado de forma pública. Si ya eres cliente VIP, tu asesor te avisará cuando esté activo.</p>
-        <a href="../index.php" class="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#1B263B] hover:bg-[#3A86FF] text-white font-black text-xs uppercase tracking-widest transition-colors">
+        <a href="../index.php" class="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#1B263B] hover:bg-[#0E75AE] text-white font-black text-xs uppercase tracking-widest transition-colors">
             <i class="fa-solid fa-store"></i> Volver a la tienda
         </a>
     </div>

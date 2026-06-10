@@ -100,7 +100,7 @@ function improgyp_footer_bottom_link_active(string $key, string $currentPage, st
 function improgyp_footer_link_class(bool $active, string $base = 'hover:text-white transition-colors'): string
 {
     if ($active) {
-        return 'text-[#3A86FF] hover:text-[#3A86FF] transition-colors';
+        return 'text-[#0E75AE] hover:text-[#0E75AE] transition-colors';
     }
     return $base;
 }

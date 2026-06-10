@@ -25,7 +25,7 @@ $footer_page_kind = $improgyp_page ?? '';
                     <a href="<?= htmlspecialchars($footer_wa_url) ?>" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 hover:bg-emerald-500/20 text-emerald-400 flex items-center justify-center transition-colors" aria-label="WhatsApp">
                         <i class="fa-brands fa-whatsapp text-lg"></i>
                     </a>
-                    <a href="productos.php" class="w-9 h-9 rounded-full bg-white/10 hover:bg-[#3A86FF]/20 text-[#3A86FF] flex items-center justify-center transition-colors" aria-label="Tienda">
+                    <a href="productos.php" class="w-9 h-9 rounded-full bg-white/10 hover:bg-[#0E75AE]/20 text-[#0E75AE] flex items-center justify-center transition-colors" aria-label="Tienda">
                         <i class="fa-solid fa-bag-shopping text-sm"></i>
                     </a>
                     <a href="blog.php" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition-colors" aria-label="Blog">
@@ -70,13 +70,13 @@ $footer_page_kind = $improgyp_page ?? '';
                 <ul class="space-y-3 text-[13px] font-medium text-slate-400 mb-5">
                     <?php if (!empty($footer_contact['telefono'])): ?>
                     <li class="flex items-start gap-2">
-                        <i class="fa-solid fa-phone text-[#3A86FF] mt-0.5 w-4"></i>
+                        <i class="fa-solid fa-phone text-[#0E75AE] mt-0.5 w-4"></i>
                         <span><?= htmlspecialchars($footer_contact['telefono']) ?> · Matriz <?= htmlspecialchars($footer_contact['ciudad']) ?></span>
                     </li>
                     <?php endif; ?>
                     <?php if (!empty($footer_contact['email'])): ?>
                     <li class="flex items-start gap-2">
-                        <i class="fa-solid fa-envelope text-[#3A86FF] mt-0.5 w-4"></i>
+                        <i class="fa-solid fa-envelope text-[#0E75AE] mt-0.5 w-4"></i>
                         <a href="mailto:<?= htmlspecialchars($footer_contact['email']) ?>" class="hover:text-white transition-colors"><?= htmlspecialchars($footer_contact['email']) ?></a>
                     </li>
                     <?php endif; ?>
@@ -90,7 +90,7 @@ $footer_page_kind = $improgyp_page ?? '';
                         <i class="fa-brands fa-whatsapp"></i> WhatsApp
                     </a>
                     <button type="button" onclick="typeof abrirModalLocales==='function'&&abrirModalLocales()" class="flex-1 inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white font-black text-[11px] uppercase tracking-wider py-3 px-4 rounded-xl border border-white/10 transition-colors">
-                        <i class="fa-solid fa-map-location-dot text-[#3A86FF]"></i> Sucursales
+                        <i class="fa-solid fa-map-location-dot text-[#0E75AE]"></i> Sucursales
                     </button>
                 </div>
             </div>

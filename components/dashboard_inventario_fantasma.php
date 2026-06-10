@@ -41,7 +41,7 @@ function fantasma_pagina_url(int $page, string $q): string
         <form method="get" action="dashboard.php" class="flex flex-wrap gap-2 items-center">
             <input type="hidden" name="view" value="inventario_fantasma">
             <input type="search" name="q" value="<?= htmlspecialchars($fantasma_q) ?>" placeholder="Buscar nombre o categoría…" class="premium-input px-4 py-2.5 rounded-xl text-sm font-bold border border-slate-200 min-w-[220px]">
-            <button type="submit" class="bg-[#1B263B] hover:bg-[#3A86FF] text-white px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider">Buscar</button>
+            <button type="submit" class="bg-[#1B263B] hover:bg-[#0E75AE] text-white px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider">Buscar</button>
             <?php if ($fantasma_q !== ''): ?>
             <a href="dashboard.php?view=inventario_fantasma" class="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-500 border border-slate-200 hover:bg-slate-50">Limpiar</a>
             <?php endif; ?>

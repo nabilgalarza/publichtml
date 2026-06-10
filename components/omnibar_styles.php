@@ -43,7 +43,7 @@
         box-shadow: 0 4px 12px rgba(27, 38, 59, 0.3);
         flex-shrink: 0;
     }
-    .btn-send:hover { transform: scale(1.05); background: #3A86FF; }
+    .btn-send:hover { transform: scale(1.05); background: #0E75AE; }
     .btn-send:disabled { opacity: 0.6; cursor: wait; transform: none; }
 
     .omni-bar-container {
@@ -70,7 +70,7 @@
         max-width: 450px;
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(24px);
-        border: 1px solid rgba(58, 134, 255, 0.25);
+        border: 1px solid rgba(14, 117, 174, 0.25);
         border-radius: 16px;
         padding: 16px;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);

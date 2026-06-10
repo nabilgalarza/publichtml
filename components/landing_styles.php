@@ -1,6 +1,6 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-    :root { --theme-green: #1B263B; --theme-accent: #3A86FF; }
+    :root { --theme-green: #1B263B; --theme-accent: #0E75AE; }
     body.landing-page {
         font-family: 'Inter', sans-serif;
         background-color: #f8fafc;
@@ -11,7 +11,7 @@
     }
     body.landing-page .site-footer { margin-bottom: 0; }
     .laser-text {
-        background: linear-gradient(90deg, #3A86FF 0%, #1B263B 50%, #3A86FF 100%);
+        background: linear-gradient(90deg, #0E75AE 0%, #1B263B 50%, #0E75AE 100%);
         background-size: 200% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -29,7 +29,7 @@
         transform: translateX(-50%);
         width: min(600px, 90vw);
         height: 400px;
-        background: radial-gradient(circle, rgba(58,134,255,0.12) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(14, 117, 174, 0.12) 0%, transparent 70%);
         pointer-events: none;
     }
     .glass-card-landing {
@@ -322,20 +322,20 @@
         font-weight: 800;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-        color: #3A86FF;
+        color: #0E75AE;
         margin-bottom: 0.625rem;
     }
     .locales-premium-widget .location-card--featured {
         background: rgba(248, 250, 252, 0.95);
         border: 1px solid #e2e8f0;
-        border-left: 4px solid #3A86FF;
+        border-left: 4px solid #0E75AE;
         border-radius: 16px;
         padding: 1.25rem 1.35rem;
         box-shadow: none;
     }
     .locales-premium-widget .location-card--featured.location-card--clickable:hover {
         border-color: #e2e8f0;
-        border-left-color: #3A86FF;
+        border-left-color: #0E75AE;
         box-shadow: 0 12px 32px -12px rgba(27, 38, 59, 0.12);
         transform: translateY(-1px);
     }
@@ -406,8 +406,8 @@
         align-items: center;
         justify-content: center;
         border-radius: 14px;
-        background: rgba(58, 134, 255, 0.2);
-        border: 1px solid rgba(58, 134, 255, 0.35);
+        background: rgba(14, 117, 174, 0.2);
+        border: 1px solid rgba(14, 117, 174, 0.35);
         color: #93c5fd;
         font-size: 1.1rem;
     }
@@ -460,9 +460,9 @@
     }
     .asesoria-premium-input:focus {
         outline: none;
-        border-color: rgba(58, 134, 255, 0.65);
+        border-color: rgba(14, 117, 174, 0.65);
         background: rgba(255, 255, 255, 0.1);
-        box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.25);
+        box-shadow: 0 0 0 3px rgba(14, 117, 174, 0.25);
     }
     .asesoria-premium-textarea {
         resize: vertical;
@@ -494,7 +494,7 @@
         transition: background 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
     }
     .asesoria-premium-submit:hover:not(:disabled) {
-        background: #3A86FF;
+        background: #0E75AE;
         color: #fff;
     }
     .asesoria-premium-submit:active:not(:disabled) {
