@@ -1,0 +1,14 @@
+{
+    "iva_rate": 0.15,
+    "logos_base": "logos_bancos/",
+    "deuna_logo": "Deuna!_icono.svg.png",
+    "advisor_whatsapp": "593991754887",
+    "transfer_hint": "Al confirmar por WhatsApp te enviamos los datos de cuenta. Envía el comprobante de transferencia en el chat.",
+    "banks_transfer": [
+        { "file": "pichincha.png", "name": "Pichincha" },
+        { "file": "pacifico.png", "name": "Pacífico" },
+        { "file": "bolivariano.png", "name": "Bolivariano" },
+        { "file": "produbanco.png", "name": "Produbanco" },
+        { "file": "internacional.png", "name": "Internacional" }
+    ]
+}

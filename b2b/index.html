@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IMPROGYP B2B | Acceso Mayoristas</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    
+    <link rel="icon" type="image/png" href="favicon-app.png?v=5"> 
+    <link rel="apple-touch-icon" href="favicon-app.png?v=5">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = { 
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { green: { theme: '#1B263B', hover: '#0E75AE' } }
+                }
+            } 
+        };
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background-color: #0f172a; 
+            background-image: radial-gradient(rgba(27, 38, 59, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #f8fafc; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Brillo de fondo estético */
+        .glow-bg {
+            position: absolute;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(27, 38, 59, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0; pointer-events: none;
+        }
+
+        .glass-login { 
+            background: rgba(30, 41, 59, 0.7); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 24px; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 30px;
+        }
+
+        .input-b2b {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 16px 20px;
+            padding-left: 48px;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        .input-b2b:focus { border-color: #1B263B; box-shadow: 0 0 0 4px rgba(27, 38, 59, 0.1); }
+        .input-b2b::placeholder { color: #64748b; }
+
+        .input-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #64748b; transition: color 0.3s; }
+        .input-wrapper:focus-within .input-icon { color: #1B263B; }
+
+        .btn-IMPROGYP { 
+            font-size: 15px; font-weight: 800; color: white; background: #1B263B; 
+            padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: center; 
+            gap: 10px; width: 100%; border: none; cursor: pointer; transition: all 0.2s ease; 
+        }
+        .btn-IMPROGYP:hover { transform: scale(1.02); background: #0E75AE; box-shadow: 0 10px 25px -5px rgba(27, 38, 59, 0.4); }
+        .btn-IMPROGYP:active { transform: scale(0.98); }
+
+        .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <script>
+        fetch('api_status.php', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
+            if (!d.portal_habilitado) { window.location.replace('index.php'); }
+        }).catch(function () {});
+    </script>
+
+    <div class="glow-bg"></div>
+
+    <div class="px-6 w-full flex justify-center">
+        <div class="glass-login fade-in-up">
+            
+            <div class="text-center mb-10">
+                <img src="../logo-claro.png?v=5" alt="IMPROGYP B2B" class="h-10 mx-auto mb-6 object-contain drop-shadow-lg" onerror="this.outerHTML='<div class=\'w-16 h-16 bg-slate-800 border border-slate-700 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg\'><i class=\'fa-solid fa-leaf text-3xl text-[#1B263B]\'></i></div>'">
+                
+                <h1 class="text-2xl font-black text-white tracking-tight mb-2">Portal Mayorista</h1>
+                <p class="text-sm text-slate-400 font-medium">Ingresa tus credenciales corporativas.</p>
+            </div>
+
+            <form id="loginForm" onsubmit="procesarLogin(event)">
+                <div class="space-y-5">
+                    <div class="relative input-wrapper fade-in-up delay-1">
+                        <i class="fa-regular fa-user input-icon"></i>
+                        <input type="text" id="usuario" class="input-b2b" placeholder="ID de Distribuidor o RUC" required autocomplete="off">
+                    </div>
+                    
+                    <div class="relative input-wrapper fade-in-up delay-2">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="password" class="input-b2b" placeholder="Contraseña de acceso" required>
+                    </div>
+
+                    <div class="pt-4 fade-in-up delay-3">
+                        <button type="submit" class="btn-IMPROGYP" id="btn-submit">
+                            <span id="btn-text">Iniciar Sesión</span>
+                            <i class="fa-solid fa-arrow-right" id="btn-icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mt-8 text-center fade-in-up delay-3">
+                <a href="https://wa.me/593991754887?text=Hola,%20deseo%20aplicar%20para%20ser%20distribuidor%20mayorista" target="_blank" class="text-[13px] text-slate-400 hover:text-[#1B263B] transition-colors font-medium">
+                    ¿No tienes cuenta? <span class="text-[#1B263B] font-bold border-b border-[#1B263B]/30 pb-0.5">Solicita acceso aquí</span>
+                </a>
+            </div>
+            
+        </div>
+    </div>
+
+    <div id="toast-error" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-rose-500 text-white px-6 py-3 rounded-full text-sm font-bold shadow-xl opacity-0 pointer-events-none transition-opacity duration-300 flex items-center gap-2 z-50">
+        <i class="fa-solid fa-triangle-exclamation"></i> Credenciales incorrectas.
+    </div>
+
+    <script>
+        async function procesarLogin(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('btn-submit');
+            const btnText = document.getElementById('btn-text');
+            const btnIcon = document.getElementById('btn-icon');
+            const user = document.getElementById('usuario').value.trim();
+            const pass = document.getElementById('password').value.trim();
+
+            // Animación de carga
+            btnText.innerText = "Verificando...";
+            btnIcon.className = "fa-solid fa-circle-notch fa-spin";
+            btn.disabled = true;
+            btn.style.opacity = "0.8";
+
+            try {
+                // 1. Llamamos al portero (api_login.php)
+                const response = await fetch('api_login.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ruc: user, pin: pass })
+                });
+
+                const data = await response.json();
+
+                if(data.success) {
+                    // 2. ÉXITO: Guardamos las Llaves y el DESCUENTO en el celular del cliente
+                    localStorage.setItem('b2b_auth_token', 'true'); 
+                    localStorage.setItem('b2b_user_id', data.data.ruc); 
+                    localStorage.setItem('b2b_nombre', data.data.nombre); 
+                    localStorage.setItem('b2b_descuento', data.data.descuento); 
+                    
+                    if (data.history) {
+                        localStorage.setItem('improgyp_apiH', JSON.stringify(data.history.apiH));
+                        localStorage.setItem('improgyp_sessH', JSON.stringify(data.history.sessH));
+                    }                    
+                    // 3. Abrimos la bóveda (El Chat)
+                    window.location.href = 'chat.html';
+                } else {
+                    // 4. ERROR: Credenciales falsas
+                    mostrarError(data.message);
+                    restaurarBoton();
+                }
+            } catch (error) {
+                mostrarError("Error: " + error.message);
+                restaurarBoton();
+            }
+
+            function restaurarBoton() {
+                btnText.innerText = "Iniciar Sesión";
+                btnIcon.className = "fa-solid fa-arrow-right";
+                btn.disabled = false;
+                btn.style.opacity = "1";
+            }
+        }
+
+        function mostrarError(mensaje) {
+            const toast = document.getElementById('toast-error');
+            toast.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${mensaje}`;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 3500);
+        }
+        
+        // Forzar limpieza del Service Worker viejo
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                    console.log('ServiceWorker desregistrado');
+                } 
+            });
+        }
+    </script>
+</body>
+</html>

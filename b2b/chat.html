@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" href="favicon-app.png?v=5"> 
+    <link rel="apple-touch-icon" href="favicon-app.png?v=5">
+    
+    <title>Asesor B2B | IMPROGYP</title>
+    
+    <script>
+        if (localStorage.getItem('b2b_auth_token') !== 'true') {
+            window.location.href = 'index.php';
+        }
+        fetch('api_status.php', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
+            if (!d.portal_habilitado) { window.location.replace('index.php'); }
+        }).catch(function () {});
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+        /* --- ANCLAJE MAESTRO PARA PWA MÓVIL (DARK MODE) --- */
+        body { 
+            margin: 0; padding: 0; 
+            width: 100%; height: 100%; 
+            position: fixed; 
+            display: flex; justify-content: center; align-items: center;     
+            background-color: #020617; 
+            overflow: hidden; 
+        }
+
+        .app-container { 
+            width: 100%; height: 100%; 
+            display: flex; flex-direction: column; 
+            position: relative; overflow: hidden; 
+            background-color: #0f172a; 
+        }
+        /* -------------------------------------- */
+
+        @media (min-width: 768px) {
+            .app-container { 
+                max-width: 600px; height: 90vh; 
+                border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); overflow: hidden; 
+                position: relative;
+            }
+        }
+
+        .floating-menu { position: absolute; top: 15px; right: 15px; z-index: 100; }
+        .floating-menu-left { position: absolute; top: 15px; left: 15px; z-index: 100; }
+
+        .btn-kebab {
+            background: rgba(30, 41, 59, 0.85); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 50%; width: 40px; height: 40px; 
+            color: white; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; 
+            transition: 0.2s; font-size: 20px; font-weight: bold; padding-bottom: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .btn-kebab:active { transform: scale(0.95); }
+
+        .dropdown-content {
+            display: none; position: absolute; right: 0; top: 48px;
+            background-color: #1e293b; min-width: 220px; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.5); overflow: hidden; flex-direction: column;
+        }
+        
+        .dropdown-content a {
+            color: #e2e8f0; padding: 14px 16px; text-decoration: none;
+            display: flex; align-items: center; gap: 12px; font-size: 14px; 
+            border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;
+        }
+        .dropdown-content a:hover { background: rgba(255,255,255,0.05); }
+        .show { display: flex; }
+
+        .messages { flex: 1; padding: 20px 15px 15px 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth;}
+        .messages::-webkit-scrollbar { width: 4px; }
+        .messages::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        
+        .chat-branding { display: block; margin: 0 auto 15px auto; max-width: 160px; height: auto; opacity: 0.9;}
+
+        .message-row { display: flex; align-items: flex-end; gap: 8px; max-width: 95%; }
+        .message-row.user-row { justify-content: flex-end; align-self: flex-end; max-width: 85%; }
+        
+        .avatar-bot {
+            width: 32px; height: 32px; border-radius: 50%; 
+            background: #1e293b; border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center; 
+            color: white; font-size: 14px; flex-shrink: 0;
+        }
+
+        .message { padding: 12px 14px; border-radius: 20px; font-size: 14.5px; line-height: 1.5; word-wrap: break-word; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .bot { background: #1e293b; color: #f8fafc; border-bottom-left-radius: 4px; border: 1px solid rgba(255,255,255,0.05); }
+        .user { background: #1B263B; color: white; border-bottom-right-radius: 4px; font-weight: 500;}
+        
+        .bot strong { color: white; font-weight: 800; }
+
+        /* --- ESTILOS DE TABLA B2B (DARK MODE) --- */
+        .message table { 
+            width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 12px; margin-bottom: 8px;
+            font-size: 12px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
+            table-layout: fixed; background: #0f172a;
+        }
+        .message th { background: rgba(27, 38, 59, 0.15); color: #0E75AE; padding: 10px 4px; font-size: 10px; word-wrap: break-word; text-transform: uppercase; letter-spacing: 0.5px;}
+        .message td { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 10px 4px; background: transparent; vertical-align: middle; color: #cbd5e1;}
+        
+        .message th:nth-child(1), .message td:nth-child(1) { width: 15%; text-align: center; }
+        .message th:nth-child(2), .message td:nth-child(2) { width: 40%; word-wrap: break-word; color: white; font-weight: 600;}
+        .message th:nth-child(3), .message td:nth-child(3) { width: 15%; text-align: center; }
+        .message th:nth-child(4), .message td:nth-child(4) { width: 30%; font-weight: bold;}
+
+        .message td small { display: block; margin-top: 4px; color: #94a3b8; font-size: 10px; font-weight: 600; }
+
+        /* Botón WhatsApp */
+        .message a[href*="wa.me"] {
+            display: inline-flex; align-items: center; justify-content: center;
+            background-color: #25D366; color: #000000 !important; padding: 14px 16px;
+            border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 14px;
+            margin-top: 12px; width: 100%; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);
+            transition: transform 0.2s ease;
+        }
+        .message a[href*="wa.me"]:active { transform: scale(0.97); }
+        .message a[href*="wa.me"]::before { content: "💬 "; margin-right: 8px; font-size: 16px; }
+
+        /* --- BLINDAJE DE LA CAJA DE TEXTO --- */
+        .input-area { 
+            background: #1e293b; 
+            padding: 12px 15px; 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+            display: flex; 
+            gap: 10px; 
+            align-items: flex-end; 
+            width: 100%; 
+            flex-shrink: 0; 
+            box-sizing: border-box;
+            position: relative; 
+            z-index: 999;
+            padding-bottom: calc(12px + env(safe-area-inset-bottom)); 
+        }
+        
+        textarea { 
+            flex: 1; padding: 14px 16px; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; outline: none; 
+            font-size: 15px; background: #0f172a; color: white; resize: none; min-height: 48px; max-height: 120px; 
+            overflow-y: auto; transition: border-color 0.2s; 
+        }
+        textarea:focus { border-color: #1B263B; }
+        textarea::placeholder { color: #64748b; }
+
+        .send-btn { 
+            background: #1B263B; color: white; border: none; width: 48px; height: 48px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; transition: 0.2s; flex-shrink: 0; font-size: 18px;
+        }
+        .send-btn:active { transform: scale(0.95); }
+
+        .loading { display: none; padding: 10px 15px; align-items: center; gap: 5px; margin-left: 35px;}
+        .dot { width: 6px; height: 6px; background-color: #0E75AE; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); opacity: 0.3;} 40% { transform: scale(1); opacity: 1;} }
+
+        /* Lightbox para imágenes */
+        .lightbox-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px);}
+        .lightbox-content { position: relative; width: 85%; max-width: 400px; text-align: center; }
+        .lightbox-img { width: 100%; border-radius: 16px; background: white; padding: 10px; }
+        .lightbox-close { position: absolute; top: -15px; right: -15px; background: #f43f5e; color: white; border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="floating-menu-left">
+        <button class="btn-kebab" onclick="shareApp()"><i class="fa-solid fa-share-nodes text-[16px]"></i></button>
+    </div>
+
+    <div class="floating-menu">
+        <button class="btn-kebab" onclick="toggleMenu(event)"><i class="fa-solid fa-ellipsis-vertical text-[18px]"></i></button>
+        <div id="drop" class="dropdown-content">
+            <a href="#" onclick="clearChat(); return false;"><i class="fa-solid fa-broom text-slate-400 w-5"></i> Limpiar Cotización</a>
+            <a href="#" onclick="generarPDFCotizacion(); return false;"><i class="fa-solid fa-file-pdf text-[#1B263B] w-5"></i> Descargar Cotización</a>
+            <a href="#" id="inst" style="display:none;"><i class="fa-solid fa-download text-blue-400 w-5"></i> Instalar App B2B</a>
+            <a href="https://wa.me/593991754887" target="_blank"><i class="fa-brands fa-whatsapp text-[#25D366] w-5"></i> Soporte Humano</a>
+            <a href="#" onclick="cerrarSesion(); return false;" style="color:#f43f5e; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 4px;"><i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="messages" id="chat">
+        <div style="height: 30px;"></div>
+        <img src="../logo-claro.png?v=5" alt="IMPROGYP" class="chat-branding" onerror="this.style.display='none'">
+        
+        <div class="message-row">
+            <div class="avatar-bot"><i class="fa-solid fa-robot"></i></div>
+            <div class="message bot" id="msg-bienvenida">
+                ¡Acceso autorizado! 🛡️<br><br>Soy la IA Mayorista de IMPROGYP. ¿Qué requerimientos de inventario o cotizaciones necesitas procesar hoy?
+            </div>
+        </div>
+    </div>
+    
+    <div class="loading" id="load"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+
+    <div style="text-align: center; margin-bottom: 10px; z-index: 10; padding: 0 15px;">
+        <span style="font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"><i class="fa-solid fa-lock" style="color: #0E75AE; margin-right: 3px;"></i> Historial encriptado. Se depura periódicamente por seguridad.</span>
+    </div>
+
+    <div class="input-area">
+        <textarea id="msg" placeholder="Escribe tu solicitud B2B..." rows="1"></textarea>
+        <button class="send-btn" onclick="send()"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+
+    <div class="lightbox-overlay" id="imgLightbox" onclick="closeLightbox(event)">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <button class="lightbox-close" onclick="closeLightbox(event)"><i class="fa-solid fa-xmark"></i></button>
+            <img id="lightbox-image-target" class="lightbox-img" src="" alt="Producto IMPROGYP">
+        </div>
+    </div>
+</div>
+
+<script>
+    let apiH = []; let sessH = [];
+    const chat = document.getElementById('chat');
+    const msg = document.getElementById('msg');
+    let deferredPrompt;
+
+    // Personalizar Bienvenida
+    const nombreCliente = localStorage.getItem('b2b_nombre') || 'Cliente VIP';
+    document.getElementById('msg-bienvenida').innerHTML = `¡Hola <b>${nombreCliente}</b>, acceso autorizado! 🛡️<br><br>Soy tu Asesor Estratégico B2B. ¿Qué requerimientos de inventario necesitas procesar hoy?`;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); deferredPrompt = e;
+        const btnInst = document.getElementById('inst');
+        if(btnInst) btnInst.style.display = 'flex';
+    });
+
+    document.getElementById('inst').addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') { document.getElementById('inst').style.display = 'none'; }
+            deferredPrompt = null;
+        }
+    });
+
+    msg.addEventListener('input', function() { this.style.height = '48px'; this.style.height = (this.scrollHeight) + 'px'; });
+    msg.addEventListener("keypress", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } });
+
+    function escaparTexto(texto) {
+        const div = document.createElement('div');
+        div.textContent = texto;
+        return div.innerHTML;
+    }
+
+    function aplicarFormatosFrontend(textoCrudo) {
+        // Renderizamos una imagen real en lugar de solo un link
+        return textoCrudo.replace(/\[VER_IMAGEN\]\((.*?)\)/g, '<img src="$1" onclick="window.openLightbox(\'$1\'); return false;" style="width:40px; height:40px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid rgba(255,255,255,0.1); background:white;" onerror="this.src=\'../img_catalogo/placeholder.png\';">');
+    }
+
+    try {
+        const savedApi = localStorage.getItem('improgyp_apiH');
+        const savedSess = localStorage.getItem('improgyp_sessH');
+        if (savedApi && savedSess) {
+            apiH = JSON.parse(savedApi); sessH = JSON.parse(savedSess);
+            sessH.forEach(it => {
+                let htmlSeguro = it.aHtml;
+                if (htmlSeguro) {
+                    htmlSeguro = htmlSeguro.replace(/color:\s*#1B263B/gi, 'color: #0E75AE');
+                } else {
+                    let htmlFormateado = aplicarFormatosFrontend(it.aRaw);
+                    htmlSeguro = DOMPurify.sanitize(marked.parse(htmlFormateado), { ADD_ATTR: ['onclick', 'target', 'style', 'class', 'src', 'onerror'], ADD_TAGS: ['i', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'small', 'br', 'span', 'b', 'img', 'a'] });
+                }
+                chat.innerHTML += `<div class="message-row user-row"><div class="message user">${escaparTexto(it.q)}</div></div><div class="message-row"><div class="avatar-bot"><i class="fa-solid fa-robot"></i></div><div class="message bot">${htmlSeguro}</div></div>`;
+            });
+            setTimeout(() => { chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' }); }, 150);
+        }
+    } catch(e) {}
+
+    window.openLightbox = function(url) {
+        document.getElementById('lightbox-image-target').src = url;
+        document.getElementById('imgLightbox').style.display = 'flex';
+    };
+    
+    window.closeLightbox = function(e) {
+        if(e) e.stopPropagation();
+        document.getElementById('imgLightbox').style.display = 'none';
+        document.getElementById('lightbox-image-target').src = '';
+    };
+
+    async function send() {
+        const txt = msg.value.trim(); if(!txt) return;
+        
+        chat.innerHTML += `<div class="message-row user-row"><div class="message user">${escaparTexto(txt)}</div></div>`;
+        msg.value = ''; msg.style.height = '48px';
+        chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' });
+        document.getElementById('load').style.display = 'flex';
+
+        let refuerzo = "";
+        for (let i = sessH.length - 1; i >= 0; i--) {
+            if (sessH[i].aRaw.includes('|')) {
+                const table = sessH[i].aRaw.split('\n').filter(l => l.includes('|')).join('\n');
+                refuerzo = "\n\n[SISTEMA: El pedido actual es:\n" + table + "\nContinúa basándote en esto.]";
+                break;
+            }
+        }
+
+        apiH.push({role: "user", parts: [{text: txt + refuerzo}]});
+
+        const descB2B = localStorage.getItem('b2b_descuento') || 0;
+        const nomB2B = localStorage.getItem('b2b_nombre') || 'Cliente VIP';
+
+        try {
+            const res = await fetch('api_chat.php', { 
+                method: 'POST', 
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    history: apiH
+                }) 
+            });
+
+            if (res.status === 401) {
+                alert("Tu sesión ha expirado por seguridad. Ingresa de nuevo.");
+                cerrarSesionDirecta();
+                return;
+            }
+
+            const data = await res.json();
+            document.getElementById('load').style.display = 'none';
+            
+            if(data.reply) {
+                if (data.descuento_actual !== undefined) {
+                    localStorage.setItem('b2b_descuento', data.descuento_actual);
+                }
+                apiH.push({role: "model", parts: [{text: data.reply}]});
+                
+                // 1. Aplicamos el formato del ojito (fotos)
+                let htmlFormateado = aplicarFormatosFrontend(data.reply);
+                
+                // 2. Sanitizamos el HTML principal
+                let htmlSeguro = DOMPurify.sanitize(marked.parse(htmlFormateado), { ADD_ATTR: ['onclick', 'target', 'style', 'class', 'src', 'onerror'], ADD_TAGS: ['i', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'small', 'br', 'span', 'b', 'img', 'a'] });
+                
+                // --- 3. EL CEREBRO DE WHATSAPP Y PDF ---
+                if (htmlSeguro.includes('<table')) {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = htmlSeguro;
+                    const tabla = tempDiv.querySelector('table');
+                    
+                    if (tabla) {
+                        let textoWhatsApp = `Hola IMPROGYP, soy *${nomB2B}*. Deseo facturar la siguiente cotización B2B:\n\n`;
+                        let totalB2B = "";
+                        
+                        const filas = tabla.querySelectorAll('tr');
+                        for (let j = 1; j < filas.length; j++) {
+                            const celdas = filas[j].querySelectorAll('td');
+                            if (celdas.length >= 4) {
+                                const producto = celdas[1].innerText.trim();
+                                if (producto.toUpperCase() === 'TOTAL B2B' || producto.toUpperCase().includes('TOTAL')) {
+                                    totalB2B = celdas[3].innerText.trim();
+                                } else {
+                                    const cantidad = celdas[2].innerText.trim();
+                                    let precioHTML = celdas[3].innerHTML;
+                                    let precioUnitarioStr = precioHTML.split('<br>')[0].replace(/<[^>]*>?/gm, '').trim();
+                                    textoWhatsApp += `📦 ${cantidad}x ${producto} (${precioUnitarioStr})\n`;
+                                }
+                            }
+                        }
+                        
+                        textoWhatsApp += `\n*TOTAL ESTIMADO: ${totalB2B}*\n_Solicito asistencia para coordinar el pago y envío._`;
+                        
+                        const numeroIMPROGYP = "593991754887";
+                        const linkPerfecto = `https://wa.me/${numeroIMPROGYP}?text=${encodeURIComponent(textoWhatsApp)}`;
+                        
+                        const enlaces = tempDiv.querySelectorAll('a[href*="wa.me"]');
+                        if (enlaces.length > 0) {
+                            enlaces[enlaces.length - 1].href = linkPerfecto; 
+                            
+                            // INYECCIÓN MENSAJE PDF (Estrategia Frontend UI)
+                            const msgPDF = document.createElement('div');
+                            msgPDF.style.cssText = "text-align: center; margin-top: 14px; padding-top: 14px; border-top: 1px dashed rgba(255,255,255,0.1);";
+                            msgPDF.innerHTML = '<span style="font-size: 11.5px; color: #94a3b8; font-weight: 500; line-height: 1.5; display: block;">📄 ¿Necesitas respaldar esta propuesta?<br>Descarga tu <b style="color: #0E75AE; cursor: pointer; border-bottom: 1px solid #0E75AE;" onclick="generarPDFCotizacion()">Cotización en PDF</b> oficial desde el menú superior (⋮) a la derecha.</span>';
+                            enlaces[enlaces.length - 1].parentNode.insertBefore(msgPDF, enlaces[enlaces.length - 1].nextSibling);
+
+                            htmlSeguro = tempDiv.innerHTML; 
+                        }
+                    }
+                }
+                // ----------------------------------------------------
+
+                sessH.push({q: txt, aRaw: data.reply, aHtml: htmlSeguro}); 
+                chat.innerHTML += `<div class="message-row"><div class="avatar-bot"><i class="fa-solid fa-robot"></i></div><div class="message bot">${htmlSeguro}</div></div>`;
+                chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' });
+                
+                localStorage.setItem('improgyp_apiH', JSON.stringify(apiH));
+                localStorage.setItem('improgyp_sessH', JSON.stringify(sessH));
+            }
+        } catch(e) { document.getElementById('load').style.display = 'none'; alert('Error de conexión.'); }
+    }
+
+    // EXTRAER IMAGEN PARA EL PDF
+    const getBase64FromUrl = async (url) => {
+        try {
+            const data = await fetch(url); const blob = await data.blob();
+            return new Promise((resolve) => {
+                const img = new Image(); img.crossOrigin = "Anonymous";
+                img.onload = () => {
+                    const canvas = document.createElement('canvas'); canvas.width = img.width; canvas.height = img.height;
+                    const ctx = canvas.getContext('2d'); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.drawImage(img,0,0);
+                    resolve(canvas.toDataURL('image/jpeg', 1.0));
+                }; img.src = URL.createObjectURL(blob);
+            });
+        } catch(e) { return null; }
+    }
+
+    // --- EXTRACTOR DE TABLA LIMPIA A PDF ---
+    async function generarPDFCotizacion(source = null) {
+        try {
+            document.getElementById('drop')?.classList.remove('show');
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Datos del Cliente (Si están en el menú)
+            const nombreB2B = document.getElementById('b2b-nombre')?.innerText || localStorage.getItem('b2b_nombre') || 'Distribuidor IMPROGYP';
+            const rucB2B = document.getElementById('b2b-ruc')?.innerText || localStorage.getItem('b2b_user_id') || '';
+
+            // Intentar cargar logo (con fallback si falla)
+            let logo = null;
+            let currentY = 25;
+            try {
+                logo = await getBase64FromUrl('../logo-oscuro.png?v=5');
+            } catch(e) { console.warn("No se pudo cargar el logo para el PDF", e); }
+
+            if(logo) { 
+                const img = new Image(); img.src = logo; await new Promise(r => img.onload = r);
+                const ratio = img.naturalHeight / img.naturalWidth;
+                const logoWidth = 50; const logoHeight = logoWidth * ratio;
+                doc.addImage(logo, 'PNG', 14, 10, logoWidth, logoHeight); 
+                currentY = 10 + logoHeight + 12;
+            }
+            const descB2BNum = parseFloat(localStorage.getItem('b2b_descuento')) || 30;
+            
+            doc.setFontSize(16);
+            doc.setTextColor(0, 43, 92);
+            doc.setFont('helvetica', 'bold');
+            doc.text('COTIZACIÓN VIP Y PROPUESTA COMERCIAL', 14, currentY);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(100, 116, 139);
+            doc.setFont('helvetica', 'normal');
+            
+            currentY += 8;
+            doc.text(`Cliente VIP: ${nombreB2B} (ID: ${rucB2B})`, 14, currentY);
+            currentY += 5;
+            doc.text(`Fecha: ${new Date().toLocaleString('es-EC')}`, 14, currentY);
+            currentY += 5;
+            doc.text(`Beneficio Aplicado: ${descB2BNum}% de Descuento`, 14, currentY);
+
+            currentY += 6;
+            doc.setDrawColor(0, 43, 92);
+            doc.line(14, currentY, 196, currentY);
+            currentY += 8;
+
+            // Buscar la última tabla de cotización
+            const tablas = document.querySelectorAll('.messages table, .chat-message table');
+            const tabla = source ? source.closest('.bg-white')?.querySelector('table') : (tablas.length > 0 ? tablas[tablas.length - 1] : null);
+            
+            if(!tabla) {
+                alert("No se encontró una tabla de cotización activa para exportar. Pídele a la IA que genere la tabla primero.");
+                return;
+            }
+
+            // EXTRAER DATOS MANUALMENTE PARA RECREAR EL DISEÑO VIP
+            let body = [];
+            let ahorroTotal = 0;
+            
+            const filas = tabla.querySelectorAll('tr');
+            for (let i = 1; i < filas.length; i++) {
+                const celdas = filas[i].querySelectorAll('td');
+                if (celdas.length >= 4) {
+                    let prod = celdas[1].innerText.trim();
+                    let uni = celdas[2].innerText.trim();
+                    let precioRaw = celdas[3].innerText.split('\n')[0].trim(); // Extraer solo precio principal
+                    let valStr = precioRaw.replace(/[^0-9.]/g, '');
+                    let precioVal = parseFloat(valStr) || 0;
+                    
+                    let ahorroStr = "$0.00";
+                    if (prod.toUpperCase().includes('TOTAL')) {
+                        ahorroStr = `$${ahorroTotal.toFixed(2)}`;
+                        body.push([prod, "", precioRaw, ahorroStr]);
+                    } else {
+                        let ahorro = 0;
+                        if (descB2BNum > 0 && precioVal > 0) {
+                            let base = precioVal / (1 - (descB2BNum/100));
+                            ahorro = base - precioVal;
+                            ahorroTotal += ahorro;
+                            ahorroStr = `$$${ahorro.toFixed(2)}`;
+                        }
+                        body.push([prod, uni, precioRaw, ahorroStr]);
+                    }
+                }
+            }
+
+            doc.autoTable({
+                head: [['Producto / Marca', 'Unidades', 'Precio VIP', 'Ahorro']],
+                body: body,
+                startY: currentY,
+                theme: 'striped',
+                headStyles: { fillColor: [0, 43, 92], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center' },
+                styles: { cellPadding: 4, fontSize: 10 },
+                columnStyles: {
+                    0: { halign: 'left' },
+                    1: { halign: 'center' },
+                    2: { halign: 'center' },
+                    3: { halign: 'center' }
+                },
+                margin: { top: currentY }
+            });
+
+            const finalY = (doc.lastAutoTable?.finalY || 100) + 15;
+            doc.setFontSize(10);
+            doc.setTextColor(0, 168, 232); // Color celeste AHORRO TOTAL
+            doc.setFont('helvetica', 'bold');
+            doc.text(`AHORRO TOTAL EN ESTA COMPRA: $${ahorroTotal.toFixed(2)}`, 14, finalY);
+            
+            doc.setFontSize(8);
+            doc.setTextColor(44, 62, 80);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Sujeto a verificación de inventario. Precios incluyen descuentos VIP.', 14, finalY + 8);
+
+            doc.save(`Cotizacion_IMPROGYP_${nombreB2B.replace(/\s+/g, '_')}.pdf`);
+        } catch (error) {
+            console.error("Error al generar PDF:", error);
+            alert("Hubo un problema al generar el informe PDF. Por favor, intente de nuevo.");
+        }
+    }
+
+    function toggleMenu(e) { e.stopPropagation(); document.getElementById('drop').classList.toggle('show'); }
+    
+    function shareApp() { if(navigator.share) navigator.share({title:'IMPROGYP B2B', url:location.href}); }
+    
+    function clearChat() { 
+        if(confirm('¿Iniciar nueva cotización?')) { 
+            localStorage.removeItem('improgyp_apiH'); 
+            localStorage.removeItem('improgyp_sessH'); 
+            location.reload(); 
+        } 
+    }
+
+    function cerrarSesion() { 
+        if(confirm('¿Cerrar sesión y salir del portal?')) { 
+            cerrarSesionDirecta();
+        } 
+    }
+
+    function cerrarSesionDirecta() {
+        localStorage.removeItem('b2b_auth_token');
+        localStorage.removeItem('b2b_user_id');
+        localStorage.removeItem('b2b_nombre');
+        localStorage.removeItem('b2b_descuento');
+        localStorage.removeItem('improgyp_apiH'); 
+        localStorage.removeItem('improgyp_sessH'); 
+        window.location.href = 'index.html'; 
+    }
+    
+    document.getElementById('chat').addEventListener('click', async function(e) {
+        const link = e.target.closest('a');
+        if (link && link.href.includes('wa.me')) {
+            e.preventDefault(); 
+            
+            // --- NUEVO: Captura de Pedido Interno ---
+            const nomB2B = localStorage.getItem('b2b_nombre') || 'Cliente VIP';
+            const rucB2B = localStorage.getItem('b2b_user_id') || 'N/A';
+            const tablas = document.querySelectorAll('.messages table');
+            
+            if (tablas.length > 0) {
+                const ultimaTabla = tablas[tablas.length - 1];
+                const filas = ultimaTabla.querySelectorAll('tr');
+                let items = [];
+                let total = 0;
+                let textoWhatsApp = `Hola IMPROGYP, soy *${nomB2B}*. Deseo facturar la siguiente cotización B2B:\n\n`;
+                let totalB2B_WA = "";
+
+                for (let j = 1; j < filas.length; j++) {
+                    const celdas = filas[j].querySelectorAll('td');
+                    if (celdas.length >= 4) {
+                        const producto = celdas[1].innerText.trim();
+                        if (producto.toUpperCase().includes('TOTAL')) {
+                            // Extraer solo el número del total
+                            let totalStr = celdas[3].innerText.replace(/[^0-9.]/g, '');
+                            total = parseFloat(totalStr);
+                            totalB2B_WA = celdas[3].innerText.trim();
+                        } else {
+                            const cantidad = parseInt(celdas[2].innerText.trim());
+                            const precioCompleto = celdas[3].innerText.split('\n')[0].trim();
+                            items.push({ producto, cantidad, precio: precioCompleto });
+                            
+                            let precioUnitarioStr = celdas[3].innerHTML.split('<br>')[0].replace(/<[^>]*>?/gm, '').trim();
+                            textoWhatsApp += `📦 ${cantidad}x ${producto} (${precioUnitarioStr})\n`;
+                        }
+                    }
+                }
+                
+                textoWhatsApp += `\n*TOTAL ESTIMADO: ${totalB2B_WA}*\n_Solicito asistencia para coordinar el pago y envío._`;
+                const numeroIMPROGYP = "593991754887";
+                link.href = `https://wa.me/${numeroIMPROGYP}?text=${encodeURIComponent(textoWhatsApp)}`;
+
+                if (items.length > 0) {
+                    try {
+                        const resPedido = await fetch('api_pedido.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                total: total,
+                                items: items
+                            })
+                        });
+
+                        if (resPedido.status === 401) {
+                            alert("Tu sesión ha expirado. Ingresa de nuevo.");
+                            cerrarSesionDirecta();
+                            return;
+                        }
+                    } catch (err) { console.error('Error guardando pedido:', err); }
+                }
+            }
+
+            // Registro de métrica anterior
+            fetch('api_chat.php', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'whatsapp_click' }) }).catch(err => console.log('Error:', err));
+            
+            // Abrir WhatsApp finalmente
+            window.open(link.href, '_blank');
+        }
+    });
+    
+    // Cerrar menú al tocar fuera
+    document.addEventListener('click', function(e) {
+        const drop = document.getElementById('drop');
+        if (drop.classList.contains('show') && !e.target.closest('.floating-menu')) {
+            drop.classList.remove('show');
+        }
+    });
+
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js'); }
+</script>
+</body>
+</html>

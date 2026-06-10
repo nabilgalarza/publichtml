@@ -1,0 +1,34 @@
+# Secretos y entorno local
+.env
+.env.local
+.env.*.local
+*.sql
+
+# Cachés generados en servidor (se recrean solos)
+cache_*.json
+cache_geo/
+b2b/cache_b2b_catalogo.json
+
+# Temporales / staging de carga masiva
+temp/
+img_temp_carga/
+storage/import_tmp/
+copia_seguridad_*/
+
+# Empaquetado ZIP manual (opción B)
+improgyp_deploy.zip
+../improgyp_deploy.zip
+
+# SO / IDE
+.DS_Store
+**/.DS_Store
+.vscode/
+.idea/
+*.swp
+*~
+
+# Node (si se añade build tooling en el futuro)
+node_modules/
+
+# Logs
+*.log

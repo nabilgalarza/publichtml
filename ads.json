@@ -1,0 +1,67 @@
+{
+    "videos": [
+        {
+            "url": "ads_media/v_1776093200_0.mp4",
+            "link": "20MLS820",
+            "activo": true,
+            "pos": 4
+        },
+        {
+            "url": "ads_media/v_1776093229_1.mp4",
+            "link": "20MDCG20V1",
+            "activo": true,
+            "pos": 12
+        },
+        {
+            "url": "ads_media/v_1776093260_2.mp4",
+            "link": "20MHG2000",
+            "activo": true,
+            "pos": 19
+        }
+    ],
+    "banners": [
+        {
+            "estilo": "respiracion",
+            "etiqueta": "Cobertura Nacional",
+            "titulo": "Envíos a todo el país",
+            "desc": "Compras desde $50: el envío va por nuestra cuenta (según zona). Renueva tu stock con entrega a nivel nacional.",
+            "extra": "Consultar envíos",
+            "img_url": "",
+            "link": "https://wa.me/593991754887?text=Hola%2C%20consulto%20por%20env%C3%ADos%20y%20compras%20desde%20%2450.",
+            "activo": true,
+            "cada_n_filas": 4
+        },
+        {
+            "estilo": "marquee",
+            "etiqueta": "PROMO",
+            "titulo": "Compra con total seguridad y rapidez",
+            "desc": "Optimizamos tus costos con materiales certificados y logística eficiente.",
+            "extra": "",
+            "img_url": "",
+            "link": "https://wa.me/593991754887",
+            "activo": true,
+            "cada_n_filas": 8
+        },
+        {
+            "estilo": "glass",
+            "etiqueta": "CALIDAD PREMIUM",
+            "titulo": "Herramientas hechas para durar",
+            "desc": "Certificación internacional y respaldo técnico de fábrica en cada pieza.",
+            "extra": "",
+            "img_url": "",
+            "link": "https://wa.me/593991754887",
+            "activo": true,
+            "cada_n_filas": 6
+        }
+    ],
+    "b2b_activo": true,
+    "b2b_pos": 25,
+    "b2b_etiqueta": "MAYORISTAS",
+    "b2b_btn": "Acceder al Portal",
+    "b2b_img_url": "ads_media/b2b_bg_1775490680.webp",
+    "ia_activo": true,
+    "ia_etiqueta": "Asesoría Gratuita",
+    "ia_titulo": "¿No encuentras lo que buscas?",
+    "ia_desc": "Deja que nuestro Asesor IA analice tus objetivos y te recomiende el combo perfecto en segundos.",
+    "ia_btn": "Consultar a la IA"
+}

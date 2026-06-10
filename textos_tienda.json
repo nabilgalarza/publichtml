@@ -1,0 +1,66 @@
+{
+    "Accesorios": {
+        "tit": "Tus proyectos merecen más. <br class='hidden md:block'> <span class='laser-text'>Potencia Total.<\/span>",
+        "sub": "Equipa tu éxito. Compra ahora, sin complicaciones."
+    },
+    "Amoladoras": {
+        "tit": "Corte y desbaste de alto nivel. <br class='hidden md:block'> <span class='laser-text'>Precisión Angular.<\/span>",
+        "sub": "Herramientas robustas para el manejo exigente de metales y piedra en obra."
+    },
+    "Cortadoras": {
+        "tit": "Cortes precisos, sin esfuerzo. <br class='hidden md:block'> <span class='laser-text'>Corta Rápido.<\/span>",
+        "sub": "¿Cansado de cortes torpes? Consigue la tuya y transforma tus proyectos."
+    },
+    "Herramientas Drywall": {
+        "tit": "Eficacia en tabiquería seca. <br class='hidden md:block'> <span class='laser-text'>Rendimiento Superior.<\/span>",
+        "sub": "Optimiza tus instalaciones con herramientas diseñadas para precisión y durabilidad en drywall."
+    },
+    "Herramientas Varias": {
+        "tit": "Soluciona cualquier tarea. <br class='hidden md:block'> <span class='laser-text'>Herramientas versátiles<\/span>",
+        "sub": "Encuentra la herramienta perfecta para cada proyecto, sin complicaciones."
+    },
+    "Lijadoras de Paneles de Yeso": {
+        "tit": "Acabados perfectos en pared. <br class='hidden md:block'> <span class='laser-text'>Superficies Impecables.<\/span>",
+        "sub": "Lijado profesional con mínima fatiga y alta eficiencia para acabados de alta calidad."
+    },
+    "Lijadoras Orbitales": {
+        "tit": "Precisión en el detalle final. <br class='hidden md:block'> <span class='laser-text'>Pulido Maestro.<\/span>",
+        "sub": "Resultados uniformes y libres de marcas para carpintería, pintura y acabados técnicos."
+    },
+    "Limpieza al Vacío": {
+        "tit": "Áreas de trabajo sin polvo. <br class='hidden md:block'> <span class='laser-text'>Entornos Seguros.<\/span>",
+        "sub": "Protege tu salud y mejora la visibilidad con sistemas de succión de alto rendimiento industrial."
+    },
+    "Línea de Concreto": {
+        "tit": "Dominio total sobre hormigón. <br class='hidden md:block'> <span class='laser-text'>Desempeño Rudo.<\/span>",
+        "sub": "Equipos calibrados para alisar, nivelar y tratar superficies de concreto con acabado industrial."
+    },
+    "Mezclador de Paletas": {
+        "tit": "Mezcla homogénea sin esfuerzo. <br class='hidden md:block'> <span class='laser-text'>Torque Industrial.<\/span>",
+        "sub": "Homogeneiza mortero, pintura y resinas con potencia bruta y control electrónico."
+    },
+    "Pistolas de Aire Caliente": {
+        "tit": "Despega, moldea, seca. <br class='hidden md:block'> <span class='laser-text'>Potencia Total<\/span>",
+        "sub": "Soluciones rápidas y precisas para tus proyectos. ¡Compra ahora!"
+    },
+    "Pistolas de Silicona": {
+        "tit": "Repara y crea sin límites. <br class='hidden md:block'> <span class='laser-text'>Unión perfecta.<\/span>",
+        "sub": "Desata tu creatividad: consigue tu pistola de silicona y empieza hoy mismo."
+    },
+    "Pulverizadores de Pintura": {
+        "tit": "Transforma tus proyectos ahora <br class='hidden md:block'> <span class='laser-text'>Acabado profesional<\/span>",
+        "sub": "Pintura uniforme y sin esfuerzo. ¡Compra el tuyo!"
+    },
+    "Sopladoras": {
+        "tit": "El viento a tu favor <br class='hidden md:block'> <span class='laser-text'>Aire Limpio<\/span>",
+        "sub": "Despeja tu camino, olvida la suciedad."
+    },
+    "Taladros Percutores": {
+        "tit": "Perforación en mampostería. <br class='hidden md:block'> <span class='laser-text'>Fuerza de Impacto.<\/span>",
+        "sub": "Capacidad de perforación superior en concreto y metales para instaladores profesionales."
+    },
+    "Todos": {
+        "tit": "Herramientas profesionales para <br class='hidden md:block'> <span class='laser-text'>tu máximo nivel.<\/span>",
+        "sub": "Explora nuestro catálogo técnico especializado o consulta a nuestro Asesor IA."
+    }
+}

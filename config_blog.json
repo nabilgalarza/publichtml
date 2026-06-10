@@ -1,0 +1,9 @@
+{
+    "layout": "duo50",
+    "accent": "#0e75ae",
+    "accentRgb": "14, 117, 174",
+    "font": "sans",
+    "showDate": true,
+    "showReadTime": true,
+    "showViews": true
+}

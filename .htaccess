@@ -1,0 +1,73 @@
+# 1. Seguridad: Bloquear acceso a archivos y directorios ocultos (.git, .env, .sql)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Bloqueo adicional por mod_rewrite
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^\.git - [F,L]
+    RewriteRule ^\.env - [F,L]
+</IfModule>
+
+# Bloqueo adicional por redirección
+RedirectMatch 403 /\..*$
+
+# Archivos críticos protegidos
+<FilesMatch "^(\.env|\.sql|cacert\.pem|asistente_clonacion\.php|purgar_IMPROGYP\.php|exportar_produccion\.php)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Permitir acceso a JSONs de configuración necesarios
+<FilesMatch "^(ads|seo|textos_tienda|estado_tienda)\.json$">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Allow from all
+    </IfModule>
+</FilesMatch>
+
+# Ajustes de PHP - Zona Horaria (Ecuador)
+# Sólo se aplica si PHP está como módulo (Apache handler)
+<IfModule mod_php7.c>
+    php_value date.timezone "America/Guayaquil"
+</IfModule>
+<IfModule mod_php.c>
+    php_value date.timezone "America/Guayaquil"
+</IfModule>
+
+# Otros archivos estáticos
+<FilesMatch "\.(php|html|js|css|json|webp|png|jpg|jpeg|gif|svg|pdf)$">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Allow from all
+    </IfModule>
+</FilesMatch>
+
+# 2. Desactivar listado de directorios
+Options -Indexes
+
+# 3. Cabeceras de Seguridad
+<IfModule mod_headers.c>
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

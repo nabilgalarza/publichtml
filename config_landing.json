@@ -1,0 +1,102 @@
+{
+    "hero": {
+        "activo": false,
+        "badge": "Distribuidor oficial · Ecuador",
+        "titulo_normal": "Herramientas profesionales para",
+        "titulo_resaltado": "tu máximo nivel.",
+        "subtitulo": "Catálogo técnico, asesoría IA y compra por WhatsApp en toda Ecuador.",
+        "cta_tienda": "Explorar tienda",
+        "cta_tienda_url": "productos.php",
+        "cta_b2b": "Portal mayoristas",
+        "cta_b2b_url": "b2b/",
+        "imagen": ""
+    },
+    "secciones": [
+        {
+            "tipo": "slider",
+            "activo": true,
+            "slides": [
+                {
+                    "etiqueta": "Novedades",
+                    "titulo": "Herramientas que elevan tu obra",
+                    "subtitulo": "Catálogo técnico, stock y asesoría en tienda y por WhatsApp.",
+                    "imagen": "ads_media/banner_1775837301_1.webp",
+                    "cta_texto": "Ver catálogo",
+                    "cta_url": "productos.php"
+                },
+                {
+                    "etiqueta": "Mayoristas",
+                    "titulo": "Portal B2B IMPROGYP",
+                    "subtitulo": "Precios y cotizaciones para distribuidores registrados.",
+                    "imagen": "ads_media/banner_1775835420_2.webp",
+                    "cta_texto": "Acceder B2B",
+                    "cta_url": "b2b/"
+                }
+            ],
+            "autoplay": true,
+            "intervalo_ms": 6000
+        },
+        {
+            "tipo": "categorias",
+            "titulo": "Encuentra tu equipo ideal",
+            "subtitulo": "Todo para tu obra, a un clic.",
+            "limite": 8,
+            "activo": true,
+            "titulo_normal": "Encuentra tu equipo ideal",
+            "titulo_resaltado": "IA te guía"
+        },
+        {
+            "tipo": "tendencias",
+            "titulo": "Lo que busca tu obra",
+            "subtitulo": "Las novedades que impulsan tus proyectos hoy.",
+            "limite": 8,
+            "activo": true,
+            "titulo_normal": "Lo que busca tu obra",
+            "titulo_resaltado": "Lo nuevo"
+        },
+        {
+            "tipo": "mas_vendidos",
+            "titulo": "Lo que la gente ama",
+            "subtitulo": "Descubre los favoritos de nuestros clientes y hazlos tuyos hoy.",
+            "limite": 8,
+            "activo": true,
+            "titulo_normal": "Lo que la gente ama",
+            "titulo_resaltado": "Lo más top"
+        },
+        {
+            "tipo": "cta",
+            "activo": true,
+            "etiqueta": "Asesoría",
+            "titulo": "¿Listo para tu próximo proyecto?",
+            "subtitulo": "Explora el catálogo con asesoría técnica y cotiza por WhatsApp en minutos.",
+            "cta_texto": "Ir a la tienda",
+            "cta_url": "productos.php",
+            "imagen": "ads_media/cta_1779978340.webp"
+        },
+        {
+            "tipo": "blog",
+            "activo": true,
+            "titulo": "Desde el Blog",
+            "subtitulo": "Guías y novedades para profesionales del drywall.",
+            "titulo_normal": "Desde el Blog",
+            "titulo_resaltado": ""
+        },
+        {
+            "tipo": "logos",
+            "titulo": "Confiamos en ellos",
+            "subtitulo": "Tu proyecto, en manos de los mejores fabricantes.",
+            "limite": 10,
+            "marquee_seg": 50,
+            "activo": true,
+            "titulo_normal": "Confiamos en ellos",
+            "titulo_resaltado": "Grandes Marcas"
+        },
+        {
+            "tipo": "locales",
+            "titulo": "Red de sucursales",
+            "subtitulo": "Atención técnica en todo Ecuador.",
+            "activo": true,
+            "titulo_normal": "Red de sucursales"
+        }
+    ]
+}
