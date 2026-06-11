@@ -1075,11 +1075,13 @@
         to { opacity: 1; transform: translateX(0); }
     }
     .improgyp-toast-cart {
+        position: relative;
         pointer-events: auto;
         display: flex;
         align-items: center;
         gap: 0.75rem;
         padding: 0.875rem 1rem;
+        padding-right: 1.75rem;
         min-width: 260px;
         max-width: min(360px, calc(100vw - 2rem));
         background: #1B263B;
@@ -1120,6 +1122,26 @@
         transition: background 0.2s ease;
     }
     .improgyp-toast-cart__btn:hover { background: rgba(255, 255, 255, 0.2); }
+    .improgyp-toast-cart__close {
+        position: absolute;
+        top: 0.375rem;
+        right: 0.375rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.375rem;
+        height: 1.375rem;
+        padding: 0;
+        border: none;
+        border-radius: 9999px;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 11px;
+        line-height: 1;
+        cursor: pointer;
+        transition: color 0.2s ease, background 0.2s ease;
+    }
+    .improgyp-toast-cart__close:hover { color: #fff; background: rgba(255, 255, 255, 0.12); }
     .improgyp-toast-cart__title {
         font-size: 10px;
         font-weight: 900;

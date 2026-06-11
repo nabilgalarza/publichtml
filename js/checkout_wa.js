@@ -616,6 +616,11 @@ function showToastNotification(mensaje, tipo) {
         btn.type = 'button';
         btn.className = 'improgyp-toast-cart__btn';
         btn.textContent = 'Pagar';
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'improgyp-toast-cart__close';
+        closeBtn.setAttribute('aria-label', 'Cerrar');
+        closeBtn.innerHTML = '<i class="fa-solid fa-xmark" aria-hidden="true"></i>';
         const dismissToast = () => {
             toast.classList.add('improgyp-toast-cart--out');
             setTimeout(() => {
@@ -626,6 +631,10 @@ function showToastNotification(mensaje, tipo) {
             }, 350);
         };
         let autoDismiss = setTimeout(dismissToast, 3200);
+        closeBtn.addEventListener('click', () => {
+            clearTimeout(autoDismiss);
+            dismissToast();
+        });
         btn.addEventListener('click', () => {
             clearTimeout(autoDismiss);
             dismissToast();
@@ -638,6 +647,7 @@ function showToastNotification(mensaje, tipo) {
         toast.appendChild(icon);
         toast.appendChild(body);
         toast.appendChild(btn);
+        toast.appendChild(closeBtn);
         container.appendChild(toast);
         return;
     }
