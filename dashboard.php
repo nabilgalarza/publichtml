@@ -914,6 +914,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         exit;
     }
 
+    if ($_POST['action'] === 'guardar_redes_sociales') {
+        require_once __DIR__ . '/lib/footer_social_helpers.php';
+        $raw = json_decode($_POST['redes_json'] ?? '[]', true);
+        improgyp_footer_save_social_config(is_array($raw) ? $raw : []);
+        header('Location: dashboard.php?view=apariencia&sub=redes&msg=redes_guardado');
+        exit;
+    }
+
     if ($_POST['action'] === 'guardar_apariencia_blog') {
         require_once __DIR__ . '/lib/blog_layout_slots.php';
         $accent = trim($_POST['accent'] ?? '#0e75ae');
@@ -1648,6 +1656,9 @@ function extraerTextos($html) {
                         <a href="?view=apariencia&sub=blog" class="<?= menuSubApariencia($vista === 'apariencia' && $sub_vista === 'blog') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
                             <i class="fa-solid fa-square-rss w-4 text-orange-400"></i> Apariencia Blog
                         </a>
+                        <a href="?view=apariencia&sub=redes" class="<?= menuSubApariencia($vista === 'apariencia' && $sub_vista === 'redes') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
+                            <i class="fa-solid fa-share-nodes w-4 text-violet-500"></i> Redes sociales
+                        </a>
                         <a href="?view=blog" class="<?= menuActivo($vista, 'blog') ?> px-4 py-3 rounded-lg font-medium border-l-2 flex items-center gap-3 text-sm transition-colors">
                             <i class="fa-solid fa-pen-nib w-4 text-orange-500"></i> Gestor de Blog
                         </a>
@@ -2360,6 +2371,8 @@ function extraerTextos($html) {
                 <?php include __DIR__ . '/components/apariencia_megamenu.php'; ?>
             <?php elseif ($sub_vista === 'blog'): ?>
                 <?php include __DIR__ . '/components/apariencia_blog.php'; ?>
+            <?php elseif ($sub_vista === 'redes'): ?>
+                <?php include __DIR__ . '/components/apariencia_redes.php'; ?>
             <?php endif; ?>
 
         <?php elseif($vista === 'blog'): ?>

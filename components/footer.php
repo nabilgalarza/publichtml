@@ -1,9 +1,11 @@
 <?php
 require_once __DIR__ . '/../lib/footer_helpers.php';
+require_once __DIR__ . '/../lib/footer_social_helpers.php';
 $omnibar_show_mobile = true;
 include __DIR__ . '/omnibar.php';
 
 $footer_nav = improgyp_footer_nav_items();
+$footer_social = improgyp_footer_social_items_active();
 $footer_contact = improgyp_footer_matriz_contact();
 $footer_wa = $footer_contact['whatsapp'] ?: '593991754887';
 $footer_wa_url = 'https://wa.me/' . $footer_wa . '?text=' . rawurlencode('Hola IMPROGYP, necesito asesoría.');
@@ -21,16 +23,14 @@ $footer_page_kind = $improgyp_page ?? '';
                 <p class="text-[13px] text-slate-400 leading-relaxed mb-5 max-w-sm">
                     Distribuidor de herramientas profesionales para construcción en seco en Ecuador. Catálogo técnico, asesoría y cotización por WhatsApp.
                 </p>
-                <div class="flex items-center gap-2">
-                    <a href="<?= htmlspecialchars($footer_wa_url) ?>" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-white/10 hover:bg-emerald-500/20 text-emerald-400 flex items-center justify-center transition-colors" aria-label="WhatsApp">
-                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                <div class="flex flex-wrap items-center gap-2">
+                    <?php foreach ($footer_social as $red):
+                        $redIconClass = improgyp_footer_social_icon_classes($red['icono']);
+                    ?>
+                    <a href="<?= htmlspecialchars($red['url']) ?>" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center transition-colors <?= htmlspecialchars($redIconClass) ?>" aria-label="<?= htmlspecialchars($red['etiqueta']) ?>">
+                        <?= improgyp_footer_social_render_icon($red, $red['icono'] === 'fa-whatsapp' ? 'text-lg' : 'text-sm') ?>
                     </a>
-                    <a href="productos.php" class="w-9 h-9 rounded-full bg-white/10 hover:bg-[#0E75AE]/20 text-[#0E75AE] flex items-center justify-center transition-colors" aria-label="Tienda">
-                        <i class="fa-solid fa-bag-shopping text-sm"></i>
-                    </a>
-                    <a href="blog.php" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition-colors" aria-label="Blog">
-                        <i class="fa-solid fa-newspaper text-sm"></i>
-                    </a>
+                    <?php endforeach; ?>
                 </div>
             </div>
 

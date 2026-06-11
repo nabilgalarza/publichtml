@@ -45,23 +45,85 @@
             "titulo_normal": "Encuentra tu equipo ideal",
             "titulo_resaltado": "IA te guía",
             "overrides": {
+                "Fijaciones": {
+                    "icono": "fa-bolt"
+                },
                 "Accesorios": {
                     "icono": "fa-gears"
+                },
+                "Cintas": {
+                    "icono": "fa-tape"
                 },
                 "Herramientas Drywall": {
                     "icono": "fa-trowel-bricks"
                 },
+                "Herramientas Manuales": {
+                    "icono": "fa-hammer"
+                },
+                "Revestimientos": {
+                    "icono": "fa-layer-group"
+                },
+                "Línea de Concreto": {
+                    "icono": "fa-cubes"
+                },
+                "Mezclador de Paletas": {
+                    "icono": "fa-fan"
+                },
                 "Taladros Percutores": {
-                    "icono": "fa-screwdriver-wrench"
+                    "icono": "fa-screwdriver"
+                },
+                "Herramientas Varias": {
+                    "icono": "fa-toolbox"
+                },
+                "Herramientas": {
+                    "icono": "fa-tools"
+                },
+                "Acabados": {
+                    "icono": "fa-brush"
                 },
                 "Amoladoras": {
                     "icono": "fa-circle-notch"
                 },
+                "Cortadoras": {
+                    "icono": "fa-grip-lines-vertical",
+                    "orden": 1
+                },
+                "Lijadoras Orbitales": {
+                    "icono": "fa-compact-disc"
+                },
+                "Limpieza al Vacío": {
+                    "icono": "fa-wind"
+                },
+                "Pistolas de Aire Caliente": {
+                    "icono": "fa-fire"
+                },
                 "Lijadoras de Paneles de Yeso": {
                     "icono": "fa-sheet-plastic"
                 },
+                "Herramientas de Medición": {
+                    "icono": "fa-ruler-combined"
+                },
+                "Herramientas de Pintura": {
+                    "icono": "fa-paint-roller"
+                },
+                "Seguridad Industrial": {
+                    "icono": "fa-helmet-safety"
+                },
+                "Abrasivos": {
+                    "icono": "fa-grip",
+                    "orden": 1
+                },
                 "Pulverizadores de Pintura": {
                     "icono": "fa-spray-can"
+                },
+                "Pistolas de Silicona": {
+                    "icono": "fa-syringe"
+                },
+                "Sopladoras": {
+                    "icono": "fa-wind"
+                },
+                "Consumibles": {
+                    "icono": "fa-boxes-stacked"
                 }
             },
             "modo": "auto"

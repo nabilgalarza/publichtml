@@ -1,0 +1,40 @@
+{
+    "redes_sociales": [
+        {
+            "id": "whatsapp",
+            "etiqueta": "WhatsApp",
+            "url": "https://wa.me/593991754887?text=Hola%20IMPROGYP%2C%20necesito%20asesor%C3%ADa.",
+            "icono": "fa-whatsapp",
+            "familia": "brands",
+            "orden": 1,
+            "activo": true
+        },
+        {
+            "id": "red-2",
+            "etiqueta": "TikTok",
+            "url": "https://www.tiktok.com/@improgyp",
+            "icono": "fa-tiktok",
+            "familia": "brands",
+            "orden": 2,
+            "activo": true
+        },
+        {
+            "id": "red-3",
+            "etiqueta": "Facebook",
+            "url": "https://www.facebook.com/improgyp/",
+            "icono": "fa-facebook",
+            "familia": "brands",
+            "orden": 3,
+            "activo": true
+        },
+        {
+            "id": "red-4",
+            "etiqueta": "Instagram",
+            "url": "https://www.instagram.com/improgyp_gypsum/",
+            "icono": "fa-instagram",
+            "familia": "brands",
+            "orden": 4,
+            "activo": true
+        }
+    ]
+}
