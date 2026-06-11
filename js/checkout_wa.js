@@ -919,22 +919,60 @@ function getCheckoutModalPanel() {
     return document.querySelector('#modal-checkout-header .checkout-modal-panel');
 }
 
-function syncCheckoutMobSheetUi() {
+let checkoutMobBackdropHideTimer = null;
+
+function clearCheckoutMobBackdropHideTimer() {
+    if (checkoutMobBackdropHideTimer) {
+        clearTimeout(checkoutMobBackdropHideTimer);
+        checkoutMobBackdropHideTimer = null;
+    }
+}
+
+function hideCheckoutMobSheetBackdropNow() {
+    clearCheckoutMobBackdropHideTimer();
+    const backdrop = document.getElementById('checkout-mob-sheet-backdrop');
+    if (backdrop) {
+        backdrop.hidden = true;
+        backdrop.setAttribute('aria-hidden', 'true');
+    }
+}
+
+function scheduleHideCheckoutMobSheetBackdrop() {
+    clearCheckoutMobBackdropHideTimer();
+    const backdrop = document.getElementById('checkout-mob-sheet-backdrop');
+    if (!backdrop || backdrop.hidden) return;
+
+    const onEnd = (e) => {
+        if (e.target !== backdrop || e.propertyName !== 'opacity') return;
+        backdrop.removeEventListener('transitionend', onEnd);
+        hideCheckoutMobSheetBackdropNow();
+    };
+    backdrop.addEventListener('transitionend', onEnd);
+    checkoutMobBackdropHideTimer = setTimeout(() => {
+        checkoutMobBackdropHideTimer = null;
+        hideCheckoutMobSheetBackdropNow();
+    }, 380);
+}
+
+function syncCheckoutMobSheetUi(deferBackdropHide) {
     const panel = getCheckoutModalPanel();
     const backdrop = document.getElementById('checkout-mob-sheet-backdrop');
     const barOpen = document.getElementById('checkout-mob-bar-open');
     if (!panel || !isCheckoutMobileLayout()) {
-        if (backdrop) {
-            backdrop.hidden = true;
-            backdrop.setAttribute('aria-hidden', 'true');
-        }
+        hideCheckoutMobSheetBackdropNow();
         return;
     }
     const open = panel.classList.contains('checkout-mob-sheet-open');
     if (barOpen) barOpen.setAttribute('aria-expanded', open ? 'true' : 'false');
     if (backdrop) {
-        backdrop.hidden = !open;
-        backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+        if (open) {
+            backdrop.hidden = false;
+            backdrop.setAttribute('aria-hidden', 'false');
+        } else if (!deferBackdropHide) {
+            hideCheckoutMobSheetBackdropNow();
+        } else {
+            backdrop.setAttribute('aria-hidden', 'true');
+        }
     }
     const sheet = document.getElementById('checkout-summary-sheet');
     if (sheet) sheet.setAttribute('aria-hidden', open ? 'false' : 'true');
@@ -945,13 +983,20 @@ function openCheckoutMobSheet() {
     const panel = getCheckoutModalPanel();
     if (!panel) return;
     closeCheckoutStoreDropdown();
+    clearCheckoutMobBackdropHideTimer();
+
+    const backdrop = document.getElementById('checkout-mob-sheet-backdrop');
     const sheet = document.getElementById('checkout-summary-sheet');
+    if (backdrop) {
+        backdrop.hidden = false;
+        void backdrop.offsetHeight;
+    }
     if (sheet) {
         sheet.style.transition = '';
         sheet.style.transform = '';
     }
     panel.classList.add('checkout-mob-sheet-open');
-    syncCheckoutMobSheetUi();
+    syncCheckoutMobSheetUi(false);
     if (sheet) {
         void sheet.offsetHeight;
     }
@@ -959,12 +1004,28 @@ function openCheckoutMobSheet() {
     if (formCol) formCol.scrollTop = 0;
 }
 
-function closeCheckoutMobSheet() {
+function closeCheckoutMobSheet(options) {
+    const immediate = options && options.immediate === true;
     const panel = getCheckoutModalPanel();
     if (!panel) return;
     const sheet = document.getElementById('checkout-summary-sheet');
+    const wasOpen = panel.classList.contains('checkout-mob-sheet-open');
+
+    clearCheckoutMobBackdropHideTimer();
     panel.classList.remove('checkout-mob-sheet-open');
-    syncCheckoutMobSheetUi();
+
+    if (immediate || !wasOpen) {
+        syncCheckoutMobSheetUi(false);
+        if (sheet) {
+            sheet.style.transition = '';
+            sheet.style.transform = '';
+        }
+        return;
+    }
+
+    syncCheckoutMobSheetUi(true);
+    scheduleHideCheckoutMobSheetBackdrop();
+
     if (sheet) {
         const onEnd = (e) => {
             if (e.propertyName !== 'transform') return;
@@ -1054,7 +1115,7 @@ function initCheckoutMobSheet() {
         window._checkoutMobSheetMqBound = true;
         const mq = window.matchMedia('(max-width: 767px)');
         const onMq = () => {
-            if (!mq.matches) closeCheckoutMobSheet();
+            if (!mq.matches) closeCheckoutMobSheet({ immediate: true });
         };
         if (typeof mq.addEventListener === 'function') mq.addEventListener('change', onMq);
         else if (typeof mq.addListener === 'function') mq.addListener(onMq);
@@ -1076,7 +1137,7 @@ function openCheckoutModal() {
     modal.classList.add('flex');
     document.body.style.overflow = 'hidden';
     closeCheckoutStoreDropdown();
-    closeCheckoutMobSheet();
+    closeCheckoutMobSheet({ immediate: true });
 
     loadCartItems();
     renderCheckoutList();
@@ -1153,7 +1214,7 @@ window.selectCardBrand = selectCardBrand;
 function closeCheckoutModal() {
     const modal = document.getElementById('modal-checkout-header');
     if (!modal) return;
-    closeCheckoutMobSheet();
+    closeCheckoutMobSheet({ immediate: true });
     closeCheckoutStoreDropdown();
     modal.classList.add('hidden');
     modal.classList.remove('flex');

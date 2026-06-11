@@ -991,16 +991,20 @@
             padding: 0;
             margin: 0;
             cursor: pointer;
+            display: block;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.34s cubic-bezier(0.32, 0.72, 0, 1);
         }
         .checkout-modal-panel.checkout-mob-sheet-open .checkout-mob-sheet-backdrop:not([hidden]) {
-            display: block;
             opacity: 1;
             pointer-events: auto;
         }
-        .checkout-mob-sheet-backdrop[hidden] { display: none !important; }
+        .checkout-mob-sheet-backdrop[hidden] {
+            display: none !important;
+            opacity: 0;
+            pointer-events: none;
+        }
         .checkout-mob-bottom-bar {
             flex-shrink: 0;
             display: flex;
