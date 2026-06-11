@@ -716,6 +716,23 @@
         min-width: 0;
         scroll-snap-align: start;
     }
+    @media (max-width: 767px) {
+        .improgyp-carousel-viewport {
+            gap: 0.5rem;
+            padding: 2px 0 8px;
+            scroll-padding-inline: 0;
+        }
+        .improgyp-carousel-slide {
+            flex: 0 0 calc((100% - 0.5rem) / 2);
+        }
+        .landing-page .glass-card {
+            padding: 8px;
+        }
+        .landing-page .product-img-wrapper {
+            padding: 0.5rem;
+            margin-bottom: 8px;
+        }
+    }
     @media (min-width: 768px) {
         .improgyp-product-carousel {
             padding: 0 2.75rem;
