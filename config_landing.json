@@ -46,7 +46,7 @@
             "titulo_resaltado": "IA te guía",
             "overrides": {
                 "Fijaciones": {
-                    "icono": "fa-bolt"
+                    "icono": "fa-object-group"
                 },
                 "Accesorios": {
                     "icono": "fa-gears"
@@ -64,13 +64,13 @@
                     "icono": "fa-layer-group"
                 },
                 "Línea de Concreto": {
-                    "icono": "fa-cubes"
+                    "icono": "fa-square-full"
                 },
                 "Mezclador de Paletas": {
                     "icono": "fa-fan"
                 },
                 "Taladros Percutores": {
-                    "icono": "fa-screwdriver"
+                    "icono": "fa-angles-down"
                 },
                 "Herramientas Varias": {
                     "icono": "fa-toolbox"
@@ -92,7 +92,7 @@
                     "icono": "fa-compact-disc"
                 },
                 "Limpieza al Vacío": {
-                    "icono": "fa-wind"
+                    "icono": "fa-tornado"
                 },
                 "Pistolas de Aire Caliente": {
                     "icono": "fa-fire"
