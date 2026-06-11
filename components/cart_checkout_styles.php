@@ -35,6 +35,9 @@
     }
     /* —— Checkout modal premium —— */
     .checkout-modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 3000;
         background: rgba(15, 23, 42, 0.72);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
@@ -44,6 +47,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 1rem;
     }
     .checkout-modal-panel {
         width: 100%;
@@ -849,17 +853,30 @@
     }
     @media (max-width: 767px) {
         .checkout-modal-overlay.flex {
-            padding: 14px 12px;
-            padding-top: max(14px, env(safe-area-inset-top, 0px));
-            padding-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+            --checkout-mob-pad-y: 20px;
+            --checkout-mob-pad-x: 12px;
+            padding: var(--checkout-mob-pad-y) var(--checkout-mob-pad-x);
+            padding-top: max(var(--checkout-mob-pad-y), env(safe-area-inset-top, 0px));
+            padding-bottom: max(var(--checkout-mob-pad-y), env(safe-area-inset-bottom, 0px));
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
         }
         .checkout-modal-panel {
             --checkout-mob-bar-h: 62px;
             width: 100%;
             max-width: calc(100vw - 24px);
-            max-height: calc(100vh - 28px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+            height: auto;
+            flex-shrink: 1;
+            /* fallback vh → dvh (Chrome Android usa mal 100vh) */
+            max-height: min(
+                88vh,
+                calc(100vh - 40px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))
+            );
+            max-height: min(
+                88dvh,
+                calc(100dvh - 40px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))
+            );
             border-radius: 20px;
             position: relative;
             display: flex;

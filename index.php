@@ -12,7 +12,7 @@ $secciones = $landing_cfg['secciones'];
 <html lang="es" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title><?= htmlspecialchars($seo_titulo) ?></title>
     <meta name="description" content="<?= htmlspecialchars($seo_desc) ?>">
     <?php include __DIR__ . '/components/seo_meta_og.php'; ?>
