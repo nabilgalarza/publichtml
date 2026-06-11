@@ -32,7 +32,7 @@ $checkout_advisor_text = rawurlencode('Hola IMPROGYP, necesito asesoría con mi 
                 </section>
 
                 <section id="form-envio" class="checkout-section hidden">
-                    <h4 class="checkout-section-label"><span class="checkout-step-num">3</span> Datos de entrega</h4>
+                    <h4 class="checkout-section-label"><span class="checkout-step-num">2</span> Datos de entrega</h4>
                     <div class="checkout-fields">
                         <input type="text" id="delivery-address" class="checkout-input" placeholder="Dirección (calle, #, referencia)">
                         <input type="text" id="delivery-city" class="checkout-input" placeholder="Ciudad / Cantón">
@@ -40,7 +40,7 @@ $checkout_advisor_text = rawurlencode('Hola IMPROGYP, necesito asesoría con mi 
                 </section>
 
                 <section id="form-retiro" class="checkout-section">
-                    <h4 class="checkout-section-label"><span class="checkout-step-num">3</span> Punto de retiro</h4>
+                    <h4 class="checkout-section-label"><span class="checkout-step-num">2</span> Punto de retiro</h4>
                     <div id="checkout-store-select-wrap" class="checkout-store-select-wrap">
                         <div class="checkout-store-dropdown" id="checkout-store-dropdown">
                             <button type="button" id="checkout-store-trigger" class="checkout-store-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="checkout-store-menu">
@@ -54,7 +54,7 @@ $checkout_advisor_text = rawurlencode('Hola IMPROGYP, necesito asesoría con mi 
                 </section>
 
                 <section class="checkout-section">
-                    <h4 class="checkout-section-label"><span class="checkout-step-num">2</span> Datos de contacto</h4>
+                    <h4 class="checkout-section-label"><span class="checkout-step-num">3</span> Datos de contacto</h4>
                     <div id="form-contacto" class="checkout-fields">
                         <div class="checkout-field-row">
                             <input type="text" id="contact-nombre" autocomplete="given-name" class="checkout-input" placeholder="Nombre">

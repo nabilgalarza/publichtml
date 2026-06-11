@@ -945,6 +945,11 @@ function openCheckoutMobSheet() {
     const panel = getCheckoutModalPanel();
     if (!panel) return;
     closeCheckoutStoreDropdown();
+    const sheet = document.getElementById('checkout-summary-sheet');
+    if (sheet) {
+        sheet.style.transition = '';
+        sheet.style.transform = '';
+    }
     panel.classList.add('checkout-mob-sheet-open');
     syncCheckoutMobSheetUi();
     const formCol = panel.querySelector('.checkout-form-col');
@@ -954,6 +959,11 @@ function openCheckoutMobSheet() {
 function closeCheckoutMobSheet() {
     const panel = getCheckoutModalPanel();
     if (!panel) return;
+    const sheet = document.getElementById('checkout-summary-sheet');
+    if (sheet) {
+        sheet.style.transition = '';
+        sheet.style.transform = '';
+    }
     panel.classList.remove('checkout-mob-sheet-open');
     syncCheckoutMobSheetUi();
 }
@@ -970,6 +980,52 @@ function initCheckoutMobSheet() {
     const barOpen = document.getElementById('checkout-mob-bar-open');
     const backdrop = document.getElementById('checkout-mob-sheet-backdrop');
     const handle = document.getElementById('checkout-mob-sheet-handle');
+    const sheet = document.getElementById('checkout-summary-sheet');
+
+    let dragStartY = 0;
+    let dragDeltaY = 0;
+    let dragActive = false;
+    let suppressHandleTap = false;
+
+    if (sheet && !sheet.dataset.dragInit) {
+        sheet.dataset.dragInit = '1';
+        sheet.addEventListener('touchstart', (e) => {
+            const panel = getCheckoutModalPanel();
+            if (!panel?.classList.contains('checkout-mob-sheet-open')) return;
+            const scrollArea = e.target.closest('#check-list');
+            if (scrollArea && scrollArea.scrollTop > 0) return;
+            dragStartY = e.touches[0].clientY;
+            dragActive = true;
+            suppressHandleTap = false;
+            sheet.style.transition = 'none';
+        }, { passive: true });
+
+        sheet.addEventListener('touchmove', (e) => {
+            if (!dragActive) return;
+            dragDeltaY = e.touches[0].clientY - dragStartY;
+            if (dragDeltaY > 0) {
+                sheet.style.transform = `translateY(${dragDeltaY}px)`;
+            }
+        }, { passive: true });
+
+        sheet.addEventListener('touchend', () => {
+            if (!dragActive) return;
+            dragActive = false;
+            sheet.style.transition = 'transform 0.34s cubic-bezier(0.32, 0.72, 0, 1)';
+            if (dragDeltaY > 80) {
+                suppressHandleTap = true;
+                closeCheckoutMobSheet();
+                setTimeout(() => {
+                    sheet.style.transition = '';
+                    sheet.style.transform = '';
+                }, 350);
+            } else {
+                if (dragDeltaY > 10) suppressHandleTap = true;
+                sheet.style.transform = '';
+            }
+            dragDeltaY = 0;
+        }, { passive: true });
+    }
 
     barOpen?.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -977,6 +1033,10 @@ function initCheckoutMobSheet() {
     });
     handle?.addEventListener('click', (e) => {
         e.stopPropagation();
+        if (suppressHandleTap) {
+            suppressHandleTap = false;
+            return;
+        }
         toggleCheckoutMobSheet();
     });
     backdrop?.addEventListener('click', (e) => {

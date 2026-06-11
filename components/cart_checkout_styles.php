@@ -933,7 +933,8 @@
             background: transparent;
             display: flex;
             justify-content: center;
-            cursor: pointer;
+            cursor: grab;
+            touch-action: none;
         }
         .checkout-mob-sheet-handle span {
             width: 40px;
