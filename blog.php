@@ -225,6 +225,7 @@ $articleCanonical = $articulo ? blog_seo_canonical_url($articulo['slug'], $base_
 <script>window.IMPROGYP_METRICS_PAGE = 'blog';</script>
 <script src="js/improgyp_metrics.js?v=<?= time() ?>"></script>
 <script src="js/header_actions.js?v=<?= time() ?>"></script>
+<script src="js/wishlist_dropdown.js?v=<?= time() ?>"></script>
 <script src="js/omnibar.js?v=<?= time() ?>"></script>
 <script src="js/landing_header.js?v=<?= time() ?>"></script>
 <script src="js/locales_showroom.js?v=<?= time() ?>"></script>

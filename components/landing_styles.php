@@ -207,17 +207,7 @@
         top: calc(-1 * var(--mega-nav-h, 72px) - 4px);
         transform: none;
     }
-    .wishlist-dropdown { display: none; position: absolute; top: 55px; right: 0; width: 280px; background: #fff; border-radius: 16px; box-shadow: 0 15px 50px rgba(0,0,0,0.1); z-index: 250; flex-direction: column; overflow: hidden; }
-    .wishlist-dropdown.show { display: flex; }
-    .wishlist-header { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; font-weight: 800; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
-    .wishlist-items { max-height: 280px; overflow-y: auto; }
-    .wishlist-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; }
-    .wishlist-item-info { flex-grow: 1; min-width: 0; cursor: pointer; }
-    .wishlist-item-title { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .wishlist-item-price { font-size: 11px; font-weight: 800; color: #1B263B; margin-top: 2px; }
-    .wishlist-empty { padding: 2rem 1rem; text-align: center; color: #94a3b8; font-size: 12px; font-weight: 600; }
-    .wishlist-footer { padding: 12px 16px; background: #f8fafc; border-top: 1px solid #f1f5f9; text-align: center; }
-    .wishlist-footer a { font-size: 11px; font-weight: 800; color: #1B263B; text-decoration: none; }
+    <?php include __DIR__ . '/wishlist_dropdown_styles.php'; ?>
     .modal-overlay {
         position: fixed; inset: 0;
         background: rgba(15, 23, 42, 0.5);

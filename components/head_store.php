@@ -135,20 +135,7 @@
 
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-        .wishlist-dropdown { display: none; position: absolute; top: 55px; right: 0; width: 300px; background: rgba(255,255,255,0.95); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.9); border-radius: 16px; box-shadow: 0 15px 50px rgba(0,0,0,0.1); z-index: 100; flex-direction: column; overflow: hidden; transform-origin: top right; }
-        .wishlist-dropdown.show { display: flex; animation: dropDown 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes dropDown { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .wishlist-header { padding: 14px; border-bottom: 1px solid #f1f5f9; font-weight: 800; font-size: 14px; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center; }
-        .wishlist-items { max-height: 280px; overflow-y: auto; }
-        .wishlist-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #f1f5f9; transition: background 0.2s;}
-        .wishlist-item:hover { background: #f8fafc; }
-        .wishlist-item img { width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background: #fff; border: 1px solid #f1f5f9; padding: 2px;}
-        .wishlist-item-info { flex-grow: 1; min-width: 0; cursor: pointer;}
-        .wishlist-item-title { font-size: 11px; font-weight: 700; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; margin-bottom: 3px;}
-        .wishlist-item-price { font-size: 11px; color: var(--theme-green); font-weight: 800; }
-        .wishlist-footer { padding: 10px 14px; background: #f8fafc; text-align: center; border-top: 1px solid #f1f5f9;}
-        .wishlist-footer a { font-size: 11px; font-weight: 800; color: var(--theme-green); text-decoration: none; transition: color 0.2s; display: inline-flex; align-items: center; gap: 4px;}
-        .wishlist-empty { padding: 30px 14px; text-align: center; color: var(--text-muted); font-size: 12px; font-weight: 500;}
+        <?php include __DIR__ . '/wishlist_dropdown_styles.php'; ?>
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); z-index: 2000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px;}
         .modal-overlay.show { opacity: 1; pointer-events: auto; }
         .product-modal-content { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(0.95) translateY(20px); max-height: 92vh; overflow-y: auto; overflow-x: hidden; }

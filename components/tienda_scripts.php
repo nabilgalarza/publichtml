@@ -855,54 +855,8 @@
             renderizarGrid(prodFilt);
         }
         function actualizarUIWishlist() {
-            const badge = document.getElementById('wishlist-badge'); const container = document.getElementById('wishlist-items-container');
-            if (wishlist.length > 0) {
-                badge.innerText = wishlist.length; badge.classList.remove('hidden'); let html = '';
-                [...wishlist].reverse().forEach(prod => { let precioBase = "Consultar"; if(prod.presentaciones && prod.presentaciones.length > 0) { const p = prod.presentaciones[0].precio.split('|')[0].trim(); if(p) precioBase = p; }
-                    
-                    // --- IMPLEMENTACIÓN DE DOMINIO ABSOLUTO ---
-                    const imgUrl = getAbsoluteImgUrl(prod.imagen); 
-                    // ------------------------------------------
-
-                    const safeIdentificador = (prod.codigo || prod.nombre).replace(/'/g, "\\'").replace(/"/g, "&quot;");
-                    html += `
-                    <div class="wishlist-item group">
-                        <img src="${imgUrl}" alt="${prod.nombre}" class="cursor-pointer" onclick="abrirModalProducto('${safeIdentificador}')" onerror="this.onerror=null; this.src='favicon-app.png?v=5';">
-                        <div class="wishlist-item-info cursor-pointer" onclick="abrirModalProducto('${safeIdentificador}')">
-                            <div class="wishlist-item-title">${prod.nombre}</div>
-                            <div class="text-[9px] text-slate-400 font-bold">${prod.codigo ? 'REF: ' + prod.codigo : ''}</div>
-                            <div class="wishlist-item-price">${(precioBase !== "Consultar" && !precioBase.toString().includes('$')) ? '$' + precioBase : precioBase}</div>
-                        </div>
-                        <div class="flex gap-1">
-                            <button class="bg-slate-100 text-slate-400 hover:bg-rose-500 hover:text-white p-2 rounded-lg transition-colors" onclick="toggleWishlist('${safeIdentificador}');" title="Eliminar"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
-                            <button class="bg-[#1B263B]/10 text-[#1B263B] hover:bg-[#1B263B] hover:text-white p-2 rounded-lg transition-colors" onclick="agregarAlCarrito('${safeIdentificador}');" title="Añadir a bolsa"><i class="fa-solid fa-cart-plus text-[10px]"></i></button>
-                        </div>
-                    </div>`;
-                }); container.innerHTML = html;
-            } else { badge.classList.add('hidden'); container.innerHTML = `<div class="wishlist-empty"><i class="fa-regular fa-heart text-3xl text-slate-200 mb-3 block"></i>Aún no tienes herramientas favoritos.</div>`; }
-            if (badge) badge.setAttribute('aria-hidden', wishlist.length ? 'false' : 'true');
-        }
-        function toggleWishlistModal(e) {
-            if (e) e.stopPropagation();
-            const modal = document.getElementById('wishlist-modal');
-            const btn = document.getElementById('wishlist-trigger-btn');
-            const backdrop = document.getElementById('wishlist-backdrop');
-            if (!modal) return;
-            if (typeof hideMegaMenu === 'function') hideMegaMenu();
-            const willOpen = !modal.classList.contains('show');
-            if (willOpen) {
-                actualizarUIWishlist();
-                modal.classList.add('show');
-                modal.setAttribute('aria-hidden', 'false');
-                if (btn) btn.setAttribute('aria-expanded', 'true');
-                if (backdrop && window.matchMedia('(max-width: 767px)').matches) {
-                    backdrop.classList.add('open');
-                    document.body.style.overflow = 'hidden';
-                }
-            } else if (typeof window.improgypCloseWishlistModal === 'function') {
-                window.improgypCloseWishlistModal();
-            } else {
-                modal.classList.remove('show');
+            if (typeof window.improgypRenderWishlistDropdown === 'function') {
+                window.improgypRenderWishlistDropdown();
             }
         }
 

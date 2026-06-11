@@ -44,6 +44,7 @@ $secciones = $landing_cfg['secciones'];
 <script>window.IMPROGYP_METRICS_PAGE = 'home';</script>
 <script src="js/improgyp_metrics.js?v=<?= time() ?>"></script>
 <script src="js/header_actions.js?v=<?= time() ?>"></script>
+<script src="js/wishlist_dropdown.js?v=<?= time() ?>"></script>
 <script src="js/omnibar.js?v=<?= time() ?>"></script>
 <script src="js/landing_header.js?v=<?= time() ?>"></script>
 <script src="js/locales_showroom.js?v=<?= time() ?>"></script>
