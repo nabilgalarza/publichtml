@@ -22,6 +22,9 @@ foreach ($secciones as $sec) {
         case 'cta':
             include __DIR__ . '/landing_section_cta.php';
             break;
+        case 'nosotros':
+            include __DIR__ . '/landing_section_nosotros.php';
+            break;
         case 'blog':
             include __DIR__ . '/home_blog_section.php';
             break;

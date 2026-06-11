@@ -134,6 +134,40 @@ function improgyp_landing_build_payload_from_post(array $post, array $files, boo
         ];
     }
 
+    $nosPrev = improgyp_landing_find_section($prevSecciones, 'nosotros') ?? ['tipo' => 'nosotros'];
+    $nosImgUrl = trim($post['sec_nosotros_img_url_actual'] ?? ($nosPrev['imagen'] ?? ''));
+    if (isset($files['sec_nosotros_imagen']) && ($files['sec_nosotros_imagen']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK) {
+        $tmpName = $files['sec_nosotros_imagen']['tmp_name'];
+        $imgGd = @imagecreatefromstring(file_get_contents($tmpName));
+        if ($imgGd !== false) {
+            $dir = dirname(__DIR__) . '/ads_media';
+            if (!is_dir($dir)) {
+                mkdir($dir, 0755, true);
+            }
+            $nombreArchivo = 'nosotros_' . time() . '.webp';
+            if (imagewebp($imgGd, $dir . '/' . $nombreArchivo, 85)) {
+                if ($nosImgUrl !== '' && function_exists('borrarFotoFisica')) {
+                    borrarFotoFisica($nosImgUrl);
+                }
+                $nosImgUrl = 'ads_media/' . $nombreArchivo;
+            }
+            imagedestroy($imgGd);
+        }
+    }
+    $secciones[] = [
+        'tipo' => 'nosotros',
+        'activo' => isset($post['sec_nosotros_activo']),
+        'eyebrow' => trim($post['sec_nosotros_eyebrow'] ?? ($nosPrev['eyebrow'] ?? '')),
+        'titulo_normal' => trim($post['sec_nosotros_titulo_normal'] ?? ($nosPrev['titulo_normal'] ?? '')),
+        'titulo_resaltado' => trim($post['sec_nosotros_titulo_resaltado'] ?? ($nosPrev['titulo_resaltado'] ?? '')),
+        'texto' => trim($post['sec_nosotros_texto'] ?? ($nosPrev['texto'] ?? '')),
+        'stat1_valor' => trim($post['sec_nosotros_stat1_valor'] ?? ($nosPrev['stat1_valor'] ?? '')),
+        'stat1_etiqueta' => trim($post['sec_nosotros_stat1_etiqueta'] ?? ($nosPrev['stat1_etiqueta'] ?? '')),
+        'stat2_valor' => trim($post['sec_nosotros_stat2_valor'] ?? ($nosPrev['stat2_valor'] ?? '')),
+        'stat2_etiqueta' => trim($post['sec_nosotros_stat2_etiqueta'] ?? ($nosPrev['stat2_etiqueta'] ?? '')),
+        'imagen' => $nosImgUrl,
+    ];
+
     $secciones[] = $mergeLaser(
         improgyp_landing_find_section($prevSecciones, 'blog'),
         [

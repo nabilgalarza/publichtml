@@ -23,6 +23,7 @@ if (empty($secTop['activo']) && (improgyp_home_sec($secciones, 'destacados')['ac
     $secTop = improgyp_home_sec($secciones, 'destacados');
 }
 $secCta = improgyp_home_sec($secciones, 'cta');
+$secNosotros = improgyp_home_sec($secciones, 'nosotros');
 $secBlog = improgyp_home_sec($secciones, 'blog');
 $secLogos = improgyp_home_sec($secciones, 'logos');
 $secLocales = improgyp_home_sec($secciones, 'locales');
@@ -39,8 +40,8 @@ $bloquesLaserAntesCta = [
     ['key' => 'mas_vendidos', 'orden' => 4, 'label' => 'Más vendidos (impulsados)', 'sec' => $secTop, 'limite' => true, 'max' => 12],
 ];
 $bloquesLaserDespuesCta = [
-    ['key' => 'blog', 'orden' => 6, 'label' => 'Bloque blog', 'sec' => $secBlog, 'limite' => false, 'max' => 12],
-    ['key' => 'logos', 'orden' => 7, 'label' => 'Marcas aliadas', 'sec' => $secLogos, 'limite' => true, 'max' => 20],
+    ['key' => 'blog', 'orden' => 7, 'label' => 'Bloque blog', 'sec' => $secBlog, 'limite' => false, 'max' => 12],
+    ['key' => 'logos', 'orden' => 8, 'label' => 'Marcas aliadas', 'sec' => $secLogos, 'limite' => true, 'max' => 20],
 ];
 
 function improgyp_home_preview_heading(array $sec): string
@@ -316,6 +317,54 @@ function improgyp_home_preview_heading(array $sec): string
             </div>
         </details>
 
+        <details id="bloque-nosotros" class="home-accordion bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden scroll-mt-24">
+            <summary class="flex items-center justify-between gap-3 px-5 py-4 hover:bg-slate-50/80">
+                <span class="flex items-center gap-3 min-w-0">
+                    <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-slate-100 text-slate-600 text-xs font-black flex items-center justify-center">6</span>
+                    <span class="min-w-0">
+                        <span class="block font-black text-slate-800 text-sm">Quiénes somos (Nosotros)</span>
+                        <span class="block text-[11px] text-slate-400 truncate"><?= !empty($secNosotros['activo']) ? 'Activo' : 'Apagado' ?> · <?= htmlspecialchars(trim(($secNosotros['titulo_normal'] ?? '') . ' ' . ($secNosotros['titulo_resaltado'] ?? ''))) ?: '—' ?></span>
+                    </span>
+                </span>
+                <i class="fa-solid fa-chevron-down home-acc-chevron text-slate-400 text-xs"></i>
+            </summary>
+            <div class="px-5 pb-5 border-t border-slate-100 space-y-4 pt-4">
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" name="sec_nosotros_activo" value="1" <?= !empty($secNosotros['activo']) ? 'checked' : '' ?> class="rounded border-slate-300">
+                    <span class="font-bold text-sm text-slate-700">Mostrar en el home (<code class="text-xs">#nosotros</code>)</span>
+                </label>
+                <input type="hidden" name="sec_nosotros_img_url_actual" value="<?= htmlspecialchars($secNosotros['imagen'] ?? '') ?>">
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <input type="text" name="sec_nosotros_eyebrow" value="<?= htmlspecialchars($secNosotros['eyebrow'] ?? 'Corporativo · Distribución') ?>" placeholder="Etiqueta superior" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100 sm:col-span-2">
+                    <input type="text" name="sec_nosotros_titulo_normal" value="<?= htmlspecialchars($secNosotros['titulo_normal'] ?? '') ?>" placeholder="Título (línea 1)" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
+                    <input type="text" name="sec_nosotros_titulo_resaltado" value="<?= htmlspecialchars($secNosotros['titulo_resaltado'] ?? '') ?>" placeholder="Título láser (línea 2)" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Texto corporativo</label>
+                    <textarea name="sec_nosotros_texto" rows="4" placeholder="Descripción de la empresa…" class="w-full premium-input rounded-xl px-4 py-3 text-sm border border-slate-100"><?= htmlspecialchars($secNosotros['texto'] ?? '') ?></textarea>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase">Dato 1 — valor</label>
+                        <input type="text" name="sec_nosotros_stat1_valor" value="<?= htmlspecialchars($secNosotros['stat1_valor'] ?? '') ?>" placeholder="15+" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
+                        <input type="text" name="sec_nosotros_stat1_etiqueta" value="<?= htmlspecialchars($secNosotros['stat1_etiqueta'] ?? '') ?>" placeholder="Etiqueta" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase">Dato 2 — valor</label>
+                        <input type="text" name="sec_nosotros_stat2_valor" value="<?= htmlspecialchars($secNosotros['stat2_valor'] ?? '') ?>" placeholder="179+" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
+                        <input type="text" name="sec_nosotros_stat2_etiqueta" value="<?= htmlspecialchars($secNosotros['stat2_etiqueta'] ?? '') ?>" placeholder="Etiqueta" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Imagen (columna derecha)</label>
+                    <input type="file" name="sec_nosotros_imagen" accept="image/*" class="w-full premium-input rounded-xl px-3 py-2 text-xs border border-slate-100">
+                    <?php if (!empty($secNosotros['imagen'])): ?>
+                    <p class="text-[10px] text-emerald-600 mt-1 font-bold"><i class="fa-solid fa-check"></i> Imagen cargada</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </details>
+
         <?php foreach ($bloquesLaserDespuesCta as $bloque):
             $renderBloqueLaser($bloque);
         endforeach; ?>
@@ -323,7 +372,7 @@ function improgyp_home_preview_heading(array $sec): string
         <details id="bloque-locales" class="home-accordion bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <summary class="flex items-center justify-between gap-3 px-5 py-4 hover:bg-slate-50/80">
                 <span class="flex items-center gap-3 min-w-0">
-                    <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-slate-100 text-slate-600 text-xs font-black flex items-center justify-center">8</span>
+                    <span class="flex-shrink-0 w-7 h-7 rounded-lg bg-slate-100 text-slate-600 text-xs font-black flex items-center justify-center">9</span>
                     <span class="min-w-0">
                         <span class="block font-black text-slate-800 text-sm">Sucursales + asesoría</span>
                         <span class="block text-[11px] text-slate-400 truncate"><?= htmlspecialchars($secLocales['titulo'] ?? 'Red de sucursales') ?></span>

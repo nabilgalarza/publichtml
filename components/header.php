@@ -304,7 +304,8 @@ $logo_href = 'index.php';
                 <div class="mega-menu-body">
                     <!-- Móvil: acordeón -->
                     <div class="mega-accordion-mobile md:hidden" role="region" aria-label="Divisiones">
-                        <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Divisiones Improgyp</p>
+                        <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1 ml-1">Divisiones Improgyp</p>
+                        <p class="text-[10px] text-slate-400 font-medium mb-2 ml-1">Toca una división para ver categorías <i class="fa-solid fa-chevron-right text-[8px] opacity-60" aria-hidden="true"></i></p>
                         <?php foreach ($megamenu_divisions as $mi => $mdiv):
                             $mid = htmlspecialchars($mdiv['id'], ENT_QUOTES, 'UTF-8');
                             $mtitle = htmlspecialchars($mdiv['title'], ENT_QUOTES, 'UTF-8');
@@ -622,7 +623,7 @@ function openMegaMenuMobile() {
         setMegaTriggerState(true);
 
         if (isMegaMenuMobile()) {
-            openMegaMenuMobile();
+            document.querySelectorAll('.mega-accordion-item').forEach(function (el) { closeMegaAccordionItem(el); });
         } else {
             showCategoryContent(megamenuFirstId);
         }
@@ -651,6 +652,7 @@ function openMegaMenuMobile() {
         backdrop.setAttribute('aria-hidden', 'true');
     }
     setMegaTriggerState(false);
+    document.querySelectorAll('.mega-accordion-item').forEach(function (el) { closeMegaAccordionItem(el); });
     if (!document.getElementById('wishlist-modal')?.classList.contains('show')) {
         document.body.style.overflow = '';
     }

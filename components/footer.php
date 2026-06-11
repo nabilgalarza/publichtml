@@ -14,7 +14,7 @@ $footer_page_kind = $improgyp_page ?? '';
 <footer class="site-footer mt-16 border-t border-slate-200/90 bg-[#0F172A] text-slate-300">
     <div class="max-w-[1200px] mx-auto px-6 py-12 md:py-16">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
-            <div class="sm:col-span-2 lg:col-span-4" id="nosotros">
+            <div class="sm:col-span-2 lg:col-span-4">
                 <a href="index.php" class="inline-block mb-4">
                     <img src="logo-claro.png?v=5" alt="IMPROGYP" class="h-8 object-contain" onerror="this.src='logo-oscuro.png?v=5'; this.classList.add('brightness-0','invert');">
                 </a>

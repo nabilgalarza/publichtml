@@ -859,5 +859,46 @@
         right: 0;
         background: linear-gradient(270deg, #f8fafc 0%, transparent 100%);
     }
+    .landing-nosotros-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        align-items: center;
+    }
+    @media (min-width: 1024px) {
+        .landing-nosotros-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 3.5rem;
+        }
+    }
+    .landing-nosotros-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem 2.5rem;
+    }
+    .landing-nosotros-stat {
+        padding-left: 1rem;
+        border-left: 3px solid #0E75AE;
+        min-width: 120px;
+    }
+    .landing-nosotros-media-frame {
+        border-radius: 1.25rem;
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid rgba(27, 38, 59, 0.08);
+        box-shadow: 0 20px 50px rgba(27, 38, 59, 0.08);
+    }
+    .landing-nosotros-img {
+        width: 100%;
+        height: auto;
+        min-height: 240px;
+        max-height: 420px;
+        object-fit: cover;
+        display: block;
+    }
+    @media (min-width: 1024px) {
+        .landing-nosotros-media { order: 2; }
+        .landing-nosotros-copy { order: 1; }
+    }
 </style>
 <link rel="stylesheet" href="css/locales_showroom.css?v=1">
