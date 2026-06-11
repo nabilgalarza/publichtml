@@ -230,20 +230,21 @@ $logo_href = 'index.php';
     }
 </style>
 <nav id="main-nav" class="fixed top-0 w-full z-40 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 nav-transition" data-header-profile="<?= $is_catalog ? 'catalog' : 'default' ?>">
-    <div class="relative max-w-[1240px] mx-auto px-4 md:px-6">
-        <div class="py-3 md:py-4 flex items-center gap-2 md:gap-4">
+    <div class="relative max-w-[1240px] mx-auto px-3 md:px-6">
+        <div class="py-2.5 md:py-4 flex items-center gap-1.5 md:gap-4">
             <a href="<?= htmlspecialchars($logo_href) ?>" class="shrink-0" aria-label="IMPROGYP inicio">
-                <img src="logo-oscuro.png?v=5" alt="IMPROGYP" class="h-7 md:h-8 object-contain">
+                <img src="logo-oscuro.png?v=5" alt="IMPROGYP" class="h-6 md:h-8 object-contain">
             </a>
 
-            <button id="mega-menu-trigger" type="button" onclick="window.toggleMegaMenu(event)" aria-expanded="false" aria-controls="improgyp-mega-menu"
-                class="flex-shrink-0 flex items-center gap-1.5 md:gap-2 px-2.5 md:px-4 py-2 bg-white border border-slate-200 text-[#1B263B] font-bold rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all text-[10px] md:text-[11px] uppercase tracking-wider shadow-sm select-none active:scale-95 max-w-[42vw] md:max-w-none">
-                <span class="relative flex h-2 w-2 shrink-0" aria-hidden="true">
+            <button id="mega-menu-trigger" type="button" onclick="window.toggleMegaMenu(event)" aria-expanded="false" aria-controls="improgyp-mega-menu" aria-label="Explorar divisiones"
+                class="flex-shrink-0 flex items-center justify-center gap-1.5 md:gap-2 w-8 h-8 md:w-auto md:h-auto px-0 md:px-4 py-0 md:py-2 bg-white border border-slate-200 text-[#1B263B] font-bold rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all text-[10px] md:text-[11px] uppercase tracking-wider shadow-sm select-none active:scale-95 md:max-w-none">
+                <span class="relative hidden md:flex h-2 w-2 shrink-0" aria-hidden="true">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0E75AE] opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2 bg-[#0E75AE]"></span>
                 </span>
-                <span class="truncate"><span class="md:hidden">Explorar</span><span class="hidden md:inline">Explorar Divisiones</span></span>
-                <i id="trigger-arrow" class="fa-solid fa-chevron-down text-[8px] text-slate-400 transition-transform duration-300 shrink-0" aria-hidden="true"></i>
+                <i class="fa-solid fa-bars text-[14px] md:hidden" aria-hidden="true"></i>
+                <span class="truncate hidden md:inline">Explorar Divisiones</span>
+                <i id="trigger-arrow" class="fa-solid fa-chevron-down text-[8px] text-slate-400 transition-transform duration-300 shrink-0 hidden md:inline" aria-hidden="true"></i>
             </button>
 
             <div class="hidden md:flex flex-1 max-w-lg mx-2 min-w-0">
@@ -251,14 +252,14 @@ $logo_href = 'index.php';
         </div>
 
             <!-- Compartir, deseos, carrito. B2B, sucursales y sitio → megamenú Explorar -->
-            <div class="flex items-center gap-2 md:gap-3 shrink-0 ml-auto">
-                <button type="button" onclick="typeof compartirTienda==='function'&&compartirTienda()" class="relative w-9 h-9 md:w-10 md:h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:border-[#1B263B] hover:text-[#1B263B] transition-all shadow-sm" title="Compartir tienda" aria-label="Compartir tienda">
-                    <i class="fa-solid fa-share-nodes text-[13px] md:text-sm" aria-hidden="true"></i>
+            <div class="flex items-center gap-1 md:gap-3 shrink-0 ml-auto">
+                <button type="button" onclick="typeof compartirTienda==='function'&&compartirTienda()" class="relative hidden md:flex w-10 h-10 rounded-full bg-white border border-slate-200 items-center justify-center text-slate-700 hover:border-[#1B263B] hover:text-[#1B263B] transition-all shadow-sm" title="Compartir tienda" aria-label="Compartir tienda">
+                    <i class="fa-solid fa-share-nodes text-sm" aria-hidden="true"></i>
             </button>
 
             <div class="relative">
-                    <button type="button" onclick="typeof toggleWishlistModal==='function'&&toggleWishlistModal(event)" class="relative w-9 h-9 md:w-10 md:h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:border-rose-400 hover:text-rose-500 transition-all shadow-sm" title="Lista de deseos" aria-label="Mis deseos">
-                        <i class="fa-solid fa-heart text-[13px] md:text-sm" aria-hidden="true"></i>
+                    <button type="button" onclick="typeof toggleWishlistModal==='function'&&toggleWishlistModal(event)" class="relative w-8 h-8 md:w-10 md:h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:border-rose-400 hover:text-rose-500 transition-all shadow-sm" title="Lista de deseos" aria-label="Mis deseos">
+                        <i class="fa-solid fa-heart text-[12px] md:text-sm" aria-hidden="true"></i>
                         <span id="wishlist-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-bold h-4 w-4 rounded-full flex items-center justify-center shadow-md transition-transform duration-200 hidden" aria-hidden="true">0</span>
                 </button>
                     <div id="wishlist-modal" class="wishlist-dropdown" role="dialog" aria-hidden="true">
@@ -275,8 +276,8 @@ $logo_href = 'index.php';
                 </div>
             </div>
                
-                <button type="button" onclick="typeof improgypOpenCart==='function'?improgypOpenCart(event):location.href='productos.php'" class="relative w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#1B263B] border border-[#1B263B] flex items-center justify-center text-white hover:bg-[#0E75AE] transition-all shadow-md shadow-[#1B263B]/30" title="Bolsa de compras" aria-label="Abrir cotización">
-                    <i class="fa-solid fa-bag-shopping text-[13px] md:text-sm" aria-hidden="true"></i>
+                <button type="button" onclick="typeof improgypOpenCart==='function'?improgypOpenCart(event):location.href='productos.php'" class="relative w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#1B263B] border border-[#1B263B] flex items-center justify-center text-white hover:bg-[#0E75AE] transition-all shadow-md shadow-[#1B263B]/30" title="Bolsa de compras" aria-label="Abrir cotización">
+                    <i class="fa-solid fa-bag-shopping text-[12px] md:text-sm" aria-hidden="true"></i>
                     <span id="cart-badge" class="absolute -top-1 -right-1 bg-slate-900 text-white text-[9px] font-bold h-4 w-4 rounded-full flex items-center justify-center shadow-md transition-transform duration-200 hidden" aria-hidden="true">0</span>
             </button>
                     </div>
