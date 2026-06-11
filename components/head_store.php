@@ -32,7 +32,10 @@
         }
         
         /* Animación Menú Dinámico y Categorías */
-        #main-nav { --mega-nav-h: 56px; }
+        #main-nav {
+            --mega-nav-h: 68px;
+            padding-top: env(safe-area-inset-top, 0px);
+        }
         @media (min-width: 768px) { #main-nav { --mega-nav-h: 72px; } }
         .nav-transition { transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease; }
         #main-nav.nav-hidden {

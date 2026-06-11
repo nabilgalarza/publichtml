@@ -6,7 +6,7 @@
     </header>
 
     <main class="max-w-[1200px] mx-auto px-6 relative z-10 pb-32 md:pb-0">
-        <div id="sticky-cat-bar" class="mb-4 sticky top-[72px] z-30 bg-[#f8fafc]/95 backdrop-blur-md pt-2 pb-2 nav-transition space-y-3">
+        <div id="sticky-cat-bar" class="mb-4 sticky top-[var(--mega-nav-h,68px)] z-30 bg-[#f8fafc]/95 backdrop-blur-md pt-2 pb-2 nav-transition space-y-3">
             <div id="category-pills" class="hidden md:flex gap-2 overflow-x-auto w-full scrollbar-hide draggable-container"></div>
             
             <div class="md:hidden w-full px-2">

@@ -29,7 +29,8 @@ $logo_href = 'index.php';
 ?>
 <style>
     #main-nav {
-        --mega-nav-h: 56px;
+        --mega-nav-h: 68px;
+        padding-top: env(safe-area-inset-top, 0px);
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
     }
     @media (min-width: 768px) {
@@ -231,7 +232,7 @@ $logo_href = 'index.php';
 </style>
 <nav id="main-nav" class="fixed top-0 w-full z-40 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 nav-transition" data-header-profile="<?= $is_catalog ? 'catalog' : 'default' ?>">
     <div class="relative max-w-[1240px] mx-auto px-3 md:px-6">
-        <div class="py-2.5 md:py-4 flex items-center gap-2 md:gap-4">
+        <div class="py-3.5 md:py-4 flex items-center gap-2 md:gap-4">
             <a href="<?= htmlspecialchars($logo_href) ?>" class="shrink-0" aria-label="IMPROGYP inicio">
                 <img src="logo-oscuro.png?v=5" alt="IMPROGYP" class="h-7 md:h-8 object-contain">
             </a>
