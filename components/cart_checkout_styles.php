@@ -895,35 +895,33 @@
             max-height: none;
             overflow-y: auto;
         }
-        /* Sheet dentro de .checkout-modal-body; la barra inferior está fuera del body → bottom: 0 */
+        /* Sheet: altura fija (top/bottom 0); solo transform anima — evita salto al abrir */
         .checkout-summary-col {
             position: absolute;
             left: 0;
             right: 0;
-            top: auto;
-            bottom: 0;
-            height: 75%;
-            max-height: 75%;
-            z-index: 28;
-            border-radius: 16px 16px 0 0;
-            box-shadow: 0 -16px 48px rgba(15, 23, 42, 0.22);
-            transform: translateY(100%);
-            transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1);
-            overflow: hidden;
-            visibility: hidden;
-            pointer-events: none;
-        }
-        .checkout-modal-panel.checkout-mob-sheet-open .checkout-summary-col {
             top: 0;
             bottom: 0;
             height: auto;
             max-height: none;
             min-height: 0;
+            z-index: 28;
+            display: flex;
+            flex-direction: column;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -16px 48px rgba(15, 23, 42, 0.22);
+            transform: translateY(100%);
+            transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear 0.34s;
+            overflow: hidden;
+            visibility: hidden;
+            pointer-events: none;
+            will-change: transform;
+        }
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-summary-col {
             transform: translateY(0);
             visibility: visible;
             pointer-events: auto;
-            display: flex;
-            flex-direction: column;
+            transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear 0s;
         }
         .checkout-mob-sheet-handle {
             flex-shrink: 0;
@@ -993,9 +991,14 @@
             padding: 0;
             margin: 0;
             cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
         .checkout-modal-panel.checkout-mob-sheet-open .checkout-mob-sheet-backdrop:not([hidden]) {
             display: block;
+            opacity: 1;
+            pointer-events: auto;
         }
         .checkout-mob-sheet-backdrop[hidden] { display: none !important; }
         .checkout-mob-bottom-bar {

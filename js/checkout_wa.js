@@ -952,6 +952,9 @@ function openCheckoutMobSheet() {
     }
     panel.classList.add('checkout-mob-sheet-open');
     syncCheckoutMobSheetUi();
+    if (sheet) {
+        void sheet.offsetHeight;
+    }
     const formCol = panel.querySelector('.checkout-form-col');
     if (formCol) formCol.scrollTop = 0;
 }
@@ -960,12 +963,17 @@ function closeCheckoutMobSheet() {
     const panel = getCheckoutModalPanel();
     if (!panel) return;
     const sheet = document.getElementById('checkout-summary-sheet');
-    if (sheet) {
-        sheet.style.transition = '';
-        sheet.style.transform = '';
-    }
     panel.classList.remove('checkout-mob-sheet-open');
     syncCheckoutMobSheetUi();
+    if (sheet) {
+        const onEnd = (e) => {
+            if (e.propertyName !== 'transform') return;
+            sheet.removeEventListener('transitionend', onEnd);
+            sheet.style.transition = '';
+            sheet.style.transform = '';
+        };
+        sheet.addEventListener('transitionend', onEnd);
+    }
 }
 
 function toggleCheckoutMobSheet() {
@@ -1014,11 +1022,9 @@ function initCheckoutMobSheet() {
             sheet.style.transition = 'transform 0.34s cubic-bezier(0.32, 0.72, 0, 1)';
             if (dragDeltaY > 80) {
                 suppressHandleTap = true;
+                sheet.style.transform = '';
+                sheet.style.transition = '';
                 closeCheckoutMobSheet();
-                setTimeout(() => {
-                    sheet.style.transition = '';
-                    sheet.style.transform = '';
-                }, 350);
             } else {
                 if (dragDeltaY > 10) suppressHandleTap = true;
                 sheet.style.transform = '';
