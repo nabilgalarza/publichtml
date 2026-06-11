@@ -914,7 +914,7 @@
             pointer-events: none;
         }
         .checkout-modal-panel.checkout-mob-sheet-open .checkout-summary-col {
-            top: 25%;
+            top: 0;
             bottom: 0;
             height: auto;
             max-height: none;
