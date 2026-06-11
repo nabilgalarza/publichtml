@@ -43,7 +43,28 @@
             "limite": 8,
             "activo": true,
             "titulo_normal": "Encuentra tu equipo ideal",
-            "titulo_resaltado": "IA te guía"
+            "titulo_resaltado": "IA te guía",
+            "overrides": {
+                "Accesorios": {
+                    "icono": "fa-gears"
+                },
+                "Herramientas Drywall": {
+                    "icono": "fa-trowel-bricks"
+                },
+                "Taladros Percutores": {
+                    "icono": "fa-screwdriver-wrench"
+                },
+                "Amoladoras": {
+                    "icono": "fa-circle-notch"
+                },
+                "Lijadoras de Paneles de Yeso": {
+                    "icono": "fa-sheet-plastic"
+                },
+                "Pulverizadores de Pintura": {
+                    "icono": "fa-spray-can"
+                }
+            },
+            "modo": "auto"
         },
         {
             "tipo": "tendencias",
@@ -78,21 +99,21 @@
             "activo": true,
             "eyebrow": "Corporativo · Distribución",
             "titulo_normal": "Distribución que sostiene",
-            "titulo_resaltado": "tu obra.",
+            "titulo_resaltado": "TU OBRA.",
             "texto": "Somos especialistas en herramientas y materiales para construcción en seco en Ecuador. Combinamos catálogo técnico, stock y asesoría para que tu equipo rinda en obra con respaldo real.",
             "stat1_valor": "15+",
             "stat1_etiqueta": "Años de experiencia",
             "stat2_valor": "179+",
             "stat2_etiqueta": "Productos en catálogo",
-            "imagen": ""
+            "imagen": "ads_media/nosotros_1781183278.webp"
         },
         {
             "tipo": "blog",
             "activo": true,
-            "titulo": "Desde el Blog",
+            "titulo": "Desde",
             "subtitulo": "Guías y novedades para profesionales del drywall.",
-            "titulo_normal": "Desde el Blog",
-            "titulo_resaltado": ""
+            "titulo_normal": "Desde",
+            "titulo_resaltado": "el Blog"
         },
         {
             "tipo": "logos",
