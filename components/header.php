@@ -216,13 +216,13 @@ $logo_href = 'index.php';
         .mega-accordion-mobile { display: none !important; }
         .mega-aside-mobile { display: none !important; }
     }
-    #mega-menu-trigger.is-mega-open {
+    [data-mega-trigger].is-mega-open {
         border-color: rgba(14, 117, 174, 0.55);
         background: rgba(14, 117, 174, 0.08);
         color: #0E75AE;
         box-shadow: 0 0 0 1px rgba(14, 117, 174, 0.15);
     }
-    #mega-menu-trigger:focus-visible,
+    [data-mega-trigger]:focus-visible,
     .mega-accordion-trigger:focus-visible,
     .sidebar-tab-btn:focus-visible {
         outline: 2px solid #0E75AE;
@@ -231,30 +231,34 @@ $logo_href = 'index.php';
 </style>
 <nav id="main-nav" class="fixed top-0 w-full z-40 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 nav-transition" data-header-profile="<?= $is_catalog ? 'catalog' : 'default' ?>">
     <div class="relative max-w-[1240px] mx-auto px-3 md:px-6">
-        <div class="py-2.5 md:py-4 flex items-center gap-1.5 md:gap-4">
+        <div class="py-2.5 md:py-4 flex items-center gap-2 md:gap-4">
             <a href="<?= htmlspecialchars($logo_href) ?>" class="shrink-0" aria-label="IMPROGYP inicio">
-                <img src="logo-oscuro.png?v=5" alt="IMPROGYP" class="h-6 md:h-8 object-contain">
+                <img src="logo-oscuro.png?v=5" alt="IMPROGYP" class="h-7 md:h-8 object-contain">
             </a>
 
-            <button id="mega-menu-trigger" type="button" onclick="window.toggleMegaMenu(event)" aria-expanded="false" aria-controls="improgyp-mega-menu" aria-label="Explorar divisiones"
-                class="flex-shrink-0 flex items-center justify-center gap-1.5 md:gap-2 w-8 h-8 md:w-auto md:h-auto px-0 md:px-4 py-0 md:py-2 bg-white border border-slate-200 text-[#1B263B] font-bold rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all text-[10px] md:text-[11px] uppercase tracking-wider shadow-sm select-none active:scale-95 md:max-w-none">
-                <span class="relative hidden md:flex h-2 w-2 shrink-0" aria-hidden="true">
+            <button id="mega-menu-trigger" type="button" data-mega-trigger onclick="window.toggleMegaMenu(event)" aria-expanded="false" aria-controls="improgyp-mega-menu" aria-label="Explorar divisiones"
+                class="hidden md:flex flex-shrink-0 items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-[#1B263B] font-bold rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all text-[11px] uppercase tracking-wider shadow-sm select-none active:scale-95">
+                <span class="relative flex h-2 w-2 shrink-0" aria-hidden="true">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0E75AE] opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2 bg-[#0E75AE]"></span>
                 </span>
-                <i class="fa-solid fa-bars text-[14px] md:hidden" aria-hidden="true"></i>
-                <span class="truncate hidden md:inline">Explorar Divisiones</span>
-                <i id="trigger-arrow" class="fa-solid fa-chevron-down text-[8px] text-slate-400 transition-transform duration-300 shrink-0 hidden md:inline" aria-hidden="true"></i>
+                <span class="truncate">Explorar Divisiones</span>
+                <i id="trigger-arrow" class="fa-solid fa-chevron-down text-[8px] text-slate-400 transition-transform duration-300 shrink-0" aria-hidden="true"></i>
             </button>
 
             <div class="hidden md:flex flex-1 max-w-lg mx-2 min-w-0">
                 <?php $omnibar_variant = 'header'; include __DIR__ . '/omnibar_input.php'; ?>
         </div>
 
-            <!-- Compartir, deseos, carrito. B2B, sucursales y sitio → megamenú Explorar -->
-            <div class="flex items-center gap-1 md:gap-3 shrink-0 ml-auto">
-                <button type="button" onclick="typeof compartirTienda==='function'&&compartirTienda()" class="relative hidden md:flex w-10 h-10 rounded-full bg-white border border-slate-200 items-center justify-center text-slate-700 hover:border-[#1B263B] hover:text-[#1B263B] transition-all shadow-sm" title="Compartir tienda" aria-label="Compartir tienda">
-                    <i class="fa-solid fa-share-nodes text-sm" aria-hidden="true"></i>
+            <!-- Móvil: menú + compartir + deseos + carrito alineados a la derecha -->
+            <div class="flex items-center gap-2 md:gap-3 shrink-0 ml-auto">
+                <button id="mega-menu-trigger-mobile" type="button" data-mega-trigger onclick="window.toggleMegaMenu(event)" aria-expanded="false" aria-controls="improgyp-mega-menu" aria-label="Explorar divisiones"
+                    class="md:hidden w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:border-[#1B263B] hover:text-[#1B263B] transition-all shadow-sm active:scale-95">
+                    <i class="fa-solid fa-bars text-[13px]" aria-hidden="true"></i>
+                </button>
+
+                <button type="button" onclick="typeof compartirTienda==='function'&&compartirTienda()" class="relative w-8 h-8 md:w-10 md:h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 hover:border-[#1B263B] hover:text-[#1B263B] transition-all shadow-sm" title="Compartir tienda" aria-label="Compartir tienda">
+                    <i class="fa-solid fa-share-nodes text-[12px] md:text-sm" aria-hidden="true"></i>
             </button>
 
             <div class="relative">
@@ -567,6 +571,13 @@ function filterMegaMenuLink(linkType, linkValue, event) {
     }
 }
 
+function setMegaTriggerState(expanded) {
+    document.querySelectorAll('[data-mega-trigger]').forEach(function (trigger) {
+        trigger.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        trigger.classList.toggle('is-mega-open', expanded);
+    });
+}
+
 function openMegaMenuMobile() {
     let item = null;
     try {
@@ -608,11 +619,7 @@ function openMegaMenuMobile() {
             backdrop.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
         }
-        const trigger = document.getElementById('mega-menu-trigger');
-        if (trigger) {
-            trigger.setAttribute('aria-expanded', 'true');
-            trigger.classList.add('is-mega-open');
-        }
+        setMegaTriggerState(true);
 
         if (isMegaMenuMobile()) {
             openMegaMenuMobile();
@@ -643,11 +650,7 @@ function openMegaMenuMobile() {
         backdrop.classList.remove('open');
         backdrop.setAttribute('aria-hidden', 'true');
     }
-    const trigger = document.getElementById('mega-menu-trigger');
-    if (trigger) {
-        trigger.setAttribute('aria-expanded', 'false');
-        trigger.classList.remove('is-mega-open');
-    }
+    setMegaTriggerState(false);
     if (!document.getElementById('wishlist-modal')?.classList.contains('show')) {
         document.body.style.overflow = '';
     }
@@ -661,7 +664,6 @@ window.filterMegaMenuLinkFromEl = filterMegaMenuLinkFromEl;
 
     document.addEventListener('click', (e) => {
         const menu = document.getElementById('improgyp-mega-menu');
-        const trigger = document.getElementById('mega-menu-trigger');
     const backdrop = document.getElementById('mega-menu-backdrop');
     if (!menu || !menu.classList.contains('improgyp-mega-open')) return;
     if (menu.contains(e.target)) return;
@@ -669,7 +671,10 @@ window.filterMegaMenuLinkFromEl = filterMegaMenuLinkFromEl;
                 hideMegaMenu();
         return;
     }
-    if (!trigger || !trigger.contains(e.target)) {
+    const clickedTrigger = Array.from(document.querySelectorAll('[data-mega-trigger]')).some(function (trigger) {
+        return trigger.contains(e.target);
+    });
+    if (!clickedTrigger) {
         hideMegaMenu();
     }
 }, true);
