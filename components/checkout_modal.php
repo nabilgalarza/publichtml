@@ -8,7 +8,7 @@ $checkout_advisor_wa = preg_replace('/\D/', '', (string) ($checkout_cfg['advisor
 $checkout_transfer_hint = (string) ($checkout_cfg['transfer_hint'] ?? '');
 $checkout_advisor_text = rawurlencode('Hola IMPROGYP, necesito asesoría con mi cotización.');
 ?>
-<div id="modal-checkout-header" class="checkout-modal-overlay hidden fixed inset-0 z-[3000] items-center justify-center p-2 sm:p-4" onclick="if(event.target===this) closeCheckoutModal()">
+<div id="modal-checkout-header" class="checkout-modal-overlay hidden fixed inset-0 z-[3000] items-center justify-center p-3 sm:p-4" onclick="if(event.target===this) closeCheckoutModal()">
     <div class="checkout-modal-panel" onclick="event.stopPropagation()">
         <header class="checkout-modal-header">
             <div class="checkout-modal-header-text">

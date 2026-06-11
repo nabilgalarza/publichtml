@@ -848,10 +848,19 @@
         .checkout-mob-sheet-handle { display: none !important; }
     }
     @media (max-width: 767px) {
+        .checkout-modal-overlay.flex {
+            padding: 14px 12px;
+            padding-top: max(14px, env(safe-area-inset-top, 0px));
+            padding-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+            align-items: center;
+            justify-content: center;
+        }
         .checkout-modal-panel {
             --checkout-mob-bar-h: 62px;
-            max-height: 96vh;
-            border-radius: 16px;
+            width: 100%;
+            max-width: calc(100vw - 24px);
+            max-height: calc(100vh - 28px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+            border-radius: 20px;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -979,12 +988,13 @@
             display: flex;
             align-items: stretch;
             gap: 8px;
-            padding: 8px 10px calc(10px + env(safe-area-inset-bottom, 0px));
+            padding: 10px 12px 12px;
             background: #fff;
             border-top: 1px solid #e2e8f0;
             box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
             position: relative;
             z-index: 30;
+            border-radius: 0 0 20px 20px;
         }
         .checkout-mob-bar-open {
             flex: 1;
@@ -1062,6 +1072,74 @@
     .improgyp-toast.info { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
     @keyframes improgypToastIn {
         from { opacity: 0; transform: translateX(12px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    .improgyp-toast-cart {
+        pointer-events: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.875rem 1rem;
+        min-width: 260px;
+        max-width: min(360px, calc(100vw - 2rem));
+        background: #1B263B;
+        border-radius: 16px;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.35);
+        animation: improgypCartToastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .improgyp-toast-cart--out {
+        opacity: 0;
+        transform: translateX(16px);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .improgyp-toast-cart__icon {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 9999px;
+        background: #10b981;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #fff;
+    }
+    .improgyp-toast-cart__body { min-width: 0; flex: 1 1 auto; }
+    .improgyp-toast-cart__btn {
+        flex-shrink: 0;
+        margin-left: 0.25rem;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 9px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+    .improgyp-toast-cart__btn:hover { background: rgba(255, 255, 255, 0.2); }
+    .improgyp-toast-cart__title {
+        font-size: 10px;
+        font-weight: 900;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        line-height: 1.2;
+    }
+    .improgyp-toast-cart__name {
+        font-size: 9px;
+        font-weight: 700;
+        color: #cbd5e1;
+        margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3;
+    }
+    @keyframes improgypCartToastIn {
+        from { opacity: 0; transform: translateX(100%); }
         to { opacity: 1; transform: translateX(0); }
     }
 </style>

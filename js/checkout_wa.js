@@ -588,6 +588,47 @@ function showToastNotification(mensaje, tipo) {
         if (tipo === 'error') alert(mensaje);
         return;
     }
+    if (tipo === 'cart') {
+        const toast = document.createElement('div');
+        toast.className = 'improgyp-toast-cart';
+        toast.setAttribute('role', 'status');
+        const icon = document.createElement('div');
+        icon.className = 'improgyp-toast-cart__icon';
+        icon.innerHTML = '<i class="fa-solid fa-check text-xs" aria-hidden="true"></i>';
+        const body = document.createElement('div');
+        body.className = 'improgyp-toast-cart__body';
+        const title = document.createElement('p');
+        title.className = 'improgyp-toast-cart__title';
+        title.textContent = 'Añadido al Carrito';
+        const name = document.createElement('p');
+        name.className = 'improgyp-toast-cart__name';
+        name.textContent = mensaje || '';
+        body.appendChild(title);
+        body.appendChild(name);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'improgyp-toast-cart__btn';
+        btn.textContent = 'Pagar';
+        const dismissToast = () => {
+            toast.classList.add('improgyp-toast-cart--out');
+            setTimeout(() => toast.remove(), 350);
+        };
+        let autoDismiss = setTimeout(dismissToast, 3200);
+        btn.addEventListener('click', () => {
+            clearTimeout(autoDismiss);
+            dismissToast();
+            if (typeof openCheckoutModal === 'function') {
+                openCheckoutModal();
+            } else if (typeof toggleCheckoutModal === 'function') {
+                toggleCheckoutModal();
+            }
+        });
+        toast.appendChild(icon);
+        toast.appendChild(body);
+        toast.appendChild(btn);
+        container.appendChild(toast);
+        return;
+    }
     const t = tipo === 'error' || tipo === 'success' || tipo === 'info' ? tipo : 'info';
     const el = document.createElement('div');
     el.className = 'improgyp-toast ' + t;

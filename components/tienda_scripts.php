@@ -329,7 +329,6 @@
             const marcasUnicas = [...new Set(catalogoCompleto.map(item => item.marca))].filter(Boolean).sort();
             const sidebarBrandPillsContainer = document.getElementById('sidebar-brand-pills');
             const mobileBrandPillsContainer = document.getElementById('mobile-brands-list');
-            const mobileBrandStrip = document.getElementById('mobile-brand-pills');
             
             if (marcasUnicas.length > 0) {
                 let brandHTML = `<button type="button" onclick="filtrarMarca('Todas')" class="brand-pill active" data-brand="Todas">Todas</button>`;
@@ -340,7 +339,6 @@
                 });
                 if(sidebarBrandPillsContainer) sidebarBrandPillsContainer.innerHTML = brandHTML;
                 if(mobileBrandPillsContainer) mobileBrandPillsContainer.innerHTML = brandHTML;
-                if(mobileBrandStrip) mobileBrandStrip.innerHTML = brandHTML;
             }
         }
 
@@ -484,8 +482,11 @@
 
         function agregarAlCarrito(identificador) {
             const prodIndex = carrito.findIndex((c) => cartMatchesIdent(c, identificador));
-            if (prodIndex > -1) { carrito[prodIndex].cantidad += 1; } 
-            else {
+            let nombreToast = null;
+            if (prodIndex > -1) {
+                carrito[prodIndex].cantidad += 1;
+                nombreToast = carrito[prodIndex].nombre;
+            } else {
                 const prodReal = findProductByIdent(identificador);
                 if (prodReal) { 
                     let precioBase = "0.00"; 
@@ -500,12 +501,16 @@
                         precioNum: parseFloat(precioBase) || 0, 
                         cantidad: 1 
                     }); 
+                    nombreToast = prodReal.nombre;
                     radarNinja('Añadir a Carrito', prodReal.nombre, prodReal.categoria); 
                 }
             }
             localStorage.setItem('improgyp_carrito', JSON.stringify(carrito)); actualizarUICarrito();
             const badge = document.getElementById('cart-badge'); badge.parentElement.classList.add('scale-110', 'border-slate-900'); setTimeout(() => { badge.parentElement.classList.remove('scale-110', 'border-slate-900'); }, 200);
             if (navigator.vibrate) navigator.vibrate(50);
+            if (nombreToast && typeof showToastNotification === 'function') {
+                showToastNotification(nombreToast, 'cart');
+            }
         }
 
         function modificarCantidad(identificador, delta) { 

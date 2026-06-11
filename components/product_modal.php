@@ -25,26 +25,40 @@ $modal_home = ($improgyp_page ?? '') === 'home';
                 <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2.5">Presentaciones disponibles</p>
                 <div id="modal-presentations" class="flex flex-wrap gap-2"></div>
             </div>
+            <?php if ($modal_home): ?>
+            <div class="improgyp-modal-footer improgyp-modal-footer--home mt-auto pt-4 border-t border-slate-100 flex-shrink-0 flex flex-col gap-3">
+                <div class="improgyp-modal-footer__actions flex gap-2 w-full justify-end">
+                    <button type="button" id="modal-btn-share" class="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center text-lg transition-colors border border-slate-200 shadow-sm text-slate-400 hover:text-[#1B263B] hover:border-[#1B263B]/30" title="Compartir producto"><i class="fa-solid fa-share-nodes"></i></button>
+                    <button type="button" id="modal-btn-wishlist" class="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center text-lg transition-colors border border-slate-200 shadow-sm" title="Lista de deseos"></button>
+                    <div id="modal-btn-add-wrapper" class="flex-1 min-w-0 max-w-[200px] sm:max-w-[220px]">
+                        <button type="button" id="modal-btn-add" class="btn-IMPROGYP w-full h-10 text-[13px] px-4"><i class="fa-solid fa-cart-plus"></i> <span class="ml-1">Añadir</span></button>
+                    </div>
+                </div>
+                <div class="improgyp-modal-footer__bottom flex items-end justify-between gap-3 w-full">
+                    <div class="min-w-0 flex-shrink">
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">Precio</p>
+                        <span id="modal-price" class="text-xl sm:text-2xl font-black text-slate-800 tabular-nums leading-tight break-words"></span>
+                    </div>
+                    <a id="modal-btn-shop" href="productos.php" class="h-10 inline-flex items-center justify-center gap-2 px-3 sm:px-4 rounded-lg border-2 border-[#1B263B] text-[#1B263B] font-black text-[10px] sm:text-[11px] uppercase tracking-wide hover:bg-[#1B263B] hover:text-white transition-colors shrink-0 whitespace-nowrap" title="Ver en la tienda">
+                        Ver en la tienda <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+            <?php else: ?>
             <div class="improgyp-modal-footer mt-auto pt-4 border-t border-slate-100 flex-shrink-0 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                 <div class="min-w-0 flex-shrink-0">
                     <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">Precio</p>
                     <span id="modal-price" class="text-xl sm:text-2xl font-black text-slate-800 tabular-nums leading-tight break-words"></span>
                 </div>
-                <div class="flex flex-col gap-2 w-full md:w-auto md:flex-shrink-0 md:flex-row md:items-center md:gap-2">
-                    <div class="flex gap-2 w-full md:w-auto">
-                        <button type="button" id="modal-btn-share" class="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center text-lg transition-colors border border-slate-200 shadow-sm text-slate-400 hover:text-[#1B263B] hover:border-[#1B263B]/30" title="Compartir producto"><i class="fa-solid fa-share-nodes"></i></button>
-                        <button type="button" id="modal-btn-wishlist" class="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center text-lg transition-colors border border-slate-200 shadow-sm" title="Lista de deseos"></button>
-                        <div id="modal-btn-add-wrapper" class="flex-1 min-w-0 md:flex-none">
-                            <button type="button" id="modal-btn-add" class="btn-IMPROGYP w-full md:w-28 h-10 text-[13px] px-4"><i class="fa-solid fa-cart-plus"></i> <span class="ml-1">Añadir</span></button>
-                        </div>
+                <div class="flex gap-2 w-full md:w-auto md:flex-shrink-0">
+                    <button type="button" id="modal-btn-share" class="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center text-lg transition-colors border border-slate-200 shadow-sm text-slate-400 hover:text-[#1B263B] hover:border-[#1B263B]/30" title="Compartir producto"><i class="fa-solid fa-share-nodes"></i></button>
+                    <button type="button" id="modal-btn-wishlist" class="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center text-lg transition-colors border border-slate-200 shadow-sm" title="Lista de deseos"></button>
+                    <div id="modal-btn-add-wrapper" class="flex-1 min-w-0 md:flex-none">
+                        <button type="button" id="modal-btn-add" class="btn-IMPROGYP w-full md:w-28 h-10 text-[13px] px-4"><i class="fa-solid fa-cart-plus"></i> <span class="ml-1">Añadir</span></button>
                     </div>
-                    <?php if ($modal_home): ?>
-                    <a id="modal-btn-shop" href="productos.php" class="w-full md:w-auto h-10 inline-flex items-center justify-center gap-2 px-3 sm:px-4 rounded-lg border-2 border-[#1B263B] text-[#1B263B] font-black text-[10px] sm:text-[11px] uppercase tracking-wide hover:bg-[#1B263B] hover:text-white transition-colors shrink-0 whitespace-nowrap" title="Ver en la tienda">
-                        Ver en la tienda <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                    </a>
-                    <?php endif; ?>
                 </div>
             </div>
+            <?php endif; ?>
             <div id="modal-related-container"></div>
         </div>
     </div>

@@ -9,14 +9,10 @@
         <div id="sticky-cat-bar" class="mb-4 sticky top-[72px] z-30 bg-[#f8fafc]/95 backdrop-blur-md pt-2 pb-2 nav-transition space-y-3">
             <div id="category-pills" class="hidden md:flex gap-2 overflow-x-auto w-full scrollbar-hide draggable-container"></div>
             
-            <!-- SECCIÓN DE MARCAS (SOLO MÓVIL AQUÍ) -->
-
-            <div class="md:hidden flex flex-col gap-2 w-full px-2">
+            <div class="md:hidden w-full px-2">
                 <button onclick="toggleBottomSheet()" class="w-full bg-white border border-slate-200 shadow-sm rounded-xl py-3 px-5 flex justify-between items-center text-[13px] font-bold text-slate-700 transition-all active:scale-95">
                     <span class="flex items-center gap-3"><i class="fa-solid fa-layer-group text-[#1B263B] text-base"></i> <span id="mobile-cat-label">Todos</span></span><i class="fa-solid fa-chevron-down text-slate-400"></i>
                 </button>
-                <!-- Filtro móvil de marcas -->
-                <div id="mobile-brand-pills" class="flex gap-2 overflow-x-auto scrollbar-hide pb-2"></div>
             </div>
         </div>
 

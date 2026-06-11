@@ -244,6 +244,16 @@
         .modal-overlay { padding: 12px 8px; }
         .improgyp-product-modal { width: 100%; max-width: none; margin-left: 0; margin-right: 0; }
     }
+    /* Home: pie del modal en 2 filas (acciones + precio/ver tienda) */
+    .improgyp-modal-footer--home {
+        flex-direction: column;
+    }
+    .improgyp-modal-footer--home .improgyp-modal-footer__actions {
+        justify-content: flex-end;
+    }
+    .improgyp-modal-footer--home .improgyp-modal-footer__bottom {
+        align-items: flex-end;
+    }
     .custom-scrollbar::-webkit-scrollbar { width: 6px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     .location-card {
