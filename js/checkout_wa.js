@@ -589,6 +589,13 @@ function showToastNotification(mensaje, tipo) {
         return;
     }
     if (tipo === 'cart') {
+        const productModal = document.getElementById('product-modal');
+        const centerOnProductModal = window.matchMedia('(max-width: 767px)').matches
+            && productModal
+            && productModal.classList.contains('show');
+        if (centerOnProductModal) {
+            container.classList.add('toast-container--product-modal');
+        }
         const toast = document.createElement('div');
         toast.className = 'improgyp-toast-cart';
         toast.setAttribute('role', 'status');
@@ -611,7 +618,12 @@ function showToastNotification(mensaje, tipo) {
         btn.textContent = 'Pagar';
         const dismissToast = () => {
             toast.classList.add('improgyp-toast-cart--out');
-            setTimeout(() => toast.remove(), 350);
+            setTimeout(() => {
+                toast.remove();
+                if (centerOnProductModal && !container.querySelector('.improgyp-toast-cart')) {
+                    container.classList.remove('toast-container--product-modal');
+                }
+            }, 350);
         };
         let autoDismiss = setTimeout(dismissToast, 3200);
         btn.addEventListener('click', () => {

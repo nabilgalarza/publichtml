@@ -1142,4 +1142,20 @@
         from { opacity: 0; transform: translateX(100%); }
         to { opacity: 1; transform: translateX(0); }
     }
+    /* Móvil: toast centrado si el modal de producto está abierto (no tapa la X) */
+    @media (max-width: 767px) {
+        #toast-container.toast-container--product-modal {
+            top: 50%;
+            left: 50%;
+            right: auto;
+            transform: translate(-50%, -50%);
+            width: calc(100vw - 24px);
+            max-width: min(360px, calc(100vw - 24px));
+            align-items: stretch;
+        }
+        #toast-container.toast-container--product-modal .improgyp-toast-cart {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
 </style>
