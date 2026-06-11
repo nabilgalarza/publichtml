@@ -303,8 +303,10 @@ $logo_href = 'index.php';
             <div class="mega-menu-scroll custom-scrollbar">
                 <div class="mega-menu-body">
                     <!-- Móvil: acordeón -->
-                    <div class="mega-accordion-mobile md:hidden" role="region" aria-label="Divisiones">
-                        <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1 ml-1">Divisiones Improgyp</p>
+                    <div class="mega-accordion-mobile md:hidden" role="region" aria-label="Catálogo">
+                        <a href="productos.php" onclick="typeof window.hideMegaMenu==='function'&&window.hideMegaMenu()" class="inline-flex items-center gap-2 text-[12px] font-black text-[#1B263B] uppercase tracking-wider mb-1 ml-1 hover:text-[#0E75AE] transition-all">
+                            Ver catálogo total <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i>
+                        </a>
                         <p class="text-[10px] text-slate-400 font-medium mb-2 ml-1">Toca una división para ver categorías <i class="fa-solid fa-chevron-right text-[8px] opacity-60" aria-hidden="true"></i></p>
                         <?php foreach ($megamenu_divisions as $mi => $mdiv):
                             $mid = htmlspecialchars($mdiv['id'], ENT_QUOTES, 'UTF-8');
@@ -333,7 +335,9 @@ $logo_href = 'index.php';
 
                     <!-- Desktop: sidebar -->
                     <div class="mega-sidebar-desktop bg-slate-50/70 p-4 md:p-6 border-r border-slate-100 flex flex-col gap-1.5">
-                        <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-2">Divisiones Improgyp</p>
+                        <a href="productos.php" class="inline-flex items-center gap-2 text-[12px] font-black text-[#1B263B] uppercase tracking-wider mb-3 ml-2 hover:text-[#0E75AE] transition-all shrink-0">
+                            Ver catálogo total <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i>
+                        </a>
                         <?php foreach ($megamenu_divisions as $mi => $mdiv):
                             $mid = htmlspecialchars($mdiv['id'], ENT_QUOTES, 'UTF-8');
                             $mtitle = htmlspecialchars($mdiv['title'], ENT_QUOTES, 'UTF-8');
@@ -411,12 +415,9 @@ $logo_href = 'index.php';
                                 </div>
                     </div>
 
-            <div class="mega-site-footer px-4 md:px-6 py-4 md:py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-3">
-                <a href="productos.php" class="inline-flex items-center gap-2 text-[12px] font-black text-[#1B263B] uppercase tracking-wider hover:text-[#0E75AE] transition-all shrink-0 pb-1 md:pb-0 border-b border-slate-200/80 md:border-b-0">
-                    Ver catálogo total <i class="fa-solid fa-arrow-right-long"></i>
-                </a>
+            <div class="mega-site-footer px-4 md:px-6 py-4 md:py-3 flex flex-col md:flex-row md:items-center md:justify-center gap-4 md:gap-3">
                 <?php if (!empty($header_site_nav)): ?>
-                <nav class="mega-site-nav-grid md:!flex md:flex-wrap md:items-center md:gap-x-4 md:gap-y-2" aria-label="Menú principal">
+                <nav class="mega-site-nav-grid md:!flex md:flex-wrap md:items-center md:justify-center md:gap-x-4 md:gap-y-2" aria-label="Menú principal">
                     <?php foreach ($header_site_nav as $item):
                         $text_lower = mb_strtolower($item['text']);
                         $link_page = basename($item['link'] ?? '');
