@@ -895,7 +895,7 @@
             max-height: none;
             overflow-y: auto;
         }
-        /* Sheet: layout fijo siempre; solo transform anima al abrir/cerrar */
+        /* Sheet: altura fija (top/bottom 0); solo transform anima — evita salto al abrir */
         .checkout-summary-col {
             position: absolute;
             left: 0;
@@ -910,15 +910,18 @@
             flex-direction: column;
             border-radius: 16px 16px 0 0;
             box-shadow: 0 -16px 48px rgba(15, 23, 42, 0.22);
-            transform: translate3d(0, 100%, 0);
-            transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1);
+            transform: translateY(100%);
+            transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear 0.34s;
             overflow: hidden;
+            visibility: hidden;
             pointer-events: none;
-            backface-visibility: hidden;
+            will-change: transform;
         }
         .checkout-modal-panel.checkout-mob-sheet-open .checkout-summary-col {
-            transform: translate3d(0, 0, 0);
+            transform: translateY(0);
+            visibility: visible;
             pointer-events: auto;
+            transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear 0s;
         }
         .checkout-mob-sheet-handle {
             flex-shrink: 0;
@@ -937,7 +940,7 @@
             border-radius: 999px;
             background: #cbd5e1;
         }
-        .checkout-modal-panel .checkout-summary-inner {
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-summary-inner {
             flex: 1;
             min-height: 0;
             overflow: hidden;
@@ -946,34 +949,34 @@
             padding: 0 12px 12px;
             gap: 8px;
         }
-        .checkout-modal-panel .checkout-summary-head {
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-summary-head {
             flex-shrink: 0;
         }
-        .checkout-modal-panel #check-list.checkout-items-scroll {
+        .checkout-modal-panel.checkout-mob-sheet-open #check-list.checkout-items-scroll {
             flex: 1 1 0;
             min-height: 0;
             max-height: none !important;
             overflow-y: auto !important;
             -webkit-overflow-scrolling: touch;
         }
-        .checkout-modal-panel .checkout-totals-block {
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-totals-block {
             flex-shrink: 0;
             margin-top: auto;
             padding: 8px 12px;
         }
-        .checkout-modal-panel .checkout-totals-block .checkout-total-row {
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-totals-block .checkout-total-row {
             padding: 2px 0;
             font-size: 10px;
         }
-        .checkout-modal-panel .checkout-totals-block .checkout-total-row-grand {
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-totals-block .checkout-total-row-grand {
             margin-top: 4px;
             padding-top: 6px;
             font-size: 11px;
         }
-        .checkout-modal-panel .checkout-totals-block .checkout-grand-amount {
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-totals-block .checkout-grand-amount {
             font-size: 17px !important;
         }
-        .checkout-modal-panel .checkout-totals-disclaimer {
+        .checkout-modal-panel.checkout-mob-sheet-open .checkout-totals-disclaimer {
             margin: 4px 0 0;
             font-size: 8px;
             line-height: 1.3;
@@ -988,20 +991,16 @@
             padding: 0;
             margin: 0;
             cursor: pointer;
-            display: block;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.34s ease;
+            transition: opacity 0.3s ease;
         }
         .checkout-modal-panel.checkout-mob-sheet-open .checkout-mob-sheet-backdrop:not([hidden]) {
+            display: block;
             opacity: 1;
             pointer-events: auto;
         }
-        .checkout-mob-sheet-backdrop[hidden] {
-            display: none !important;
-            opacity: 0;
-            pointer-events: none;
-        }
+        .checkout-mob-sheet-backdrop[hidden] { display: none !important; }
         .checkout-mob-bottom-bar {
             flex-shrink: 0;
             display: flex;
