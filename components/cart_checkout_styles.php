@@ -853,7 +853,7 @@
     }
     @media (max-width: 767px) {
         .checkout-modal-overlay.flex {
-            --checkout-mob-pad-y: 20px;
+            --checkout-mob-pad-y: 8px;
             --checkout-mob-pad-x: 12px;
             padding: var(--checkout-mob-pad-y) var(--checkout-mob-pad-x);
             padding-top: max(var(--checkout-mob-pad-y), env(safe-area-inset-top, 0px));
@@ -868,14 +868,11 @@
             max-width: calc(100vw - 24px);
             height: auto;
             flex-shrink: 1;
-            /* fallback vh → dvh (Chrome Android usa mal 100vh) */
-            max-height: min(
-                88vh,
-                calc(100vh - 40px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))
+            max-height: calc(
+                100vh - 16px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)
             );
-            max-height: min(
-                88dvh,
-                calc(100dvh - 40px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))
+            max-height: calc(
+                100dvh - 16px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)
             );
             border-radius: 20px;
             position: relative;
