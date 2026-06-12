@@ -188,6 +188,7 @@ $articleCanonical = $articulo ? blog_seo_canonical_url($articulo['slug'], $base_
         'heading_html' => 'Blog <span>IMPROGYP</span>',
         'show_view_all' => false,
         'archive_mode' => true,
+        'force_layout' => 'grid3',
         'per_page' => blog_archive_per_page(),
         'open_in_modal' => false,
         'section_id' => 'bl-page-section',
