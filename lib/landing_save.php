@@ -5,6 +5,38 @@
 require_once __DIR__ . '/landing_helpers.php';
 
 /**
+ * Sube imagen a ads_media/ como WebP. Devuelve la ruta relativa o $currentUrl si no hay archivo nuevo.
+ */
+function improgyp_landing_upload_webp_image(array $fileEntry, string $prefix, string $currentUrl = ''): string
+{
+    if (($fileEntry['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+        return $currentUrl;
+    }
+    $tmpName = $fileEntry['tmp_name'] ?? '';
+    if ($tmpName === '' || !is_readable($tmpName)) {
+        return $currentUrl;
+    }
+    $imgGd = @imagecreatefromstring(file_get_contents($tmpName));
+    if ($imgGd === false) {
+        return $currentUrl;
+    }
+    $dir = dirname(__DIR__) . '/ads_media';
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+    $nombreArchivo = $prefix . '_' . time() . '.webp';
+    if (imagewebp($imgGd, $dir . '/' . $nombreArchivo, 85)) {
+        if ($currentUrl !== '' && function_exists('borrarFotoFisica')) {
+            borrarFotoFisica($currentUrl);
+        }
+        imagedestroy($imgGd);
+        return 'ads_media/' . $nombreArchivo;
+    }
+    imagedestroy($imgGd);
+    return $currentUrl;
+}
+
+/**
  * Aplica titulo_normal, titulo_resaltado y subtitulo desde arrays POST (editor home).
  */
 function improgyp_landing_apply_encabezado_post(array $sec, string $key, array $titulosN, array $titulosR, array $subs): array
@@ -52,11 +84,19 @@ function improgyp_landing_build_payload_from_post(array $post, array $files, boo
             if ($tit === '') {
                 continue;
             }
+            $slideImg = trim($post["slider_{$si}_imagen_actual"] ?? '');
+            if (isset($files["slider_{$si}_imagen"])) {
+                $slideImg = improgyp_landing_upload_webp_image(
+                    $files["slider_{$si}_imagen"],
+                    'slider' . $si,
+                    $slideImg
+                );
+            }
             $slides[] = [
                 'etiqueta' => trim($post["slider_{$si}_etiqueta"] ?? ''),
                 'titulo' => $tit,
                 'subtitulo' => trim($post["slider_{$si}_subtitulo"] ?? ''),
-                'imagen' => trim($post["slider_{$si}_imagen"] ?? ''),
+                'imagen' => $slideImg,
                 'cta_texto' => trim($post["slider_{$si}_cta_texto"] ?? 'Ver más'),
                 'cta_url' => trim($post["slider_{$si}_cta_url"] ?? 'productos.php'),
             ];
@@ -194,6 +234,11 @@ function improgyp_landing_build_payload_from_post(array $post, array $files, boo
         'activo' => isset($post['sec_locales_activo']),
     ]);
 
+    $heroImg = trim($post['hero_imagen_actual'] ?? ($landingPrev['hero']['imagen'] ?? ''));
+    if (isset($files['hero_imagen'])) {
+        $heroImg = improgyp_landing_upload_webp_image($files['hero_imagen'], 'hero', $heroImg);
+    }
+
     return [
         'hero' => [
             'activo' => isset($post['hero_activo']),
@@ -205,7 +250,7 @@ function improgyp_landing_build_payload_from_post(array $post, array $files, boo
             'cta_tienda_url' => 'productos.php',
             'cta_b2b' => trim($post['hero_cta_b2b'] ?? 'Portal mayoristas'),
             'cta_b2b_url' => 'b2b/',
-            'imagen' => trim($post['hero_imagen'] ?? ''),
+            'imagen' => $heroImg,
         ],
         'secciones' => $secciones,
     ];

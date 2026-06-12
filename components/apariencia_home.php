@@ -119,7 +119,18 @@ function improgyp_home_preview_heading(array $sec): string
                     <input type="text" name="hero_cta_tienda" value="<?= htmlspecialchars($hero['cta_tienda'] ?? '') ?>" placeholder="CTA tienda" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
                     <input type="text" name="hero_cta_b2b" value="<?= htmlspecialchars($hero['cta_b2b'] ?? '') ?>" placeholder="CTA B2B" class="premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
                 </div>
-                <input type="text" name="hero_imagen" value="<?= htmlspecialchars($hero['imagen'] ?? '') ?>" placeholder="Imagen hero (ruta)" class="w-full premium-input rounded-xl px-4 py-2 text-sm border border-slate-100">
+                <input type="hidden" name="hero_imagen_actual" value="<?= htmlspecialchars($hero['imagen'] ?? '') ?>">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Imagen hero</label>
+                    <p class="text-[9px] text-slate-400 mb-2">Recomendado: horizontal 1600×900 px. JPG, PNG o WebP.</p>
+                    <?php if (!empty($hero['imagen'])): ?>
+                    <div class="mb-2 flex items-center gap-3">
+                        <img src="<?= htmlspecialchars($hero['imagen']) ?>" alt="" class="w-28 h-16 object-cover rounded-lg border border-slate-200" onerror="this.parentElement.style.display='none'">
+                        <p class="text-[10px] text-emerald-600 font-bold"><i class="fa-solid fa-check"></i> Imagen cargada</p>
+                    </div>
+                    <?php endif; ?>
+                    <input type="file" name="hero_imagen" accept="image/jpeg,image/png,image/webp,image/gif" class="w-full premium-input rounded-xl px-3 py-2 text-xs border border-slate-100 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-black file:bg-[#1B263B]/10 file:text-[#1B263B]">
+                </div>
             </div>
         </details>
 
@@ -150,7 +161,18 @@ function improgyp_home_preview_heading(array $sec): string
                     <input type="text" name="slider_<?= $si ?>_etiqueta" value="<?= htmlspecialchars($sl['etiqueta'] ?? '') ?>" placeholder="Etiqueta" class="w-full premium-input rounded-lg px-3 py-2 text-xs border border-slate-100">
                     <input type="text" name="slider_<?= $si ?>_titulo" value="<?= htmlspecialchars($sl['titulo'] ?? '') ?>" placeholder="Título" class="w-full premium-input rounded-lg px-3 py-2 text-xs border border-slate-100">
                     <input type="text" name="slider_<?= $si ?>_subtitulo" value="<?= htmlspecialchars($sl['subtitulo'] ?? '') ?>" placeholder="Subtítulo" class="w-full premium-input rounded-lg px-3 py-2 text-xs border border-slate-100">
-                    <input type="text" name="slider_<?= $si ?>_imagen" value="<?= htmlspecialchars($sl['imagen'] ?? '') ?>" placeholder="Imagen" class="w-full premium-input rounded-lg px-3 py-2 text-xs border border-slate-100">
+                    <input type="hidden" name="slider_<?= $si ?>_imagen_actual" value="<?= htmlspecialchars($sl['imagen'] ?? '') ?>">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Imagen del slide</label>
+                        <p class="text-[9px] text-slate-400 mb-2">Recomendado: 1600×900 px. JPG, PNG o WebP.</p>
+                        <?php if (!empty($sl['imagen'])): ?>
+                        <div class="mb-2 flex items-center gap-3">
+                            <img src="<?= htmlspecialchars($sl['imagen']) ?>" alt="" class="w-28 h-16 object-cover rounded-lg border border-slate-200" onerror="this.parentElement.style.display='none'">
+                            <p class="text-[10px] text-emerald-600 font-bold"><i class="fa-solid fa-check"></i> Imagen cargada</p>
+                        </div>
+                        <?php endif; ?>
+                        <input type="file" name="slider_<?= $si ?>_imagen" accept="image/jpeg,image/png,image/webp,image/gif" class="w-full premium-input rounded-lg px-3 py-2 text-xs border border-slate-100 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-[10px] file:font-black file:bg-[#1B263B]/10 file:text-[#1B263B]">
+                    </div>
                     <div class="grid grid-cols-2 gap-2">
                         <input type="text" name="slider_<?= $si ?>_cta_texto" value="<?= htmlspecialchars($sl['cta_texto'] ?? 'Ver más') ?>" placeholder="CTA texto" class="premium-input rounded-lg px-3 py-2 text-xs border border-slate-100">
                         <input type="text" name="slider_<?= $si ?>_cta_url" value="<?= htmlspecialchars($sl['cta_url'] ?? 'productos.php') ?>" placeholder="CTA URL" class="premium-input rounded-lg px-3 py-2 text-xs border border-slate-100">
