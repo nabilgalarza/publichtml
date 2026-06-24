@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improgyp OS | Plataforma Digital Integral</title>
+    
+    <!-- Fuentes Premium (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            300: '#7dd3fc',
+                            500: '#0E75AE', /* Azul principal Improgyp */
+                            600: '#0b5c8a', /* Azul oscurecido para hover */
+                            700: '#0369a1',
+                            900: '#1B263B', /* Navy Improgyp */
+                        },
+                        dark: '#1B263B' /* Usando Navy como fondo oscuro */
+                    },
+                    boxShadow: {
+                        'premium': '0 25px 50px -12px rgba(14, 117, 174, 0.25)',
+                        'floating': '0 30px 60px -15px rgba(0, 0, 0, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        /* --- Animaciones de Scroll --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+
+        /* --- Efecto Flotante para los Mockups --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+            animation: float 6s ease-in-out 3s infinite;
+        }
+
+        /* --- Mockup de Celular en CSS Puro --- */
+        .phone-mockup {
+            width: 300px;
+            height: 620px;
+            background-color: #ffffff;
+            border: 12px solid #1B263B; /* Borde oscuro corporativo */
+            border-radius: 45px;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            margin: 0 auto;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+        
+        /* El Notch (Isla dinámica) */
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 25px;
+            background-color: #1B263B;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            z-index: 20;
+        }
+
+        /* Contenedor de la pantalla con scroll interno oculto */
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 32px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: none; /* Firefox */
+            background-color: #ffffff;
+            position: relative;
+        }
+        .phone-screen::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+        .phone-screen img {
+            width: 100%;
+            height: auto;
+            display: block;
+            pointer-events: none; /* Evita arrastrar la imagen */
+        }
+
+        /* Detalles estéticos */
+        .glow-bg {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(14,117,174,0.15) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(40px);
+        }
+        
+        .glow-dark {
+            background: radial-gradient(circle, rgba(14,117,174,0.25) 0%, rgba(27,38,59,0) 70%);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-dark flex items-center justify-center">
+                    <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                </div>
+                <span class="font-bold text-xl text-dark tracking-tight">IMPROGYP OS</span>
+            </div>
+            <div class="hidden md:flex items-center gap-6">
+                <a href="#solucion" class="text-sm font-medium text-gray-600 hover:text-brand-500 transition-colors">La Solución</a>
+                <a href="#ecosistema" class="text-sm font-medium text-gray-600 hover:text-brand-500 transition-colors">Ecosistema</a>
+                <a href="#tech" class="text-sm font-medium text-gray-600 hover:text-brand-500 transition-colors">Tecnología</a>
+                <a href="#contacto" class="inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-dark hover:bg-brand-500 rounded-full transition-colors shadow-lg hover:shadow-premium">
+                    Ver Demo Técnica
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="glow-bg top-0 left-0"></div>
+        <div class="max-w-7xl mx-auto px-6 flex flex-col-reverse lg:flex-row items-center gap-16">
+            
+            <div class="flex-1 text-center lg:text-left reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 text-brand-700 text-sm font-semibold mb-6 border border-brand-100">
+                    <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                    Sistema Operativo B2B / B2C
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-extrabold text-dark leading-[1.1] mb-6 tracking-tight">
+                    Tu distribuidora en el <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-brand-700">bolsillo del técnico.</span>
+                </h1>
+                <p class="text-lg lg:text-xl text-gray-500 mb-10 max-w-2xl mx-auto lg:mx-0">
+                    Convierte tu catálogo en un ecosistema robusto. Integra tienda pública, portal mayorista y un asesor con IA sin pagar comisiones por venta.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="#solucion" class="px-8 py-4 text-white bg-brand-500 hover:bg-brand-600 font-semibold rounded-2xl shadow-premium transition-all transform hover:-translate-y-1 text-center">
+                        Explorar Ecosistema
+                    </a>
+                    <a href="#tech" class="px-8 py-4 text-brand-700 bg-white border-2 border-brand-100 hover:border-brand-300 font-semibold rounded-2xl transition-all text-center">
+                        Ver Ficha Técnica
+                    </a>
+                </div>
+            </div>
+
+            <div class="flex-1 relative flex justify-center reveal delay-200">
+                <div class="absolute inset-0 bg-gradient-to-tr from-brand-100 to-transparent rounded-full blur-3xl opacity-50"></div>
+                <div class="phone-mockup animate-float border-dark">
+                    <div class="phone-screen bg-white">
+                        <!-- IMAGEN EXACTA: inicio-1.png -->
+                        <img src="inicio-1.png" class="w-full h-auto object-cover" alt="Pantalla de Inicio Improgyp" onerror="this.src='https://placehold.co/300x620/1B263B/FFFFFF?text=Falta+inicio-1.png'">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. El Problema vs Solución -->
+    <section class="py-24 bg-white" id="solucion">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <h2 class="text-3xl lg:text-4xl font-bold text-dark mb-4">Evoluciona tu canal de distribución</h2>
+                <p class="text-gray-500 text-lg">Las plantillas genéricas limitan la venta técnica. Improgyp está diseñado para fichas complejas, compras por volumen y asesoría real.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Problema -->
+                <div class="p-10 rounded-3xl bg-slate-50/80 border border-slate-200 reveal delay-100">
+                    <div class="w-14 h-14 rounded-2xl bg-slate-200 flex items-center justify-center mb-6 text-slate-500">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-dark mb-6">El modelo tradicional hoy</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 text-gray-600">
+                            <span class="mt-1 text-slate-400">✖</span>
+                            Comisiones por transacción (marketplaces) que devoran tu margen de ganancia.
+                        </li>
+                        <li class="flex items-start gap-3 text-gray-600">
+                            <span class="mt-1 text-slate-400">✖</span>
+                            Catálogos estáticos donde es imposible separar precios retail (B2C) de mayoristas (B2B).
+                        </li>
+                        <li class="flex items-start gap-3 text-gray-600">
+                            <span class="mt-1 text-slate-400">✖</span>
+                            Pasarelas de pago complejas que provocan el abandono del carrito en el usuario local.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Solución -->
+                <div class="p-10 rounded-3xl bg-brand-50 border border-brand-100 reveal delay-200">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-500 flex items-center justify-center mb-6 text-white shadow-lg shadow-brand-500/30">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-dark mb-6">Con Improgyp OS</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 text-gray-700 font-medium">
+                            <span class="mt-1 text-brand-500">✔</span>
+                            Propiedad absoluta del activo digital. 0% de comisiones por tus ventas.
+                        </li>
+                        <li class="flex items-start gap-3 text-gray-700 font-medium">
+                            <span class="mt-1 text-brand-500">✔</span>
+                            Canal dual: Tienda pública (Retail) y Portal Mayorista (B2B) en un entorno seguro.
+                        </li>
+                        <li class="flex items-start gap-3 text-gray-700 font-medium">
+                            <span class="mt-1 text-brand-500">✔</span>
+                            Checkout vía WhatsApp para negociar y cerrar ventas sin fricción técnica.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Experiencia de Usuario (Ecosistema) -->
+    <section class="py-24 bg-slate-50 overflow-hidden relative" id="ecosistema">
+        <div class="glow-bg top-1/2 right-0 translate-x-1/2"></div>
+        <div class="max-w-7xl mx-auto px-6 space-y-32">
+            
+            <!-- Feature 1: Catálogo B2C -->
+            <div class="flex flex-col lg:flex-row items-center gap-16 reveal">
+                <div class="flex-1 order-2 lg:order-1 relative flex justify-center">
+                    <div class="phone-mockup animate-float">
+                        <div class="phone-screen bg-white">
+                            <!-- IMAGEN EXACTA: videos.png -->
+                            <img src="videos.png" class="w-full h-auto object-cover" alt="Catálogo B2C y Pautas" onerror="this.src='https://placehold.co/300x620/0E75AE/FFFFFF?text=Falta+videos.png'">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 order-1 lg:order-2">
+                    <div class="text-brand-600 font-bold tracking-wider uppercase text-sm mb-3">Navegación Intuitiva</div>
+                    <h2 class="text-4xl font-extrabold text-dark mb-6">Catálogo diseñado para convertir.</h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        Desarrollado con arquitectura JSON para renderizado inmediato. Diseñado para fichas técnicas, múltiples categorías de herramientas y materiales de construcción en seco.
+                    </p>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> Scroll infinito ultrarrápido y dinámico.</li>
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> Gestor de Pautas: Inserta videos o banners promocionales en la cuadrícula.</li>
+                        <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div> Optimización SEO por cada ficha técnica (Open Graph).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Feature 2: Portal B2B Mayorista -->
+            <div class="flex flex-col lg:flex-row items-center gap-16 reveal">
+                <div class="flex-1">
+                    <div class="text-brand-600 font-bold tracking-wider uppercase text-sm mb-3">Fidelización Automática</div>
+                    <h2 class="text-4xl font-extrabold text-dark mb-6">Portal B2B Dedicado y Seguro.</h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        No mezcles al consumidor final con tus distribuidores élite. El megamenú permite derivar al B2B de forma elegante para gestionar pedidos por volumen en un portal exclusivo.
+                    </p>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start gap-4">
+                        <div class="p-3 bg-brand-50 text-brand-600 rounded-xl">
+                            <i class="fa-solid fa-lock text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-dark">Acceso Restringido</h4>
+                            <p class="text-sm text-gray-500 mt-1">Requiere login. Precios exclusivos, chat directo y toma de pedidos con total separación del entorno B2C.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 relative flex justify-center">
+                    <div class="absolute inset-0 bg-brand-50 rounded-[3rem] transform rotate-3 scale-105 z-0"></div>
+                    <div class="phone-mockup animate-float-delayed border-dark">
+                        <div class="phone-screen bg-slate-50">
+                            <!-- IMAGEN EXACTA: megamenu.png -->
+                            <img src="megamenu.png" class="w-full h-auto object-cover" alt="Navegación Megamenu y B2B" onerror="this.src='https://placehold.co/300x620/1B263B/FFFFFF?text=Falta+megamenu.png'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 3: Blog Técnico -->
+            <div class="flex flex-col lg:flex-row items-center gap-16 reveal">
+                <div class="flex-1 order-2 lg:order-1 relative flex justify-center">
+                    <div class="phone-mockup animate-float">
+                        <div class="phone-screen bg-white">
+                            <!-- IMAGEN EXACTA: blog.png -->
+                            <img src="blog.png" class="w-full h-auto object-cover" alt="Blog Técnico Improgyp" onerror="this.src='https://placehold.co/300x620/0E75AE/FFFFFF?text=Falta+blog.png'">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 order-1 lg:order-2">
+                    <div class="text-brand-600 font-bold tracking-wider uppercase text-sm mb-3">Autoridad SEO</div>
+                    <h2 class="text-4xl font-extrabold text-dark mb-6">Blog Técnico Especializado.</h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        Posiciónate como el experto de la industria. Un blog integrado directamente en el ecosistema, impulsando tu tráfico orgánico y educando a tus clientes sobre herramientas y drywall.
+                    </p>
+                    <p class="text-lg text-gray-600">
+                        Asistido por IA desde el panel de control para redacción comercial y estructurado para potenciar el SEO sin plugins externos que ralentizan el sistema.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 4. Innovación: Asesor Gemini IA -->
+    <section class="py-24 bg-dark text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500 rounded-full blur-[120px] opacity-20"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="flex-1 reveal">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-brand-300 text-sm font-semibold mb-6 border border-white/20 backdrop-blur-sm">
+                        ✨ API Inteligencia Artificial (Google Gemini)
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-extrabold mb-6">Asesor Técnico Virtual.</h2>
+                    <p class="text-lg text-slate-300 mb-8 leading-relaxed">
+                        Tu fuerza de ventas disponible 24/7. El <strong>Asesor IA</strong> lee tu base de datos y catálogo en tiempo real para recomendar herramientas precisas, consumibles de drywall o alternativas basándose en la obra del cliente.
+                    </p>
+                    
+                    <div class="grid sm:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-slate-800/50 border border-slate-700 p-5 rounded-2xl">
+                            <div class="text-brand-400 font-bold mb-2">Omnibar Inteligente</div>
+                            <p class="text-sm text-slate-400">Búsqueda predictiva conectada a la IA accesible permanentemente desde cualquier sección del sitio.</p>
+                        </div>
+                        <div class="bg-slate-800/50 border border-slate-700 p-5 rounded-2xl">
+                            <div class="text-brand-400 font-bold mb-2">Conocimiento Real</div>
+                            <p class="text-sm text-slate-400">No es un chatbot genérico. Responde basado estrictamente en el stock y las marcas que comercializas (ej. Línea MAXXT).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1 flex justify-center relative reveal delay-200">
+                    <div class="phone-mockup border-slate-800 animate-float" style="box-shadow: 0 25px 50px -12px rgba(14, 117, 174, 0.3);">
+                        <div class="phone-screen bg-slate-900">
+                            <!-- IMAGEN EXACTA: inicio-2.png -->
+                            <img src="inicio-2.png" class="w-full h-auto object-cover" alt="Asesor IA Omnibar" onerror="this.src='https://placehold.co/300x620/1e293b/FFFFFF?text=Falta+inicio-2.png'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Flujo de Pedido (Checkout doble celular) -->
+    <section class="py-24 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="reveal mb-16">
+                <h2 class="text-4xl font-extrabold text-dark mb-4">Del carrito a tu sucursal en 3 clicks</h2>
+                <p class="text-lg text-gray-500 max-w-2xl mx-auto">Un flujo de compra adaptado al mercado local. Sin pasarelas complejas que generen rebotes. El cliente arma el pedido y lo cierra vía WhatsApp en tu local más cercano.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 lg:gap-16 relative">
+                <!-- Flecha conectora (visible en desktop) -->
+                <div class="hidden md:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0 text-brand-200">
+                    <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+
+                <div class="relative reveal delay-100 z-10">
+                    <h3 class="text-xl font-bold text-dark mb-6">1. Selección en Tienda</h3>
+                    <div class="phone-mockup shadow-xl transform md:-rotate-2 transition-transform hover:rotate-0">
+                        <div class="phone-screen bg-white">
+                            <!-- IMAGEN EXACTA: tienda.png -->
+                            <img src="tienda.png" class="w-full h-auto object-cover" alt="Catálogo Tienda y Carrito" onerror="this.src='https://placehold.co/300x620/0E75AE/FFFFFF?text=Falta+tienda.png'">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative reveal delay-300 z-10 mt-12 md:mt-0">
+                    <h3 class="text-xl font-bold text-dark mb-6">2. Derivación y GPS</h3>
+                    <div class="phone-mockup shadow-xl transform md:rotate-2 transition-transform hover:rotate-0 border-brand-500">
+                        <div class="phone-screen bg-white">
+                            <!-- IMAGEN EXACTA: sucursales.png -->
+                            <img src="sucursales.png" class="w-full h-auto object-cover" alt="Derivación Sucursales WhatsApp" onerror="this.src='https://placehold.co/300x620/0E75AE/FFFFFF?text=Falta+sucursales.png'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16 bg-brand-50 rounded-3xl p-8 max-w-3xl mx-auto border border-brand-100 text-left reveal">
+                <h4 class="font-bold text-dark text-lg mb-2">📲 Experiencia Omnicanal</h4>
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                    La plataforma enruta el pedido de forma inteligente. El selector de sucursales con mapa de geolocalización formatea y envía el mensaje de WhatsApp al local seleccionado, incluyendo el detalle de stock, variables (SKUs) y precio total.
+                </p>
+                <div class="inline-flex gap-2">
+                    <span class="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-semibold text-gray-500">Multisucursal</span>
+                    <span class="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-semibold text-gray-500">Geo GPS Integrado</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Ficha Técnica y Admin -->
+    <section class="py-24 bg-slate-50 border-t border-slate-200" id="tech">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl lg:text-4xl font-bold text-dark mb-4">El Motor (IMPROGYP OS)</h2>
+                <p class="text-gray-500 text-lg">Tecnología robusta, veloz y bajo el control absoluto de tu empresa.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Panel Admin -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 reveal delay-100">
+                    <div class="w-12 h-12 bg-blue-50 text-brand-500 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-gauge-high text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-3">Dashboard Central</h3>
+                    <p class="text-gray-600 text-sm">Gestiona el catálogo masivo (CSV), blog técnico, pautas promocionales e UI de forma visual. Todo centralizado para no depender de programadores en el día a día.</p>
+                </div>
+
+                <!-- Arquitectura -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 reveal delay-200">
+                    <div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-server text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-3">Velocidad JSON + MySQL</h3>
+                    <p class="text-gray-600 text-sm">El frontend de la tienda consume JSON pre-renderizado para una carga casi instantánea. El backend sincroniza datos complejos (B2B, IA) medianta MySQL (PDO).</p>
+                </div>
+
+                <!-- Métricas -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 reveal delay-300">
+                    <div class="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-3">Control y Seguridad</h3>
+                    <p class="text-gray-600 text-sm">Modo de mantenimiento elegante, imágenes optimizadas WebP y cabeceras HTTP de seguridad integradas. Despliegue estructurado desde Git a Hostinger.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. CTA / Footer -->
+    <section class="py-20 bg-dark text-white" id="contacto">
+        <div class="max-w-4xl mx-auto px-6 text-center reveal">
+            <h2 class="text-3xl md:text-5xl font-bold mb-6">Independencia Digital Total</h2>
+            <p class="text-brand-100 text-lg mb-10">Deja de pagar alquileres o porcentajes por tus ventas digitales. Obtén la propiedad de tu plataforma y escala tu distribución sin límites.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-10">
+                <!-- CTA Principal -->
+                <a href="mailto:contacto@tuempresa.com" class="px-8 py-4 bg-brand-500 hover:bg-brand-600 font-bold rounded-2xl transition-colors shadow-lg shadow-brand-500/50 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    Solicitar Demo Técnica
+                </a>
+            </div>
+
+            <!-- Bloque de información de features -->
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 text-brand-100 font-medium text-sm">
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-check text-brand-500"></i> Solución B2B / B2C
+                </span>
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-check text-brand-500"></i> Despliegue en Ecuador
+                </span>
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-check text-brand-500"></i> Integración IA (Gemini)
+                </span>
+            </div>
+        </div>
+        <div class="mt-20 text-center text-slate-500 text-sm">
+            <p>&copy; 2026 Improgyp OS. Informe Técnico y Comercial.</p>
+        </div>
+    </section>
+
+    <!-- Script para animaciones en Scroll -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+        });
+    </script>
+</body>
+</html>

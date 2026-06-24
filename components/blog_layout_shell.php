@@ -131,6 +131,12 @@ $bl_open_in_modal = !empty($bl_open_in_modal);
         grid-template-columns: repeat(4, 1fr);
     }
 }
+@media (max-width: 767px) {
+    .bl-section.bl-section--archive .bl-grid-3 {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+}
 .bl-card[data-bl-open-slug], .bl-hero[data-bl-open-slug], .bl-cyber-card[data-bl-open-slug] { cursor: pointer; }
 .bl-article-modal { position: fixed; inset: 0; z-index: 2500; display: none; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .2s ease; }
 .bl-article-modal.is-open { display: flex; opacity: 1; pointer-events: auto; }
